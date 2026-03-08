@@ -1,0 +1,90 @@
+---
+title: Quick setup
+description: How to get started with Atelier UI.
+icon: "FolderDown"
+order: 1
+tags: ["Tailwind CSS", "Copy & paste", "Ready in minutes"]
+---
+
+import DocStep from '@/components/features/docs/DocStep'
+import { Sticker } from 'lucide-react'
+
+
+
+**Tailwind CSS** is our default styling framework. We recommend installing it in your project and using our shared CSS variables to ensure everything looks right out of the box.
+
+Each component includes its own documentation with installation instructions. You can install it via the CLI, or (recommended) copy and paste the code directly into your project.
+
+
+---
+
+<DocStep title="Setup Tailwind CSS" step={1}>
+
+You can follow the official [Tailwind CSS installation guide](https://tailwindcss.com/docs/installation).
+
+</DocStep>
+
+<DocStep title="Match the styles of the demo" step={2}>
+
+The variables below control the **base colors**, **borders**, and **highlights** used across the components. 
+
+Copy them into your **Tailwind global CSS file** to get everything looking right out of the box. 
+You can always adjust the values to match your own design later.
+
+
+```css title="global.css" mode="expand"
+@theme inline {
+    --color-mat-1: var(--color-mat-1);
+    --color-mat-2: var(--color-mat-2);
+    --color-mat-3: var(--color-mat-3);
+    --color-mat-4: var(--color-mat-4);
+    --color-mat-5: var(--color-mat-5);
+    --color-border: var(--border);
+    --color-highlight: var(--color-highlight);
+}
+:root {
+    --color-mat-1: oklch(0.19 0 0);
+    --color-mat-2: oklch(0.55 0 0);
+    --color-mat-3: oklch(0.89 0.01 271.32);
+    --color-mat-4: oklch(0.95 0 17.18);
+    --color-mat-5: oklch(0.99 0 0);
+    --color-highlight: rgb(71 123 255);
+    --border: oklch(0.95 0 286.37);
+    --wip-bg: #fff0e9;
+    --wip-text: #ff6b26;
+
+}
+.dark {
+    --color-mat-1: oklch(0.99 0 17.21);
+    --color-mat-2: oklch(0.79 0 0);
+    --color-mat-3: oklch(0.41 0.03 279.55);
+    --color-mat-4: oklch(0.18 0.01 285.79);
+    --color-mat-5: oklch(0.14 0.01 285.79);
+    --color-highlight: rgb(255 166 42);
+    --border: oklch(1 0 0 / 0.05);
+    --wip-bg: #001827;
+    --wip-text: #448fff;
+
+}
+```
+</DocStep>
+
+
+<DocStep title="Pick a component" step={3}>
+
+Each component has its own dependencies and documentation.
+
+- **Manual Install (Recommended)**: Copy the source code directly into your project.
+
+- **CLI Install**: Use the Atelier CLI to add a component and auto-install its dependencies.
+
+```text title="CLI example"
+npx atelier-ui add fluid-cursor
+```
+
+</DocStep>
+
+
+<DocStep title="Start using Atelier UI" step={4}>
+You're all set. Head over to the [components](/docs/components) page and pick something to build with.
+</DocStep>

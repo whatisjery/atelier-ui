@@ -1,0 +1,237 @@
+---
+title: How to contribute
+description: Contribution guidelines for the project.
+icon: "Star"
+order: 2
+tags: ["Add components", "Fix bugs", "Improve docs"]
+---
+
+import Alert from '@/components/ui/Alert'
+
+This guide explains how to get started, the project structure, and the conventions to follow so your contributions fit in.
+
+---
+
+
+## Getting Started
+
+**Note:** This project uses `pnpm` as the package manager; you must have [pnpm installed](https://pnpm.io/) globally to run commands and tests locally.
+
+1. **Fork the repository:** Create a personal copy of the project on GitHub.
+2. **Clone your fork:** Download the forked repository to your local machine.
+3. **Create a branch:** Make a new branch (`git checkout -b feature/YourFeatureName`).
+4. **Install dependencies:** Run `pnpm install` to set up all required packages.
+
+---
+
+## Overview
+
+#### Reporting bugs/issues
+
+Open an issue describing what you **expected, what actually happened, steps to reproduce**, and any helpful screenshots or code.
+
+#### Suggesting improvements
+
+Every suggestion matters. **Describe the context**, what should change, and include examples or references if available.
+
+#### Adding a new component
+
+A good component has a **clear purpose**, performs well, is easy to use, is well documented, and feels considered in both design and animation quality.
+
+---
+
+## Conventions
+
+### Naming
+
+Use `kebab-case` for all folder and file names: `fluid-cursor`, `magnetic-button-demo`, etc.
+
+### Project Structure
+
+Here’s where each type of file lives:
+
+- `src/registry/base` holds the main components for export.
+- `src/registry/demos` holds demo components.
+- `src/registry/demos/index.ts` exports the demo components.
+- `src/content` holds documentation.
+```text title="Visual representation"
+(src/registry)
+├── base
+│   └── your-component
+│       └── your-component.tsx          # Your new component
+├── demos
+│   ├── your-component-demo
+│   │   └── your-component-demo.tsx     # Your new demo component
+│   └── index.ts                        # Exports the demo components
+
+(src/content)
+├── en
+│   ├── components
+│   │   ├── _dir.yml
+│   │   ├── your-component
+│   │   │   └── your-component.mdx      # Your new component documentation
+```
+
+### Component Format
+
+Each component should have a **single responsibility** and live in a single file to keep it self-contained and easy to copy.
+
+If some logic could be reused or has its own responsibility, **extract it into a helper, hook, or sub-component**.
+
+```tsx title="Component structure"
+const CONSTANTS = {...} as const
+
+const hookExample = () => {...}
+
+function utilFunction() {...}
+
+type ComponentExample = {...}
+
+type ComponentExampleProps = {...} & ComponentProps<'div'>
+
+export function ComponentExample({}: ComponentExampleProps) {...}
+```
+
+### Styling
+
+All components should use **Tailwind CSS** for styling. Inline styles may be used only when the style depends on runtime values that cannot be expressed with Tailwind classes. Use current available Tailwind utilities and CSS variables or add new ones as needed.
+
+### Dependencies
+
+You may use animation libraries such as **Motion**, **GSAP**, or **React Three Fiber**. Choose the library that best fits the effect you are implementing.
+
+
+### Accessibility
+
+For interactive components, add **keyboard support** and **ARIA roles/labels** where practical. Purely visual or complex animations that can’t fully support accessibility are exempt. Optimization like **reduced motion** should be handled by the developer using the component.
+
+
+
+
+---
+
+## How to add a new component
+
+### Base component
+
+Create a new folder in the `src/registry/base` folder with the name of the component:
+```tsx title="src/registry/base/component-name/component-name.tsx"
+export default function ComponentName() {
+    return <></>
+}
+```
+
+### Demo component
+
+Create a demo component in the `src/registry/demos` folder and structure it how you want:
+```tsx title="src/registry/demos/component-name-demo/component-name-demo.tsx"
+import ComponentName from '@/registry/base/component-name/component-name'
+
+export default function ComponentNameDemo() {
+    return <ComponentName />
+}
+```
+
+### Exporting the demo
+
+Export the demo component in the `src/registry/demos/index.ts` file:
+```tsx title="src/registry/demos/index.ts"
+export const demos: Record<string, React.LazyExoticComponent<React.ComponentType>> = {
+    'component-name': lazy(() => import('./component-name-demo/component-name-demo')),
+}
+```
+
+### Adding to the registry
+
+Add the component to the registry by including its name and dependencies in `src/registry/index.ts`:
+```tsx title="src/registry/index.ts"
+export const components: TRegistryComponent[] = [
+    {
+        name: 'new-component',
+        files: ['new-component.tsx'],
+        description: 'My new component',
+        dependencies: [
+            'example-dependency-1',
+            'example-dependency-2',
+        ],
+    },
+]
+```
+
+---
+
+## How to write documentation
+
+### Frontmatter
+
+Add the metadata for the component in the frontmatter:
+```yaml title="Frontmatter"
+---
+title: "New Component"
+description: "My new component"
+icon: 'Component'
+---
+```
+
+### Guide and preview
+
+Add a preview of the component by using the `<DocComponentPreview />` component with **the same exact name** of the demo component.
+```tsx title="Preview example"
+<DocComponentPreview name="component-name-demo" />
+```
+
+Add the installation guide by using the `<DocInstallGuide />` component with **the same exact name** of the base component.
+```tsx title="Installation guide example"
+<DocInstallGuide name="component-name" />
+```
+
+### Usage
+
+Provide a code example of the component by using the language of the code.
+```tsx title="Usage example"
+import { MyComponent } from 'my-component'
+
+<MyComponent/>
+```
+
+### API
+
+Add the API of the component by using the following table format:
+```text title="API example"
+| Name              | Type    | Default   | Description                                                          |
+| ----------------- | ------- | --------- | -------------------------------------------------------------------- |
+| `speed`           | number  | `1.0`     | Controls the animation speed multiplier.                             |
+| `color`           | string  | `#ff5733` | Sets the primary color of the component.                             |
+```
+
+### Features and credits
+
+Provide a detailed list of the component's features and always mention credits:
+```text title="Features example"
+- Lightweight with no external dependencies
+- Fully customizable via props
+```
+```text title="Credits example"
+- Inspired by [Author Name](https://example.com)
+- Animation logic adapted from [Library Name](https://example.com)
+```
+
+---
+
+## Git Guidelines
+
+Use [conventional commits](https://www.conventionalcommits.org/en/v1.0.0/): start your commit message with the type of change (`feat`, `fix`, `chore`, `docs`, `refactor`, `style`, `test`) followed by a precise, descriptive message.
+
+---
+
+## Testing
+
+<Alert variant="warning" title="Warning">
+To run tests locally be sure you have all the dependencies installed, in both the root and the `packages/cli-tool` folder.
+</Alert>
+
+
+Tests run **automatically** on every pull request. They verify that every component has its files, demo, export, and documentation in sync.
+You can also **run them locally** to catch issues early by running ```pnpm test```
+
+

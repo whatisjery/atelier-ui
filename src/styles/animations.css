@@ -1,0 +1,58 @@
+@keyframes kf-scroll-x {
+    from {
+        transform: translateX(0);
+    }
+    to {
+        transform: translateX(calc(-100% / 3));
+    }
+}
+
+@keyframes kf-march-x {
+    to {
+        background-position: 0 -24px;
+    }
+}
+
+@keyframes kf-march-y {
+    to {
+        background-position: -24px 0;
+    }
+}
+
+@keyframes kf-fade-in {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes kf-fade-out {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
+
+@utility a-fade-in {
+    animation: kf-fade-in 150ms ease-out;
+}
+
+@utility a-fade-out {
+    animation: kf-fade-out 150ms ease-out;
+}
+
+@utility a-march-x {
+    animation: kf-march-x 0.8s linear infinite;
+}
+
+@utility a-march-y {
+    animation: kf-march-y 0.8s linear infinite;
+}
+
+@utility a-scroll-x {
+    animation: kf-scroll-x 20s linear infinite;
+}

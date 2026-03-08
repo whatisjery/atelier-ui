@@ -1,0 +1,114 @@
+[
+  {
+    "title": "Upcoming one",
+    "slug": "/docs/components/background/upcoming-1",
+    "section": "components/background",
+    "content": "",
+    "headings": []
+  },
+  {
+    "title": "Upcoming two",
+    "slug": "/docs/components/background/upcoming-2",
+    "section": "components/background",
+    "content": "",
+    "headings": []
+  },
+  {
+    "title": "Upcoming one",
+    "slug": "/docs/components/button/upcoming-1",
+    "section": "components/button",
+    "content": "",
+    "headings": []
+  },
+  {
+    "title": "Upcoming two",
+    "slug": "/docs/components/button/upcoming-2",
+    "section": "components/button",
+    "content": "",
+    "headings": []
+  },
+  {
+    "title": "Fluid Distortion",
+    "slug": "/docs/components/cursor/fluid-cursor",
+    "section": "components/cursor",
+    "content": "Installation Usage API Name Type Default Description hexadecimal Sets the fluid color. Effective only when is set to . string Sets the background color. Effective only when is . boolean Toggles the background color's visibility. If it becomes transprent. number Blends fluid into the scene when is true. Valid range: to . number Sets the fluid intensity. Valid range: to . number Multiplies the mouse velocity to increase fluid splatter. Valid range: to . number Sets the distortion amount. Valid range: to . number Sets the fluid radius. Valid range: to . number Sets the amount of the curl effect. Valid range: to . number Sets the amount of the swirling effect. Valid range: to . number Reduces the fluid velocity over time. Valid range: to . number Reduces the fluid density over time. Valid range: to . number Controls the reduction of pressure. Valid range: to . boolean Activates color mode based on mouse direction. No range applicable as this is a boolean value. Features GPU-accelerated via WebGL : runs entirely on the graphics card, zero JS physics overhead Rainbow mode : automatically derives fluid color from cursor direction Customizable fluid dynamics : curl, swirl, pressure, velocity, and density dissipation Transparent background : renders over any scene without a background layer Frame-rate independent : runs at consistent speed regardless of your monitor's refresh rate Credits WebGL shaders inspired by Pavel Dobryakov's WebGL Fluid Simulation.",
+    "headings": [
+      "Installation",
+      "Usage",
+      "API",
+      "Features",
+      "Credits"
+    ]
+  },
+  {
+    "title": "Upcoming two",
+    "slug": "/docs/components/cursor/upcoming-2",
+    "section": "components/cursor",
+    "content": "",
+    "headings": []
+  },
+  {
+    "title": "Why Atelier?",
+    "slug": "/docs/getting-started/about",
+    "section": "getting-started",
+    "content": "Atelier means workshop in French. I built Atelier UI because I wanted a place to publish the effects and animations I work on (the kind you see on websites like Awwwards), and share them with other developers, instead of throwing them away. Components are built with React and are yours to copy, paste and use however you want. The whole project is open source — feel free to contribute if you want to get involved! About me Hi, I'm Jérémie Nallet . I'm a designer and front-end engineer. Feel free to follow along or contribute on GitHub . Acknowledgments This project was inspired by existing UI libraries like Magic UI and Inspira UI .",
+    "headings": [
+      "About me",
+      "Acknowledgments"
+    ]
+  },
+  {
+    "title": "Code of conduct",
+    "slug": "/docs/getting-started/code-of-conduct",
+    "section": "getting-started",
+    "content": "We are committed to making Atelier UI a welcoming, inclusive, and harassment-free community for everyone, regardless of age, body size, disability, ethnicity, gender identity and expression, level of experience, nationality, personal appearance, race, religion, or sexual identity and orientation. Expected Behavior Be respectful, empathetic, and kind toward others. Be open to differing opinions, viewpoints, and experiences. Give and gracefully accept constructive feedback. Take responsibility for your mistakes, apologize when needed, and learn from the experience. Focus on what is best for the community, not just for yourself. Unacceptable Behavior Harassment, discrimination, or derogatory comments of any kind. Personal attacks, trolling, or deliberately inflammatory remarks. Publishing others' private information without explicit permission. Sexual language, imagery, or unwanted attention. Any conduct that would be considered inappropriate in a professional setting. Reporting If you experience or witness unacceptable behavior, please report it by opening an issue on our GitHub repository . When reporting, include a clear description of the incident, the people involved, and any supporting evidence such as screenshots or links. All reports will be reviewed promptly and handled confidentially. Enforcement Project maintainers are responsible for enforcing this Code of Conduct and will take appropriate action in response to unacceptable behavior. This may include: A private warning to the individual. Temporary or permanent ban from the project and its spaces. Removal of contributions that violate this Code of Conduct. Maintainers have the right to remove, edit, or reject comments, commits, issues, and other contributions that do not align with this Code of Conduct. Scope This Code of Conduct applies to all project spaces, including GitHub repositories, issues, pull requests, discussions, and any public space where someone is representing Atelier UI. It also applies when interacting with the community on social media or at events. Attribution This Code of Conduct is adapted from the Contributor Covenant , version 2.1.",
+    "headings": [
+      "Expected Behavior",
+      "Unacceptable Behavior",
+      "Reporting",
+      "Enforcement",
+      "Scope",
+      "Attribution"
+    ]
+  },
+  {
+    "title": "How to contribute",
+    "slug": "/docs/getting-started/contribution",
+    "section": "getting-started",
+    "content": "This guide explains how to get started, the project structure, and the conventions to follow so your contributions fit in. Getting Started Note: This project uses pnpm as the package manager; you must have pnpm installed globally to run commands and tests locally. Fork the repository: Create a personal copy of the project on GitHub. Clone your fork: Download the forked repository to your local machine. Create a branch: Make a new branch ( git checkout -b feature/YourFeatureName ). Install dependencies: Run pnpm install to set up all required packages. Overview Reporting bugs/issues Open an issue describing what you expected, what actually happened, steps to reproduce , and any helpful screenshots or code. Suggesting improvements Every suggestion matters. Describe the context , what should change, and include examples or references if available. Adding a new component A good component has a clear purpose , performs well, is easy to use, is well documented, and feels considered in both design and animation quality. Conventions Naming Use kebab-case for all folder and file names: fluid-cursor , magnetic-button-demo , etc. Project Structure Here’s where each type of file lives: src/registry/base holds the main components for export. src/registry/demos holds demo components. src/registry/demos/index.ts exports the demo components. src/content holds documentation. Component Format Each component should have a single responsibility and live in a single file to keep it self-contained and easy to copy. If some logic could be reused or has its own responsibility, extract it into a helper, hook, or sub-component . Styling All components should use Tailwind CSS for styling. Inline styles may be used only when the style depends on runtime values that cannot be expressed with Tailwind classes. Use current available Tailwind utilities and CSS variables or add new ones as needed. Dependencies You may use animation libraries such as Motion , GSAP , or React Three Fiber . Choose the library that best fits the effect you are implementing. Accessibility For interactive components, add keyboard support and ARIA roles/labels where practical. Purely visual or complex animations that can’t fully support accessibility are exempt. Optimization like reduced motion should be handled by the developer using the component. How to add a new component Base component Create a new folder in the src/registry/base folder with the name of the component: Demo component Create a demo component in the src/registry/demos folder and structure it how you want: Exporting the demo Export the demo component in the src/registry/demos/index.ts file: Adding to the registry Add the component to the registry by including its name and dependencies in src/registry/index.ts : How to write documentation Frontmatter Add the metadata for the component in the frontmatter: Guide and preview Add a preview of the component by using the <DocComponentPreview /> component with the same exact name of the demo component. Add the installation guide by using the <DocInstallGuide /> component with the same exact name of the base component. Usage Provide a code example of the component by using the language of the code. API Add the API of the component by using the following table format: Features and credits Provide a detailed list of the component's features and always mention credits: Git Guidelines Use conventional commits : start your commit message with the type of change ( feat , fix , chore , docs , refactor , style , test ) followed by a precise, descriptive message. Testing To run tests locally be sure you have all the dependencies installed, in both the root and the packages/cli-tool folder. Tests run automatically on every pull request. They verify that every component has its files, demo, export, and documentation in sync. You can also run them locally to catch issues early by running pnpm test",
+    "headings": [
+      "Getting Started",
+      "Overview",
+      "Reporting bugs/issues",
+      "Suggesting improvements",
+      "Adding a new component",
+      "Conventions",
+      "Naming",
+      "Project Structure",
+      "Component Format",
+      "Styling",
+      "Dependencies",
+      "Accessibility",
+      "How to add a new component",
+      "Base component",
+      "Demo component",
+      "Exporting the demo",
+      "Adding to the registry",
+      "How to write documentation",
+      "Frontmatter",
+      "Guide and preview",
+      "Usage",
+      "API",
+      "Features and credits",
+      "Git Guidelines",
+      "Testing"
+    ]
+  },
+  {
+    "title": "Quick setup",
+    "slug": "/docs/getting-started/installation",
+    "section": "getting-started",
+    "content": "Tailwind CSS is our default styling framework. We recommend installing it in your project and using our shared CSS variables to ensure everything looks right out of the box. Each component includes its own documentation with installation instructions. You can install it via the CLI, or (recommended) copy and paste the code directly into your project. You can follow the official Tailwind CSS installation guide . The variables below control the base colors , borders , and highlights used across the components. Copy them into your Tailwind global CSS file to get everything looking right out of the box. You can always adjust the values to match your own design later. Each component has its own dependencies and documentation. Manual Install (Recommended) : Copy the source code directly into your project. CLI Install : Use the Atelier CLI to add a component and auto-install its dependencies. You're all set. Head over to the components page and pick something to build with.",
+    "headings": []
+  }
+]

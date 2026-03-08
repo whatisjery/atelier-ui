@@ -1,0 +1,29 @@
+import { execSync } from "node:child_process"
+
+type GitFileDates = {
+    createdAt: Date | null
+    updatedAt: Date | null
+}
+
+/**
+ * Get the git dates for a file, when last created and updated etc.
+ * (used for components badges: new, update, wip)
+ */
+export function getFileGitDates(filePath: string): GitFileDates {
+    try {
+        const created = execSync(`git log --diff-filter=A --format=%aI -- "${filePath}"`, {
+            encoding: "utf-8",
+        }).trim()
+
+        const modified = execSync(`git log -1 --format=%aI -- "${filePath}"`, {
+            encoding: "utf-8",
+        }).trim()
+
+        return {
+            createdAt: created ? new Date(created) : null,
+            updatedAt: modified ? new Date(modified) : null,
+        }
+    } catch {
+        return { createdAt: null, updatedAt: null }
+    }
+}

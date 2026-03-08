@@ -1,0 +1,34 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "./utilities.css";
+@import "./animations.css";
+@import "./theme.css";
+@plugin "@tailwindcss/typography";
+
+@layer base {
+    * {
+        border-color: var(--color-border);
+        outline-color: var(--color-ring);
+    }
+
+    body {
+        background-color: var(--color-background);
+        color: var(--color-mat-1);
+    }
+
+    code span {
+        color: var(--shiki-light);
+    }
+
+    .dark code span {
+        color: var(--shiki-dark);
+    }
+
+    pre {
+        background-color: var(--shiki-light-bg);
+    }
+
+    .dark pre {
+        background-color: var(--shiki-dark-bg);
+    }
+}

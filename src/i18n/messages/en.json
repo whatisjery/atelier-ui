@@ -1,0 +1,70 @@
+{
+    "docs": {
+        "toc": {
+            "on-this-page": "On this page",
+            "community": "Community",
+            "open-in-github": "View on GitHub",
+            "star-this-project": "Star this project",
+            "create-an-issue": "Create an issue",
+            "edit-this-page": "Edit this page"
+        },
+        "page-dropdown": {
+            "copy-page": "Copy page",
+            "copy-page-description": "Copy page as Markdown",
+            "copy-page-success-description": "Page successfully copied as Markdown.",
+            "view-as-markdown": "View as markdown",
+            "view-as-markdown-description": "View this page as plain text."
+        },
+        "links": {
+            "overview": "Overview",
+            "builder": "Builder",
+            "changelogs": "Changelogs"
+        },
+        "tooltips": {
+            "theme-toggle": "Invert colors",
+            "copy": "Copy",
+            "collapse": "Collapse",
+            "expand": "Expand"
+        }
+    },
+
+    "landing": {
+        "loop-features": {
+            "flexibility": {
+                "title": "Flexibility",
+                "description": "Every component is yours. No lock-in, just code you can read, and own."
+            },
+            "integration": {
+                "title": "Integration",
+                "description": "Drop into any React project. CLI or copy-paste, nothing to configure."
+            },
+            "performance": {
+                "title": "Performance",
+                "description": "Animations that stay smooth. Small footprint, no unnecessary overhead."
+            }
+        }
+    },
+
+    "footer": {
+        "design-and-built-by": "Design & Built by <name></name>",
+        "pages": "Pages",
+        "social": "Social",
+        "opens-in-new-tab": "opens in new tab",
+        "location": "In Paris, France 🇫🇷",
+        "all-rights-reserved": "{brand} ©{year} / All rights are reserved.",
+        "docs": "Docs",
+        "getting-started": "Getting started",
+        "components": "Components",
+        "contribute": "Contribute"
+    },
+
+    "common": {
+        "wip": "wip",
+        "search": "Search...",
+        "version": "Version {version}",
+        "components": "Components",
+        "explore-components": "Explore components",
+        "atelier-ui-docs": "Atelier UI docs",
+        "copied": "Copied"
+    }
+}
