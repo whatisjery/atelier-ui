@@ -4,6 +4,7 @@ import { Geist, Geist_Mono, Instrument_Serif } from "next/font/google"
 import { notFound } from "next/navigation"
 import { hasLocale, NextIntlClientProvider } from "next-intl"
 import { Tooltip } from "radix-ui"
+import { ScrollRestorer } from "@/components/common/ScrollRestorer"
 import { ThemeProvider } from "@/components/common/ThemeProvider"
 import Toaster from "@/components/ui/Toaster"
 import { routing } from "@/i18n/routing"
@@ -77,6 +78,7 @@ export default async function RootLayout({ children, params }: RootLayoutProps) 
                 <NextIntlClientProvider>
                     <Tooltip.Provider>
                         <ThemeProvider attribute="class" enableSystem>
+                            <ScrollRestorer />
                             <Toaster />
                             {children}
                         </ThemeProvider>
