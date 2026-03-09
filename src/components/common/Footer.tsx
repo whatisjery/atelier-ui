@@ -99,7 +99,7 @@ export default function Footer() {
                         <div className="ml-auto flex items-center">
                             <ThemeToggle key="theme" />
                             <Button key="github" variant="ghost" size="icon" asChild>
-                                <Link href={REPO_URL}>
+                                <Link target="_blank" rel="noopener noreferrer" href={REPO_URL}>
                                     <SiGithub className="size-4" />
                                 </Link>
                             </Button>
