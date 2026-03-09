@@ -1,3 +1,4 @@
+import { setRequestLocale } from "next-intl/server"
 import ScrollableTechStack from "@/components/common/ScrollableTechStack"
 import PageDocLayout from "@/components/features/docs/_PageDocLayout"
 import DocHeaderGroupTitle from "@/components/features/docs/DocHeaderGroupTitle"
@@ -16,6 +17,7 @@ export function generateStaticParams() {
 
 export async function generateMetadata({ params }: PageProps) {
     const { locale } = await params
+
     const content = await import(`@/content/${locale}/index.mdx`)
     return {
         title: content.frontmatter.title,
@@ -25,6 +27,7 @@ export async function generateMetadata({ params }: PageProps) {
 
 export default async function Page({ params }: PageProps) {
     const { locale } = await params
+    setRequestLocale(locale)
 
     const content = await import(`@/content/${locale}/index.mdx`)
 

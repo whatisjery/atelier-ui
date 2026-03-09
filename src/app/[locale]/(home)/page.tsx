@@ -1,3 +1,4 @@
+import { setRequestLocale } from "next-intl/server"
 import PageLanding from "@/components/features/landing/_PageLanding"
 import { getComponentsList } from "@/lib/docs"
 
@@ -9,6 +10,7 @@ type PageProps = {
 
 export default async function Page({ params }: PageProps) {
     const { locale } = await params
+    setRequestLocale(locale)
 
     const components = getComponentsList(locale).flatMap(({ children, icon }) => {
         return children.map((child) => ({ ...child, icon: icon }))

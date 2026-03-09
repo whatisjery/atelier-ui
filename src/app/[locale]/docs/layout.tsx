@@ -1,6 +1,7 @@
 import type { Metadata } from "next"
 import { notFound } from "next/navigation"
 import { hasLocale } from "next-intl"
+import { setRequestLocale } from "next-intl/server"
 import Footer from "@/components/common/Footer"
 import DocSidebar from "@/components/features/docs/DocSidebar"
 import DocTopNav from "@/components/features/docs/DocTopNav"
@@ -20,6 +21,7 @@ type DocsLayoutProps = {
 
 export default async function DocsLayout({ children, params }: DocsLayoutProps) {
     const { locale } = await params
+    setRequestLocale(locale)
 
     const { menuSections } = getSidebarData(locale)
 

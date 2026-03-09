@@ -3,6 +3,7 @@ import "@/styles/globals.css"
 import { Geist, Geist_Mono, Instrument_Serif } from "next/font/google"
 import { notFound } from "next/navigation"
 import { hasLocale, NextIntlClientProvider } from "next-intl"
+import { setRequestLocale } from "next-intl/server"
 import { Tooltip } from "radix-ui"
 import { ScrollRestorer } from "@/components/common/ScrollRestorer"
 import { ThemeProvider } from "@/components/common/ThemeProvider"
@@ -54,6 +55,7 @@ type RootLayoutProps = {
 
 export default async function RootLayout({ children, params }: RootLayoutProps) {
     const { locale } = await params
+    setRequestLocale(locale)
 
     const colors = await getCodeThemeColors()
 

@@ -77,7 +77,7 @@ function walk(dir: string, entries: SearchEntry[], basePath: string[] = []) {
     }
 }
 
-for (const locale of ["en", "fr"]) {
+for (const locale of ["en"]) {
     const contentDir = path.join(process.cwd(), "src", "content", locale)
     if (!fs.existsSync(contentDir)) continue
 

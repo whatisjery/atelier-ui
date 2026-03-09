@@ -1,3 +1,4 @@
+import { setRequestLocale } from "next-intl/server"
 import PageDocLayout from "@/components/features/docs/_PageDocLayout"
 import DocComponentPreview from "@/components/features/docs/DocComponentPreview"
 import DocHeaderGroupTitle from "@/components/features/docs/DocHeaderGroupTitle"
@@ -17,6 +18,7 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }: PageProps) {
     const { locale, slug } = await params
+
     const content = await import(`@/content/${locale}/${slug.join("/")}.mdx`)
     return {
         title: content.frontmatter.title,
@@ -26,6 +28,7 @@ export async function generateMetadata({ params }: PageProps) {
 
 export default async function Page({ params }: PageProps) {
     const { locale, slug } = await params
+    setRequestLocale(locale)
 
     const { headings, rawMarkdown } = getDocBySlug(locale, slug)
     const navigation = getDocNavigation(locale, slug)
@@ -55,6 +58,7 @@ export default async function Page({ params }: PageProps) {
                                 />
                             )
                         },
+
                         DocInstallGuide: (props: { name: string }) => {
                             return <DocInstallGuide {...props} snippets={baseCode[props.name]} />
                         },

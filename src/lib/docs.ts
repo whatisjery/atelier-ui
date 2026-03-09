@@ -150,14 +150,15 @@ export function getDocBySlug(
 export function getAllDocs() {
     const files = glob.sync("src/content/**/*.mdx")
 
-    return files.map((file) => {
-        const parts = file.replace("src/content/", "").replace(".mdx", "").split("/")
-
-        return {
-            locale: parts[0],
-            slug: parts.slice(1),
-        }
-    })
+    return files
+        .map((file) => {
+            const parts = file.replace("src/content/", "").replace(".mdx", "").split("/")
+            return {
+                locale: parts[0],
+                slug: parts.slice(1),
+            }
+        })
+        .filter(({ slug }) => slug[slug.length - 1] !== "index")
 }
 
 export function getQuickLinksMeta(locale: string, slugs: string[]): QuickLink[] {
