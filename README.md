@@ -18,7 +18,7 @@ Atelier means **workshop** in French.
 
 I built Atelier UI because I wanted a place to publish the effects and animations I might work on in the future, and share them with other developers, instead of throwing them away. Components are built with React and are yours to copy, paste and use however you want.
 
-The whole project is open source — feel free to [contribute](/docs/getting-started/contribution) if you want to get involved!
+The whole project is open source — feel free to [contribute](https://atelier-ui.com/docs/getting-started/contribution) if you want to get involved!
 
 ---
 
