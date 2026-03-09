@@ -22,6 +22,10 @@ export function getFileGitDates(filePath: string): GitFileDates {
             encoding: "utf-8",
         }).trim()
 
+        console.log("filePath:", filePath)
+        console.log("relativePath:", path.relative(process.cwd(), filePath))
+        console.log("result:", created, modified)
+
         return {
             createdAt: created ? new Date(created) : null,
             updatedAt: modified ? new Date(modified) : null,
