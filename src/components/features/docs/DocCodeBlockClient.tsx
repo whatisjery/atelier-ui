@@ -96,7 +96,7 @@ export function DocCodeBlockClient({
 
                     <Tooltip title={t("copy")}>
                         <Button
-                            onClick={() => copy(code)}
+                            onClick={() => copy(installTabs ? `${selectedTab} ${code}` : code)}
                             className={cn({ "cursor-default pointer-events-none": copied })}
                             size="icon"
                             variant="muted"
