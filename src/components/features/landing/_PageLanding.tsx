@@ -58,8 +58,7 @@ const sequence: AnimationSequence = [
     [
         ".cover",
         {
-            background: ["var(--color-background)", "var(--color-transparent)"],
-            backdropFilter: ["blur(5px)", "blur(0px)"],
+            opacity: [1, 0],
         },
         {
             duration: 1.5,
@@ -93,7 +92,7 @@ export default function PageLanding({ activeComponents, showcaseComponents }: Pa
     return (
         <>
             {!isSequenceComplete && (
-                <div className="cover backdrop-blur-[5px] fixed w-full h-full bg-background inset-0 z-4"></div>
+                <div className="cover fixed w-full h-full bg-background inset-0 z-4"></div>
             )}
 
             <main className="w-full max-w-landing-max-w mx-auto px-2 xs:px-5 relative">
