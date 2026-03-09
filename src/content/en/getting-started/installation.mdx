@@ -34,37 +34,60 @@ You can always adjust the values to match your own design later.
 
 ```css title="global.css" mode="expand"
 @theme inline {
-    --color-mat-1: var(--color-mat-1);
-    --color-mat-2: var(--color-mat-2);
-    --color-mat-3: var(--color-mat-3);
-    --color-mat-4: var(--color-mat-4);
-    --color-mat-5: var(--color-mat-5);
+    --color-mat-1: var(--mat-1);
+    --color-mat-2: var(--mat-2);
+    --color-mat-3: var(--mat-3);
+    --color-mat-4: var(--mat-4);
+    --color-mat-5: var(--mat-5);
     --color-border: var(--border);
-    --color-highlight: var(--color-highlight);
+    --color-highlight: var(--highlight);
+    --color-accent-focus: var(--accent-focus);
+    --color-accent-calm: var(--accent-calm);
+    --color-accent-neutral: var(--accent-neutral);
+    --color-background: var(--background);
+    --color-transparent: var(--transparent);
+    --color-backdrop: var(--backdrop);
+    --color-grid: var(--grid);
+    --font-sans: var(--font-geist-sans);
+    --font-serif: var(--font-instrument-serif);
 }
+
 :root {
-    --color-mat-1: oklch(0.19 0 0);
-    --color-mat-2: oklch(0.55 0 0);
-    --color-mat-3: oklch(0.89 0.01 271.32);
-    --color-mat-4: oklch(0.95 0 17.18);
-    --color-mat-5: oklch(0.99 0 0);
-    --color-highlight: rgb(71 123 255);
-    --border: oklch(0.95 0 286.37);
-    --wip-bg: #fff0e9;
-    --wip-text: #ff6b26;
+    --mat-1: oklch(0.12 0 285.88 / 1);
+    --mat-2: oklch(0.51 0.01 264.48);
+    --mat-3: oklch(0.86 0 258.33 / 1);
+    --mat-4: oklch(0.94 0 0 / 0.97);
+    --mat-5: oklch(0.96 0 0 / 0.9);
 
+    --accent-focus: oklch(0.7 0.2 41.87);
+    --accent-calm: oklch(0.59 0.21 258.69);
+    --accent-neutral: oklch(0.41 0 0);
+
+    --highlight: oklch(0.62 0.2 264.82);
+    --border: oklch(0.93 0 17.18);
+    --background: oklch(0.99 0 0 / 1);
+    --transparent: oklch(1 0 0 / 0);
+    --backdrop: oklch(0.88 0.01 286.2 / 0.53);
+    --grid: oklch(0.91 0 0);
 }
-.dark {
-    --color-mat-1: oklch(0.99 0 17.21);
-    --color-mat-2: oklch(0.79 0 0);
-    --color-mat-3: oklch(0.41 0.03 279.55);
-    --color-mat-4: oklch(0.18 0.01 285.79);
-    --color-mat-5: oklch(0.14 0.01 285.79);
-    --color-highlight: rgb(255 166 42);
-    --border: oklch(1 0 0 / 0.05);
-    --wip-bg: #001827;
-    --wip-text: #448fff;
 
+.dark {
+    --mat-1: oklch(1 0 0 / 1);
+    --mat-2: oklch(0.58 0.03 277.17 / 1);
+    --mat-3: oklch(0.37 0.03 279.08 / 1);
+    --mat-4: oklch(0.2 0.01 285.29 / 1);
+    --mat-5: oklch(0.18 0.01 285.33 / 0.87);
+
+    --accent-focus: oklch(0.65 0.19 251.47);
+    --accent-calm: oklch(0.74 0.18 56.46);
+    --accent-neutral: oklch(0.75 0 0);
+
+    --highlight: oklch(0.87 0.17 90.46);
+    --border: oklch(0.21 0.01 260.67);
+    --background: oklch(0.15 0.01 285.34 / 1);
+    --transparent: oklch(0 0 0 / 0);
+    --backdrop: oklch(0.21 0.02 284.95 / 0.84);
+    --grid: oklch(0.25 0.01 278.06);
 }
 ```
 </DocStep>
