@@ -9,5 +9,5 @@ Use the `add` command to add components to your project.
 The `add` command adds a component to your project and installs all required dependencies.
 
 ```bash
-npx Atelier add [component]
+npx atelier-ui add [component]
 ```
