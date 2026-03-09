@@ -46,7 +46,7 @@ export default function RouteBreadCrumb({ className }: RouteBreadCrumbProps) {
                             ) : isFirst ? (
                                 <Link href={href}>Docs</Link>
                             ) : (
-                                <Link href={href}>{label}</Link>
+                                <span>{label}</span>
                             )}
                         </li>
                     </React.Fragment>
