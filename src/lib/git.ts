@@ -1,4 +1,5 @@
 import { execSync } from "node:child_process"
+import path from "node:path"
 
 type GitFileDates = {
     createdAt: Date | null
@@ -11,11 +12,13 @@ type GitFileDates = {
  */
 export function getFileGitDates(filePath: string): GitFileDates {
     try {
-        const created = execSync(`git log --diff-filter=A --format=%aI -- "${filePath}"`, {
+        const relativePath = path.relative(process.cwd(), filePath)
+
+        const created = execSync(`git log --diff-filter=A --format=%aI -- "${relativePath}"`, {
             encoding: "utf-8",
         }).trim()
 
-        const modified = execSync(`git log -1 --format=%aI -- "${filePath}"`, {
+        const modified = execSync(`git log -1 --format=%aI -- "${relativePath}"`, {
             encoding: "utf-8",
         }).trim()
 
