@@ -1,7 +1,7 @@
 # Atelier UI
 
 [![Version](https://img.shields.io/npm/v/atelier-ui?style=flat&colorA=000000&colorB=000000)](https://www.npmjs.com/package/atelier-ui)
-[![GitHub stars](https://img.shields.io/github/stars/whatisjery/project-lib?style=flat&colorA=000000&colorB=000000)](https://github.com/whatisjery/atelier-ui/stargazers)
+[![GitHub stars](https://img.shields.io/github/stars/whatisjery/atelier-ui?style=flat&colorA=000000&colorB=000000)](https://github.com/whatisjery/atelier-ui/stargazers)
 [![License](https://img.shields.io/badge/License-MIT-000000?style=flat&colorA=000000&colorB=000000)](https://github.com/whatisjery/atelier-ui/blob/main/LICENSE.md)
 
 <a href="https://atelier-ui.com">
