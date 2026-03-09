@@ -76,7 +76,7 @@ export default async function RootLayout({ children, params }: RootLayoutProps) 
             >
                 <NextIntlClientProvider>
                     <Tooltip.Provider>
-                        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
+                        <ThemeProvider attribute="class" enableSystem>
                             <Toaster />
                             {children}
                         </ThemeProvider>
