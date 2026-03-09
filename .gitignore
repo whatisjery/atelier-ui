@@ -20,6 +20,9 @@
 # production
 /build
 
+# timestamps
+src/lib/timestamps.json
+
 # misc
 .DS_Store
 *.pem
