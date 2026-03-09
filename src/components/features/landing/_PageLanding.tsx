@@ -11,7 +11,6 @@ import LandingActionButton from "@/components/features/landing/LandingActionButt
 import BarCode from "@/components/ui/BarCode"
 import Border from "@/components/ui/Border"
 import SplitText from "@/components/ui/SplitText"
-import { usePathname } from "@/i18n/navigation"
 import { expoInOut, expoOut } from "@/lib/easing"
 import type { DocTree } from "@/types/docs"
 import LandingGridScroll from "./LandingGridScroll"
@@ -74,13 +73,8 @@ type PageLadingProps = {
 }
 
 export default function PageLanding({ activeComponents, showcaseComponents }: PageLadingProps) {
-    const pathname = usePathname()
     const t = useTranslations("landing")
     const [isSequenceComplete, setIsSequenceComplete] = useState(false)
-
-    useIsomorphicLayoutEffect(() => {
-        window.scrollTo(0, 0)
-    }, [pathname])
 
     useIsomorphicLayoutEffect(() => {
         const controls = animate(sequence, {
