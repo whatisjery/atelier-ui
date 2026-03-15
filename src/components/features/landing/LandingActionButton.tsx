@@ -58,7 +58,7 @@ function BorderedSpan({ children, offsetX }: { children: React.ReactNode; offset
             {children}
             <svg
                 aria-label="Bordered span"
-                className="absolute text-mat-1/18 inset-0 w-full h-full pointer-events-none"
+                className="absolute text-mat-2/30 inset-0 w-full h-full pointer-events-none"
                 fill="none"
             >
                 <motion.rect

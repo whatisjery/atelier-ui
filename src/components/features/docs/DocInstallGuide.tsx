@@ -42,6 +42,7 @@ export default function DocInstallGuide({ name, snippets }: DocInstallGuideProps
                               installTabs={manualInstallTabs}
                               code={deps.join(" ")}
                               lang="bash"
+                              className="mt-5"
                           />
                       ),
                   },

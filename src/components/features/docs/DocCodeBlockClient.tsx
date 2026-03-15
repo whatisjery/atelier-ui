@@ -33,6 +33,7 @@ export function DocCodeBlockClient({
     hast,
     mode,
     installTabs,
+    className,
 }: DocCodBlockClientProps) {
     const [isExpanded, setIsExpanded] = useState(false)
     const [selectedTab, setSelectedTab] = useState(installTabs?.[0].value)
@@ -51,12 +52,13 @@ export function DocCodeBlockClient({
     return (
         <figure
             className={cn(
-                "text-[0.85rem] font-regular not-prose bg-mat-5/80 dark:bg-mat-5 px-1 pb-1 not-last:mb-4 border relative rounded-xl overflow-hidden flex flex-col",
+                "text-[0.85rem] font-regular not-prose bg-mat-5 px-1 pb-1 not-last:mb-4 border relative rounded-2xl overflow-hidden flex flex-col",
+                className,
             )}
         >
-            <div className="flex items-center justify-between px-3 py-1">
+            <div className="flex items-center justify-between px-3">
                 {installTabs ? (
-                    <div className="flex items-center font-mono py-2">
+                    <div className="flex items-center font-mono">
                         {iconMap.bash}
                         {installTabs.map((tab) => (
                             <Button
@@ -80,7 +82,7 @@ export function DocCodeBlockClient({
                     </div>
                 )}
 
-                <div className="flex items-center">
+                <div className="flex items-center [&>*]:text-mat-2/50">
                     {isExpanded && mode === "expand" && (
                         <Tooltip title={t("collapse")}>
                             <Button
@@ -89,7 +91,7 @@ export function DocCodeBlockClient({
                                 onClick={() => setIsExpanded(false)}
                                 aria-label={t("collapse")}
                             >
-                                <ListChevronsDownUp className="size-4" />
+                                <ListChevronsDownUp className="size-4.5" />
                             </Button>
                         </Tooltip>
                     )}
@@ -97,7 +99,9 @@ export function DocCodeBlockClient({
                     <Tooltip title={t("copy")}>
                         <Button
                             onClick={() => copy(installTabs ? `${selectedTab} ${code}` : code)}
-                            className={cn({ "cursor-default pointer-events-none": copied })}
+                            className={cn({
+                                "cursor-default pointer-events-none": copied,
+                            })}
                             size="icon"
                             variant="muted"
                         >
@@ -120,7 +124,7 @@ export function DocCodeBlockClient({
                         <pre
                             ref={ref}
                             {...props}
-                            className={cn("p-5 not-prose rounded-xl scrollbar-hide [tab-size:2]", {
+                            className={cn("p-5 not-prose rounded-2xl scrollbar-hide [tab-size:2]", {
                                 "overflow-y-auto max-h-[500px]": mode === "scroll",
                                 "max-h-[150px] overflow-y-hidden": mode === "expand" && !isExpanded,
                                 "max-h-full overflow-y-auto": mode === "expand" && isExpanded,

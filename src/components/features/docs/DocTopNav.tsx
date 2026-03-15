@@ -3,8 +3,8 @@
 import { Menu, Search } from "lucide-react"
 import { useTranslations } from "next-intl"
 import { SiGithub } from "react-icons/si"
+import BrandLink from "@/components/common/BrandLink"
 import GlobalSearch from "@/components/common/GlobalSearch"
-import Logo from "@/components/common/Logo"
 import RouteBreadCrumb from "@/components/common/RouteBreadCrumb"
 import ThemeToggle from "@/components/common/ThemeToggle"
 import Badge from "@/components/ui/Badge"
@@ -12,7 +12,7 @@ import Border from "@/components/ui/Border"
 import Button from "@/components/ui/Button"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { Link, usePathname } from "@/i18n/navigation"
-import { BRAND, REPO_URL, TEMP_NAV_LINKS } from "@/lib/constants"
+import { REPO_URL, TEMP_NAV_LINKS } from "@/lib/constants"
 import { useGlobalStore } from "@/lib/store"
 import { cn } from "@/lib/utils"
 
@@ -29,13 +29,7 @@ export default function DocTopNav() {
 
             <div className="max-w-doc-max-w px-5 mx-auto flex flex-col h-nav-h justify-between">
                 <div className="flex justify-between lg:grid lg:grid-cols-[1fr_auto_1fr] items-center h-[60%] w-full">
-                    <Link
-                        href="/"
-                        className="text-xl flex items-center gap-2 justify-self-start font-serif"
-                    >
-                        <Logo size={20} />
-                        {BRAND}
-                    </Link>
+                    <BrandLink />
 
                     {!isMobile && (
                         <GlobalSearch
@@ -44,7 +38,7 @@ export default function DocTopNav() {
                                     type="button"
                                     aria-label={tCommon("search")}
                                     onClick={onClick}
-                                    className="w-85 bg-mat-5 border hover:border-mat-1/15 cursor-pointer h-11 text-sm rounded-xl text-mat-2 hover:text-mat-1 flex items-center justify-between px-4 space-x-2"
+                                    className="w-85 bg-mat-4/50 border border-mat-3/50 hover:border-mat-1/15 cursor-pointer h-11 text-sm rounded-xl text-mat-2 hover:text-mat-1 flex items-center justify-between px-4 space-x-2"
                                 >
                                     <div className="flex items-center gap-x-2">
                                         <Search size={16} />

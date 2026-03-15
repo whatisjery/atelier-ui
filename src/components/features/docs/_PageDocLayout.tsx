@@ -14,13 +14,13 @@ export default function PageDocLayout({
     bottomSlot,
 }: PageDocLayoutProps) {
     return (
-        <div className="flex w-full">
-            <main className="pt-offset-top w-full flex flex-col min-w-0">
-                <div className="max-w-doc-w w-full mx-auto lg:px-10 px-5 prose text-mat-1 prose-h2:mt-9">
+        <div className="flex w-full min-w-0">
+            <main className="pt-offset-top flex-1 flex flex-col min-w-0">
+                <div className="min-w-0 lg:px-15 px-5 prose max-w-none text-mat-1 prose-h2:mt-9">
                     {headerSlot && headerSlot}
 
                     {contentSlot && (
-                        <article className="[&>*:first-child]:mt-0 relative pb-30 mt-8">
+                        <article className="[&>*:first-child]:mt-0 w-full relative pb-30 mt-8">
                             {contentSlot}
                         </article>
                     )}

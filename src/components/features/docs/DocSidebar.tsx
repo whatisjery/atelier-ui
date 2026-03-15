@@ -4,12 +4,12 @@ import { BookOpen, ChevronRight, Layers2, X } from "lucide-react"
 import { AnimatePresence, motion, type Variants } from "motion/react"
 import { useTranslations } from "next-intl"
 import { useEffect } from "react"
-import Logo from "@/components/common/Logo"
+import BrandLink from "@/components/common/BrandLink"
 import ThemeToggle from "@/components/common/ThemeToggle"
 import Button from "@/components/ui/Button"
 import DashedBorder from "@/components/ui/DashedBorder"
 import { Link, usePathname } from "@/i18n/navigation"
-import { BRAND, VERSION } from "@/lib/constants"
+import { VERSION } from "@/lib/constants"
 import { expoOut } from "@/lib/easing"
 import { useGlobalStore } from "@/lib/store"
 import { cn, formatComponentNumber, formatPlaceholderTitle } from "@/lib/utils"
@@ -202,7 +202,7 @@ export default function DocSidebar({ menuSections, activeComponentCount }: DocSi
             {/* Desktop sidebar */}
             <SideBarCore
                 activeComponentCount={activeComponentCount}
-                className="lg:block hidden w-90 sticky space-y-7 pl-3 top-offset-top"
+                className="lg:block hidden min-w-75 sticky space-y-7 pl-3 top-offset-top"
                 menuSections={menuSections}
             />
 
@@ -235,10 +235,7 @@ export default function DocSidebar({ menuSections, activeComponentCount }: DocSi
                                 headerSlot={
                                     <div className="space-y-6 mb-5">
                                         <div className="flex items-center justify-between">
-                                            <div className="font-serif text-xl flex gap-x-2">
-                                                <Logo size={20} />
-                                                {BRAND}
-                                            </div>
+                                            <BrandLink />
                                             <ThemeToggle />
                                         </div>
 

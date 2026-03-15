@@ -11,6 +11,7 @@ export type CodeBlock = {
     title?: string
     installTabs?: CodeBlockTabs[]
     mode?: CodeBlockMode
+    className?: string
 }
 
 export type CodeFile = {

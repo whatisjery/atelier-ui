@@ -49,7 +49,7 @@ export default function LogoOrnement() {
     }
 
     return (
-        <figure className="z-5 flex flex-col items-center justify-center relative mb-3">
+        <figure className="z-5 flex flex-col items-center justify-center relative mb-5">
             <svg
                 aria-label="Logo Ornement"
                 width="180"

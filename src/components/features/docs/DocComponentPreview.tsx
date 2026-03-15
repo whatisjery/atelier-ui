@@ -23,7 +23,7 @@ export default function DocComponentPreview({ name, snippets }: DocComponentPrev
                 preview: (
                     <div className="flex flex-col max-h-150 overflow-scroll">
                         <div className="w-full relative min-h-120 border overflow-hidden">
-                            <GridPattern gridSize={20.4} />
+                            <GridPattern gridSize={20.5} />
                             {Demo && <Demo />}
                         </div>
                     </div>

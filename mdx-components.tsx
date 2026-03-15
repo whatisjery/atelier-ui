@@ -5,15 +5,15 @@ import { Link } from "@/i18n/navigation"
 const components: MDXComponents = {
     table: ({ children }) => {
         return (
-            <div className="w-full overflow-x-auto">
-                <table className="w-full min-w-[600px] overflow-hidden border-separate border-spacing-0 border rounded-xl bg-background">
+            <div className="w-full overflow-x-auto text-sm">
+                <table className="not-prose w-full min-w-[600px] overflow-hidden border-separate border-spacing-0 border rounded-xl bg-background">
                     {children}
                 </table>
             </div>
         )
     },
     th: ({ children }) => (
-        <th className="p-3 bg-mat-4/30 text-left font-semibold border-b border-r last:border-r-0">
+        <th className="p-3 bg-mat-4/50 text-left font-semibold border-b border-r last:border-r-0">
             {children}
         </th>
     ),

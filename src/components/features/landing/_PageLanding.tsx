@@ -104,30 +104,31 @@ export default function PageLanding({ activeComponents, showcaseComponents }: Pa
                         className="top-0 right-0 max-sm:hidden origin-top"
                     />
 
-                    <section className="pt-35 flex max-w-landing-inner-w mx-auto flex-col relative items-center justify-center">
+                    <section className="pt-38 flex max-w-landing-inner-w mx-auto flex-col relative items-center justify-center">
                         <Border
                             direction="vertical"
-                            className="top-0 left-0 max-sm:hidden h-[calc(100%+4.3rem)] origin-bottom"
+                            className="top-0 left-0 max-sm:hidden h-[calc(100%+4.8rem)] origin-bottom"
                         />
                         <Border
                             direction="vertical"
-                            className="top-0 right-0 max-sm:hidden h-[calc(100%+4.3rem)] origin-bottom"
+                            className="top-0 right-0 max-sm:hidden h-[calc(100%+4.8rem)] origin-bottom"
                         />
                         <LogoOrnement />
 
-                        <h1 className="intro-text z-5 relative font-semibold mb-5 xs:text-5xl lg:text-[4.1rem] text-4xl text-center tracking-[-0.03em] w-[90%]">
+                        <h1 className="intro-text z-5 relative font-semibold mb-5 xs:text-5xl lg:text-[4.5rem] text-4xl text-center tracking-[-0.04em] w-[90%]">
                             <SplitText tracking="-0.04em" wordClassName="opacity-0 word">
-                                React (web) animations for developers
+                                React (web) animations for developers.
                             </SplitText>
                         </h1>
 
                         <p className="intro-element mb-10 text-mat-2 max-w-full px-2 lg:px-0 lg:max-w-full text-center xs:text-xl text-base">
-                            A collection of beautifully handcrafted animations, effects, and
-                            interactive UI components for React, built with the tools you already
-                            use.
+                            A collection of
+                            <span className="text-mat-1"> beautifully handcrafted</span> animations,
+                            and interactive UI components for React, built with the{" "}
+                            <span className="text-mat-1">tools you already use</span>.
                         </p>
 
-                        <div className="intro-element flex items-center gap-x-1 mb-20 h-14 font-base">
+                        <div className="intro-element flex items-center gap-x-1 mb-18 h-14 font-base">
                             <LandingActionButton activeComponentsCount={activeComponents.length} />
                         </div>
                     </section>
@@ -136,7 +137,10 @@ export default function PageLanding({ activeComponents, showcaseComponents }: Pa
                         <div className="relative flex items-center justify-between gap-5 w-full bg-background">
                             <Border direction="horizontal" className="bottom-0 origin-right" />
                             <Border direction="horizontal" className="top-0 origin-left" />
-                            <ScrollableTechStack className="max-w-landing-inner-w mx-auto h-[4.3rem]" />
+                            <ScrollableTechStack
+                                fadeOnEachSide
+                                className="max-w-landing-inner-w mx-auto h-[4.8rem]"
+                            />
                         </div>
 
                         <div className="grid md:grid-cols-3 grid-cols-1 bg-background">

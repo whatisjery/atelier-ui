@@ -2,10 +2,10 @@ import { Menu, X } from "lucide-react"
 import { animate, motion, useMotionValue } from "motion/react"
 import Link from "next/link"
 import { type ComponentRef, useLayoutEffect, useState } from "react"
-import Logo from "@/components/common/Logo"
+import BrandLink from "@/components/common/BrandLink"
 import Button from "@/components/ui/Button"
 import { useRect } from "@/hooks/use-rect"
-import { BRAND, REPO_URL } from "@/lib/constants"
+import { REPO_URL } from "@/lib/constants"
 import { expoOut } from "@/lib/easing"
 import { formatComponentNumber } from "@/lib/utils"
 
@@ -83,7 +83,7 @@ export default function LandingNav({ activeComponentsCount }: LandingNavProps) {
         animate(
             ".bar",
             {
-                filter: ["blur(5px)"],
+                filter: ["blur(10px)"],
                 opacity: 0,
             },
             {
@@ -98,13 +98,10 @@ export default function LandingNav({ activeComponentsCount }: LandingNavProps) {
             initial={{ y: -20, opacity: 0, filter: "blur(10px)" }}
             animate={{ y: 0, opacity: 1, filter: "blur(0px)" }}
             transition={{ duration: 0.7, ease: expoOut, delay: 1.3 }}
-            className="w-[calc(100%-4rem)] xs:w-[calc(100%-10rem)] h-auto py-4 sm:!h-[4.6rem] overflow-hidden backdrop-blur-[10px] flex flex-col items-start bg-mat-5/90 dark:bg-mat-3/20 sm:w-[455px] fixed left-1/2 -translate-x-1/2 top-3 sm:top-4 z-6 rounded-2xl border"
+            className="w-[calc(100%-4rem)] xs:w-[calc(100%-10rem)] h-auto py-4 sm:!h-[4.6rem] overflow-hidden backdrop-blur-[10px] flex flex-col items-start bg-mat-4/70 dark:bg-mat-3/30 sm:w-[445px] fixed left-1/2 -translate-x-1/2 top-3 sm:top-4 z-6 rounded-2xl"
         >
             <div className="flex items-center justify-between pl-4.5 pr-3 space-x-7 h-full w-full">
-                <Link className="flex items-center gap-x-2" href="/">
-                    <Logo size={20} />
-                    <h1 className="font-serif text-xl">{BRAND}</h1>
-                </Link>
+                <BrandLink />
 
                 <div>
                     <nav
@@ -115,12 +112,12 @@ export default function LandingNav({ activeComponentsCount }: LandingNavProps) {
                         <motion.span
                             aria-hidden="true"
                             style={{ left, width }}
-                            className="max-sm:hidden bar blur-sm opacity-0 absolute h-full top-0 bg-mat-4 dark:bg-mat-3/20 rounded-xl pointer-events-none"
+                            className="max-sm:hidden bar blur-[10px] absolute h-full top-0 bg-mat-3/20 dark:bg-mat-3/40 opacity-0 rounded-xl pointer-events-none"
                         />
 
                         {LINKS.map(({ label, href, target }) => (
                             <Link
-                                className="relative group top-[0.3px] px-2.5 hover:"
+                                className="relative group top-[0.3px] px-2"
                                 target={target}
                                 key={label}
                                 href={href}

@@ -10,6 +10,7 @@ export async function DocCodeBlock({
     title = undefined,
     mode = "scroll",
     installTabs,
+    className,
 }: DocCodeBlockProps) {
     const { highlighter } = await getCodeThemeColors()
 
@@ -31,6 +32,7 @@ export async function DocCodeBlock({
             title={title}
             mode={mode}
             installTabs={installTabs}
+            className={className}
         />
     )
 }

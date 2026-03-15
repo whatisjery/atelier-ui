@@ -4,11 +4,11 @@ type IconLogoProps = Omit<React.SVGProps<SVGSVGElement>, "width" | "height"> & {
     size?: number
 }
 
-export default function Logo({ size = 36, ...props }: IconLogoProps) {
+export default function Logo({ size = 18, ...props }: IconLogoProps) {
     return (
         <svg
-            role="img"
             aria-label="Atelier UI Logo"
+            role="img"
             width={size}
             height={size}
             viewBox="0 0 48 48"
@@ -17,7 +17,7 @@ export default function Logo({ size = 36, ...props }: IconLogoProps) {
             {...props}
         >
             <path
-                d="M13.923 44.1515H0.5V30.7613L20.6504 3.84766H34.0688V20.2807H47.5V44.1515H27.3673V24.0115L13.923 44.1515Z"
+                d="M14.1874 45.4802H1.11719V31.2061L20.7379 2.51562H33.8037V20.0335H46.8819V45.4802H27.2784V24.0106L14.1874 45.4802Z"
                 fill="light-dark(black, white)"
             />
         </svg>

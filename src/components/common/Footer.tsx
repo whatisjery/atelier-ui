@@ -10,7 +10,7 @@ import { BRAND, FOOTER_LINKS, REPO_URL, SOCIAL_LINKS, VERSION } from "@/lib/cons
 import { cn } from "@/lib/utils"
 import Button from "../ui/Button"
 import GridPattern from "../ui/GridPattern"
-import Logo from "./Logo"
+import BrandLink from "./BrandLink"
 import ThemeToggle from "./ThemeToggle"
 
 export default function Footer() {
@@ -30,15 +30,17 @@ export default function Footer() {
                 style={{ y }}
                 className="p-5 w-full py-14 relative overflow-hidden border-b"
             >
-                <GridPattern className="dark:opacity-[0.7]" gridSize={18} />
+                <GridPattern className="dark:opacity-[0.7]" gridSize={17} />
 
                 <div className="bg-background flex flex-col gap-y-28 p-5 border rounded-sm max-w-[37rem] mx-auto">
                     <div className="flex items-start text-sm xs:flex-row flex-col gap-y-10">
-                        <div className="font-serif text-xl flex gap-x-2 items-center">
-                            <Logo size={20} aria-hidden />
-                            {BRAND}
-                            <span className="text-mat-2/70">({VERSION})</span>
-                        </div>
+                        <BrandLink
+                            slot={
+                                <span className="text-mat-2/70 font-serif text-xl">
+                                    ({VERSION})
+                                </span>
+                            }
+                        />
 
                         <div className="flex gap-16 xs:mr-[8%] xs:ml-auto capitalize">
                             <nav className="flex flex-col gap-2" aria-label={t("pages")}>

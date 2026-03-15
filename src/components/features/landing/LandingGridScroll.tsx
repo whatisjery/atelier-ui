@@ -16,6 +16,8 @@ import type { DocTree } from "@/types/docs"
 import LandingScratchReveal from "./LandingScratchReveal"
 
 const PER_COLUMN = 2
+const DEFAULT_DASH = 4
+const DEFAULT_GAP = 4
 
 type LandingGridScrollProps = {
     items: DocTree[]
@@ -51,8 +53,33 @@ export default function LandingGridScroll({ items }: LandingGridScrollProps) {
 
     return (
         <div ref={containerRef} className="w-full h-full p-5 text-2xl capitalize z-2 relative">
-            <div className="w-full h-full relative border flex overflow-hidden bg-background">
+            <div className="w-full h-full relative flex overflow-hidden bg-background">
                 <LandingScratchReveal containerRef={containerRef} />
+
+                <svg
+                    aria-label="Dashed Frame"
+                    className="absolute inset-0 w-full h-full pointer-events-none"
+                    viewBox="0 0 100 100"
+                    preserveAspectRatio="none"
+                >
+                    <rect
+                        width="100"
+                        height="100"
+                        fill="none"
+                        vectorEffect="non-scaling-stroke"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeDasharray={`${DEFAULT_DASH} ${DEFAULT_GAP}`}
+                        className="text-mat-3"
+                    >
+                        <animate
+                            attributeName="stroke-dashoffset"
+                            values="0;-24"
+                            dur="0.8s"
+                            repeatCount="indefinite"
+                        />
+                    </rect>
+                </svg>
 
                 <div className="aspect-[2/4] h-full w-full relative">
                     <motion.div ref={mesureRef} style={{ y }} className="h-full w-full">
@@ -60,17 +87,22 @@ export default function LandingGridScroll({ items }: LandingGridScrollProps) {
                             const Icon = getLucideIcon(item.icon)
 
                             return (
-                                <CardGrid
-                                    key={index}
-                                    badge={item.status}
-                                    focusable={false}
-                                    placeholder={item.placeholder}
-                                    className="border-b"
-                                    href={item.url}
-                                    title={formatPlaceholderTitle(item)}
-                                    iconSlot={<Icon strokeWidth={0.8} size={40} />}
-                                    tags={item.tags}
-                                />
+                                <div className="relative w-full" key={index}>
+                                    <CardGrid
+                                        key={index}
+                                        badge={item.status}
+                                        focusable={false}
+                                        placeholder={item.placeholder}
+                                        href={item.url}
+                                        title={formatPlaceholderTitle(item)}
+                                        iconSlot={<Icon strokeWidth={0.8} size={40} />}
+                                        tags={item.tags}
+                                    />
+                                    <DashedBorder
+                                        direction="horizontal"
+                                        className="absolute top-0 w-full text-mat-3"
+                                    />
+                                </div>
                             )
                         })}
                     </motion.div>
@@ -84,25 +116,33 @@ export default function LandingGridScroll({ items }: LandingGridScrollProps) {
                         {[...col2, ...col2].map((item, index) => {
                             const Icon = getLucideIcon(item.icon)
                             return (
-                                <CardGrid
-                                    key={index}
-                                    badge={item.status}
-                                    focusable={false}
-                                    placeholder={item.placeholder}
-                                    className="border-b"
-                                    href={item.url}
-                                    title={formatPlaceholderTitle(item)}
-                                    iconSlot={<Icon strokeWidth={0.8} size={40} />}
-                                    tags={item.tags}
-                                />
+                                <div className="relative w-full" key={index}>
+                                    <CardGrid
+                                        key={index}
+                                        badge={item.status}
+                                        focusable={false}
+                                        placeholder={item.placeholder}
+                                        href={item.url}
+                                        title={formatPlaceholderTitle(item)}
+                                        iconSlot={<Icon strokeWidth={0.8} size={40} />}
+                                        tags={item.tags}
+                                    />
+                                    <DashedBorder
+                                        direction="horizontal"
+                                        className="absolute top-0 w-full text-mat-3"
+                                    />
+                                </div>
                             )
                         })}
                     </motion.div>
                     <DashedBorder
                         direction="vertical"
-                        className="absolute top-0 right-0 bottom-0"
+                        className="absolute top-0 right-0 bottom-0 text-mat-3"
                     />
-                    <DashedBorder direction="vertical" className="absolute top-0 left-0 bottom-0" />
+                    <DashedBorder
+                        direction="vertical"
+                        className="absolute top-0 left-0 bottom-0 text-mat-3"
+                    />
                 </div>
 
                 <div className="aspect-[2/4] h-full w-full lg:block hidden">
@@ -110,17 +150,21 @@ export default function LandingGridScroll({ items }: LandingGridScrollProps) {
                         {[...col3, ...col3].map((item, index) => {
                             const Icon = getLucideIcon(item.icon)
                             return (
-                                <CardGrid
-                                    key={index}
-                                    badge={item.status}
-                                    focusable={false}
-                                    placeholder={item.placeholder}
-                                    className="border-b"
-                                    href={item.url}
-                                    title={formatPlaceholderTitle(item)}
-                                    iconSlot={<Icon strokeWidth={0.8} size={40} />}
-                                    tags={item.tags}
-                                />
+                                <div className="relative w-full" key={index}>
+                                    <CardGrid
+                                        badge={item.status}
+                                        focusable={false}
+                                        placeholder={item.placeholder}
+                                        href={item.url}
+                                        title={formatPlaceholderTitle(item)}
+                                        iconSlot={<Icon strokeWidth={0.8} size={40} />}
+                                        tags={item.tags}
+                                    />
+                                    <DashedBorder
+                                        direction="horizontal"
+                                        className="absolute top-0 w-full text-mat-3"
+                                    />
+                                </div>
                             )
                         })}
                     </motion.div>
