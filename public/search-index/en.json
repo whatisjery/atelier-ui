@@ -41,11 +41,17 @@
     ]
   },
   {
-    "title": "Upcoming two",
-    "slug": "/docs/components/cursor/upcoming-2",
+    "title": "Pixel Trail",
+    "slug": "/docs/components/cursor/pixel-trail",
     "section": "components/cursor",
-    "content": "",
-    "headings": []
+    "content": "Installation Usage API Name Type Default Description Solid color trail or sample colors from images. Trail color. Fallback when sampling misses. CSS selector for images to sample. Brightness boost on sampled colors ( – ). Size of each pixel square in px. Brush radius in grid cells. for single pixel. Max pixel lifetime in seconds. Fade-out duration in seconds. to disable. Show a grid overlay. Grid line color. Grid line thickness in px. — Root element classes for positioning and sizing. Features No dependencies : pure Canvas 2D, no WebGL Image color sampling : pick colors from any image via CSS selector Touch support : works on mobile with multi-touch DPR-aware : sharp on retina displays Credits Pixel trail effect inspired by Jonas Reymondin's portfolio, reimplemented only using a 2D canvas.",
+    "headings": [
+      "Installation",
+      "Usage",
+      "API",
+      "Features",
+      "Credits"
+    ]
   },
   {
     "title": "Why Atelier?",

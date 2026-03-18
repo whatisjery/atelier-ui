@@ -1,0 +1,71 @@
+---
+title: "Pixel Trail"
+description: "A 2D canvas-based pixelated cursor trail that can sample colors from images."
+tags: ["Canvas Effect", "Cursor Trail", "Image Sampling"]
+---
+
+<DocComponentPreview name="pixel-trail-demo" />
+
+## Installation
+
+<DocInstallGuide name="pixel-trail" />
+
+---
+
+## Usage
+
+```tsx title="Imports"
+import { PixelTrail } from "@/components/PixelTrail"
+```
+
+```tsx title="Solid color"
+<PixelTrail
+    className="fixed inset-0 z-50 pointer-events-none"
+    color="#ff3366"
+/>
+```
+
+```tsx title="Image sampling"
+<div>
+    <img src="/hero.png" alt="Hero" className="w-1/2 h-screen" />
+    <PixelTrail
+        className="fixed inset-0 z-50 pointer-events-none"
+        mode="sample"
+        imageSelector=".hero-img"
+        color="#222222"
+    />
+</div>
+```
+
+---
+
+## API
+
+| Name             | Type                  | Default                      | Description                                        |
+| ---------------- | --------------------- | ---------------------------- | -------------------------------------------------- |
+| `mode`           | `"color" \| "sample"` | `"color"`                    | Solid color trail or sample colors from images.    |
+| `color`          | `string`              | `"#000000"`                  | Trail color. Fallback when sampling misses.        |
+| `imageSelector`  | `string`              | `"img"`                      | CSS selector for images to sample.                 |
+| `lighten`        | `number`              | `20`                         | Brightness boost on sampled colors (`0`–`255`).    |
+| `pixelSize`      | `number`              | `20`                         | Size of each pixel square in px.                   |
+| `trailRadius`    | `number`              | `2`                          | Brush radius in grid cells. `0` for single pixel.  |
+| `lifetime`       | `number`              | `1`                          | Max pixel lifetime in seconds.                     |
+| `fade`           | `number`              | `0.5`                        | Fade-out duration in seconds. `0` to disable.      |
+| `showGrid`       | `boolean`             | `false`                      | Show a grid overlay.                               |
+| `gridColor`      | `string`              | `"rgba(255, 255, 255, 0.1)"` | Grid line color.                                   |
+| `gridThickness`  | `number`              | `1`                          | Grid line thickness in px.                         |
+| `className`      | `string`              | —                            | Root element classes for positioning and sizing.    |
+
+---
+
+## Features
+
+- **No dependencies**: pure Canvas 2D, no WebGL.
+- **Image color sampling**: sample pixel colors from images on the page, targeted by selector.
+- **Touch support**: works on mobile with multi-touch.
+- **DPR-aware**: sharp on retina displays.
+
+
+## Credits
+
+- Pixel trail effect inspired by [Jonas Reymondin's](https://jonasreymondin.com/) portfolio, reimplemented only using a 2D canvas.

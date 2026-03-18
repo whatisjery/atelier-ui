@@ -2,5 +2,9 @@
   {
     "name": "fluid-cursor",
     "description": "WebGL fluid distortion cursor effect"
+  },
+  {
+    "name": "pixel-trail",
+    "description": "Pixel trail effect"
   }
 ]

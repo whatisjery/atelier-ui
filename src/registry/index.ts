@@ -17,4 +17,10 @@ export const components: TRegistryComponent[] = [
             "@react-three/postprocessing",
         ],
     },
+    {
+        name: "pixel-trail",
+        files: ["pixel-trail.tsx"],
+        description: "Pixel trail effect",
+        dependencies: [],
+    },
 ]
