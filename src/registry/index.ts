@@ -7,8 +7,8 @@ type TRegistryComponent = {
 
 export const components: TRegistryComponent[] = [
     {
-        name: "fluid-cursor",
-        files: ["fluid-cursor.tsx"],
+        name: "fluid-distortion",
+        files: ["fluid-distortion.tsx"],
         description: "WebGL fluid distortion cursor effect",
         dependencies: [
             "three",

@@ -5,7 +5,7 @@ import { Canvas, useFrame } from "@react-three/fiber"
 import { EffectComposer } from "@react-three/postprocessing"
 import { Suspense, useRef } from "react"
 import type { Mesh } from "three"
-import { Fluid } from "@/registry/base/fluid-cursor/fluid-cursor"
+import { FluidDistortion } from "@/registry/base/fluid-distortion/fluid-distortion"
 
 function RotatingCube() {
     const ref = useRef<Mesh>(null)
@@ -37,7 +37,7 @@ export default function FluidCursorDemo() {
                     <Environment preset="studio" />
                     <RotatingCube />
                     <EffectComposer>
-                        <Fluid />
+                        <FluidDistortion />
                     </EffectComposer>
                 </Canvas>
             </div>

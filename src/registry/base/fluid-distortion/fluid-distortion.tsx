@@ -654,7 +654,7 @@ function usePointer({ force }: { force: number }) {
     return splatStack
 }
 
-export const Fluid = ({
+export const FluidDistortion = ({
     blend = DEFAULT_CONFIG.blend,
     force = DEFAULT_CONFIG.force,
     radius = DEFAULT_CONFIG.radius,

@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from "react"
 
-interface PixelTrailProps {
+type PixelTrailProps = {
     mode?: "color" | "sample"
     color?: string
     imageSelector?: string
@@ -19,7 +19,7 @@ interface PixelTrailProps {
 
 type ColorSampler = (screenX: number, screenY: number) => string | null
 
-interface Pixel {
+type Pixel = {
     posX: number
     posY: number
     lifetime: number

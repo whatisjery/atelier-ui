@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils"
 
-interface SplitTextProps {
+type SplitTextProps = {
     children: string
     charClassName?: string
     wordClassName?: string

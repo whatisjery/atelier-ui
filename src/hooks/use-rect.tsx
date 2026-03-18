@@ -1,6 +1,6 @@
 import { useLayoutEffect, useRef, useState } from "react"
 
-interface Rect {
+type Rect = {
     width: number
     height: number
 }

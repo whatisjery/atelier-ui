@@ -20,21 +20,20 @@ import { PixelTrail } from "@/components/PixelTrail"
 
 ```tsx title="Solid color"
 <PixelTrail
-    className="fixed inset-0 z-50 pointer-events-none"
-    color="#ff3366"
+    className="fixed w-full h-full inset-0 pointer-events-none"
+    color="#000000"
 />
 ```
 
 ```tsx title="Image sampling"
-<div>
-    <img src="/hero.png" alt="Hero" className="w-1/2 h-screen" />
-    <PixelTrail
-        className="fixed inset-0 z-50 pointer-events-none"
-        mode="sample"
-        imageSelector=".hero-img"
-        color="#222222"
-    />
-</div>
+<img className="hero-img" src="/hero.png" alt="Hero" />
+
+<PixelTrail
+    className="fixed w-full h-full inset-0 pointer-events-none"
+    mode="sample"
+    imageSelector=".hero-img"
+    color="#000000" /* fallback color */
+/>
 ```
 
 ---

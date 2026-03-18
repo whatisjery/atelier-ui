@@ -44,12 +44,12 @@ describe("add command to project", () => {
 
     it("installs a component to a project", async () => {
         await execAsync(
-            `npx tsx src/index.ts add fluid-cursor --path ${COMPONENTS_PATH} --no-install`,
+            `npx tsx src/index.ts add fluid-distortion --path ${COMPONENTS_PATH} --no-install`,
             {
                 cwd: path.resolve(__dirname, ".."),
                 env: { ...process.env, ATELIER_REGISTRY: `http://localhost:${port}` },
             },
         )
-        expect(fs.existsSync(`${COMPONENTS_PATH}/fluid-cursor/fluid-cursor.tsx`)).toBe(true)
+        expect(fs.existsSync(`${COMPONENTS_PATH}/fluid-distortion/fluid-distortion.tsx`)).toBe(true)
     })
 })
