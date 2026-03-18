@@ -23,6 +23,12 @@
 # timestamps
 src/lib/timestamps.json
 
+# registry
+public/registry/*
+
+# search index
+public/search-index/*
+
 # misc
 .DS_Store
 *.pem
