@@ -85,7 +85,7 @@ function createImageSampler(img: HTMLImageElement, lightenSample: number): Color
     }
 }
 
-export default function PixelTrail({
+export function PixelTrail({
     mode = "color",
     color = "#000000",
     imageSelector = "img",

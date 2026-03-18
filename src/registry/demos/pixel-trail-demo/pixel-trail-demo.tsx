@@ -2,7 +2,7 @@
 
 import Image from "next/image"
 import { useTheme } from "next-themes"
-import PixelTrail from "@/registry/base/pixel-trail/pixel-trail"
+import { PixelTrail } from "@/registry/base/pixel-trail/pixel-trail"
 
 export default function PixelTrailDemo() {
     const { theme } = useTheme()
