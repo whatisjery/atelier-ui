@@ -9,7 +9,7 @@
         "lint:fix": "biome lint --fix",
         "test:all": "vitest run",
         "prebuild": "tsx src/scripts/build-registry.ts && tsx src/scripts/search-index.ts && tsx src/scripts/generate-timestamps.ts",
-        "dev": "tsx src/scripts/build-registry.ts && tsx src/scripts/search-index.ts && next dev --webpack"
+        "dev": "tsx src/scripts/build-registry.ts && tsx src/scripts/search-index.ts && tsx src/scripts/generate-timestamps.ts && next dev --webpack"
     },
     "dependencies": {
         "@mdx-js/loader": "^3.1.1",
