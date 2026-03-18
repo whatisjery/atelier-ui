@@ -86,7 +86,7 @@ export default function PageLanding({ activeComponents, showcaseComponents }: Pa
     return (
         <>
             {!isSequenceComplete && (
-                <div className="cover fixed w-full h-full bg-background inset-0 z-4"></div>
+                <div className="cover fixed w-full h-full bg-background inset-0 z-4 pointer-events-none"></div>
             )}
 
             <main className="w-full max-w-landing-max-w mx-auto px-2 xs:px-5 relative">
