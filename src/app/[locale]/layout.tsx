@@ -42,7 +42,14 @@ export const metadata: Metadata = {
     openGraph: {
         siteName: "Atelier UI",
         type: "website",
-        locale: "en",
+        locale: "en_US",
+        images: "/images/og-image.jpg",
+    },
+    alternates: {
+        canonical: "/",
+        languages: {
+            en: "/en",
+        },
     },
     twitter: {
         card: "summary_large_image",
@@ -65,7 +72,7 @@ export default async function RootLayout({ children, params }: RootLayoutProps) 
 
     return (
         <html
-            lang="en"
+            lang={locale}
             suppressHydrationWarning
             style={
                 {
