@@ -5,7 +5,8 @@ import { useTheme } from "next-themes"
 import { PixelTrail } from "@/registry/base/pixel-trail/pixel-trail"
 
 export default function PixelTrailDemo() {
-    const { theme } = useTheme()
+    const { resolvedTheme } = useTheme()
+
     return (
         <div className="bg-background w-full h-full absolute inset-0 not-prose flex items-center justify-center">
             <div className="w-60 h-60 relative">
@@ -22,7 +23,7 @@ export default function PixelTrailDemo() {
                 imageSelector="img"
                 lightenSample={20}
                 className="pointer-events-none top-0"
-                color={theme === "dark" ? "#FFFFFF" : "#000000"}
+                color={resolvedTheme === "dark" ? "#FFFFFF" : "#000000"}
                 pixelSize={20}
                 trailRadius={2}
                 showGrid={true}
