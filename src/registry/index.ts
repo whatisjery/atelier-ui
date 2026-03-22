@@ -23,4 +23,10 @@ export const components: TRegistryComponent[] = [
         description: "Pixel trail effect",
         dependencies: [],
     },
+    {
+        name: "magnetic-dot-grid",
+        files: ["magnetic-dot-grid.tsx"],
+        description: "Magnetic dot grid effect",
+        dependencies: [],
+    },
 ]

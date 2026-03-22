@@ -1,0 +1,74 @@
+---
+title: "Magnetic Dot Grid"
+description: "A 2D canvas-based interactive dot grid with magnetic cursor effect"
+tags: ["Canvas Effect", "Cursor Interaction", "Dot Grid"]
+---
+
+<DocComponentPreview name="magnetic-dot-grid-demo" />
+
+## Installation
+
+<DocInstallGuide name="magnetic-dot-grid" />
+
+---
+
+## Usage
+```tsx title="Imports"
+import { MagneticDotGrid } from "@/components/MagneticDotGrid"
+```
+```tsx title="Default"
+<MagneticDotGrid className="absolute inset-0 touch-none w-full h-full" />
+```
+```tsx title="Custom colors"
+<MagneticDotGrid
+    className="absolute inset-0 touch-none w-full h-full"
+    baseColor="#333333"
+    centerColors={["#FF0000", "#00FF00", "#0000FF"]}
+    cycleSpeed={0.5}
+    opacityRange={[0.2, 1]}
+/>
+```
+```tsx title="Tuned physics"
+<MagneticDotGrid
+    className="absolute inset-0 touch-none w-full h-full"
+    strength={80}
+    interactionRadius={400}
+    snapSpeed={16}
+    returnSpeed={2}
+/>
+```
+
+---
+
+## API
+
+| Name               | Type               | Default                                        | Description                                        |
+| ------------------ | ------------------ | ---------------------------------------------- | -------------------------------------------------- |
+| `dotRadius`        | `number`           | `1`                                            | Radius of each dot in px.                          |
+| `spacing`          | `number`           | `20`                                           | Distance between dots in px.                       |
+| `strength`         | `number`           | `20`                                           | Strength of the magnetic force in px.              |
+| `interactionRadius`| `number`           | `300`                                          | Cursor influence range in px.                      |
+| `snapSpeed`        | `number`           | `8`                                            | How fast dots react to the cursor.                 |
+| `returnSpeed`      | `number`           | `3`                                            | How slowly dots return to their base position.     |
+| `floatAmplitude`   | `number`           | `1.8`                                          | How far dots floats from the cursor.      |
+| `floatSpeed`       | `number`           | `2`                                            | Speed of the floating fx.animation.              |
+| `opacityRange`     | `[number, number]` | `[1, 1]`                                       | Dot opacity `[min, max]` from cursor proximity. |
+| `baseColor`        | `string`           | `"#000000"`                                    | Default dot color.                                 |
+| `centerColors`     | `string[]`         | `["#000000"]`                                  | Colors near the cursor. Cycles through the array.  |
+| `cycleSpeed`       | `number`           | `1.5`                                          | Color cycle speed.       |
+| `className`        | `string`           | `"absolute inset-0 touch-none w-full h-full"`  | Canvas element classes for positioning and sizing. |
+
+---
+
+## Features
+
+- **No dependencies**: pure Canvas 2D, no WebGL.
+- **Frame-rate independent**: consistent feel across all type of displays.
+- **Touch support**: works on mobile.
+- **DPR-aware**: sharp on retina displays.
+
+---
+
+## Credits
+
+Re-creation of the Google Stitch canvas effect as seen on [stitch.withgoogle.com](https://stitch.withgoogle.com/) as of march 22, 2026. Enable the dark mode on this website to see the similarity.
