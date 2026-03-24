@@ -64,6 +64,7 @@ export default function LandingNav({ activeComponentsCount }: Props) {
                 <nav className="max-md:hidden flex items-center space-x-5 font-regular">
                     {LINKS.map(({ label, href, target }) => (
                         <Link
+                            target={target}
                             className="hover:text-mat-2 flex items-center"
                             key={label}
                             href={href}

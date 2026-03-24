@@ -65,7 +65,7 @@
 }
 
 .dark {
-    --mat-1: oklch(0.93 0.02 286.03 / 1);
+    --mat-1: oklch(0.9 0.01 286.1);
     --mat-2: oklch(0.7 0.03 256.14 / 1);
     --mat-3: oklch(0.27 0.02 281.08);
     --mat-4: oklch(0.2 0.01 285.26 / 1);
@@ -76,7 +76,7 @@
     --accent-neutral: oklch(0.75 0 0 / 1);
 
     --highlight: oklch(0.91 0.18 99.34);
-    --border: oklch(0.2 0.01 271.1);
+    --border: oklch(0.19 0.01 276.47);
     --background: oklch(0.14 0.01 285.45);
     --transparent: oklch(0 0 0 / 0);
     --backdrop: oklch(0.17 0.01 285.25 / 0.84);

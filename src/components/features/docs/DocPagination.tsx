@@ -2,7 +2,6 @@
 
 import { ArrowLeft, ArrowRight } from "lucide-react"
 import { Link } from "@/i18n/navigation"
-import { cn } from "@/lib/utils"
 import type { DocNavigation } from "@/types/docs"
 
 type DocPaginationProps = { navigation: DocNavigation }
@@ -22,13 +21,7 @@ export default function DocPagination({ navigation }: DocPaginationProps) {
                 return (
                     <Link
                         key={key}
-                        className={cn(
-                            "text-sm flex items-center gap-2 font-medium hover:text-mat-2",
-                            {
-                                "opacity-[0.3] pointer-events-none": item.disabled,
-                            },
-                        )}
-                        onClick={(e) => item.disabled && e.preventDefault()}
+                        className="text-sm flex items-center gap-2 font-medium hover:text-mat-2"
                         href={item.url}
                     >
                         {position === "left" && <Icon className="size-4" />}
