@@ -118,7 +118,7 @@ const sequence: AnimationSequence = [
 ]
 
 const ORIGINS: ["left", "right"] = ["left", "right"]
-const STRIPES = 4
+const STRIPES = 3
 
 export default function LandingLoopIntegration() {
     useEffect(() => {
@@ -137,11 +137,11 @@ export default function LandingLoopIntegration() {
         >
             <div
                 className={cn(
-                    "absolute flex z-3 flex-col top-1/2 -translate-y-1/2 gap-1.5 ml-[7%] w-[35%] h-[40%] [&>div]:bg-background",
+                    "absolute flex z-3 flex-col top-1/2 -translate-y-1/2 gap-2 ml-[7%] w-[35%] h-[40%] [&>div]:bg-mat-4",
                 )}
             >
                 {Array.from({ length: STRIPES }).map((_, index) => (
-                    <div key={index} className="stripe w-full h-[38%] flex rounded-lg" />
+                    <div key={index} className="stripe rounded-md w-full h-[38%] flex" />
                 ))}
             </div>
 
@@ -149,7 +149,7 @@ export default function LandingLoopIntegration() {
                 <div
                     key={origin}
                     className={cn(
-                        "relative bg-mat-4 rounded-lg h-full w-[50%] flex flex-col items-center justify-center",
+                        "relative bg-mat-5 rounded-lg h-full w-[50%] flex flex-col items-center justify-center",
                         {
                             "left-block z-2": origin === "left",
                             "right-block z-1": origin === "right",

@@ -37,9 +37,9 @@ function Cell({ progress }: { progress: MotionValue<number> }) {
     }, [progress])
 
     return (
-        <motion.div className="rounded-lg h-full w-full relative bg-mat-5 overflow-hidden">
+        <motion.div className="rounded-lg h-full w-full relative border overflow-hidden">
             <motion.div
-                className="w-full absolute left-0 h-full flex justify-center bg-mat-4"
+                className="w-full absolute left-0 h-full flex justify-center bg-mat-5"
                 style={{ top }}
             >
                 <motion.div className="absolute h-5 w-8 rounded-lg border border-mat-1/20 flex items-center justify-center font-mono text-xs bg-background z-1 top-2">

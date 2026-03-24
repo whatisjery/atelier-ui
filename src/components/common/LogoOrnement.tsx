@@ -38,7 +38,7 @@ export default function LogoOrnement() {
         grid: 2,
         frame: 3,
         coloredGrid: 4,
-        shape: 10,
+        shape: 11,
     }
 
     const color = {
@@ -49,76 +49,14 @@ export default function LogoOrnement() {
     }
 
     return (
-        <figure className="z-5 flex flex-col items-center justify-center relative mb-5">
+        <figure className="max-md:hidden z-5 flex flex-col items-center justify-center relative mb-6">
             <svg
                 aria-label="Logo Ornement"
-                width="180"
+                width="150"
                 viewBox="0 0 563 479"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
             >
-                <motion.g id="grid" {...opacityAnimation}>
-                    <line
-                        x1="223.93"
-                        y1="10.9453"
-                        x2="223.93"
-                        y2="465.999"
-                        stroke={color.grid}
-                        strokeWidth={size.grid}
-                        strokeDasharray="4 4"
-                    />
-                    <line
-                        x1="340.793"
-                        y1="213.617"
-                        x2="340.793"
-                        y2="465.996"
-                        stroke={color.grid}
-                        strokeWidth={size.grid}
-                        strokeDasharray="4 4"
-                    />
-                    <path
-                        d="M420.625 9.89844L420.625 464.952"
-                        stroke={color.grid}
-                        strokeWidth={size.grid}
-                    />
-                    <line
-                        x1="142.438"
-                        y1="10.9453"
-                        x2="142.438"
-                        y2="465.999"
-                        stroke={color.grid}
-                        strokeWidth={size.grid}
-                    />
-                    <line
-                        x1="340.793"
-                        y1="11"
-                        x2="340.793"
-                        y2="94.8555"
-                        stroke={color.grid}
-                        strokeWidth={size.grid}
-                        strokeDasharray="4 4"
-                    />
-                    <path d="M524 365.164L34 365.164" stroke={color.grid} strokeWidth={size.grid} />
-                    <path
-                        d="M525.488 99.2734L36.2944 99.2734"
-                        stroke={color.grid}
-                        strokeWidth={size.grid}
-                    />
-                    <path
-                        d="M524.426 232.039L34.7293 232.039"
-                        stroke={color.grid}
-                        strokeWidth={size.grid}
-                        strokeDasharray="4 4"
-                    />
-                    <circle
-                        cx="281.074"
-                        cy="232.434"
-                        r="190.074"
-                        stroke={color.grid}
-                        strokeWidth={size.grid}
-                    />
-                </motion.g>
-
                 <g id="shape">
                     <motion.path
                         d="M227.367 352.8H151.832V270.939L265.223 106.402H340.732V206.865H416.312V352.8H303.021V229.674L227.367 352.8Z"

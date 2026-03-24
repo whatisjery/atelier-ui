@@ -42,7 +42,7 @@ export default function DocPageDropdown({ rawMarkdown }: DocPageDropdownProps) {
             <Button
                 onClick={actionsMap.copy}
                 variant="outline"
-                className="rounded-l-lg h-8 px-2 text-[0.8rem] rounded-r-none border-r-0"
+                className="rounded-l-lg h-10 px-3 text-[0.8rem] rounded-r-none border-r-0"
             >
                 {copied ? <Check className="size-4" /> : <Copy className="size-3" />}
 
@@ -52,7 +52,7 @@ export default function DocPageDropdown({ rawMarkdown }: DocPageDropdownProps) {
             <DropdownMenu.Root modal={false}>
                 <DropdownMenu.Trigger asChild>
                     <Button
-                        className="group rounded-r-lg h-8 px-2 rounded-l-none"
+                        className="group rounded-r-lg h-10 px-3 rounded-l-none"
                         variant="outline"
                     >
                         <ChevronDown className="size-4 transition-transform duration-100 ease-in-out group-data-[state=open]:rotate-180" />

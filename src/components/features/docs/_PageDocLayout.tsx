@@ -16,7 +16,7 @@ export default function PageDocLayout({
     return (
         <div className="flex w-full min-w-0">
             <main className="pt-offset-top flex-1 flex flex-col min-w-0">
-                <div className="min-w-0 lg:px-15 px-5 prose max-w-none text-mat-1 prose-h2:mt-9">
+                <div className="min-w-0 lg:px-15 px-3 prose max-w-none text-mat-1 prose-h2:mt-9">
                     {headerSlot && headerSlot}
 
                     {contentSlot && (

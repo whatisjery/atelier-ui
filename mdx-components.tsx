@@ -13,15 +13,13 @@ const components: MDXComponents = {
         )
     },
     th: ({ children }) => (
-        <th className="p-3 bg-mat-4/50 text-left font-semibold border-b border-r last:border-r-0">
+        <th className="p-3 bg-mat-4/50 text-left font-semibold border-b last:border-r-0">
             {children}
         </th>
     ),
 
     td: ({ children }) => (
-        <td className="p-3 border-b border-r last:border-r-0 [tr:last-child_&]:border-b-0">
-            {children}
-        </td>
+        <td className="p-3 border-b last:border-r-0 [tr:last-child_&]:border-b-0">{children}</td>
     ),
 
     em: ({ children }) => <em className="font-light text-mat-2">{children}</em>,
@@ -91,7 +89,7 @@ const components: MDXComponents = {
 
     code: ({ children }) => {
         return (
-            <code className="text-sm not-prose bg-mat-4 border border-mat-3/70 cursor-default rounded-md px-1.25 py-0.5">
+            <code className="text-sm not-prose bg-mat-5/80 border cursor-default rounded-md px-1.25 py-0.5">
                 {children}
             </code>
         )

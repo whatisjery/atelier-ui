@@ -3,19 +3,24 @@
 import { ArrowUpRight } from "lucide-react"
 import { motion, useScroll, useTransform } from "motion/react"
 import { useTranslations } from "next-intl"
-import { useRef } from "react"
+import { useTheme } from "next-themes"
+import { useEffect, useRef, useState } from "react"
 import { SiGithub } from "react-icons/si"
 import { Link } from "@/i18n/navigation"
-import { BRAND, FOOTER_LINKS, REPO_URL, SOCIAL_LINKS, VERSION } from "@/lib/constants"
+import { BRAND, FOOTER_LINKS, REPO_URL, SOCIAL_LINKS } from "@/lib/constants"
 import { cn } from "@/lib/utils"
+import { PixelTrail } from "@/registry/base/pixel-trail/pixel-trail"
 import Button from "../ui/Button"
-import GridPattern from "../ui/GridPattern"
 import BrandLink from "./BrandLink"
 import ThemeToggle from "./ThemeToggle"
 
 export default function Footer() {
     const t = useTranslations("footer")
     const wrapperRef = useRef<HTMLElement>(null)
+    const { resolvedTheme } = useTheme()
+    const [mounted, setMounted] = useState(false)
+
+    useEffect(() => void setMounted(true), [])
 
     const { scrollYProgress } = useScroll({
         target: wrapperRef,
@@ -28,19 +33,21 @@ export default function Footer() {
         <footer ref={wrapperRef} className="z-2 relative overflow-hidden bg-background">
             <motion.div
                 style={{ y }}
-                className="p-5 w-full py-14 relative overflow-hidden border-b"
+                className="xs:px-5 px-0 py-16 w-full relative overflow-hidden"
             >
-                <GridPattern className="dark:opacity-[0.7]" gridSize={17} />
+                {mounted && (
+                    <PixelTrail
+                        gridColor={resolvedTheme === "dark" ? "#101010" : "#F4F4F4"}
+                        color={resolvedTheme === "dark" ? "#19191B" : "#ECECEC"}
+                        showGrid
+                        fade={0}
+                        className="absolute inset-0 w-full h-full z-1 top-[-0.12rem] border-t border-b"
+                    />
+                )}
 
-                <div className="bg-background flex flex-col gap-y-28 p-5 border rounded-sm max-w-[37rem] mx-auto">
+                <div className="bg-background/70 border border-border/50 backdrop-blur-[1.5px] z-2 relative flex flex-col gap-y-28 p-5 rounded-sm max-w-[37rem] mx-auto">
                     <div className="flex items-start text-sm xs:flex-row flex-col gap-y-10">
-                        <BrandLink
-                            slot={
-                                <span className="text-mat-2/70 font-serif text-xl">
-                                    ({VERSION})
-                                </span>
-                            }
-                        />
+                        <BrandLink />
 
                         <div className="flex gap-16 xs:mr-[8%] xs:ml-auto capitalize">
                             <nav className="flex flex-col gap-2" aria-label={t("pages")}>

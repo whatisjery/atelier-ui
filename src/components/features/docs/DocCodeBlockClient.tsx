@@ -52,7 +52,7 @@ export function DocCodeBlockClient({
     return (
         <figure
             className={cn(
-                "text-[0.85rem] font-regular not-prose bg-mat-5 px-1 pb-1 not-last:mb-4 border relative rounded-2xl overflow-hidden flex flex-col",
+                "text-[0.85rem] font-regular not-prose bg-mat-5/50 px-1 pb-1 not-last:mb-4 border relative rounded-2xl overflow-hidden flex flex-col",
                 className,
             )}
         >

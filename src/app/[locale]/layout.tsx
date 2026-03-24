@@ -37,7 +37,7 @@ export const metadata: Metadata = {
         default: "Atelier UI — Handcrafted React Animations & UI Components",
     },
     description:
-        "A collection of beautifully handcrafted animations, effects, and interactive UI components for React, built with the tools you already use.",
+        "A growing collection of beautifully handcrafted animations, effects, and interactive UI components for React, built with the tools you already use.",
     metadataBase: new URL("https://atelier-ui.com"),
     openGraph: {
         siteName: "Atelier UI",

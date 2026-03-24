@@ -38,7 +38,7 @@ export default function DocTopNav() {
                                     type="button"
                                     aria-label={tCommon("search")}
                                     onClick={onClick}
-                                    className="w-85 bg-mat-4/50 border border-mat-3/50 hover:border-mat-1/15 cursor-pointer h-11 text-sm rounded-xl text-mat-2 hover:text-mat-1 flex items-center justify-between px-4 space-x-2"
+                                    className="w-85 bg-mat-5/70 border border-mat-3/50 hover:border-mat-1/15 cursor-pointer h-11 text-sm rounded-xl text-mat-2 hover:text-mat-1 flex items-center justify-between px-4 space-x-2"
                                 >
                                     <div className="flex items-center gap-x-2">
                                         <Search size={16} />

@@ -93,7 +93,7 @@ export default function GlobalSearch({ triggerSlot }: GlobalSearchProps) {
                 <Dialog.Portal>
                     <Dialog.Overlay className="fixed inset-0 z-20 bg-backdrop backdrop-blur-xs data-[state=open]:a-fade-in data-[state=closed]:a-fade-out" />
 
-                    <Dialog.Content className="fixed left-1/2 max-xs:top-5 top-20 z-21 w-full -translate-x-1/2 p-3 rounded-2xl max-w-[600px] max-xs:max-w-[90%] bg-background data-[state=open]:a-fade-in data-[state=closed]:a-fade-out">
+                    <Dialog.Content className="fixed left-1/2 max-lg:top-4 top-20 z-21 w-full -translate-x-1/2 p-3 rounded-2xl max-w-[600px] max-lg:max-w-[96%] bg-background data-[state=open]:a-fade-in data-[state=closed]:a-fade-out">
                         <Dialog.Title className="sr-only">{t("search")}</Dialog.Title>
 
                         <search
@@ -143,7 +143,7 @@ export default function GlobalSearch({ triggerSlot }: GlobalSearchProps) {
                                     aria-selected={index === activeIndex}
                                     onClick={() => handleSelect(result.slug)}
                                 >
-                                    <Hash className="text-highlight pl-2 pr-4 size-12" />
+                                    <Hash className="max-sm:hidden text-highlight pl-2 pr-4 size-12" />
 
                                     <div className="text-left">
                                         <small className="text-xs text-mat-2/70">

@@ -21,15 +21,15 @@ export default function DocComponentPreview({ name, snippets }: DocComponentPrev
             defaultValue="preview"
             contents={{
                 preview: (
-                    <div className="flex flex-col max-h-150 overflow-scroll">
-                        <div className="w-full relative min-h-120 border overflow-hidden">
-                            <GridPattern gridSize={20.5} />
+                    <div className="flex flex-col overflow-scroll">
+                        <div className="w-full relative min-h-133 border overflow-hidden">
+                            <GridPattern hoverEffect={false} gridSize={28} />
                             {Demo && <Demo />}
                         </div>
                     </div>
                 ),
                 code: (
-                    <div className="flex flex-col max-h-150 overflow-scroll rounded-sm">
+                    <div className="flex flex-col overflow-scroll rounded-sm">
                         <DocCodeBlock
                             title={snippets.path}
                             code={snippets.content}

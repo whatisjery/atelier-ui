@@ -42,7 +42,7 @@ export default function LandingLoopFlexibility() {
             {cells.map(({ anchor, w, h }) => (
                 <div key={anchor} className="relative w-full h-full">
                     <motion.div
-                        className={`bg-mat-4 absolute rounded-lg ${anchor}`}
+                        className={`bg-mat-5 absolute rounded-lg ${anchor}`}
                         style={anchor === "bottom-0 left-0" ? { width, height } : undefined}
                         animate={{ width: w, height: h }}
                         transition={{

@@ -1,13 +1,15 @@
-import { Menu, X } from "lucide-react"
-import { animate, motion, useMotionValue } from "motion/react"
-import Link from "next/link"
-import { type ComponentRef, useLayoutEffect, useState } from "react"
+import { ArrowUpRight, Menu, X } from "lucide-react"
+import { motion } from "motion/react"
+import { useState } from "react"
+import { SiGithub } from "react-icons/si"
 import BrandLink from "@/components/common/BrandLink"
+import ThemeToggle from "@/components/common/ThemeToggle"
+import Border from "@/components/ui/Border"
 import Button from "@/components/ui/Button"
-import { useRect } from "@/hooks/use-rect"
-import { REPO_URL } from "@/lib/constants"
-import { expoOut } from "@/lib/easing"
-import { formatComponentNumber } from "@/lib/utils"
+import { Link } from "@/i18n/navigation"
+import { REPO_URL, VERSION } from "@/lib/constants"
+import { expoInOut } from "@/lib/easing"
+import { cn, formatComponentNumber } from "@/lib/utils"
 
 const LINKS = [
     {
@@ -16,139 +18,110 @@ const LINKS = [
         target: "_self",
     },
     {
-        label: "Read docs",
-        href: "/docs",
+        label: "Contribute",
+        href: "/docs/getting-started/contribution",
         target: "_self",
     },
     {
-        label: "(Github)",
+        label: "Getting started",
+        href: "/docs/getting-started",
+        target: "_self",
+    },
+    {
+        label: "Github",
         href: REPO_URL,
         target: "_blank",
     },
 ] as const
 
-type LandingNavProps = {
+type Props = {
     activeComponentsCount: number
 }
 
-export default function LandingNav({ activeComponentsCount }: LandingNavProps) {
+export default function LandingNav({ activeComponentsCount }: Props) {
     const [isOpen, setIsOpen] = useState(false)
-    const [navRef, navRect] = useRect<ComponentRef<"nav">>()
-    const left = useMotionValue(0)
-    const width = useMotionValue(navRect.width)
-
-    useLayoutEffect(() => {
-        width.set(navRect.width)
-    }, [navRect.width, width])
-
-    const toggleMenu = () => {
-        setIsOpen((prev) => !prev)
-    }
-
-    const handleMouseEnter = (e: React.MouseEvent<HTMLAnchorElement>) => {
-        if (!navRef.current) return
-        const linkRect = e.currentTarget.getBoundingClientRect()
-        const navRect = navRef.current.getBoundingClientRect()
-
-        animate(left, linkRect.left - navRect.left, {
-            duration: 0.4,
-            ease: expoOut,
-        })
-        animate(width, linkRect.width, {
-            duration: 0.4,
-            ease: expoOut,
-        })
-        animate(
-            ".bar",
-            {
-                filter: ["blur(0px)"],
-                opacity: 1,
-            },
-            {
-                duration: 0.4,
-                ease: expoOut,
-            },
-        )
-    }
-
-    const handleMouseLeave = () => {
-        animate(left, 0, {
-            duration: 0.4,
-            ease: expoOut,
-        })
-        animate(width, navRect.width, {
-            duration: 0.4,
-            ease: expoOut,
-        })
-        animate(
-            ".bar",
-            {
-                filter: ["blur(10px)"],
-                opacity: 0,
-            },
-            {
-                duration: 0.9,
-                ease: expoOut,
-            },
-        )
-    }
 
     return (
-        <motion.header
-            initial={{ y: -20, opacity: 0, filter: "blur(10px)" }}
-            animate={{ y: 0, opacity: 1, filter: "blur(0px)" }}
-            transition={{ duration: 0.7, ease: expoOut, delay: 1.3 }}
-            className="w-[calc(100%-4rem)] xs:w-[calc(100%-10rem)] h-auto py-4 sm:!h-[4.6rem] overflow-hidden backdrop-blur-[10px] flex flex-col items-start bg-mat-4/70 dark:bg-mat-3/30 sm:w-[445px] fixed left-1/2 -translate-x-1/2 top-3 sm:top-4 z-6 rounded-2xl"
+        <div
+            className={cn(
+                "fixed top-0 left-0 w-full h-18 bg-background/90 text-sm backdrop-blur-[10px] z-6",
+                { "h-auto": isOpen, "h-18": !isOpen },
+            )}
         >
-            <div className="flex items-center justify-between pl-4.5 pr-3 space-x-7 h-full w-full">
-                <BrandLink />
+            <Border direction="horizontal" className="bottom-0" />
 
-                <div>
-                    <nav
-                        ref={navRef}
-                        onMouseLeave={handleMouseLeave}
-                        className="hidden sm:flex items-center rounded-lg py-3 relative"
-                    >
-                        <motion.span
-                            aria-hidden="true"
-                            style={{ left, width }}
-                            className="max-sm:hidden bar blur-[10px] absolute h-full top-0 bg-mat-3/20 dark:bg-mat-3/40 opacity-0 rounded-xl pointer-events-none"
-                        />
+            <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 1.5, ease: expoInOut, delay: 0.5 }}
+                className="min-h-18 max-w-landing-max-w mx-auto h-full md:px-10 px-6 grid md:grid-cols-[1fr_auto_1fr] grid-cols-[1fr_1fr] items-center"
+            >
+                <BrandLink
+                    className="justify-self-start"
+                    slot={<span className="text-mat-2/70 font-serif text-xl">({VERSION})</span>}
+                />
 
-                        {LINKS.map(({ label, href, target }) => (
-                            <Link
-                                className="relative group top-[0.3px] px-2"
-                                target={target}
-                                key={label}
-                                href={href}
-                                onMouseEnter={handleMouseEnter}
-                            >
+                <nav className="max-md:hidden flex items-center space-x-5 font-regular">
+                    {LINKS.map(({ label, href, target }) => (
+                        <Link
+                            className="hover:text-mat-2 flex items-center"
+                            key={label}
+                            href={href}
+                        >
+                            {label}
+
+                            {label === "Components" && (
+                                <sup className="font-mono">
+                                    {formatComponentNumber(activeComponentsCount)}
+                                </sup>
+                            )}
+                            {target === "_blank" && (
+                                <sup className="font-mono">
+                                    <ArrowUpRight className="size-2.5 mt-0.5" />
+                                </sup>
+                            )}
+                        </Link>
+                    ))}
+                </nav>
+
+                <div className="max-md:hidden flex items-center justify-self-end">
+                    <ThemeToggle key="theme" />
+
+                    <Button key="github" variant="ghost" size="icon" asChild>
+                        <Link target="_blank" rel="noopener noreferrer" href={REPO_URL}>
+                            <SiGithub className="size-4" />
+                        </Link>
+                    </Button>
+                </div>
+
+                <div className="max-md:flex hidden items-center justify-self-end">
+                    <Button variant="ghost" size="icon" onClick={() => setIsOpen(!isOpen)}>
+                        {isOpen ? <X className="size-5" /> : <Menu className="size-5" />}
+                    </Button>
+                </div>
+            </motion.div>
+
+            {isOpen && (
+                <div className="px-6 pb-8 border-t pt-5">
+                    <nav className="flex flex-col text-base gap-y-1.5 font-medium">
+                        {LINKS.map(({ label, href }) => (
+                            <Link key={label} href={href}>
                                 {label}
-                                {label === "Components" && (
-                                    <sup className="font-mono">
-                                        {formatComponentNumber(activeComponentsCount)}
-                                    </sup>
-                                )}
+                                {label === "Components" && <sup className="font-mono">01</sup>}
                             </Link>
                         ))}
                     </nav>
 
-                    <Button onClick={toggleMenu} size="icon" variant="ghost" className="sm:hidden">
-                        {isOpen ? <X className="size-5" /> : <Menu className="size-5" />}
-                    </Button>
+                    <div className="flex items-center justify-end">
+                        <ThemeToggle key="theme" />
+                        <Button key="github" variant="ghost" size="icon" asChild>
+                            <Link target="_blank" rel="noopener noreferrer" href={REPO_URL}>
+                                <SiGithub className="size-4" />
+                            </Link>
+                        </Button>
+                    </div>
                 </div>
-            </div>
-
-            {isOpen && (
-                <nav className="flex flex-col font-medium text-base gap-y-1.5 px-6 py-5 pt-7">
-                    {LINKS.map(({ label, href }) => (
-                        <Link key={label} href={href}>
-                            {label}
-                            {label === "Components" && <sup className="font-mono">01</sup>}
-                        </Link>
-                    ))}
-                </nav>
             )}
-        </motion.header>
+        </div>
     )
 }
