@@ -2,7 +2,7 @@
 
 import CardGrid from "@/components/ui/CardGrid"
 import DashedBorder from "@/components/ui/DashedBorder"
-import { cn, formatPlaceholderTitle, getLucideIcon } from "@/lib/utils"
+import { getLucideIcon } from "@/lib/utils"
 import type { DocTree } from "@/types/docs"
 
 type DocComponentListProps = {
@@ -47,12 +47,8 @@ export default function DocComponentList({ componentsList }: DocComponentListPro
                                         badge={child.status}
                                         iconSlot={<Icon strokeWidth={0.8} size={40} />}
                                         tags={child.tags}
-                                        title={formatPlaceholderTitle(child)}
+                                        title={child.title}
                                         href={child.url}
-                                        placeholder={child.placeholder ?? false}
-                                        contentClassName={cn({
-                                            "opacity-[0.5]": child.placeholder,
-                                        })}
                                     />
                                 </div>
                             )

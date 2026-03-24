@@ -11,9 +11,8 @@ import {
 import { useRef } from "react"
 import CardGrid from "@/components/ui/CardGrid"
 import DashedBorder from "@/components/ui/DashedBorder"
-import { formatPlaceholderTitle, getLucideIcon } from "@/lib/utils"
+import { getLucideIcon } from "@/lib/utils"
 import type { DocTree } from "@/types/docs"
-import LandingScratchReveal from "./LandingScratchReveal"
 
 const PER_COLUMN = 2
 const DEFAULT_DASH = 4
@@ -54,8 +53,6 @@ export default function LandingGridScroll({ items }: LandingGridScrollProps) {
     return (
         <div ref={containerRef} className="w-full h-full p-5 text-2xl capitalize z-2 relative">
             <div className="w-full h-full relative flex overflow-hidden bg-background">
-                <LandingScratchReveal containerRef={containerRef} />
-
                 <svg
                     aria-label="Dashed Frame"
                     className="absolute inset-0 w-full h-full pointer-events-none"
@@ -92,9 +89,8 @@ export default function LandingGridScroll({ items }: LandingGridScrollProps) {
                                         key={index}
                                         badge={item.status}
                                         focusable={false}
-                                        placeholder={item.placeholder}
                                         href={item.url}
-                                        title={formatPlaceholderTitle(item)}
+                                        title={item.title}
                                         iconSlot={<Icon strokeWidth={0.8} size={40} />}
                                         tags={item.tags}
                                     />
@@ -121,9 +117,8 @@ export default function LandingGridScroll({ items }: LandingGridScrollProps) {
                                         key={index}
                                         badge={item.status}
                                         focusable={false}
-                                        placeholder={item.placeholder}
                                         href={item.url}
-                                        title={formatPlaceholderTitle(item)}
+                                        title={item.title}
                                         iconSlot={<Icon strokeWidth={0.8} size={40} />}
                                         tags={item.tags}
                                     />
@@ -154,9 +149,8 @@ export default function LandingGridScroll({ items }: LandingGridScrollProps) {
                                     <CardGrid
                                         badge={item.status}
                                         focusable={false}
-                                        placeholder={item.placeholder}
                                         href={item.url}
-                                        title={formatPlaceholderTitle(item)}
+                                        title={item.title}
                                         iconSlot={<Icon strokeWidth={0.8} size={40} />}
                                         tags={item.tags}
                                     />

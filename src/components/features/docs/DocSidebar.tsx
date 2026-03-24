@@ -12,7 +12,7 @@ import { Link, usePathname } from "@/i18n/navigation"
 import { VERSION } from "@/lib/constants"
 import { expoOut } from "@/lib/easing"
 import { useGlobalStore } from "@/lib/store"
-import { cn, formatComponentNumber, formatPlaceholderTitle } from "@/lib/utils"
+import { cn, formatComponentNumber } from "@/lib/utils"
 import type { DocTree } from "@/types/docs"
 import DocSidebarTempSelect from "./DocSidebarTempSelect"
 
@@ -86,12 +86,10 @@ function SideBarCore({
     return (
         <aside
             className={cn(
-                "bg-background relative max-h-aside-h pb-20 scrollbar-overlay",
+                "bg-background overflow-hidden relative max-h-[92vh] lg:max-h-aside-h scrollbar-overlay",
                 className,
             )}
         >
-            <div className="absolute z-10 left-0 -bottom-10 w-full h-20 bg-gradient-to-t from-background to-transparent pointer-events-none" />
-
             {headerSlot && headerSlot}
 
             <div>
@@ -140,13 +138,13 @@ function SideBarCore({
             </div>
             <nav
                 aria-label="Documentation"
-                className="space-y-5 text-sm pl-2 overflow-y-auto scrollbar-overlay h-[calc(100vh-19rem)] pb-10"
+                className="space-y-5 text-sm pl-2 overflow-y-auto scrollbar-overlay h-[calc(100vh-19rem)] pb-20"
             >
                 {menuSections.map((section) => (
                     <div key={section.title}>
                         <h3 className="font-medium mb-1 text-mat-1">{section.category}</h3>
 
-                        <ul className="pl-3 ml-1 relative">
+                        <ul className="pl-2 ml-1 relative">
                             <DashedBorder
                                 direction="vertical"
                                 className="left-0 absolute bottom-0 top-0 h-full text-mat-3/80"
@@ -162,17 +160,11 @@ function SideBarCore({
                                                 "py-1.5 px-2 rounded-md w-full flex items-center justify-between text-mat-2",
                                                 {
                                                     "text-highlight font-medium": isActive,
-                                                    "opacity-[0.7] cursor-default":
-                                                        child.placeholder,
-                                                    "hover:text-mat-1": !child.placeholder,
                                                 },
                                             )}
-                                            onClick={(e) => {
-                                                if (child.placeholder) e.preventDefault()
-                                            }}
                                             href={child.url}
                                         >
-                                            {formatPlaceholderTitle(child)}
+                                            {child.title}
                                             {isActive && (
                                                 <ChevronRight className="size-4 !text-highlight" />
                                             )}
@@ -192,6 +184,18 @@ export default function DocSidebar({ menuSections, activeComponentCount }: DocSi
     const isSidebarOpen = useGlobalStore((state) => state.isSidebarOpen)
     const toggleSidebar = useGlobalStore((state) => state.toggleSidebar)
     const pathname = usePathname()
+
+    useEffect(() => {
+        if (isSidebarOpen) {
+            document.body.style.overflow = "hidden"
+        } else {
+            document.body.style.overflow = ""
+        }
+
+        return () => {
+            document.body.style.overflow = ""
+        }
+    }, [isSidebarOpen])
 
     useEffect(() => {
         useGlobalStore.setState({ isSidebarOpen: false })

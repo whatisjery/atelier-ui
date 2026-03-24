@@ -10,7 +10,6 @@ export type DocTree = {
     category?: string
     icon?: string
     tags?: string[]
-    placeholder?: boolean
     status?: DocComponentStatus
 }
 
@@ -33,13 +32,11 @@ export type DocNavigation = {
         title: string
         url: string
         description: string
-        disabled: boolean
     } | null
     next: {
         title: string
         url: string
         description: string
-        disabled: boolean
     } | null
 }
 

@@ -26,7 +26,6 @@ export default async function DocsLayout({ children, params }: DocsLayoutProps) 
     const { menuSections } = getSidebarData(locale)
 
     const components = getComponentsList(locale).flatMap(({ children }) => children)
-    const activeComponent = components.filter((component) => !component.placeholder).length
 
     if (!hasLocale(routing.locales, locale)) {
         notFound()
@@ -38,7 +37,7 @@ export default async function DocsLayout({ children, params }: DocsLayoutProps) 
                 <DocTopNav />
                 <div className="flex">
                     <DocSidebar
-                        activeComponentCount={activeComponent}
+                        activeComponentCount={components.length}
                         menuSections={menuSections}
                     />
                     {children}

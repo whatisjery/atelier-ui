@@ -16,18 +16,14 @@ export default async function Page({ params }: PageProps) {
         return children.map((child) => ({ ...child, icon: icon }))
     })
 
-    const activeComponents = components.filter((component) => !component.placeholder)
-
     /*
      * only show the first 6 active components in the showcase carousel
      * if there are less than 6 active components, show all of them
      */
     const showcaseComponents = Array.from(
         { length: SHOWCASE_COUNT },
-        (_, i) => activeComponents[i % activeComponents.length],
+        (_, i) => components[i % components.length],
     )
 
-    return (
-        <PageLanding activeComponents={activeComponents} showcaseComponents={showcaseComponents} />
-    )
+    return <PageLanding activeComponents={components} showcaseComponents={showcaseComponents} />
 }

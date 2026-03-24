@@ -10,8 +10,6 @@ type CardGridIconProps = {
     title: string
     href: string
     className?: string
-    placeholder?: boolean
-    contentClassName?: string
     iconSlot?: React.ReactNode
     focusable?: boolean
     tags?: string[]
@@ -36,38 +34,25 @@ export default function CardGrid({
     iconSlot,
     tags,
     className,
-    placeholder,
-    contentClassName,
     focusable = true,
     badge,
 }: CardGridIconProps) {
-    const clickGuard = (e: React.MouseEvent<HTMLAnchorElement>) => {
-        if (placeholder) e.preventDefault()
-    }
-
     return (
         <Link
-            aria-disabled={placeholder}
             tabIndex={focusable ? undefined : -1}
-            onClick={clickGuard}
             href={href}
-            className={cn("block no-underline relative not-prose group cursor-pointer", {
-                "cursor-not-allowed": placeholder,
-                "hover:opacity-50": !placeholder,
-            })}
+            className="block no-underline relative not-prose group cursor-pointer group"
         >
-            <GridPattern responsive={true} />
+            <GridPattern />
 
             <div
                 className={cn(
-                    "relative flex items-center flex-col py-5 justify-center aspect-square gap-y-3 transition-colors duration-300",
+                    "relative pointer-events-none flex z-2 items-center flex-col py-5 justify-center aspect-square gap-y-3 transition-colors duration-300",
                     className,
                 )}
             >
                 {title && (
-                    <div
-                        className={cn("flex flex-col items-center mb-12 gap-y-1", contentClassName)}
-                    >
+                    <div className="flex pointer-events-none flex-col items-center mb-12 gap-y-1">
                         <div className="flex flex-col relative items-center gap-y-1">
                             {iconSlot && (
                                 <div className="flex items-center gap-x-2">{iconSlot}</div>
@@ -82,27 +67,16 @@ export default function CardGrid({
                                     })}
                                 />
                             )}
-
-                            {placeholder && (
-                                <Badge
-                                    title={BADGE_CONFIG.wip.title}
-                                    variant={BADGE_CONFIG.wip.variant}
-                                    className="absolute top-[6rem]"
-                                />
-                            )}
                         </div>
 
-                        <div className="font-serif whitespace-nowrap text-4xl flex items-center">
+                        <h4 className="group-hover:underline underline-offset-2 decoration-1 font-serif whitespace-nowrap text-4xl flex items-center">
                             {title}
-                        </div>
+                        </h4>
                     </div>
                 )}
 
                 {tags && tags.length > 0 && (
-                    <BouncingText
-                        maxWidth={70}
-                        className={cn("absolute bottom-5", contentClassName)}
-                    >
+                    <BouncingText maxWidth={70} className="absolute bottom-5">
                         <div className="flex text-xs">
                             {tags.map((tag, index) => (
                                 <React.Fragment key={index}>

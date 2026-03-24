@@ -52,7 +52,7 @@ function getDirMeta(dirPath: string) {
 
 export function getDocNavigation(locale: string, currentSlug: string[]): DocNavigation {
     const tree = getDocsTree(locale)
-    const flatDocs: { title: string; url: string; description: string; disabled: boolean }[] = []
+    const flatDocs: { title: string; url: string; description: string }[] = []
 
     const flatten = (nodes: DocTree[]) => {
         for (const node of nodes) {
@@ -62,7 +62,6 @@ export function getDocNavigation(locale: string, currentSlug: string[]): DocNavi
                     title: node.title,
                     url: node.url,
                     description: node.description,
-                    disabled: node.placeholder ?? false,
                 })
             }
             if (node.children.length > 0) {
@@ -204,11 +203,6 @@ function walkDir(dirPath: string, urlPath: string): DocTree[] {
             const fileContents = fs.readFileSync(fullPath, "utf-8")
             const { data } = matter(fileContents)
 
-            function getBadgeTypeFromData() {
-                if (data.placeholder) return undefined
-                return getComponentStatus(fullPath) || undefined
-            }
-
             result.push({
                 type: "file",
                 url: slug === "index" ? urlPath : `${urlPath}/${slug}`,
@@ -218,8 +212,7 @@ function walkDir(dirPath: string, urlPath: string): DocTree[] {
                 icon: data.icon,
                 order: data.order,
                 tags: data.tags,
-                placeholder: data.placeholder,
-                status: getBadgeTypeFromData(),
+                status: getComponentStatus(fullPath) || undefined,
             })
         }
     }
