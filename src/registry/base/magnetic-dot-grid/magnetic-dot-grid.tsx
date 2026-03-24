@@ -231,7 +231,6 @@ export function MagneticDotGrid({
                 const g = parsedBaseColor[1] + (centerG - parsedBaseColor[1]) * influence
                 const b = parsedBaseColor[2] + (centerB - parsedBaseColor[2]) * influence
 
-                ctx.beginPath()
                 ctx.fillRect(
                     grid.currentX[i] - config.dotRadius,
                     grid.currentY[i] - config.dotRadius,
@@ -239,7 +238,6 @@ export function MagneticDotGrid({
                     config.dotRadius * 2,
                 )
                 ctx.fillStyle = `rgba(${r},${g},${b},${opacity})`
-                ctx.fill()
             }
 
             rafRef.current = requestAnimationFrame(tick)
@@ -247,19 +245,19 @@ export function MagneticDotGrid({
 
         displayGrid()
         window.addEventListener("resize", displayGrid)
-        canvas.addEventListener("mousemove", handleMouseMove)
-        canvas.addEventListener("touchmove", handleTouchMove, { passive: true })
-        canvas.addEventListener("mouseleave", handlePointerLeave)
-        canvas.addEventListener("touchend", handlePointerLeave)
+        window.addEventListener("mousemove", handleMouseMove)
+        window.addEventListener("touchmove", handleTouchMove, { passive: true })
+        window.addEventListener("mouseleave", handlePointerLeave)
+        window.addEventListener("touchend", handlePointerLeave)
         rafRef.current = requestAnimationFrame(tick)
 
         return () => {
             cancelAnimationFrame(rafRef.current)
             window.removeEventListener("resize", displayGrid)
-            canvas.removeEventListener("mousemove", handleMouseMove)
-            canvas.removeEventListener("touchmove", handleTouchMove)
-            canvas.removeEventListener("mouseleave", handlePointerLeave)
-            canvas.removeEventListener("touchend", handlePointerLeave)
+            window.removeEventListener("mousemove", handleMouseMove)
+            window.removeEventListener("touchmove", handleTouchMove)
+            window.removeEventListener("mouseleave", handlePointerLeave)
+            window.removeEventListener("touchend", handlePointerLeave)
         }
     }, [spacing])
 
