@@ -7,7 +7,7 @@ export default function Docr3fDemoLoader() {
     return (
         <div
             className={cn(
-                "absolute inset-0 flex items-center justify-center bg-white z-10 transition-opacity duration-500",
+                "absolute inset-0 flex items-center justify-center bg-background z-10 transition-opacity duration-500",
                 {
                     "opacity-0 pointer-events-none": progress === 100,
                     "opacity-100": progress !== 100,
