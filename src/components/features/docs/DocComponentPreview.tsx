@@ -1,4 +1,3 @@
-import GridPattern from "@/components/ui/GridPattern"
 import Tabs from "@/components/ui/Tabs"
 import { demos } from "@/registry/demos"
 import type { CodeFile } from "@/types/code"
@@ -23,7 +22,6 @@ export default function DocComponentPreview({ name, snippets }: DocComponentPrev
                 preview: (
                     <div className="flex flex-col overflow-scroll">
                         <div className="w-full relative min-h-133 border overflow-hidden">
-                            <GridPattern hoverEffect={false} gridSize={28} />
                             {Demo && <Demo />}
                         </div>
                     </div>

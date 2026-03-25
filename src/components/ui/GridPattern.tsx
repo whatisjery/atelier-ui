@@ -8,6 +8,7 @@ type SquareGridProps = {
     gridSize?: number
     strokeWidth?: number
     hoverEffect?: boolean
+    strokeColor?: string
 }
 
 export default function GridPattern({
@@ -15,6 +16,7 @@ export default function GridPattern({
     gridSize = 120,
     strokeWidth = 1.5,
     hoverEffect = true,
+    strokeColor = "var(--color-grid)",
 }: SquareGridProps) {
     const size = Math.ceil(1000 / gridSize) * gridSize
     const patternId = `grid-pattern-${gridSize}-${strokeWidth}`
@@ -74,7 +76,7 @@ export default function GridPattern({
                     <path
                         d={`M ${gridSize} 0 L 0 0 0 ${gridSize}`}
                         fill="none"
-                        stroke="var(--color-grid)"
+                        stroke={strokeColor}
                         strokeWidth={strokeWidth}
                     />
                 </pattern>

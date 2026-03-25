@@ -5,6 +5,7 @@ import { Canvas, useFrame } from "@react-three/fiber"
 import { EffectComposer } from "@react-three/postprocessing"
 import { Suspense, useRef } from "react"
 import type { Mesh } from "three"
+import GridPattern from "@/components/ui/GridPattern"
 import { FluidDistortion } from "@/registry/base/fluid-distortion/fluid-distortion"
 
 function RotatingCube() {
@@ -31,16 +32,26 @@ function RotatingCube() {
 
 export default function FluidCursorDemo() {
     return (
-        <Suspense fallback={null}>
-            <div className="w-full h-full absolute inset-0 bg-transparent">
-                <Canvas style={{ width: "100%", height: "100%" }}>
+        <>
+            <GridPattern hoverEffect={false} gridSize={28} />
+
+            <Suspense fallback={null}>
+                <Canvas
+                    style={{
+                        width: "100%",
+                        height: "100%",
+                        position: "absolute",
+                        top: 0,
+                        left: 0,
+                    }}
+                >
                     <Environment preset="studio" />
                     <RotatingCube />
                     <EffectComposer>
                         <FluidDistortion />
                     </EffectComposer>
                 </Canvas>
-            </div>
-        </Suspense>
+            </Suspense>
+        </>
     )
 }
