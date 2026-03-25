@@ -3,9 +3,13 @@
 import { Environment, MeshTransmissionMaterial } from "@react-three/drei"
 import { Canvas, useFrame } from "@react-three/fiber"
 import { Suspense, useRef, useState } from "react"
+import { suspend } from "suspend-react"
 import type { Mesh, Texture } from "three"
+import Docr3fDemoLoader from "@/components/features/docs/Docr3fDemoLoader"
 import GridPattern from "@/components/ui/GridPattern"
 import { HalftoneGlow } from "@/registry/base/halftone-glow/halftone-glow"
+
+const warehouse = import("@pmndrs/assets/hdri/warehouse.exr").then((m) => m.default)
 
 function RefractiveSphere({ buffer }: { buffer: Texture | null }) {
     const ref = useRef<Mesh>(null)
@@ -39,6 +43,8 @@ export default function Scene() {
 
     return (
         <>
+            <Docr3fDemoLoader />
+
             <div className="w-full h-full absolute -z-1 inset-0 bg-[#000000]" />
             <GridPattern strokeColor="#141515" hoverEffect={false} gridSize={28} />
 
@@ -62,7 +68,7 @@ export default function Scene() {
                         speed={14}
                         onTextureReady={setTexture}
                     />
-                    <Environment environmentIntensity={0.3} preset="warehouse" />
+                    <Environment environmentIntensity={0.3} files={suspend(warehouse) as string} />
                     <RefractiveSphere buffer={texture} />
                 </Canvas>
             </Suspense>

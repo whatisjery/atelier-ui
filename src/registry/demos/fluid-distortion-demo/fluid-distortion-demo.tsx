@@ -4,9 +4,13 @@ import { Environment } from "@react-three/drei"
 import { Canvas, useFrame } from "@react-three/fiber"
 import { EffectComposer } from "@react-three/postprocessing"
 import { Suspense, useRef } from "react"
+import { suspend } from "suspend-react"
 import type { Mesh } from "three"
+import Docr3fDemoLoader from "@/components/features/docs/Docr3fDemoLoader"
 import GridPattern from "@/components/ui/GridPattern"
 import { FluidDistortion } from "@/registry/base/fluid-distortion/fluid-distortion"
+
+const warehouse = import("@pmndrs/assets/hdri/warehouse.exr").then((m) => m.default)
 
 function RotatingCube() {
     const ref = useRef<Mesh>(null)
@@ -33,6 +37,8 @@ function RotatingCube() {
 export default function FluidCursorDemo() {
     return (
         <>
+            <Docr3fDemoLoader />
+
             <GridPattern hoverEffect={false} gridSize={28} />
 
             <Suspense fallback={null}>
@@ -45,7 +51,7 @@ export default function FluidCursorDemo() {
                         left: 0,
                     }}
                 >
-                    <Environment preset="studio" />
+                    <Environment files={suspend(warehouse) as string} />
                     <RotatingCube />
                     <EffectComposer>
                         <FluidDistortion />
