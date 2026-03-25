@@ -20,7 +20,7 @@ export default function DocComponentPreview({ name, snippets }: DocComponentPrev
             defaultValue="preview"
             contents={{
                 preview: (
-                    <div className="flex flex-col overflow-scroll">
+                    <div className="flex flex-col">
                         <div className="w-full relative min-h-133 border overflow-hidden">
                             {Demo && <Demo />}
                         </div>

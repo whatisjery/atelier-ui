@@ -82,7 +82,7 @@ export default async function RootLayout({ children, params }: RootLayoutProps) 
             }
         >
             <body
-                className={`${geistSans.variable} ${geistMono.variable} ${instrumentSans.variable} text-base font-sans antialiased bg-background text-mat-1`}
+                className={`${geistSans.variable} ${geistMono.variable} ${instrumentSans.variable} text-base font-sans antialiased bg-background text-mat-1 overflow-x-hidden`}
             >
                 <NextIntlClientProvider>
                     <Tooltip.Provider>
