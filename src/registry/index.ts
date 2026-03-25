@@ -29,4 +29,10 @@ export const components: TRegistryComponent[] = [
         description: "Magnetic dot grid effect",
         dependencies: [],
     },
+    {
+        name: "halftone-glow",
+        files: ["halftone-glow.tsx"],
+        description: "Half tone glow effect",
+        dependencies: ["three", "@react-three/fiber", "@react-three/drei"],
+    },
 ]

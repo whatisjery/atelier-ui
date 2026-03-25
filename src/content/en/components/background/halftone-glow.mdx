@@ -1,0 +1,84 @@
+---
+title: "Halftone Glow"
+description: "A WebGL pulsing glow effect with halftone rendering."
+tags: ["WebGL", "Shader", "Glow", "Halftone"]
+---
+
+<DocComponentPreview name="halftone-glow-demo" />
+
+## Installation
+
+<DocInstallGuide name="halftone-glow" />
+
+---
+
+## Usage
+```tsx title="Imports"
+import { HalftoneGlow } from "@/components/HalftoneGlow"
+```
+
+```tsx title="Default"
+<Canvas>
+    <HalftoneGlow />
+</Canvas>
+```
+
+```tsx title="Configured"
+<Canvas>
+    <HalftoneGlow
+        edgeColor="#2F537F"
+        ringColor="#3981DA"
+        edgeSize={5}
+        edgeDistortion={0.03}
+        ringDistortion={0.11}
+        blurAmount={0.2}
+        speed={10}
+    />
+</Canvas>
+```
+
+```tsx title="With texture"
+import type { Texture } from "three"
+
+function Scene() {
+    const [texture, setTexture] = useState<Texture | null>(null)
+    return (
+        <Canvas>
+            <HalftoneGlow onTextureReady={setTexture} />
+            <mesh>
+                <sphereGeometry />
+                <MeshTransmissionMaterial buffer={texture ?? undefined} />
+            </mesh>
+        </Canvas>
+    )
+}
+```
+
+---
+
+## API
+
+| Name              | Type                         | Default       | Description                                                              |
+| ----------------- | ---------------------------- | ------------- | ------------------------------------------------------------------------ |
+| `speed`           | `number`                     | `0.9`         | Pulse speed. |
+| `blurAmount`      | `number`                     | `0.47`        | Amount of blur. |
+| `edgeSize`        | `number`                     | `1`           | Thickness of the edge glow. |
+| `edgeDistortion`  | `number`                     | `0.02`        | How much noise warps the edge glow.|
+| `ringDistortion`  | `number`                     | `0.1`         | How much noise warps the ring pulse.|
+| `edgeColor`       | `string`                     | `"#4599ff"`   | Color of the edge glow.|
+| `ringColor`       | `string`                     | `"#4599ff"`   | Color of the ring pulse.|
+| `onTextureReady`  | `(texture) => void` | `undefined`   | Returns the rendered effect as a texture.|
+
+---
+
+## Features
+
+- **Texture output**: renders to an offscreen buffer for use in other materials.
+- **Optimized**: FBOs scale with viewport. (early passes render at reduced res for performance.)
+- **Configurable**: edge thickness, blur, distortion, colors, speed - all via props.
+
+---
+
+## Credits
+
+Re-creation of the hero effect from an AI template on [aura.build](https://www.aura.build/templates/aura-financial), rebuilt as a standalone R3F component.
