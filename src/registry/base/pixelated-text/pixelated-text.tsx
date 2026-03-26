@@ -269,9 +269,11 @@ export function PixelatedText({
 
     return (
         <Tag ref={containerRef} className={`relative inline-block ${className}`}>
-            <span ref={sizingRef} className="inline-block">
+            <span ref={sizingRef} aria-hidden="true" className="inline-block">
                 {children}
             </span>
+
+            <span className="sr-only">{children}</span>
 
             <canvas
                 tabIndex={-1}
