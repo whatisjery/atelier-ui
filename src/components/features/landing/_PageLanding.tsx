@@ -13,14 +13,25 @@ import Border from "@/components/ui/Border"
 import { VERSION } from "@/lib/constants"
 import { expoInOut } from "@/lib/easing"
 import { formatComponentNumber } from "@/lib/utils"
+import { PixelatedText } from "@/registry/base/pixelated-text/pixelated-text"
 import type { DocTree } from "@/types/docs"
 import LandingGridScroll from "./LandingGridScroll"
 import LandingLoopFlexibility from "./LandingLoopFlexibility"
 import LandingLoopIntegration from "./LandingLoopIntegration"
 import LandingLoopPerf from "./LandingLoopPerf"
 import LandingNav from "./LandingNav"
-import LandingPixelatedText from "./LandingPixelatedText"
 import LandingTextAnimation from "./LandingTextAnimation"
+
+const PALETTE = [
+    "#ff3e3e",
+    "#3eff8c",
+    "#3e8cff",
+    "#ff3edc",
+    "#ffdc3e",
+    "#3effe0",
+    "#ff8c3e",
+    "#c83eff",
+]
 
 const LOOP_FEATURES = [
     {
@@ -104,9 +115,18 @@ export default function PageLanding({ activeComponents, showcaseComponents }: Pa
                         <h1 className="intro-text font-semibold mb-5 md:text-[3.9rem] lg:text-[4.8rem] text-5xl lg:leading-[1em] text-center tracking-[-0.04em] w-[90%]">
                             <span className="block">
                                 React{" "}
-                                <LandingPixelatedText className="font-serif font-light text-mat-2/40">
+                                <PixelatedText
+                                    colors={PALETTE}
+                                    speed={200}
+                                    pixelSize={2.1}
+                                    flicker={0.9}
+                                    chaos={0.3}
+                                    depth={1}
+                                    aberration={0}
+                                    className="font-serif font-bold text-mat-2/40 relative top-[-0.02em]"
+                                >
                                     WEB
-                                </LandingPixelatedText>{" "}
+                                </PixelatedText>{" "}
                                 animations for{" "}
                             </span>
                             <span className="block">developers.</span>
