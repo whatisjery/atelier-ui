@@ -1,0 +1,65 @@
+---
+title: "Pixelated Text"
+description: "A 2D canvas-based animated pixelated SEO friendly text effect."
+tags: ["Canvas", "Animation", "Glitch", "Text"]
+---
+
+<DocComponentPreview name="pixelated-text-demo" />
+
+## Installation
+
+<DocInstallGuide name="pixelated-text" />
+
+---
+
+## Usage
+
+```tsx title="Imports"
+import { PixelatedText } from "@/components/PixelatedText"
+```
+
+```tsx title="Default"
+<PixelatedText>
+    Hello world
+</PixelatedText>
+```
+
+```tsx title="Configured"
+<PixelatedText
+    pixelSize={3}
+    flicker={1.5}
+    chaos={0.4}
+    depth={0.8}
+    aberration={1.5}
+    speed={150}
+    colors={["#ff0000", "#00ff00", "#0000ff"]}
+>
+    Hello world
+</PixelatedText>
+```
+
+
+---
+
+## API
+
+| Name          | Type       | Default     | Description                                              |
+| ------------- | ---------- | ----------- | -------------------------------------------------------- |
+| `pixelSize`   | `number`   | `2`         | Pixel size.|
+| `flicker`     | `number`   | `1.5`       | Amount of flickers.|
+| `chaos`       | `number`   | `0.1`       | Amount of chaos.|
+| `depth`       | `number`   | `1`         | Amplitude(contrast) between clear and pixelated.|
+| `aberration`  | `number`   | `0`         | Chromatic aberration amount.|
+| `colors`      | `string[]` | `undefined` | Cycles through colors each tick. Fallback to the default color.|
+| `speed`       | `number`   | `200`       | Milliseconds between frames.|
+| `as`          | `React.ElementType` | `"span"` | Polymorphic tag: render as any HTML element.|
+| `className`   | `string`   | `undefined` | Class for the container element.|
+
+---
+
+## Features
+
+- **SEO friendly**: compatible with search engines and screen readers.
+- **Responsive**: ResizeObserver remeasures on container resize.
+- **DPR-aware**: sharp rendering.
+- **Alignment**: baseline aligned with the other text elements.

@@ -35,4 +35,10 @@ export const components: TRegistryComponent[] = [
         description: "Half tone glow effect",
         dependencies: ["three", "@react-three/fiber", "@react-three/drei"],
     },
+    {
+        name: "pixelated-text",
+        files: ["pixelated-text.tsx"],
+        description: "Pixelated text effect",
+        dependencies: [],
+    },
 ]
