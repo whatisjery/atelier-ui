@@ -22,7 +22,9 @@ export default function ImageTrailDemo() {
         >
             <GridPattern hoverEffect={false} gridSize={28} />
 
-            <div className="font-serif text-5xl relative z-1">Drag your mouse around.</div>
+            <div className="font-serif xs:text-5xl relative z-1 text-center text-4xl">
+                Drag your mouse around.
+            </div>
 
             <ImageTrail
                 containerRef={ref}
