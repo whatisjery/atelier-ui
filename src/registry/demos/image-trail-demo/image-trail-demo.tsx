@@ -3,7 +3,7 @@
 import Image from "next/image"
 import { type ComponentRef, useRef } from "react"
 import GridPattern from "@/components/ui/GridPattern"
-import { ImageTrail } from "@/registry/base/image-trail/Image-trail"
+import { ImageTrail } from "@/registry/base/image-trail/image-trail"
 
 const ITEMS = [
     "/images/demo/image-trail/1.webp",
