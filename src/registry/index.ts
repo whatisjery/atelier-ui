@@ -41,4 +41,10 @@ export const components: TRegistryComponent[] = [
         description: "Pixelated text effect",
         dependencies: [],
     },
+    {
+        name: "image-trail",
+        files: ["image-trail.tsx"],
+        description: "Image trail effect",
+        dependencies: ["motion"],
+    },
 ]

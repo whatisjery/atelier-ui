@@ -1,0 +1,76 @@
+---
+title: "Image Trail"
+description: "Cursor trail effect that spawns images along it's path."
+tags: ["Cursor Effect", "Cursor Trail", "Motion"]
+---
+
+<DocComponentPreview name="image-trail-demo" />
+
+## Installation
+
+<DocInstallGuide name="image-trail" />
+
+---
+
+## Usage
+```tsx title="Imports"
+import { ImageTrail } from "@/components/ImageTrail"
+```
+
+```tsx title="Configured"
+const PHOTOS = ["/img/1.jpg", "/img/2.jpg", "/img/3.jpg"]
+
+<ImageTrail
+    spawnDistance={120}
+    driftAmount={60}
+    removeDelay={1.2}
+    data={PHOTOS}
+    renderItem={(src) => (
+        <img src={src} className="w-20 h-20 rounded-lg object-cover" />
+    )}
+/>
+```
+
+```tsx title="Scoped to a container"
+const PHOTOS = ["/img/1.jpg", "/img/2.jpg", "/img/3.jpg"]
+
+const containerRef = useRef<ComponentRef<"div">>(null)
+
+<div ref={containerRef} className="w-100 h-100">
+    <ImageTrail containerRef={containerRef} />
+</div>
+```
+
+---
+
+## API
+
+| Name            | Type                        | Default | Description                                              |
+| --------------- | --------------------------- | ------- | -------------------------------------------------------- |
+| `data`          | `T[]`                       | —       | Array of items.|
+| `renderItem`    | `(item: T) => ReactNode`    | —       | Render function called for each items.|
+| `spawnDistance`  | `number`                    | `120`   | Distance in pixels before spawning an item.|
+| `driftAmount`   | `number`                    | `60`    | How far each item drifts from its spawn point in px.|
+| `removeDelay`   | `number`                    | `1.2`   | Seconds before a spawned item is removed.|
+
+---
+
+## Features
+
+- **Composable**: Even if its called "Image Trail", you can render anything via `renderItem`.
+- **Distance-based spawning**: items spawn based on pointer distance.
+- **Directional drift**: items drift irection of cursor movement.
+- **Touch support**: Works on both desktop and mobile.
+
+---
+
+## Notes
+
+- **touch-action**: Use `touch-action: none` to avoid scroll interference on mobile.
+- **spawnDistance**: Lower `spawnDistance` for mobile to account for shorter drag distances.
+
+---
+
+## Credits
+
+- Built with [https://motion.dev](https://motion.dev/)
