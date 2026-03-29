@@ -26,9 +26,9 @@ const DATA = ["Item 1", "Item 2", "Item 3", "Item 4", "Item 5"]
     speed={6}
     inertia={0.6}
     perView={4}
+    gap={10}
     mode="flip" // `flip` tilts items in 3D. `shrink` compresses edges
     className="w-full" // container width
-    itemClassName="px-2" // spacing between items
     renderItem={(item) => (
         <img
             src={item.src}
@@ -49,7 +49,7 @@ const DATA = ["Item 1", "Item 2", "Item 3", "Item 4", "Item 5"]
 | `data`          | `T[]`                             | —                   | Array of items to render.|
 | `renderItem`    | `(item: T) => ReactNode`          | —                   | Render function called for each item.|
 | `mode`          | `"shrink" \| "flip"`              | `"flip"`            | `flip` tilts items in 3D. `shrink` compresses edges.|
-| `pervView`      | `number`                          | `4`                 | Number of items visible at once.|
+| `perView`      | `number`                          | `4`                 | Number of items visible at once.|
 | `speed`         | `number`                          | `6`                 | Speed of the scroll.|
 | `inertia`       | `number`                          | `0.6`               | Inertia of the scroll.|
 | `gap`           | `number`                          | `5`                 | Gap between items.|
