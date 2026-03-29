@@ -1,4 +1,5 @@
 import { type ComponentRef, useEffect, useRef } from "react"
+import { useFrameLoop } from "../../hooks/use-frame-loop"
 
 type PixelatedTextProps = {
     pixelSize?: number
@@ -142,34 +143,96 @@ export function PixelatedText({
     const containerRef = useRef<ComponentRef<"span">>(null)
     const canvasRef = useRef<ComponentRef<"canvas">>(null)
 
-    useEffect(() => {
-        let frameId = 0
-        const container = containerRef.current
+    const bufferRef = useRef<{
+        source: HTMLCanvasElement
+        sourceCtx: CanvasRenderingContext2D
+        shrink: HTMLCanvasElement
+        shrinkCtx: CanvasRenderingContext2D
+    } | null>(null)
+
+    const stateRef = useRef({
+        width: 0,
+        height: 0,
+        pixelWidth: 0,
+        pixelHeight: 0,
+        colorIndex: -1,
+        hasRendered: false,
+    })
+
+    useFrameLoop(() => {
         const canvas = canvasRef.current
+        const ctx = canvas?.getContext("2d")
+        const textEl = sizingRef.current
+        const buffer = bufferRef.current
+        if (!canvas || !ctx || !textEl || !buffer || !containerRef.current) return
 
-        if (!container || !canvas) return
+        const state = stateRef.current
+        const fallback = getComputedStyle(containerRef.current).color
 
-        const outputCtx = getContext(canvas)
-        const sourceCanvas = document.createElement("canvas")
-        const sourceCtx = getContext(sourceCanvas)
-        const shrinkCanvas = document.createElement("canvas")
-        const shrinkCtx = getContext(shrinkCanvas)
+        let color = fallback
+        if (colors && colors.length > 0) {
+            const index = randomIndex(colors.length, state.colorIndex)
+            state.colorIndex = index
+            color = colors[index]
+        }
+
+        drawText({
+            ctx: buffer.sourceCtx,
+            textEl: textEl,
+            color: color,
+            width: state.width,
+            height: state.height,
+        })
+
+        const baseFlicker = 1 + flicker * 2.5
+        const randomFlicker = Math.random() * flicker * 1.2
+        const randomDepth = depth * pixelSize * 5 * (Math.random() - 0.3)
+
+        const currentPixel = Math.max(
+            2,
+            Math.round(pixelSize * (baseFlicker + randomFlicker) + randomDepth),
+        )
+
+        pixelate({
+            source: buffer.source,
+            output: ctx,
+            shrinkCanvas: buffer.shrink,
+            shrinkCtx: buffer.shrinkCtx,
+            pixelWidth: state.pixelWidth,
+            pixelHeight: state.pixelHeight,
+            currentPixel,
+            chaos,
+        })
+
+        const randChaos = Math.random() * chaos * 3 - (chaos * 3) / 2
+
+        canvas.style.transform = `translate(${randChaos}px, ${randChaos}px)`
+
+        if (!state.hasRendered) {
+            state.hasRendered = true
+            canvas.style.opacity = "1"
+            if (sizingRef.current) sizingRef.current.style.visibility = "hidden"
+        }
+    }, speed)
+
+    useEffect(() => {
+        const canvas = canvasRef.current
+        const container = containerRef.current
+        if (!canvas || !container) return
+
+        const source = document.createElement("canvas")
+        const shrink = document.createElement("canvas")
+        const state = stateRef.current
+
+        bufferRef.current = {
+            source: source,
+            sourceCtx: getContext(source),
+            shrink: shrink,
+            shrinkCtx: getContext(shrink),
+        }
 
         canvas.style.willChange = "transform"
         canvas.style.filter = aberrationFilter(aberration)
-
-        const fallback = getComputedStyle(container).color
-        const floor = 1 + flicker * 2.5
-
-        const state = {
-            lastTick: 0,
-            colorIndex: -1,
-            width: 0,
-            height: 0,
-            pixelWidth: 0,
-            pixelHeight: 0,
-            hasRendered: false,
-        }
 
         const measure = () => {
             const textEl = sizingRef.current
@@ -185,8 +248,8 @@ export function PixelatedText({
             state.pixelWidth = Math.ceil(rect.width * dpr)
             state.pixelHeight = Math.ceil(rect.height * dpr)
 
-            sourceCanvas.width = state.pixelWidth
-            sourceCanvas.height = state.pixelHeight
+            source.width = state.pixelWidth
+            source.height = state.pixelHeight
 
             canvas.width = state.pixelWidth
             canvas.height = state.pixelHeight
@@ -194,78 +257,17 @@ export function PixelatedText({
             canvas.style.height = `${rect.height}px`
         }
 
-        const render = (time: number) => {
-            frameId = requestAnimationFrame(render)
-            if (time - state.lastTick < speed) return
-
-            state.lastTick = time
-
-            const textEl = sizingRef.current
-            if (!textEl) return
-
-            let color = fallback
-
-            if (colors && colors.length > 0) {
-                const index = randomIndex(colors.length, state.colorIndex)
-                state.colorIndex = index
-                color = colors[index]
-            }
-
-            drawText({
-                ctx: sourceCtx,
-                textEl,
-                color,
-                width: state.width,
-                height: state.height,
-            })
-
-            const randFlicker = Math.random() * flicker * 1.2
-            const randDepth = depth * pixelSize * 5 * (Math.random() - 0.3)
-            const currentPixel = Math.max(
-                2,
-                Math.round(pixelSize * (floor + randFlicker) + randDepth),
-            )
-
-            pixelate({
-                source: sourceCanvas,
-                output: outputCtx,
-                shrinkCanvas,
-                shrinkCtx,
-                pixelWidth: state.pixelWidth,
-                pixelHeight: state.pixelHeight,
-                currentPixel,
-                chaos,
-            })
-
-            const randChaos = Math.random() * chaos * 3 - (chaos * 3) / 2
-            canvas.style.transform = `translate(${randChaos}px, ${randChaos}px)`
-
-            if (!state.hasRendered) {
-                state.hasRendered = true
-                canvas.style.opacity = "1"
-
-                if (sizingRef.current) {
-                    sizingRef.current.style.visibility = "hidden"
-                }
-            }
-        }
-
         document.fonts.ready.then(measure)
-
         const resizeObserver = new ResizeObserver(measure)
         resizeObserver.observe(container)
 
-        frameId = requestAnimationFrame(render)
-
         return () => {
-            cancelAnimationFrame(frameId)
             resizeObserver.disconnect()
-
-            if (sizingRef.current) {
-                sizingRef.current.style.visibility = ""
-            }
+            bufferRef.current = null
+            stateRef.current.hasRendered = false
+            if (sizingRef.current) sizingRef.current.style.visibility = ""
         }
-    }, [pixelSize, flicker, chaos, depth, aberration, colors, speed])
+    }, [aberration])
 
     return (
         <Tag ref={containerRef} className={`relative inline-block ${className}`}>

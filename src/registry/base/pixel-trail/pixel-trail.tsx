@@ -1,6 +1,7 @@
 "use client"
 
-import { useEffect, useRef } from "react"
+import { type ComponentRef, useEffect, useRef } from "react"
+import { useFrameLoop } from "../../hooks/use-frame-loop"
 
 type PixelTrailProps = {
     mode?: "color" | "sample"
@@ -99,19 +100,42 @@ export function PixelTrail({
     gridThickness = 1,
     className,
 }: PixelTrailProps) {
-    const canvasRef = useRef<HTMLCanvasElement>(null)
+    const canvasRef = useRef<ComponentRef<"canvas">>(null)
+    const canvasSizeRef = useRef({ width: 0, height: 0 })
+    const pixelsRef = useRef<Pixel[]>([])
+
+    useFrameLoop((_, delta) => {
+        if (!canvasRef.current) return
+        const ctx = getContext(canvasRef.current)
+
+        const { width, height } = canvasSizeRef.current
+
+        const pixels = pixelsRef.current
+
+        ctx.clearRect(0, 0, width, height)
+
+        for (let i = pixels.length - 1; i >= 0; i--) {
+            pixels[i].fade += delta
+            if (pixels[i].fade >= pixels[i].lifetime) {
+                pixels[i] = pixels[pixels.length - 1]
+                pixels.pop()
+            }
+        }
+
+        for (const pixel of pixels) {
+            const remaining = pixel.lifetime - pixel.fade
+            ctx.globalAlpha = fade > 0 ? Math.min(1, remaining / fade) : 1
+            ctx.fillStyle = pixel.color
+            ctx.fillRect(pixel.posX, pixel.posY, pixelSize, pixelSize)
+        }
+        ctx.globalAlpha = 1
+    })
 
     useEffect(() => {
         const canvas = canvasRef.current
         if (!canvas) return
-
         const ctx = getContext(canvas)
-        const pixels: Pixel[] = []
         const samplers: ColorSampler[] = []
-        const canvasSize = { width: 0, height: 0 }
-
-        let frameId = 0
-        let lastTime = performance.now()
 
         function rebuildSamplers() {
             samplers.length = 0
@@ -135,7 +159,7 @@ export function PixelTrail({
             })
         }
 
-        function getColorAt(screenX: number, screenY: number): string {
+        const getColorAt = (screenX: number, screenY: number): string => {
             for (const sampler of samplers) {
                 const sampled = sampler(screenX, screenY)
                 if (sampled) return sampled
@@ -143,9 +167,7 @@ export function PixelTrail({
             return color
         }
 
-        function addPixels(clientX: number, clientY: number) {
-            if (!canvas) return
-
+        const addPixels = (clientX: number, clientY: number) => {
             const rect = canvas.getBoundingClientRect()
             const localX = clientX - rect.left
             const localY = clientY - rect.top
@@ -161,7 +183,7 @@ export function PixelTrail({
                     const posX = (gridX + offsetX) * pixelSize
                     const posY = (gridY + offsetY) * pixelSize
 
-                    pixels.push({
+                    pixelsRef.current.push({
                         posX,
                         posY,
                         lifetime: lifetime * (0.2 + Math.random() ** 2 * 0.8),
@@ -175,44 +197,13 @@ export function PixelTrail({
             }
         }
 
-        function updatePixels(delta: number) {
-            for (let index = pixels.length - 1; index >= 0; index--) {
-                pixels[index].fade += delta
-                if (pixels[index].fade >= pixels[index].lifetime) {
-                    pixels[index] = pixels[pixels.length - 1]
-                    pixels.pop()
-                }
-            }
-        }
-
-        function drawPixels() {
-            for (const pixel of pixels) {
-                const remaining = pixel.lifetime - pixel.fade
-                ctx.globalAlpha = fade > 0 ? Math.min(1, remaining / fade) : 1
-                ctx.fillStyle = pixel.color
-                ctx.fillRect(pixel.posX, pixel.posY, pixelSize, pixelSize)
-            }
-            ctx.globalAlpha = 1
-        }
-
-        function resize() {
-            if (!canvas) return
-
+        const resize = () => {
             const dpr = window.devicePixelRatio || 1
-            canvasSize.width = canvas.clientWidth
-            canvasSize.height = canvas.clientHeight
-            canvas.width = canvasSize.width * dpr
-            canvas.height = canvasSize.height * dpr
+            canvasSizeRef.current.width = canvas.clientWidth
+            canvasSizeRef.current.height = canvas.clientHeight
+            canvas.width = canvasSizeRef.current.width * dpr
+            canvas.height = canvasSizeRef.current.height * dpr
             ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
-        }
-
-        function loop(now: number) {
-            const delta = Math.min((now - lastTime) / 1000, 0.1)
-            lastTime = now
-            ctx.clearRect(0, 0, canvasSize.width, canvasSize.height)
-            updatePixels(delta)
-            drawPixels()
-            frameId = requestAnimationFrame(loop)
         }
 
         const onMouseMove = (event: MouseEvent) => addPixels(event.clientX, event.clientY)
@@ -227,13 +218,11 @@ export function PixelTrail({
         window.addEventListener("mousemove", onMouseMove)
         window.addEventListener("touchmove", onTouchMove, { passive: true })
         resize()
-        frameId = requestAnimationFrame(loop)
 
         return () => {
             resizeObserver.disconnect()
             window.removeEventListener("mousemove", onMouseMove)
             window.removeEventListener("touchmove", onTouchMove)
-            cancelAnimationFrame(frameId)
         }
     }, [mode, color, imageSelector, lightenSample, pixelSize, trailRadius, lifetime, fade])
 
