@@ -13,6 +13,7 @@ export const addCommand = new Command()
     .option("-f, --force", "overwrite existing files", false)
     .option("-r, --registry <url>", "registry URL", REGISTRY_URL)
     .option("--no-install", "skip dependency installation")
+    .option("--shared-path <path>", "shared file destination", "src")
     .action(async (component, options) => {
         let res: Response
 
@@ -52,6 +53,26 @@ export const addCommand = new Command()
 
             await fs.ensureDir(path.dirname(destPath))
             await fs.writeFile(destPath, file.content)
+        }
+
+        if (data.shared && Array.isArray(data.shared)) {
+            for (const file of data.shared) {
+                if (file.path.includes("..")) {
+                    console.error(`Invalid shared file path: ${file.path}`)
+                    process.exit(1)
+                }
+
+                const destPath = path.join(options.sharedPath, file.path)
+
+                if (await fs.pathExists(destPath)) {
+                    console.log(`Shared file already exists: ${file.path} (skipped)`)
+                    continue
+                }
+
+                await fs.ensureDir(path.dirname(destPath))
+                await fs.writeFile(destPath, file.content)
+                console.log(`Added shared file: ${file.path}`)
+            }
         }
 
         console.log(`Added ${component}`)

@@ -1,12 +1,23 @@
 {
     "name": "atelier-ui",
-    "version": "0.1.0",
+    "version": "0.2.0",
     "files": [
         "dist"
     ],
     "bin": {
         "atelier-ui": "./dist/index.js"
     },
+    "keywords": [
+        "react",
+        "components",
+        "animations",
+        "effects",
+        "tailwindcss",
+        "webgl",
+        "canvas",
+        "copy-paste",
+        "ui"
+    ],
     "scripts": {
         "build": "tsc",
         "test": "vitest run",

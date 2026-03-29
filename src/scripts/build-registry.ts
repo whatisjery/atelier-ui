@@ -28,10 +28,19 @@ async function buildRegistry() {
             }),
         )
 
+        const sharedFiles = await Promise.all(
+            component.shared.map(async (sharedPath) => {
+                const fullPath = path.join(REGISTRY_DIR, `${sharedPath}`)
+                const content = await readFile(fullPath, "utf-8")
+                return { path: `${sharedPath}`, content }
+            }),
+        )
+
         const output = {
             name: component.name,
             description: component.description,
             dependencies: component.dependencies,
+            shared: sharedFiles,
             files,
         }
 

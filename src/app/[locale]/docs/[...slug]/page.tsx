@@ -7,6 +7,7 @@ import DocPageDropdown from "@/components/features/docs/DocPageDropdown"
 import DocPagination from "@/components/features/docs/DocPagination"
 import DocTableOfContent from "@/components/features/docs/DocTableOfContent"
 import { getAllDocs, getCodesBlock, getDocBySlug, getDocNavigation } from "@/lib/docs"
+import { getComponentSnippets } from "@/lib/registry"
 
 type PageProps = {
     params: Promise<{ locale: string; slug: string[] }>
@@ -34,7 +35,8 @@ export default async function Page({ params }: PageProps) {
     const navigation = getDocNavigation(locale, slug)
 
     const demoCode = getCodesBlock("src/registry/demos")
-    const baseCode = getCodesBlock("src/registry/base")
+    const snippets = getComponentSnippets()
+
     const content = await import(`@/content/${locale}/${slug.join("/")}.mdx`)
 
     return (
@@ -60,7 +62,7 @@ export default async function Page({ params }: PageProps) {
                         },
 
                         DocInstallGuide: (props: { name: string }) => {
-                            return <DocInstallGuide {...props} snippets={baseCode[props.name]} />
+                            return <DocInstallGuide {...props} snippets={snippets[props.name]} />
                         },
                     }}
                 />

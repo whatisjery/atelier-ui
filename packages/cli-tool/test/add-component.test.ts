@@ -8,6 +8,7 @@ import { afterAll, beforeAll, beforeEach, describe, expect, it } from "vitest"
 const execAsync = promisify(exec)
 
 const COMPONENTS_PATH = path.resolve(__dirname, "../test/fixtures/project/components")
+const SHARED_PATH = path.resolve(__dirname, "../test/fixtures/project")
 const REGISTRY_DIR = path.resolve(__dirname, "../../../public/registry")
 
 let server: http.Server
@@ -37,12 +38,13 @@ afterAll(() => {
     server.close()
 })
 
-describe("add command to project", () => {
+describe("add command", () => {
     beforeEach(() => {
         fs.removeSync(COMPONENTS_PATH)
+        fs.removeSync(path.join(SHARED_PATH, "hooks"))
     })
 
-    it("installs a component to a project", async () => {
+    it("installs a component", async () => {
         await execAsync(
             `npx tsx src/index.ts add fluid-distortion --path ${COMPONENTS_PATH} --no-install`,
             {
@@ -51,5 +53,17 @@ describe("add command to project", () => {
             },
         )
         expect(fs.existsSync(`${COMPONENTS_PATH}/fluid-distortion/fluid-distortion.tsx`)).toBe(true)
+    })
+
+    it("installs a component with shared files", async () => {
+        await execAsync(
+            `npx tsx src/index.ts add pixel-trail --path ${COMPONENTS_PATH} --shared-path ${SHARED_PATH} --no-install`,
+            {
+                cwd: path.resolve(__dirname, ".."),
+                env: { ...process.env, ATELIER_REGISTRY: `http://localhost:${port}` },
+            },
+        )
+        expect(fs.existsSync(`${COMPONENTS_PATH}/pixel-trail/pixel-trail.tsx`)).toBe(true)
+        expect(fs.existsSync(`${SHARED_PATH}/hooks/use-frame-loop.ts`)).toBe(true)
     })
 })
