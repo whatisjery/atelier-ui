@@ -54,4 +54,11 @@ export const components: TRegistryComponent[] = [
         shared: [],
         dependencies: ["motion"],
     },
+    {
+        name: "infinite-gallery",
+        files: ["infinite-gallery.tsx"],
+        description: "Infinite gallery effect",
+        shared: ["hooks/use-frame-loop.ts"],
+        dependencies: [],
+    },
 ]

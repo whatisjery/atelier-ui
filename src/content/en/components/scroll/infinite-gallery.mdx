@@ -1,0 +1,67 @@
+---
+title: "Infinite Gallery"
+description: "Zero-dependency infinite horizontal gallery with drag/wheel input, and transform modes."
+tags: ["Scroll Effect", "Carousel", "Physics", "3D Transform", "Gallery"]
+---
+
+<DocComponentPreview name="infinite-gallery-demo" />
+
+## Installation
+
+<DocInstallGuide name="infinite-gallery" />
+
+---
+
+## Usage
+
+```tsx title="Imports"
+import { InfiniteGallery } from "@/components/InfiniteGallery"
+```
+
+```tsx title="Default"
+const DATA = ["Item 1", "Item 2", "Item 3", "Item 4", "Item 5"]
+
+<InfiniteGallery
+    data={DATA}
+    speed={6}
+    inertia={0.6}
+    perView={4}
+    mode="flip" // `flip` tilts items in 3D. `shrink` compresses edges
+    className="w-full" // container width
+    itemClassName="px-2" // spacing between items
+    renderItem={(item) => (
+        <img
+            src={item.src}
+            alt="image"
+            className="w-full h-auto object-cover select-none pointer-events-none"
+            draggable={false}
+        />
+    )}
+/>
+```
+
+---
+
+## API
+
+| Name            | Type                              | Default             | Description                                                       |
+| --------------- | --------------------------------- | ------------------- | ----------------------------------------------------------------- |
+| `data`          | `T[]`                             | —                   | Array of items to render.|
+| `renderItem`    | `(item: T) => ReactNode`          | —                   | Render function called for each item.|
+| `mode`          | `"shrink" \| "flip"`              | `"flip"`            | `flip` tilts items in 3D. `shrink` compresses edges.|
+| `pervView`      | `number`                          | `4`                 | Number of items visible at once.|
+| `speed`         | `number`                          | `6`                 | Speed of the scroll.|
+| `inertia`       | `number`                          | `0.6`               | Inertia of the scroll.|
+| `gap`           | `number`                          | `5`                 | Gap between items.|
+| `className`     | `string`                          | `undefined`         | Class for the container element.|
+| `itemClassName` | `string`                          | `undefined`         | Class for each item wrapper.|
+
+---
+
+## Features
+
+- **No dependencies**: native DOM transforms.
+- **Horizontal scroll**: triggered by mouse wheel (vertical) or pointer drag
+- **Smooth physics**: lerp based scrolling with inertia.
+- **Drag & scroll**: supports pointer drag and mouse wheel.
+- **Frame-rate independent**: runs at consistent speed regardless of your monitor's refresh rate.
