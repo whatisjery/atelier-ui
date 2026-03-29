@@ -3,13 +3,13 @@
 import Image from "next/image"
 import { type ComponentRef, useRef } from "react"
 import GridPattern from "@/components/ui/GridPattern"
-import { ImageTrail } from "@/registry/base/image-trail/Image-trail"
+import { ImageTrail } from "@/registry/base/image-trail/image-trail"
 
 const ITEMS = [
-    "/images/demo/image-trail/1.webp",
-    "/images/demo/image-trail/2.webp",
-    "/images/demo/image-trail/3.webp",
-    "/images/demo/image-trail/4.webp",
+    "/images/demo/shared/1.webp",
+    "/images/demo/shared/2.webp",
+    "/images/demo/shared/3.webp",
+    "/images/demo/shared/4.webp",
 ]
 
 export default function ImageTrailDemo() {
