@@ -4,7 +4,7 @@ import { Pointer } from "lucide-react"
 import { useTheme } from "next-themes"
 import { MagneticDotGrid } from "@/registry/base/magnetic-dot-grid/magnetic-dot-grid"
 
-export default function PixelTrailDemo() {
+export default function MagneticDotGridDemo() {
     const { resolvedTheme } = useTheme()
     return (
         <div className="w-full h-full absolute inset-0 not-prose flex items-center justify-center">

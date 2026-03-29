@@ -38,7 +38,7 @@ function RefractiveSphere({ buffer }: { buffer: Texture | null }) {
     )
 }
 
-export default function Scene() {
+export default function HalftoneGlowDemo() {
     const [texture, setTexture] = useState<Texture | null>(null)
 
     return (
