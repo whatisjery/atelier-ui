@@ -59,6 +59,8 @@ Here’s where each type of file lives:
 ├── base
 │   └── your-component
 │       └── your-component.tsx          # Your new component
+├── hooks
+│   └── use-frame-loop.ts               # Shared hooks
 ├── demos
 │   ├── your-component-demo
 │   │   └── your-component-demo.tsx     # Your new demo component
@@ -76,18 +78,18 @@ Here’s where each type of file lives:
 
 Each component should have a **single responsibility** and live in a single file to keep it self-contained and easy to copy.
 
-If some logic could be reused or has its own responsibility, **extract it into a helper, hook, or sub-component**.
+If some logic is shared across multiple components, place it in `src/registry/hooks/` and list it in the component's `shared` field in the registry.
+
 
 ```tsx title="Component structure"
-const CONSTANTS = {...} as const
-
-const hookExample = () => {...}
-
-function utilFunction() {...}
+const NAMED_X_CONSTANT = {...} as const
+const NAMED_Y_CONSTANT = "value" as const
 
 type ComponentExample = {...}
 
 type ComponentExampleProps = {...} & ComponentProps<'div'>
+
+function helperFunction() {...}
 
 export function ComponentExample({}: ComponentExampleProps) {...}
 ```
@@ -107,7 +109,6 @@ For interactive components, add **keyboard support** and **ARIA roles/labels** w
 
 
 
-
 ---
 
 ## How to add a new component
@@ -116,7 +117,7 @@ For interactive components, add **keyboard support** and **ARIA roles/labels** w
 
 Create a new folder in the `src/registry/base` folder with the name of the component:
 ```tsx title="src/registry/base/component-name/component-name.tsx"
-export default function ComponentName() {
+export function ComponentName() {
     return <></>
 }
 ```
@@ -127,7 +128,7 @@ Create a demo component in the `src/registry/demos` folder and structure it how 
 ```tsx title="src/registry/demos/component-name-demo/component-name-demo.tsx"
 import ComponentName from '@/registry/base/component-name/component-name'
 
-export default function ComponentNameDemo() {
+export function ComponentNameDemo() {
     return <ComponentName />
 }
 ```
@@ -150,6 +151,7 @@ export const components: TRegistryComponent[] = [
         name: 'new-component',
         files: ['new-component.tsx'],
         description: 'My new component',
+        shared: ["hooks/my-shared-hook", "utils/my-shared-utility"],
         dependencies: [
             'example-dependency-1',
             'example-dependency-2',
