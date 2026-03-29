@@ -157,7 +157,7 @@ function SideBarCore({
                                     <li key={child.title}>
                                         <Link
                                             className={cn(
-                                                "py-1.5 px-2 rounded-md w-full flex items-center justify-between text-mat-2",
+                                                "py-1.5 px-2 hover:text-mat-1 rounded-md w-full flex items-center justify-between text-mat-2",
                                                 {
                                                     "text-highlight font-medium": isActive,
                                                 },

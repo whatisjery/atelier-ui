@@ -2,7 +2,7 @@
 
 import CardGrid from "@/components/ui/CardGrid"
 import DashedBorder from "@/components/ui/DashedBorder"
-import { getLucideIcon } from "@/lib/utils"
+import { cn, getLucideIcon } from "@/lib/utils"
 import type { DocTree } from "@/types/docs"
 
 type DocComponentListProps = {
@@ -21,7 +21,8 @@ export default function DocComponentList({ componentsList }: DocComponentListPro
                     <div className="grid grid-cols-1 md:grid-cols-2">
                         {component.children.map((child, index) => {
                             const isLastItem = index === component.children.length - 1
-                            const isLastRow = index >= component.children.length - 2
+                            const currentRow = Math.floor(index / 2)
+                            const lastRow = Math.floor((component.children.length - 1) / 2)
                             const isOdd = index % 2 === 0
                             const Icon = getLucideIcon(component.icon)
 
@@ -29,9 +30,9 @@ export default function DocComponentList({ componentsList }: DocComponentListPro
                                 <div key={child.title} className={"relative"}>
                                     {!isLastItem && (
                                         <DashedBorder
-                                            className={`absolute bottom-0 left-0 right-0 ${
-                                                isLastRow ? "md:hidden" : ""
-                                            }`}
+                                            className={cn("absolute bottom-0 left-0 right-0", {
+                                                "md:hidden": currentRow === lastRow,
+                                            })}
                                             direction="horizontal"
                                         />
                                     )}
