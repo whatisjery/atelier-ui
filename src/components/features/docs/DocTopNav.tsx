@@ -12,7 +12,7 @@ import Border from "@/components/ui/Border"
 import Button from "@/components/ui/Button"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { Link, usePathname } from "@/i18n/navigation"
-import { REPO_URL, TEMP_NAV_LINKS } from "@/lib/constants"
+import { REPO_URL, TEMP_NAV_LINKS, VERSION } from "@/lib/constants"
 import { useGlobalStore } from "@/lib/store"
 import { cn } from "@/lib/utils"
 
@@ -29,7 +29,9 @@ export default function DocTopNav() {
 
             <div className="max-w-doc-max-w px-5 mx-auto flex flex-col h-nav-h justify-between">
                 <div className="flex justify-between lg:grid lg:grid-cols-[1fr_auto_1fr] items-center h-[60%] w-full">
-                    <BrandLink />
+                    <BrandLink
+                        slot={<span className="text-mat-2/70 font-serif text-xl">({VERSION})</span>}
+                    />
 
                     {!isMobile && (
                         <GlobalSearch
