@@ -61,4 +61,11 @@ export const components: TRegistryComponent[] = [
         shared: ["hooks/use-frame-loop.ts"],
         dependencies: [],
     },
+    {
+        name: "simple-scramble",
+        files: ["simple-scramble.tsx"],
+        description: "Simple scramble effect",
+        shared: ["hooks/use-frame-loop.ts"],
+        dependencies: [],
+    },
 ]

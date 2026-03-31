@@ -8,4 +8,5 @@ export const demos: Record<string, React.LazyExoticComponent<React.ComponentType
     "pixelated-text-demo": lazy(() => import("./pixelated-text-demo/pixelated-text-demo")),
     "image-trail-demo": lazy(() => import("./image-trail-demo/image-trail-demo")),
     "infinite-gallery-demo": lazy(() => import("./infinite-gallery-demo/infinite-gallery-demo")),
+    "simple-scramble-demo": lazy(() => import("./simple-scramble-demo/simple-scramble-demo")),
 }

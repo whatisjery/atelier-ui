@@ -1,0 +1,43 @@
+---
+title: "Simple Scramble"
+description: "A simple text scramble effect that reveals characters from left to right."
+tags: ["Animation", "Text", "Scramble"]
+---
+
+<DocComponentPreview name="simple-scramble-demo" />
+
+## Installation
+
+<DocInstallGuide name="simple-scramble" />
+
+---
+
+## Usage
+```tsx title="Imports"
+import { SimpleScramble } from "@/components/SimpleScramble"
+```
+
+```tsx title="Usage example"
+<SimpleScramble>
+    Hello world
+</SimpleScramble>
+```
+
+## API
+
+| Name          | Type               | Default  | Description                                              |
+| ------------- | ------------------ | -------- | -------------------------------------------------------- |
+| `duration`    | `number`           | `1`      | Total duration of the reveal in seconds.|
+| `playOnMount` | `boolean`          | `true`   | Plays the scramble animation on mount.
+| `playOnHover` | `boolean`          | `true`  | Replays the scramble animation on hover.|
+| `as`          | `React.ElementType`| `"span"` | Polymorphic tag: render as any HTML element.|
+
+---
+
+## Credits
+
+[Yugop Nakamura](https://tha.jp/)  
+Original text scramble effect
+
+[use-scramble](https://www.use-scramble.dev/)  
+A react hook for text scrambling by [tolis](https://tol.is/)
