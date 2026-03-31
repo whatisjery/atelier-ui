@@ -17,13 +17,10 @@ tags: ["Cursor Effect", "Cursor Trail", "Motion"]
 import { ImageTrail } from "@/components/ImageTrail"
 ```
 
-```tsx title="Configured"
+```tsx title="Usage example"
 const PHOTOS = ["/img/1.jpg", "/img/2.jpg", "/img/3.jpg"]
 
 <ImageTrail
-    spawnDistance={120}
-    driftAmount={60}
-    removeDelay={1.2}
     data={PHOTOS}
     renderItem={(src) => (
         <img src={src} className="w-20 h-20 rounded-lg object-cover" />
@@ -33,11 +30,15 @@ const PHOTOS = ["/img/1.jpg", "/img/2.jpg", "/img/3.jpg"]
 
 ```tsx title="Scoped to a container"
 const PHOTOS = ["/img/1.jpg", "/img/2.jpg", "/img/3.jpg"]
-
 const containerRef = useRef<ComponentRef<"div">>(null)
 
 <div ref={containerRef} className="w-100 h-100">
-    <ImageTrail containerRef={containerRef} />
+    <ImageTrail
+        data={PHOTOS}
+        renderItem={(src) => (
+            <img src={src} className="w-20 h-20 rounded-lg object-cover" />
+        )}
+    />
 </div>
 ```
 
@@ -55,15 +56,6 @@ const containerRef = useRef<ComponentRef<"div">>(null)
 
 ---
 
-## Features
-
-- **Composable**: Even if its called "Image Trail", you can render anything via `renderItem`.
-- **Distance-based spawning**: items spawn based on pointer distance.
-- **Directional drift**: items drift irection of cursor movement.
-- **Touch support**: Works on both desktop and mobile.
-
----
-
 ## Notes
 
 - **touch-action**: Use `touch-action: none` to avoid scroll interference on mobile.
@@ -73,4 +65,5 @@ const containerRef = useRef<ComponentRef<"div">>(null)
 
 ## Credits
 
-- Built with [https://motion.dev](https://motion.dev/)
+[Motion](https://motion.dev)  
+React animation library.

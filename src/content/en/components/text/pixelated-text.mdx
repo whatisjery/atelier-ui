@@ -18,13 +18,13 @@ tags: ["Canvas", "Animation", "Glitch", "Text"]
 import { PixelatedText } from "@/components/PixelatedText"
 ```
 
-```tsx title="Default"
+```tsx title="Usage example"
 <PixelatedText>
     Hello world
 </PixelatedText>
 ```
 
-```tsx title="Configured"
+```tsx title="Usage example"
 <PixelatedText
     pixelSize={3}
     flicker={1.5}
@@ -37,7 +37,6 @@ import { PixelatedText } from "@/components/PixelatedText"
     Hello world
 </PixelatedText>
 ```
-
 
 ---
 
@@ -55,11 +54,3 @@ import { PixelatedText } from "@/components/PixelatedText"
 | `as`          | `React.ElementType` | `"span"` | Polymorphic tag: render as any HTML element.|
 | `className`   | `string`   | `undefined` | Class for the container element.|
 
----
-
-## Features
-
-- **SEO friendly**: compatible with search engines and screen readers.
-- **Responsive**: ResizeObserver remeasures on container resize.
-- **DPR-aware**: sharp rendering.
-- **Alignment**: baseline aligned with the other text elements.

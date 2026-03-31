@@ -76,10 +76,9 @@ Here’s where each type of file lives:
 
 ### Component Format
 
-Each component should have a **single responsibility** and live in a single file to keep it self-contained and easy to copy.
+Each component should have a **single responsibility** and reside in a single file to keep it self-contained and easy to reuse.
 
-If some logic is shared across multiple components, place it in `src/registry/hooks/` and list it in the component's `shared` field in the registry.
-
+If some logic, like a hook, is shared across multiple components, place it in a shared folder in `src/registry` and reference it in the component's `shared` field in `src/registry/index.ts`. One example is the `use-frame-loop` hook.
 
 ```tsx title="Component structure"
 const NAMED_X_CONSTANT = {...} as const
@@ -206,16 +205,16 @@ Add the API of the component by using the following table format:
 | `color`           | string  | `#ff5733` | Sets the primary color of the component.                             |
 ```
 
-### Features and credits
+### Credits
 
-Provide a detailed list of the component's features and always mention credits:
-```text title="Features example"
-- Lightweight with no external dependencies
-- Fully customizable via props
-```
+Provide a detailed list of the component's credits:
+
 ```text title="Credits example"
-- Inspired by [Author Name](https://example.com)
-- Animation logic adapted from [Library Name](https://example.com)
+[Author Name](https://example.com)
+Designed the original component concept.
+
+[Library Name](https://example.com)
+Used for animation utilities within this component.
 ```
 
 ---

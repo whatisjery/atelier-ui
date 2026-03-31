@@ -16,27 +16,11 @@ tags: ["Canvas Effect", "Cursor Interaction", "Dot Grid"]
 ```tsx title="Imports"
 import { MagneticDotGrid } from "@/components/MagneticDotGrid"
 ```
-```tsx title="Default"
+
+```tsx title="Usage example"
 <MagneticDotGrid className="absolute inset-0 touch-none w-full h-full" />
 ```
-```tsx title="Custom colors"
-<MagneticDotGrid
-    className="absolute inset-0 touch-none w-full h-full"
-    baseColor="#333333"
-    centerColors={["#FF0000", "#00FF00", "#0000FF"]}
-    cycleSpeed={0.5}
-    opacityRange={[0.2, 1]}
-/>
-```
-```tsx title="Tuned physics"
-<MagneticDotGrid
-    className="absolute inset-0 touch-none w-full h-full"
-    strength={80}
-    interactionRadius={400}
-    snapSpeed={16}
-    returnSpeed={2}
-/>
-```
+
 
 ---
 
@@ -60,18 +44,7 @@ import { MagneticDotGrid } from "@/components/MagneticDotGrid"
 
 ---
 
-## Features
-
-- **No dependencies**: pure Canvas 2D, no WebGL.
-- **Frame-rate independent**: consistent feel across all type of displays.
-- **Touch support**: works on mobile.
-- **DPR-aware**: sharp on retina displays.
-- **Smooth physics**: full control over reaction speed and return speed.
-- **Color cycling**: cycles through multiple colors based on cursor proximity.
-- **Opacity range**: dots can fade in or out based on cursor proximity.
-
----
-
 ## Credits
 
-Re-creation of the Google Stitch canvas effect as seen on [stitch.withgoogle.com](https://stitch.withgoogle.com/) as of march 22, 2026. Enable the dark mode on this website to see the similarity.
+[Google Stitch](https://stitch.withgoogle.com/)  
+Re-creation of the canvas hero effect (as of March 22, 2026). Enable dark mode to see the similarity.

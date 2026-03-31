@@ -4,13 +4,9 @@ description: "A GPU-accelerated fluid distortion effect that reacts to cursor mo
 tags: ['WebGL Effect', 'React Three Fiber', 'Fluid distortion']
 ---
 
-
-
 <DocComponentPreview name="fluid-distortion-demo" />
 
-
 ## Installation
-
 
 <DocInstallGuide name="fluid-distortion" />
 
@@ -24,7 +20,7 @@ import { Canvas } from '@react-three/fiber'
 import { EffectComposer } from '@react-three/postprocessing'
 ```
 
-```tsx title="Usage"
+```tsx title="Usage example"
 <Canvas>
     <EffectComposer>
         <FluidDistortion />
@@ -56,16 +52,13 @@ import { EffectComposer } from '@react-three/postprocessing'
 
 ---
 
-## Features
-
-- **GPU-accelerated via WebGL**: runs entirely on the graphics card, zero JS physics overhead
-- **Rainbow mode**: automatically derives fluid color from cursor direction
-- **Customizable fluid dynamics**: curl, swirl, pressure, velocity, and density dissipation
-- **Transparent background**: renders over any scene without a background layer
-- **Frame-rate independent**: runs at consistent speed regardless of your monitor's refresh rate
-
----
-
 ## Credits
 
-- WebGL shaders inspired by [Pavel Dobryakov's ](https://github.com/PavelDoGreat/WebGL-Fluid-Simulation) WebGL Fluid Simulation.
+[Pavel Dobryakov](https://github.com/PavelDoGreat/WebGL-Fluid-Simulation)  
+Creator of the original WebGL fluid simulation.
+
+[React Three Fiber](https://github.com/pmndrs/react-three-fiber)  
+React renderer for Three.js
+
+[@react-three/postprocessing](https://github.com/pmndrs/react-three-fiber/tree/master/packages/postprocessing)  
+Post-processing effects for React Three Fiber

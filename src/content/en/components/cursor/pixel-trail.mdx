@@ -18,21 +18,19 @@ tags: ["Canvas Effect", "Cursor Trail", "Image Sampling"]
 import { PixelTrail } from "@/components/PixelTrail"
 ```
 
-```tsx title="Solid color"
+```tsx title="Usage example"
 <PixelTrail
     className="fixed w-full h-full inset-0 pointer-events-none"
-    color="#000000"
 />
 ```
 
-```tsx title="Image sampling"
+```tsx title="Image sampling example" 
 <img className="hero-img" src="/hero.png" alt="Hero" />
 
 <PixelTrail
     className="fixed w-full h-full inset-0 pointer-events-none"
     mode="sample"
     imageSelector=".hero-img"
-    color="#000000" /* fallback color */
 />
 ```
 
@@ -57,14 +55,7 @@ import { PixelTrail } from "@/components/PixelTrail"
 
 ---
 
-## Features
-
-- **No dependencies**: pure Canvas 2D, no WebGL.
-- **Image color sampling**: sample pixel colors from images on the page, targeted by selector.
-- **Touch support**: works on mobile with multi-touch.
-- **DPR-aware**: sharp on retina displays.
-
-
 ## Credits
 
-- Pixel trail effect inspired by [Jonas Reymondin's](https://jonasreymondin.com/) portfolio, reimplemented only using a 2D canvas.
+[Jonas Reymondin](https://jonasreymondin.com/)  
+Pixel trail effect inspired by his portfolio, reimplemented using a 2D canvas.

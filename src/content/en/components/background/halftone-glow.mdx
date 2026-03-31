@@ -19,27 +19,13 @@ import { HalftoneGlow } from "@/components/HalftoneGlow"
 import { Canvas } from '@react-three/fiber'
 ```
 
-```tsx title="Default"
+```tsx title="Usage example"
 <Canvas>
     <HalftoneGlow />
 </Canvas>
 ```
 
-```tsx title="Configured"
-<Canvas>
-    <HalftoneGlow
-        edgeColor="#2F537F"
-        ringColor="#3981DA"
-        edgeSize={5}
-        edgeDistortion={0.03}
-        ringDistortion={0.11}
-        blurAmount={0.2}
-        speed={10}
-    />
-</Canvas>
-```
-
-```tsx title="With texture"
+```tsx title="With texture example"
 import type { Texture } from "three"
 
 function Scene() {
@@ -73,14 +59,12 @@ function Scene() {
 
 ---
 
-## Features
-
-- **Texture output**: renders to an offscreen buffer for use in other materials.
-- **Optimized**: FBOs scale with viewport. (early passes render at reduced res for performance.)
-- **Configurable**: edge thickness, blur, distortion, colors, speed - all via props.
-
----
-
 ## Credits
 
-Re-creation of the hero effect from an AI template on [aura.build](https://www.aura.build/templates/aura-financial), rebuilt as a standalone R3F component.
+[Aura Financial](https://www.aura.build/templates/aura-financial)  
+Re-creation of the original hero effect.
+
+[React Three Fiber](https://github.com/pmndrs/react-three-fiber)  
+React renderer for Three.js.
+
+
