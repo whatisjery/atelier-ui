@@ -23,12 +23,6 @@ const DATA = ["Item 1", "Item 2", "Item 3", "Item 4", "Item 5"]
 
 <InfiniteGallery
     data={DATA}
-    speed={6}
-    inertia={0.6}
-    perView={4}
-    gap={10}
-    mode="flip" // `flip` tilts items in 3D. `shrink` compresses edges
-    className="w-full" // container width
     renderItem={(item) => (
         <img
             src={item.src}
@@ -54,7 +48,6 @@ const DATA = ["Item 1", "Item 2", "Item 3", "Item 4", "Item 5"]
 | `inertia`       | `number`                          | `0.6`               | Inertia of the scroll.|
 | `gap`           | `number`                          | `5`                 | Gap between items.|
 | `className`     | `string`                          | `undefined`         | Class for the container element.|
-| `itemClassName` | `string`                          | `undefined`         | Class for each item wrapper.|
 
 ---
 
