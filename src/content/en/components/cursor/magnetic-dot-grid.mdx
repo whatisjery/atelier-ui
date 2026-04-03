@@ -26,21 +26,22 @@ import { MagneticDotGrid } from "@/components/MagneticDotGrid"
 
 ## API
 
-| Name               | Type               | Default                                        | Description                                        |
-| ------------------ | ------------------ | ---------------------------------------------- | -------------------------------------------------- |
-| `dotRadius`        | `number`           | `1`                                            | Radius of each dot in px.                          |
-| `spacing`          | `number`           | `20`                                           | Distance between dots in px.                       |
-| `strength`         | `number`           | `20`                                           | Strength of the magnetic force in px.              |
-| `interactionRadius`| `number`           | `300`                                          | Cursor influence range in px.                      |
-| `snapSpeed`        | `number`           | `8`                                            | How fast dots react to the cursor.                 |
-| `returnSpeed`      | `number`           | `3`                                            | How slowly dots return to their base position.     |
-| `floatAmplitude`   | `number`           | `1.8`                                          | How far dots floats from the cursor.      |
-| `floatSpeed`       | `number`           | `2`                                            | Speed of the floating fx.animation.              |
-| `opacityRange`     | `[number, number]` | `[1, 1]`                                       | Dot opacity `[min, max]` from cursor proximity. |
-| `baseColor`        | `string`           | `"#000000"`                                    | Default dot color.                                 |
-| `centerColors`     | `string[]`         | `["#000000"]`                                  | Colors near the cursor. Cycles through the array.  |
-| `cycleSpeed`       | `number`           | `1.5`                                          | Color cycle speed.       |
-| `className`        | `string`           | `"absolute inset-0 touch-none w-full h-full"`  | Canvas element classes for positioning and sizing. |
+| Name               | Type               | Default                                        | Description |
+| ------------------ | ------------------ | ---------------------------------------------- | --------------------------|
+| dotRadius          | `number`           | `1`                                            | Radius of each dot in px. |
+| spacing            | `number`           | `20`                                           | Distance between dots in px. |
+| strength           | `number`           | `20`                                           | Strength of the magnetic force in px. |
+| interactionRadius  | `number`           | `300`                                          | Cursor influence range in px. |
+| snapSpeed          | `number`           | `8`                                            | How fast dots react to the cursor. |
+| returnSpeed        | `number`           | `3`                                            | How slowly dots return to their base position.|
+| floatAmplitude     | `number`           | `1.8`                                          | How far dots floats from the cursor. |
+| floatSpeed         | `number`           | `2`                                            | Speed of the floating fx.animation. |
+| opacityRange       | `[number, number]` | `[1, 1]`                                       | Dot opacity `[min, max]` from cursor proximity. |
+| baseColor          | `string`           | `"#000000"`                                  | Default dot color. |
+| centerColors       | `string[]`         | `["#000000"]`                                | Colors near the cursor. Cycles through the array. |
+| cycleSpeed         | `number`           | `1.5`                                          | Color cycle speed. |
+| className          | `string`           | `"absolute inset-0 touch-none w-full h-full"`  | Canvas element classes for positioning and sizing. |
+
 
 ---
 

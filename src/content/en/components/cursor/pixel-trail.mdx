@@ -38,20 +38,20 @@ import { PixelTrail } from "@/components/PixelTrail"
 
 ## API
 
-| Name             | Type                  | Default                      | Description                                        |
-| ---------------- | --------------------- | ---------------------------- | -------------------------------------------------- |
-| `mode`           | `"color" \| "sample"` | `"color"`                    | Solid color trail or sample colors from images.    |
-| `color`          | `string`              | `"#000000"`                  | Trail color. Fallback when sampling misses.        |
-| `imageSelector`  | `string`              | `"img"`                      | CSS selector for images to sample.                 |
-| `lighten`        | `number`              | `20`                         | Brightness boost on sampled colors (`0`–`255`).    |
-| `pixelSize`      | `number`              | `20`                         | Size of each pixel square in px.                   |
-| `trailRadius`    | `number`              | `2`                          | Brush radius in grid cells. `0` for single pixel.  |
-| `lifetime`       | `number`              | `1`                          | Max pixel lifetime in seconds.                     |
-| `fade`           | `number`              | `0.5`                        | Fade-out duration in seconds. `0` to disable.      |
-| `showGrid`       | `boolean`             | `false`                      | Show a grid overlay.                               |
-| `gridColor`      | `string`              | `"rgba(255, 255, 255, 0.1)"` | Grid line color.                                   |
-| `gridThickness`  | `number`              | `1`                          | Grid line thickness in px.                         |
-| `className`      | `string`              | —                            | Root element classes for positioning and sizing.    |
+| Name            | Type                  | Default                      | Description   |
+| --------------- | --------------------- | ---------------------------- | -------------------------------------------------- |
+| mode           | `"color" \| "sample"` | `"color"`                    | Solid color trail or sample colors from images. |
+| color          | `string`              | `"#000000"`                  | Trail color. Fallback when sampling misses.  |
+| imageSelector  | `string`              | `"img"`                      | CSS selector for images to sample. |
+| lighten        | `number`              | `20`                         | Brightness boost on sampled colors (`0`–`255`). |
+| pixelSize      | `number`              | `20`                         | Size of each pixel square in px. |
+| trailRadius    | `number`              | `2`                          | Brush radius in grid cells. `0` for single pixel. |
+| lifetime       | `number`              | `1`                          | Max pixel lifetime in seconds. |
+| fade           | `number`              | `0.5`                        | Fade-out duration in seconds. `0` to disable. |
+| showGrid       | `boolean`             | `false`                      | Show a grid overlay. |
+| gridColor      | `string`              | `"rgba(255, 255, 255, 0.1)"` | Grid line color.  |
+| gridThickness  | `number`              | `1`                          | Grid line thickness in px. |
+| className      | `string`              | —                            | Root element classes for positioning and sizing. |
 
 ---
 
