@@ -1,7 +1,6 @@
 "use client"
 
 import React from "react"
-import { IconGSAPIcon } from "@/components/icons/IconGSAP"
 import { IconMotionIcon } from "@/components/icons/IconMotionIcon"
 import { IconReactIcon } from "@/components/icons/IconReactIcon"
 import { IconTailwindIcon } from "@/components/icons/IconTailwindIcon"
@@ -20,7 +19,7 @@ export const TECH_ICONS = [
     },
     {
         icon: <IconThreeJsIcon size={30} />,
-        title: "Three.js",
+        title: "React Three Fiber",
     },
     {
         icon: <IconTailwindIcon size={30} />,
@@ -29,10 +28,6 @@ export const TECH_ICONS = [
     {
         icon: <IconTypeScriptIcon size={22} />,
         title: "TypeScript",
-    },
-    {
-        icon: <IconGSAPIcon size={38} />,
-        title: "GreenSock",
     },
 ] as const
 
