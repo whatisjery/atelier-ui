@@ -2,7 +2,6 @@
 
 import Image from "next/image"
 import { useState } from "react"
-import GridPattern from "@/components/ui/GridPattern"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { cn } from "@/lib/utils"
 import {
@@ -35,7 +34,6 @@ export default function InfiniteGalleryDemo() {
 
     return (
         <>
-            <GridPattern hoverEffect={false} gridSize={28} />
             <div className="absolute top-3 right-3 text-xs flex space-x-5 z-2">
                 {MODES.map((mode) => (
                     <button
@@ -48,9 +46,7 @@ export default function InfiniteGalleryDemo() {
                         <div
                             className={cn(
                                 "w-2 h-2 border border-mat-1 bg-background rounded-full",
-                                {
-                                    "bg-mat-1": selectedMode === mode.value,
-                                },
+                                { "bg-mat-1": selectedMode === mode.value },
                             )}
                         />
 

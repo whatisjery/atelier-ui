@@ -8,7 +8,7 @@ export default function PixelTrailDemo() {
     const { resolvedTheme } = useTheme()
 
     return (
-        <div className="bg-background w-full h-full absolute inset-0 not-prose flex items-center justify-center">
+        <div className="w-full h-full absolute inset-0 not-prose flex items-center justify-center">
             <div className="w-60 h-60 relative">
                 <Image
                     src="/images/demo/pixel-trail/cloud.webp"
@@ -26,8 +26,6 @@ export default function PixelTrailDemo() {
                 color={resolvedTheme === "dark" ? "#FFFFFF" : "#000000"}
                 pixelSize={20}
                 trailRadius={2}
-                showGrid={true}
-                gridColor="rgba(112 119 195 / 0.08)"
                 fade={0}
                 lifetime={1}
             />

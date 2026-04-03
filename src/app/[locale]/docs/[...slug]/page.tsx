@@ -8,6 +8,7 @@ import DocPagination from "@/components/features/docs/DocPagination"
 import DocTableOfContent from "@/components/features/docs/DocTableOfContent"
 import { getAllDocs, getCodesBlock, getDocBySlug, getDocNavigation } from "@/lib/docs"
 import { getComponentSnippets } from "@/lib/registry"
+import { components } from "@/registry"
 
 type PageProps = {
     params: Promise<{ locale: string; slug: string[] }>
@@ -39,6 +40,10 @@ export default async function Page({ params }: PageProps) {
 
     const content = await import(`@/content/${locale}/${slug.join("/")}.mdx`)
 
+    const getDemoComponent = (name: string) => {
+        return components.find((component) => name.replace("-demo", "") === component.name)
+    }
+
     return (
         <PageDocLayout
             bottomSlot={navigation ? <DocPagination navigation={navigation} /> : undefined}
@@ -53,10 +58,13 @@ export default async function Page({ params }: PageProps) {
                 <content.default
                     components={{
                         DocComponentPreview: (props: { name: string }) => {
+                            const component = getDemoComponent(props.name)
+                            const hasR3f = component?.dependencies.includes("@react-three/drei")
                             return (
                                 <DocComponentPreview
                                     {...props}
                                     snippets={demoCode[props.name][0]}
+                                    dreiLoader={hasR3f ?? false}
                                 />
                             )
                         },

@@ -2,7 +2,6 @@
 
 import Image from "next/image"
 import { type ComponentRef, useRef } from "react"
-import GridPattern from "@/components/ui/GridPattern"
 import { ImageTrail } from "@/registry/base/image-trail/image-trail"
 
 const ITEMS = [
@@ -18,10 +17,8 @@ export default function ImageTrailDemo() {
     return (
         <div
             ref={ref}
-            className="bg-background w-full h-full absolute inset-0 not-prose flex items-center justify-center overflow-hidden"
+            className="w-full h-full absolute inset-0 not-prose flex items-center justify-center overflow-hidden"
         >
-            <GridPattern hoverEffect={false} gridSize={28} />
-
             <div className="font-serif xs:text-5xl relative z-1 text-center text-4xl">
                 Drag your mouse around.
             </div>
