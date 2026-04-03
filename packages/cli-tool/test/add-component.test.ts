@@ -70,13 +70,13 @@ describe("add command", () => {
 
     it("installs a component with shared assets", async () => {
         await execAsync(
-            `npx tsx src/index.ts add ripple-material --path ${COMPONENTS_PATH} --shared-path ${SHARED_PATH} --no-install`,
+            `npx tsx src/index.ts add liquid-touch --path ${COMPONENTS_PATH} --shared-path ${SHARED_PATH} --no-install`,
             {
                 cwd: path.resolve(__dirname, ".."),
                 env: { ...process.env, ATELIER_REGISTRY: `http://localhost:${port}` },
             },
         )
-        expect(fs.existsSync(`${COMPONENTS_PATH}/ripple-material/ripple-material.tsx`)).toBe(true)
+        expect(fs.existsSync(`${COMPONENTS_PATH}/liquid-touch/liquid-touch.tsx`)).toBe(true)
         expect(fs.existsSync(`${SHARED_PATH}/assets/ripple.png`)).toBe(true)
     })
 })
