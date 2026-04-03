@@ -9,4 +9,5 @@ export const demos: Record<string, React.LazyExoticComponent<React.ComponentType
     "image-trail-demo": lazy(() => import("./image-trail-demo/image-trail-demo")),
     "infinite-gallery-demo": lazy(() => import("./infinite-gallery-demo/infinite-gallery-demo")),
     "simple-scramble-demo": lazy(() => import("./simple-scramble-demo/simple-scramble-demo")),
+    "liquid-touch-demo": lazy(() => import("./liquid-touch-demo/liquid-touch-demo")),
 }

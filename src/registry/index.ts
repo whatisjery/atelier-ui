@@ -68,4 +68,11 @@ export const components: TRegistryComponent[] = [
         shared: ["hooks/use-frame-loop.ts"],
         dependencies: [],
     },
+    {
+        name: "liquid-touch",
+        files: ["liquid-touch.tsx"],
+        description: "Liquid touch effect",
+        shared: ["assets/ripple.png"],
+        dependencies: ["three", "@react-three/fiber", "@react-three/drei"],
+    },
 ]

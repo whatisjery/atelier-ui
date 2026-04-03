@@ -1,0 +1,93 @@
+---
+title: "Liquid Touch"
+description: "A React Three Fiber material to apply ripple distortion on pointer movement."
+tags: ["WebGL", "Shader", "Cursor Interaction", "Displacement", "Ripple"]
+---
+
+<DocComponentPreview name="liquid-touch-demo" />
+
+## Installation
+
+<DocInstallGuide name="liquid-touch" />
+
+---
+
+## Usage
+
+```tsx title="Imports"
+import { LiquidTouchMaterial } from "@/components/LiquidTouchMaterial"
+import { Canvas } from "@react-three/fiber"
+import { useTexture } from "@react-three/drei"
+```
+
+```tsx title="Usage example"
+function LiquidTouchImage({ src }: { src: string }) {
+    const texture = useTexture(src)
+
+    return (
+        <mesh>
+            <planeGeometry args={[8, 3]} />
+            <LiquidTouchMaterial map={texture} />
+        </mesh>
+    )
+}
+
+<Canvas>
+ <Scene src="/image.jpg" />
+</Canvas>
+```
+
+```tsx title="Tracked image with View"
+import { View, useTexture } from "@react-three/drei"
+import { useRef } from "react"
+
+function Scene({ src }: { src: string }) {
+    const texture = useTexture(src)
+
+    return (
+        <div className="relative w-[600px] h-[400px]">
+            <img src={src} className="w-full h-full object-cover" />
+            <View className="absolute inset-0">
+                <mesh>
+                    <planeGeometry {...} />
+                    <LiquidTouchMaterial map={texture} />
+                </mesh>
+            </View>
+        </div>
+    )
+}
+
+<Canvas>
+    <Scene src="/image.jpg" />
+</Canvas>
+```
+
+---
+
+## API
+
+| Name         | Type      | Default | Description|
+| ------------ | --------- | ------- | -------------------------------------- |
+| `map`        | `Texture` | —       | The base texture to displace.|
+| `rippleMap`  | `Texture` | ripple.png   | Custom texture. |
+| `intensity`  | `number`  | `0.14`  | Displacement strength.|
+| `radius`     | `number`  | `3`     | Initial ripple size.|
+| `expandRate` | `number`  | `7`     | How fast ripples grow.|
+| `decayRate`  | `number`  | `3`     | How fast ripples fade out.|
+| `maxRipples` | `number`  | `50`    | Max simultaneous ripples.|
+
+---
+
+## Credits
+
+[14islands](https://14islands.com/)  
+Re-creation of the ripple effect from their website.
+
+[homunculus Inc.](https://homunculus.jp/)  
+Original ripple effect from their portfolio website.
+
+[Yuri Artiukh](https://www.youtube.com/watch?v=vWAci72MtME)  
+Deconstructed the effect on his stream.
+
+[React Three Fiber](https://github.com/pmndrs/react-three-fiber)  
+React renderer for Three.js.
