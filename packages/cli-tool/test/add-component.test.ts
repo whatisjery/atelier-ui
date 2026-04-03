@@ -42,6 +42,7 @@ describe("add command", () => {
     beforeEach(() => {
         fs.removeSync(COMPONENTS_PATH)
         fs.removeSync(path.join(SHARED_PATH, "hooks"))
+        fs.removeSync(path.join(SHARED_PATH, "assets"))
     })
 
     it("installs a component", async () => {
@@ -65,5 +66,17 @@ describe("add command", () => {
         )
         expect(fs.existsSync(`${COMPONENTS_PATH}/pixel-trail/pixel-trail.tsx`)).toBe(true)
         expect(fs.existsSync(`${SHARED_PATH}/hooks/use-frame-loop.ts`)).toBe(true)
+    })
+
+    it("installs a component with shared assets", async () => {
+        await execAsync(
+            `npx tsx src/index.ts add ripple-material --path ${COMPONENTS_PATH} --shared-path ${SHARED_PATH} --no-install`,
+            {
+                cwd: path.resolve(__dirname, ".."),
+                env: { ...process.env, ATELIER_REGISTRY: `http://localhost:${port}` },
+            },
+        )
+        expect(fs.existsSync(`${COMPONENTS_PATH}/ripple-material/ripple-material.tsx`)).toBe(true)
+        expect(fs.existsSync(`${SHARED_PATH}/assets/ripple.png`)).toBe(true)
     })
 })
