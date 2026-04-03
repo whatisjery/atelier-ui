@@ -1,12 +1,13 @@
 import { type HtmlHTMLAttributes, useCallback, useEffect, useRef } from "react"
 import { useFrameLoop } from "@/registry/hooks/use-frame-loop"
 
-const CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%&*"
+const CHARS = "abcdefghijklmnopqrstuvwxyz!@#$%^&*()_+"
 
 type SimpleScrambleProps = {
     duration?: number
     playOnMount?: boolean
     playOnHover?: boolean
+    characters?: string
     as?: React.ElementType
 } & HtmlHTMLAttributes<HTMLElement>
 
@@ -15,6 +16,7 @@ export function SimpleScramble({
     duration = 1,
     playOnMount = true,
     playOnHover = true,
+    characters = "abcdefghijklmnopqrstuvwxyz@!#*$%^&+_[]",
     as,
     ...rest
 }: SimpleScrambleProps) {
