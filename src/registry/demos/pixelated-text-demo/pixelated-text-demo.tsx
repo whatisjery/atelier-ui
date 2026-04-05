@@ -28,7 +28,7 @@ export default function PixelatedTextDemo(controls: Partial<PixelatedTextProps>)
                     depth={0.1}
                     aberration={0}
                     colors={PALETTE}
-                    speed={200}
+                    fps={200}
                     {...controls}
                 >
                     pixelated

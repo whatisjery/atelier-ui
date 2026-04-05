@@ -8,7 +8,7 @@ export type PixelatedTextProps = {
     depth?: number
     aberration?: number
     colors?: string[]
-    speed?: number
+    fps?: number
     children: React.ReactNode
     className?: string
     as?: React.ElementType
@@ -132,7 +132,7 @@ export function PixelatedText({
     depth = 1,
     aberration = 0,
     colors,
-    speed = 200,
+    fps = 200,
     children,
     className,
 }: PixelatedTextProps) {
@@ -213,7 +213,7 @@ export function PixelatedText({
             canvas.style.opacity = "1"
             if (sizingRef.current) sizingRef.current.style.visibility = "hidden"
         }
-    }, speed)
+    }, fps)
 
     useEffect(() => {
         const canvas = canvasRef.current
