@@ -16,15 +16,18 @@ type ColorControlProps = {
 
 export default function ColorControl({ label, value, onChange }: ColorControlProps) {
     const [open, setOpen] = useState(false)
-    const [dragging, setDragging] = useState<string | null>(null)
-    const displayValue = dragging ?? value
+    const [selectedColor, setSelectedColor] = useState<string | null>(null)
+    const displayValue = selectedColor ?? value
     const ref = useRef<ComponentRef<"div">>(null)
 
+    function selectColor() {
+        if (selectedColor === null) return
+        onChange(selectedColor)
+        setSelectedColor(null)
+    }
+
     function close() {
-        if (dragging !== null) {
-            onChange(dragging)
-            setDragging(null)
-        }
+        selectColor()
         setOpen(false)
     }
 
@@ -64,7 +67,8 @@ export default function ColorControl({ label, value, onChange }: ColorControlPro
                 <div className="absolute bottom-0 right-0 z-50">
                     <Colorful
                         color={displayValue}
-                        onChange={(color) => setDragging(color.hex)}
+                        onChange={(color) => setSelectedColor(color.hex)}
+                        onPointerUp={selectColor}
                         disableAlpha
                     />
                 </div>
