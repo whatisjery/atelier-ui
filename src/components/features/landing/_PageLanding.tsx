@@ -117,7 +117,7 @@ export default function PageLanding({ activeComponents, showcaseComponents }: Pa
                                 React{" "}
                                 <PixelatedText
                                     colors={PALETTE}
-                                    speed={200}
+                                    fps={200}
                                     pixelSize={2.1}
                                     flicker={0.9}
                                     chaos={0.3}
