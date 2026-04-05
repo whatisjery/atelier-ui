@@ -1,5 +1,6 @@
 import { setRequestLocale } from "next-intl/server"
 import PageDocLayout from "@/components/features/docs/_PageDocLayout"
+import { DocCodeBlock } from "@/components/features/docs/DocCodeBlock"
 import DocComponentPreview from "@/components/features/docs/DocComponentPreview"
 import DocHeaderGroupTitle from "@/components/features/docs/DocHeaderGroupTitle"
 import DocInstallGuide from "@/components/features/docs/DocInstallGuide"
@@ -30,6 +31,7 @@ export async function generateMetadata({ params }: PageProps) {
 
 export default async function Page({ params }: PageProps) {
     const { locale, slug } = await params
+
     setRequestLocale(locale)
 
     const { headings, rawMarkdown } = getDocBySlug(locale, slug)
@@ -65,6 +67,13 @@ export default async function Page({ params }: PageProps) {
                                     {...props}
                                     snippets={demoCode[props.name][0]}
                                     dreiLoader={hasR3f ?? false}
+                                    codePreviewSlot={
+                                        <DocCodeBlock
+                                            title={demoCode[props.name][0].path}
+                                            code={demoCode[props.name][0].content}
+                                            lang={demoCode[props.name][0].extension}
+                                        />
+                                    }
                                 />
                             )
                         },
