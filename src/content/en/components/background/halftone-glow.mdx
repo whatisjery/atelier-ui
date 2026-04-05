@@ -4,7 +4,15 @@ description: "A WebGL pulsing glow effect with halftone rendering."
 tags: ["WebGL", "Shader", "Glow", "Halftone"]
 ---
 
-<DocComponentPreview name="halftone-glow-demo" />
+<DocComponentPreview name="halftone-glow-demo" controls={{
+    speed: { type: "slider", value: 16, min: 0, max: 100, step: 1 },
+    blurAmount: { type: "slider", value: 0.2, min: 0, max: 1, step: 0.1 },
+    edgeSize: { type: "slider", value: 10, min: 0, max: 100, step: 1 },
+    edgeDistortion: { type: "slider", value: 0.02, min: 0, max: 1, step: 0.01 },
+    ringDistortion: { type: "slider", value: 0.1, min: 0, max: 1, step: 0.1 },
+    edgeColor: { type: "color", value: "#1d334e" },
+    ringColor: { type: "color", value: "#3981DA" },
+}} />
 
 ## Installation
 
@@ -48,12 +56,12 @@ function Scene() {
 
 | Name              | Type                         | Default       | Description |
 | ----------------- | ---------------------------- | ------------- | ---------------|
-| speed             | `number`                     | `0.9`         | Pulse speed. |
-| blurAmount        | `number`                     | `0.47`        | Amount of blur. |
-| edgeSize          | `number`                     | `1`           | Thickness of the edge glow. |
+| speed             | `number`                     | `16`         | Pulse speed. |
+| blurAmount        | `number`                     | `0.2`        | Amount of blur. |
+| edgeSize          | `number`                     | `10`           | Thickness of the edge glow. |
 | edgeDistortion    | `number`                     | `0.02`        | How much noise warps the edge glow.|
 | ringDistortion    | `number`                     | `0.1`         | How much noise warps the ring pulse.|
-| edgeColor         | `string`                     | `"#4599ff"`   | Color of the edge glow.|
+| edgeColor         | `string`                     | `"#1d334e"`   | Color of the edge glow.|
 | ringColor         | `string`                     | `"#4599ff"`   | Color of the ring pulse.|
 | onTextureReady    | `(texture) => void` | `undefined`   | Returns the rendered effect as a texture.|
 

@@ -4,7 +4,13 @@ description: "A React Three Fiber material to apply ripple distortion on pointer
 tags: ["WebGL", "Shader", "Cursor Interaction", "Displacement", "Ripple"]
 ---
 
-<DocComponentPreview name="liquid-touch-demo" />
+<DocComponentPreview name="liquid-touch-demo" controls={{
+    intensity: { type: "slider", value: 0.14, min: 0, max: 1, step: 0.01 },
+    radius: { type: "slider", value: 3, min: 0, max: 10, step: 1 },
+    expandRate: { type: "slider", value: 7, min: 0, max: 10, step: 1 },
+    decayRate: { type: "slider", value: 3, min: 0, max: 10, step: 1 },
+    maxRipples: { type: "slider", value: 50, min: 0, max: 100, step: 1 },
+}} />
 
 ## Installation
 
