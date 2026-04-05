@@ -1,6 +1,9 @@
 "use client"
 
-import { PixelatedText } from "@/registry/base/pixelated-text/pixelated-text"
+import {
+    PixelatedText,
+    type PixelatedTextProps,
+} from "@/registry/base/pixelated-text/pixelated-text"
 
 const PALETTE = [
     "#ff3e3e",
@@ -13,10 +16,10 @@ const PALETTE = [
     "#FF09FF",
 ]
 
-export default function PixelatedTextDemo() {
+export default function PixelatedTextDemo(controls: Partial<PixelatedTextProps>) {
     return (
         <div className="flex items-center justify-center absolute w-full h-full flex-col">
-            <span className="text-6xl font-bold text-center font-serif">
+            <span className="font-serif xs:text-5xl relative z-1 text-center text-4xl">
                 Seo friendly{" "}
                 <PixelatedText
                     pixelSize={2.1}
@@ -26,13 +29,16 @@ export default function PixelatedTextDemo() {
                     aberration={0}
                     colors={PALETTE}
                     speed={200}
+                    {...controls}
                 >
                     pixelated
                 </PixelatedText>{" "}
                 text.
             </span>
 
-            <span className="mt-5">(Responsive — scales with your current font size.)</span>
+            <span className="mt-5 text-sm text-mat-1 italic">
+                Responsive and scales with your current font size.
+            </span>
         </div>
     )
 }

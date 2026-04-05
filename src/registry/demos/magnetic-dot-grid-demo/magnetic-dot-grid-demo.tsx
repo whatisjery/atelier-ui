@@ -1,31 +1,35 @@
 "use client"
 
-import { Pointer } from "lucide-react"
 import { useTheme } from "next-themes"
-import { MagneticDotGrid } from "@/registry/base/magnetic-dot-grid/magnetic-dot-grid"
+import {
+    MagneticDotGrid,
+    type MagneticDotGridProps,
+} from "@/registry/base/magnetic-dot-grid/magnetic-dot-grid"
 
-export default function MagneticDotGridDemo() {
+export default function MagneticDotGridDemo(controls: Partial<MagneticDotGridProps>) {
     const { resolvedTheme } = useTheme()
+
+    const isDark = resolvedTheme === "dark"
     return (
         <div className="w-full h-full absolute inset-0 not-prose flex items-center justify-center">
-            <div className="bg-background/15 border rounded-md px-4 py-3 backdrop-blur-[1.2px] pointer-events-none font-serif absolute z-3 text-xl flex items-center gap-2">
-                <Pointer strokeWidth={0.8} size={18} />
+            <div className="font-serif xs:text-5xl text-center text-4xl relative z-5">
                 hover anywhere.
             </div>
 
             <MagneticDotGrid
-                spacing={resolvedTheme === "dark" ? 17 : 12}
-                strength={resolvedTheme === "dark" ? 15 : 20}
+                spacing={isDark ? 17 : 12}
+                strength={isDark ? 15 : 20}
                 dotRadius={0.8}
-                snapSpeed={resolvedTheme === "dark" ? 7 : 10}
-                returnSpeed={resolvedTheme === "dark" ? 4 : 6}
+                snapSpeed={isDark ? 7 : 10}
+                returnSpeed={isDark ? 4 : 6}
                 floatAmplitude={2.2}
                 interactionRadius={300}
-                opacityRange={resolvedTheme === "dark" ? [1, 0.1] : [1, 1]}
-                baseColor={resolvedTheme === "dark" ? "#3C4051" : "#979AAC"}
-                centerColors={resolvedTheme === "dark" ? ["#00FF73", "#00D9FF"] : ["#000000"]}
+                opacityRange={isDark ? [1, 0.1] : [1, 1]}
                 cycleSpeed={0.5}
+                baseColor={isDark ? "#3C4051" : "#979AAC"}
+                centerColors={isDark ? ["#00FF73", "#00D9FF"] : ["#000000"]}
                 className="bg-background absolute z-2 inset-0 touch-none w-full h-full"
+                {...controls}
             />
         </div>
     )

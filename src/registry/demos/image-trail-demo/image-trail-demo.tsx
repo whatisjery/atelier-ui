@@ -2,7 +2,7 @@
 
 import Image from "next/image"
 import { type ComponentRef, useRef } from "react"
-import { ImageTrail } from "@/registry/base/image-trail/image-trail"
+import { ImageTrail, type PropsMouseTrail } from "@/registry/base/image-trail/image-trail"
 
 const ITEMS = [
     "/images/demo/shared/1.webp",
@@ -11,7 +11,7 @@ const ITEMS = [
     "/images/demo/shared/4.webp",
 ]
 
-export default function ImageTrailDemo() {
+export default function ImageTrailDemo(controls: Partial<PropsMouseTrail<string>>) {
     const ref = useRef<ComponentRef<"div">>(null)
 
     return (
@@ -31,6 +31,7 @@ export default function ImageTrailDemo() {
                         <Image src={src} alt="Image" fill objectFit="cover" />
                     </div>
                 )}
+                {...controls}
             />
         </div>
     )

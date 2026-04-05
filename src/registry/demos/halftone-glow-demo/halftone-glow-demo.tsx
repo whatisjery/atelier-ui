@@ -5,7 +5,7 @@ import { Canvas, useFrame } from "@react-three/fiber"
 import { Suspense, useRef, useState } from "react"
 import { suspend } from "suspend-react"
 import type { Mesh, Texture } from "three"
-import { HalftoneGlow } from "@/registry/base/halftone-glow/halftone-glow"
+import { HalftoneGlow, type HalftoneGlowProps } from "@/registry/base/halftone-glow/halftone-glow"
 
 const warehouse = import("@pmndrs/assets/hdri/warehouse.exr").then((m) => m.default)
 
@@ -36,7 +36,7 @@ function RefractiveSphere({ buffer }: { buffer: Texture | null }) {
     )
 }
 
-export default function HalftoneGlowDemo() {
+export default function HalftoneGlowDemo(controls: Partial<HalftoneGlowProps>) {
     const [texture, setTexture] = useState<Texture | null>(null)
 
     return (
@@ -53,16 +53,7 @@ export default function HalftoneGlowDemo() {
                         left: 0,
                     }}
                 >
-                    <HalftoneGlow
-                        edgeDistortion={0.02}
-                        ringDistortion={0.1}
-                        edgeSize={10}
-                        edgeColor="#1d334e"
-                        ringColor="#3981DA"
-                        blurAmount={0.2}
-                        speed={14}
-                        onTextureReady={setTexture}
-                    />
+                    <HalftoneGlow {...controls} onTextureReady={setTexture} />
                     <Environment environmentIntensity={0.3} files={suspend(warehouse) as string} />
                     <RefractiveSphere buffer={texture} />
                 </Canvas>

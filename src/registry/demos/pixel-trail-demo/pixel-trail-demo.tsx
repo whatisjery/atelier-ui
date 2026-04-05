@@ -2,11 +2,11 @@
 
 import Image from "next/image"
 import { useTheme } from "next-themes"
-import { PixelTrail } from "@/registry/base/pixel-trail/pixel-trail"
+import { PixelTrail, type PixelTrailProps } from "@/registry/base/pixel-trail/pixel-trail"
 
-export default function PixelTrailDemo() {
+export default function PixelTrailDemo(controls: Partial<PixelTrailProps>) {
     const { resolvedTheme } = useTheme()
-
+    console.log("renser")
     return (
         <div className="w-full h-full absolute inset-0 not-prose flex items-center justify-center">
             <div className="w-60 h-60 relative">
@@ -28,6 +28,7 @@ export default function PixelTrailDemo() {
                 trailRadius={2}
                 fade={0}
                 lifetime={1}
+                {...controls}
             />
         </div>
     )

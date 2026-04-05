@@ -6,7 +6,10 @@ import { EffectComposer } from "@react-three/postprocessing"
 import { Suspense, useRef } from "react"
 import { suspend } from "suspend-react"
 import type { Mesh } from "three"
-import { FluidDistortion } from "@/registry/base/fluid-distortion/fluid-distortion"
+import {
+    FluidDistortion,
+    type FluidDistortionProps,
+} from "@/registry/base/fluid-distortion/fluid-distortion"
 
 const warehouse = import("@pmndrs/assets/hdri/warehouse.exr").then((m) => m.default)
 
@@ -32,7 +35,7 @@ function RotatingCube() {
     )
 }
 
-export default function FluidCursorDemo() {
+export default function FluidCursorDemo(controls: Partial<FluidDistortionProps>) {
     return (
         <Suspense fallback={null}>
             <Canvas
@@ -47,7 +50,7 @@ export default function FluidCursorDemo() {
                 <Environment files={suspend(warehouse) as string} />
                 <RotatingCube />
                 <EffectComposer>
-                    <FluidDistortion />
+                    <FluidDistortion {...controls} />
                 </EffectComposer>
             </Canvas>
         </Suspense>
