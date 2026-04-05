@@ -18,7 +18,7 @@ export type DocMeta = {
     icon: string
     title: string
     description: string
-    package?: string
+    tags?: string[]
 }
 
 export type DocHeading = {
