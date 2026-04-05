@@ -17,3 +17,7 @@ export function formatComponentNumber(number: number): string {
 export function getLucideIcon(name: string | undefined): LucideIcon {
     return icons[(name ?? "") as keyof typeof icons] ?? icons.Circle
 }
+
+export function toKebabCase(str: string): string {
+    return str.replace(/([a-z])([A-Z])/g, "$1-$2").toLowerCase()
+}

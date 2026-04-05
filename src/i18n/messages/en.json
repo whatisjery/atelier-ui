@@ -25,6 +25,11 @@
             "copy": "Copy",
             "collapse": "Collapse",
             "expand": "Expand"
+        },
+        "controls": {
+            "controls-description": "Check documentation below for more options",
+            "component-controls": "Component controls",
+            "reset-controls": "Reset controls"
         }
     },
 
