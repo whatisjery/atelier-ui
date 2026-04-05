@@ -6,20 +6,22 @@ const components: MDXComponents = {
     table: ({ children }) => {
         return (
             <div className="w-full overflow-x-auto text-sm">
-                <table className="not-prose w-full min-w-[600px] overflow-hidden border-separate border-spacing-0 border rounded-xl bg-background">
+                <table className="not-prose w-full min-w-[600px] overflow-hidden border-separate border-spacing-0 border rounded-lg bg-background">
                     {children}
                 </table>
             </div>
         )
     },
     th: ({ children }) => (
-        <th className="p-3 bg-mat-4/50 text-left font-semibold border-b last:border-r-0">
+        <th className="px-3 py-2 text-sm bg-mat-5 text-left font-medium border-b last:border-r-0">
             {children}
         </th>
     ),
 
     td: ({ children }) => (
-        <td className="p-3 border-b last:border-r-0 [tr:last-child_&]:border-b-0">{children}</td>
+        <td className="px-3 py-2 border-b last:border-r-0 [tr:last-child_&]:border-b-0">
+            {children}
+        </td>
     ),
 
     em: ({ children }) => <em className="font-light text-mat-2">{children}</em>,

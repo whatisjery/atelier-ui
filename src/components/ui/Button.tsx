@@ -19,7 +19,7 @@ const variantMap = {
     solid: "bg-mat-5",
     muted: "bg-transparent text-mat-2 hover:text-mat-1",
     ghost: "bg-transparent hover:bg-mat-5",
-    outline: "border border hover:text-mat-1 hover:bg-mat-5",
+    outline: "border hover:text-mat-1 hover:bg-mat-5",
 } as const
 
 const sizeMap = {

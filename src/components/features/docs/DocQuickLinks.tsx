@@ -11,7 +11,7 @@ type DocQuickLinksProps = {
 
 export default function DocQuickLinks({ links }: DocQuickLinksProps) {
     return (
-        <div className="relative grid grid-cols-1 md:grid-cols-2 mt-15">
+        <div className="relative grid grid-cols-1 md:grid-cols-2 mt-12 mb-2 border-t border-b">
             {links.map((link, index) => {
                 const isLastItem = index === links.length - 1
                 const isLastRow = index >= links.length - 2

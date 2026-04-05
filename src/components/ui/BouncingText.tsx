@@ -1,5 +1,5 @@
 import { motion } from "motion/react"
-import { type ComponentProps, useLayoutEffect, useRef, useState } from "react"
+import { type ComponentProps, type ComponentRef, useLayoutEffect, useRef, useState } from "react"
 import { cn } from "@/lib/utils"
 
 type Props = {
@@ -18,8 +18,8 @@ export default function BouncingText({
     className,
     ...props
 }: Props) {
-    const containerRef = useRef<HTMLDivElement>(null)
-    const textRef = useRef<HTMLDivElement>(null)
+    const containerRef = useRef<ComponentRef<"div">>(null)
+    const textRef = useRef<ComponentRef<"div">>(null)
     const [overflow, setOverflow] = useState(0)
 
     useLayoutEffect(() => {

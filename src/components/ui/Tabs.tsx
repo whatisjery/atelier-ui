@@ -8,6 +8,7 @@ import { cn } from "@/lib/utils"
 type Tab<T extends string> = {
     label: string
     value: T
+    icon?: React.ReactNode
 }
 
 type Props<T extends string> = {
@@ -28,7 +29,7 @@ export default function Tabs<T extends string>({
 
     return (
         <div className={className}>
-            <div className="flex mb-3 bg-mat-5 w-fit p-1 rounded-lg">
+            <div className="flex mb-3 w-fit p-1 rounded-lg">
                 {tabs.map((tab) => (
                     <button
                         type="button"
@@ -36,20 +37,24 @@ export default function Tabs<T extends string>({
                         key={tab.value}
                         onClick={() => setActiveTab(tab.value)}
                         className={cn(
-                            "relative p-1 px-3 rounded-lg font-medium text-sm border-b-2 border-b-transparent text-mat-2/80 cursor-pointer bg-transparent transition-colors hover:text-mat-1",
+                            "relative py-1 px-3 rounded-lg font-medium text-sm border-b-2 border-b-transparent cursor-pointer bg-transparent",
                             {
-                                "text-mat-1": activeTab === tab.value,
+                                "text-background": activeTab === tab.value,
+                                "hover:text-mat-1 text-mat-2": activeTab !== tab.value,
                             },
                         )}
                     >
                         {activeTab === tab.value && (
                             <motion.span
                                 layoutId={id}
-                                className="absolute inset-0 rounded-lg bg-background"
+                                className="absolute inset-0 rounded-lg bg-mat-1"
                                 transition={{ ease: expoOut, duration: 0.3 }}
                             />
                         )}
-                        <span className="relative z-10">{tab.label}</span>
+                        <span className="relative z-10 flex items-center gap-x-1.5">
+                            {tab.icon && tab.icon}
+                            {tab.label}
+                        </span>
                     </button>
                 ))}
             </div>

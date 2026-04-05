@@ -8,7 +8,7 @@ import {
     useTransform,
     useVelocity,
 } from "motion/react"
-import { useRef } from "react"
+import { type ComponentRef, useRef } from "react"
 import CardGrid from "@/components/ui/CardGrid"
 import DashedBorder from "@/components/ui/DashedBorder"
 import { getLucideIcon } from "@/lib/utils"
@@ -30,8 +30,8 @@ export default function LandingGridScroll({ items }: LandingGridScrollProps) {
     ]
 
     const y = useMotionValue(0)
-    const mesureRef = useRef<React.ComponentRef<"div">>(null)
-    const containerRef = useRef<React.ComponentRef<"div">>(null)
+    const mesureRef = useRef<ComponentRef<"div">>(null)
+    const containerRef = useRef<ComponentRef<"div">>(null)
     const yReversed = useTransform(y, (v) => -v)
     const { scrollY } = useScroll()
     const scrollVelocity = useVelocity(scrollY)

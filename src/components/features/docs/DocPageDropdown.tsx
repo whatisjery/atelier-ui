@@ -1,6 +1,6 @@
 "use client"
 
-import { Check, ChevronDown, Copy, FileText } from "lucide-react"
+import { Copy, FileText } from "lucide-react"
 import { useTranslations } from "next-intl"
 import { DropdownMenu } from "radix-ui"
 import { toast } from "sonner"
@@ -20,7 +20,7 @@ export default function DocPageDropdown({ rawMarkdown }: DocPageDropdownProps) {
     const t = useTranslations("docs.page-dropdown")
     const tCommon = useTranslations("common")
 
-    const { copied, copy } = useCopy({
+    const { copy } = useCopy({
         onSuccess: () =>
             toast.success(tCommon("copied"), {
                 position: "top-center",
@@ -38,24 +38,11 @@ export default function DocPageDropdown({ rawMarkdown }: DocPageDropdownProps) {
     }
 
     return (
-        <div className="flex items-center">
-            <Button
-                onClick={actionsMap.copy}
-                variant="outline"
-                className="rounded-l-lg h-10 px-3 text-[0.8rem] rounded-r-none border-r-0"
-            >
-                {copied ? <Check className="size-4" /> : <Copy className="size-3" />}
-
-                {copied ? tCommon("copied") : t("copy-page")}
-            </Button>
-
+        <div className="flex items-center isolate">
             <DropdownMenu.Root modal={false}>
                 <DropdownMenu.Trigger asChild>
-                    <Button
-                        className="group rounded-r-lg h-10 px-3 rounded-l-none"
-                        variant="outline"
-                    >
-                        <ChevronDown className="size-4 transition-transform duration-100 ease-in-out group-data-[state=open]:rotate-180" />
+                    <Button size="icon" variant="outline">
+                        <Copy className="size-4" />
                     </Button>
                 </DropdownMenu.Trigger>
 
@@ -69,7 +56,7 @@ export default function DocPageDropdown({ rawMarkdown }: DocPageDropdownProps) {
                             <DropdownMenu.Item
                                 key={key}
                                 onClick={actionsMap[action]}
-                                className="flex items-center gap-2 rounded-xl px-2 py-1.5 text-sm cursor-pointer outline-hidden select-none hover:bg-mat-5 focus:bg-mat-5"
+                                className="flex items-center gap-2 rounded-xl px-2 py-1.5 text-sm cursor-pointer  select-none hover:bg-mat-5 focus:bg-mat-5"
                             >
                                 <span className="border p-2 rounded-md bg-background border-mat-3/80">
                                     <Icon className="size-4 text-mat-1" />

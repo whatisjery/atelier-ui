@@ -4,7 +4,7 @@ import { ArrowUpRight } from "lucide-react"
 import { motion, useScroll, useTransform } from "motion/react"
 import { useTranslations } from "next-intl"
 import { useTheme } from "next-themes"
-import { useEffect, useRef, useState } from "react"
+import { type ComponentRef, useEffect, useRef, useState } from "react"
 import { SiGithub } from "react-icons/si"
 import { Link } from "@/i18n/navigation"
 import { BRAND, FOOTER_LINKS, REPO_URL, SOCIAL_LINKS } from "@/lib/constants"
@@ -14,9 +14,11 @@ import Button from "../ui/Button"
 import BrandLink from "./BrandLink"
 import ThemeToggle from "./ThemeToggle"
 
+const PIXEL_SIZE = 19
+
 export default function Footer() {
     const t = useTranslations("footer")
-    const wrapperRef = useRef<HTMLElement>(null)
+    const wrapperRef = useRef<ComponentRef<"footer">>(null)
     const { resolvedTheme } = useTheme()
     const [mounted, setMounted] = useState(false)
 
@@ -40,10 +42,21 @@ export default function Footer() {
                         gridColor={resolvedTheme === "dark" ? "#101010" : "#F4F4F4"}
                         color={resolvedTheme === "dark" ? "#19191B" : "#ECECEC"}
                         showGrid
+                        pixelSize={PIXEL_SIZE}
                         fade={0}
-                        className="absolute inset-0 w-full h-full z-1 top-[-0.12rem] border-t border-b"
+                        className="absolute inset-0 w-full h-full z-1 border-b"
                     />
                 )}
+                <div
+                    className="absolute inset-0 top-[-0.12rem] opacity-[0.7]"
+                    style={{
+                        backgroundSize: `${PIXEL_SIZE}px ${PIXEL_SIZE}px`,
+                        backgroundImage: [
+                            `linear-gradient(to right, var(--color-border) 1px, transparent 1px)`,
+                            `linear-gradient(to bottom, var(--color-border) 1px, transparent 1px)`,
+                        ].join(", "),
+                    }}
+                />
 
                 <div className="bg-background/70 border border-border/50 backdrop-blur-[1.5px] z-2 relative flex flex-col gap-y-28 p-5 rounded-sm max-w-[37rem] mx-auto">
                     <div className="flex items-start text-sm xs:flex-row flex-col gap-y-10">

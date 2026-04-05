@@ -12,7 +12,7 @@
     --spacing-doc-max-w: 1440px;
     --spacing-nav-h: 7rem;
     --spacing-footer-h: 5rem;
-    --spacing-offset-top: calc(var(--spacing-nav-h) + 2.8rem);
+    --spacing-offset-top: calc(var(--spacing-nav-h) + 1.9rem);
     --spacing-aside-h: calc(100vh - var(--spacing-offset-top));
     --spacing-doc-w: 792px;
 
@@ -76,7 +76,7 @@
     --accent-neutral: oklch(0.75 0 0 / 1);
 
     --highlight: oklch(0.91 0.18 99.34);
-    --border: oklch(0.19 0.01 276.47);
+    --border: oklch(0.21 0.01 278.71);
     --background: oklch(0.14 0.01 285.45);
     --transparent: oklch(0 0 0 / 0);
     --backdrop: oklch(0.17 0.01 285.25 / 0.84);

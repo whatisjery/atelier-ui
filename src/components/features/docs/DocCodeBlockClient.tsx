@@ -1,7 +1,7 @@
 "use client"
 
 import { toJsxRuntime } from "hast-util-to-jsx-runtime"
-import { Check, ChevronDown, ChevronUp, Clipboard, ListChevronsDownUp } from "lucide-react"
+import { Check, ChevronDown, ChevronUp, Copy, ListChevronsDownUp } from "lucide-react"
 import { useTranslations } from "next-intl"
 import { type ComponentRef, useRef, useState } from "react"
 import { Fragment, jsx, jsxs } from "react/jsx-runtime"
@@ -52,7 +52,7 @@ export function DocCodeBlockClient({
     return (
         <figure
             className={cn(
-                "text-[0.85rem] font-regular not-prose bg-mat-5/50 px-1 pb-1 not-last:mb-4 border relative rounded-2xl overflow-hidden flex flex-col",
+                "text-[0.85rem] font-regular not-prose bg-mat-5 rounded-lg not-last:mb-4 border border-mat-4 relative overflow-hidden flex flex-col",
                 className,
             )}
         >
@@ -105,11 +105,7 @@ export function DocCodeBlockClient({
                             size="icon"
                             variant="muted"
                         >
-                            {copied ? (
-                                <Check className="size-4" />
-                            ) : (
-                                <Clipboard className="size-4" />
-                            )}
+                            {copied ? <Check className="size-4" /> : <Copy className="size-4" />}
                         </Button>
                     </Tooltip>
                 </div>
@@ -124,7 +120,7 @@ export function DocCodeBlockClient({
                         <pre
                             ref={ref}
                             {...props}
-                            className={cn("p-5 not-prose rounded-2xl scrollbar-hide [tab-size:2]", {
+                            className={cn("p-5 not-prose scrollbar-hide [tab-size:2]", {
                                 "overflow-y-auto max-h-[500px]": mode === "scroll",
                                 "max-h-[150px] overflow-y-hidden": mode === "expand" && !isExpanded,
                                 "max-h-full overflow-y-auto": mode === "expand" && isExpanded,
@@ -153,6 +149,7 @@ export function DocCodeBlockClient({
                         aria-expanded={isExpanded}
                     >
                         {isExpanded ? t("collapse") : t("expand")}
+
                         {isExpanded ? (
                             <ChevronUp className="size-4" />
                         ) : (

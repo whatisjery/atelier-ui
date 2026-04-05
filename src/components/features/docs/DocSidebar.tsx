@@ -7,7 +7,6 @@ import { useEffect } from "react"
 import BrandLink from "@/components/common/BrandLink"
 import ThemeToggle from "@/components/common/ThemeToggle"
 import Button from "@/components/ui/Button"
-import DashedBorder from "@/components/ui/DashedBorder"
 import { Link, usePathname } from "@/i18n/navigation"
 import { VERSION } from "@/lib/constants"
 import { expoOut } from "@/lib/easing"
@@ -85,10 +84,7 @@ function SideBarCore({
 
     return (
         <aside
-            className={cn(
-                "bg-background overflow-hidden relative max-h-[92vh] lg:max-h-aside-h scrollbar-overlay",
-                className,
-            )}
+            className={cn("relative max-h-[92vh] lg:max-h-aside-h scrollbar-overlay", className)}
         >
             {headerSlot && headerSlot}
 
@@ -138,17 +134,13 @@ function SideBarCore({
             </div>
             <nav
                 aria-label="Documentation"
-                className="space-y-5 text-sm pl-2 overflow-y-auto scrollbar-overlay h-[calc(100vh-19rem)] pb-20"
+                className="space-y-5  text-sm pl-2 overflow-y-auto scrollbar-overlay h-[calc(100vh-19rem)] pb-20"
             >
                 {menuSections.map((section) => (
                     <div key={section.title}>
                         <h3 className="font-medium mb-1 text-mat-1">{section.category}</h3>
 
-                        <ul className="pl-2 ml-1 relative">
-                            <DashedBorder
-                                direction="vertical"
-                                className="left-0 absolute bottom-0 top-0 h-full text-mat-3/80"
-                            />
+                        <ul className="px-2 ml-1 relative border-l">
                             {section.children.map((child) => {
                                 if (child.title === "index") return null
                                 const isActive = pathname === child.url
@@ -226,7 +218,7 @@ export default function DocSidebar({ menuSections, activeComponentCount }: DocSi
 
                         <motion.div
                             key="panel"
-                            className="fixed z-51 left-0 top-0 h-[calc(100vh-2rem)] bg-background max-w-[calc(100%-5rem)] w-85 p-3 rounded-2xl m-3 space-y-7"
+                            className="fixed z-51 left-0 top-0 h-[calc(100vh-2rem)] overflow-hidden bg-background max-w-[calc(100%-5rem)] w-85 p-3 rounded-2xl m-3 space-y-7"
                             variants={panelVariants}
                             initial="closed"
                             animate="open"

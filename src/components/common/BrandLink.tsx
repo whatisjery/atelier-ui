@@ -10,7 +10,10 @@ type BrandLinkProps = {
 
 export default function BrandLink({ slot, className }: BrandLinkProps) {
     return (
-        <Link className={cn("flex items-center gap-x-1.5 hover:opacity-50", className)} href="/">
+        <Link
+            className={cn("flex w-fit items-center gap-x-1.5 hover:opacity-50", className)}
+            href="/"
+        >
             <Logo />
             <h1 className="font-serif text-xl whitespace-nowrap">{BRAND}</h1>
             {slot}
