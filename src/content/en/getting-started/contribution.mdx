@@ -185,9 +185,46 @@ Add the installation guide by using the `<DocInstallGuide />` component with **t
 <DocInstallGuide name="component-name" />
 ```
 
+### Controls
+
+You can add interactive controls to the preview so users can tweak component props live. Pass a `controls` object to `<DocComponentPreview />`.  
+
+Always make sure the values match the default props of the base component:
+
+```tsx title="Controls example"
+<DocComponentPreview
+    name="component-name-demo"
+    controls={{
+        speed: { type: "slider", value: 1, min: 0, max: 10, step: 0.1 },
+        color: { type: "color", value: "#ff5733" },
+        variant: { type: "select", value: "solid", options: ["solid", "outline"] },
+        enabled: { type: "boolean", value: true },
+    }}
+/>
+```
+
+
+
+**Available control types:**
+
+| Type     | Fields                         | Renders |
+| -------- | ------------------------------ | -------------- |
+| `slider` | `value` `min` `max` `step`  | Slider |
+| `color`  | `value`                        | Color picker |
+| `select` | `value` `options`             | Select |
+| `boolean` | `value`                       | Toggle switch |
+
+Export the base component's props type, then spread `controls` onto it:
+
+```tsx title="Demo component"
+export default function ComponentNameDemo(controls: Partial<ComponentNameProps>) {
+    return 
+}
+```
+
 ### Usage
 
-Provide a code example of the component by using the language of the code.
+Provide a basic usage example of the component:
 ```tsx title="Usage example"
 import { MyComponent } from 'my-component'
 
