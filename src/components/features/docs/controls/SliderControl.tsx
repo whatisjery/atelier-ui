@@ -1,5 +1,5 @@
 import { Slider } from "radix-ui"
-import { useState } from "react"
+import { type ComponentRef, useRef, useState } from "react"
 import { toKebabCase } from "@/lib/utils"
 import type { ControlSlider } from "@/types/controls"
 import Label from "./ui/Label"
@@ -16,6 +16,7 @@ export default function SliderControl({ label, control, value, onChange }: Slide
     const [dragging, setDragging] = useState<number | null>(null)
     const displayValue = dragging ?? value
     const decimals = (control.step.toString().split(".")[1] || "").length
+    const thumbRef = useRef<ComponentRef<"button">>(null)
 
     return (
         <div className="w-full p-3">
@@ -33,15 +34,19 @@ export default function SliderControl({ label, control, value, onChange }: Slide
                 onValueCommit={([v]) => {
                     setDragging(null)
                     onChange(v)
+                    thumbRef.current?.blur()
                 }}
                 aria-label={label}
                 className="relative group flex items-center w-full h-5 cursor-pointer select-none touch-none"
             >
                 <Slider.Track className="relative h-0.5 w-full bg-mat-4">
-                    <Slider.Range className="absolute h-full bg-mat-4 group-hover:bg-highlight group-focus-within:bg-highlight rounded-full" />
+                    <Slider.Range className="absolute h-full bg-mat-2 group-hover:bg-highlight group-focus-within:bg-highlight rounded-full" />
                 </Slider.Track>
 
-                <Slider.Thumb className="w-0.5 h-3 bg-mat-1 block outline-hidden group-hover:bg-highlight group-focus-within:bg-highlight" />
+                <Slider.Thumb
+                    ref={thumbRef}
+                    className="w-0.5 h-3 bg-mat-2 block outline-hidden group-hover:bg-highlight group-focus-within:bg-highlight"
+                />
             </Slider.Root>
         </div>
     )
