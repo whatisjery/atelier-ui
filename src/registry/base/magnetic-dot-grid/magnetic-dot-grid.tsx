@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useRef } from "react"
+import { type ComponentRef, useEffect, useRef } from "react"
 import { useFrameLoop } from "../../hooks/use-frame-loop"
 
 const FALL_OFF = -3.0
@@ -14,7 +14,7 @@ type DotGrid = {
     count: number
 }
 
-type MagneticDotGridProps = {
+export type MagneticDotGridProps = {
     dotRadius?: number
     spacing?: number
     strength?: number
@@ -95,7 +95,7 @@ export function MagneticDotGrid({
     cycleSpeed = 1.5,
     className,
 }: MagneticDotGridProps) {
-    const canvasRef = useRef<HTMLCanvasElement>(null)
+    const canvasRef = useRef<ComponentRef<"canvas">>(null)
     const gridRef = useRef<DotGrid | null>(null)
     const pointerRef = useRef({ x: 0, y: 0, active: false })
 

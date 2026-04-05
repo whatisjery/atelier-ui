@@ -3,7 +3,7 @@ import { useFrameLoop } from "@/registry/hooks/use-frame-loop"
 
 const CHARS = "abcdefghijklmnopqrstuvwxyz!@#$%^&*()_+"
 
-type SimpleScrambleProps = {
+export type SimpleScrambleProps = {
     duration?: number
     playOnMount?: boolean
     playOnHover?: boolean

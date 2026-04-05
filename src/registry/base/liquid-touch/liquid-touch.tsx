@@ -49,7 +49,7 @@ void main() {
     gl_FragColor = color;
 }`
 
-type LiquidTouchMaterialProps = {
+export type LiquidTouchMaterialProps = {
     map: Texture
     rippleMap?: Texture
     intensity?: number

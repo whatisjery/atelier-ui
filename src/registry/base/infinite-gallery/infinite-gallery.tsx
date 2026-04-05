@@ -11,7 +11,7 @@ const DEFAULT_SCROLL_STATE = {
 
 export type InfiniteGalleryMode = "shrink" | "flip"
 
-type InfiniteGalleryProps<T> = {
+export type InfiniteGalleryProps<T> = {
     mode?: InfiniteGalleryMode
     data: T[]
     perView?: number

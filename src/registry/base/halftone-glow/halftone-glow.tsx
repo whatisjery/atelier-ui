@@ -284,7 +284,7 @@ const FBO_SETTINGS = {
 const DIR_H = new Vector2(1, 0)
 const DIR_V = new Vector2(0, 1)
 
-type HalftoneGlowProps = {
+export type HalftoneGlowProps = {
     speed?: number
     blurAmount?: number
     edgeSize?: number
@@ -296,12 +296,12 @@ type HalftoneGlowProps = {
 }
 
 export function HalftoneGlow({
-    speed = 0.9,
-    blurAmount = 0.47,
-    edgeSize = 1,
+    speed = 16,
+    blurAmount = 0.2,
+    edgeSize = 10,
     edgeDistortion = 0.02,
     ringDistortion = 0.1,
-    edgeColor = "#4599ff",
+    edgeColor = "#1d334e",
     ringColor = "#4599ff",
     onTextureReady = undefined,
 }: HalftoneGlowProps) {

@@ -3,7 +3,7 @@
 import { type ComponentRef, useEffect, useRef } from "react"
 import { useFrameLoop } from "../../hooks/use-frame-loop"
 
-type PixelTrailProps = {
+export type PixelTrailProps = {
     mode?: "color" | "sample"
     color?: string
     imageSelector?: string
@@ -95,9 +95,6 @@ export function PixelTrail({
     trailRadius = 2,
     lifetime = 1,
     fade = 0.5,
-    showGrid = false,
-    gridColor = "rgba(255, 255, 255, 0.1)",
-    gridThickness = 1,
     className,
 }: PixelTrailProps) {
     const canvasRef = useRef<ComponentRef<"canvas">>(null)
@@ -228,18 +225,6 @@ export function PixelTrail({
 
     return (
         <div className={className}>
-            {showGrid && (
-                <div
-                    className="absolute inset-0"
-                    style={{
-                        backgroundSize: `${pixelSize}px ${pixelSize}px`,
-                        backgroundImage: [
-                            `linear-gradient(to right, ${gridColor} ${gridThickness}px, transparent ${gridThickness}px)`,
-                            `linear-gradient(to bottom, ${gridColor} ${gridThickness}px, transparent ${gridThickness}px)`,
-                        ].join(", "),
-                    }}
-                />
-            )}
             <canvas ref={canvasRef} className="absolute inset-0 w-full h-full" />
         </div>
     )

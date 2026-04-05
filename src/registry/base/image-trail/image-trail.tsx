@@ -18,7 +18,7 @@ type Items<T> = {
     data: T
 }
 
-type PropsMouseTrail<T> = {
+export type PropsMouseTrail<T> = {
     containerRef?: RefObject<HTMLElement | null>
     data: T[]
     renderItems: (item: T) => React.ReactNode

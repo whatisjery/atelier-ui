@@ -1,7 +1,7 @@
 import { type ComponentRef, useEffect, useRef } from "react"
 import { useFrameLoop } from "../../hooks/use-frame-loop"
 
-type PixelatedTextProps = {
+export type PixelatedTextProps = {
     pixelSize?: number
     flicker?: number
     chaos?: number

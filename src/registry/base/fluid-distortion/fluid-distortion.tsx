@@ -268,7 +268,7 @@ void mainImage(const in vec4 inputColor, const in vec2 uv, out vec4 outputColor)
 }
 `
 
-export type FluidProps = {
+export type FluidDistortionProps = {
     blend?: number
     intensity?: number
     distortion?: number
@@ -288,7 +288,7 @@ export type FluidProps = {
 
 type EffectProps = Required<
     Pick<
-        FluidProps,
+        FluidDistortionProps,
         | "blend"
         | "intensity"
         | "distortion"
@@ -670,7 +670,7 @@ export const FluidDistortion = ({
     densityDissipation = DEFAULT_CONFIG.densityDissipation,
     velocityDissipation = DEFAULT_CONFIG.velocityDissipation,
     blendFunction = DEFAULT_CONFIG.blendFunction,
-}: FluidProps) => {
+}: FluidDistortionProps) => {
     const size = useThree((three) => three.size)
     const gl = useThree((three) => three.gl)
 
