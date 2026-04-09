@@ -17,7 +17,7 @@ const IMAGE_URLS = [
 
 export default function InfiniteParallaxDemo(controls: Partial<ParallaxColumnProps>) {
     const containerRef = useRef<HTMLDivElement>(null)
-
+    const { speed = 1, ...restControls } = controls
     useEffect(() => {
         if (!containerRef.current) return
 
@@ -37,8 +37,8 @@ export default function InfiniteParallaxDemo(controls: Partial<ParallaxColumnPro
 
             <div className="h-[530px] bg-background flex overflow-hidden gap-2">
                 <InfiniteParallax
-                    {...controls}
-                    speed={controls.speed ? controls.speed * 0.4 : 0}
+                    {...restControls}
+                    speed={speed * 0.4}
                     containerRef={containerRef}
                     className="gap-2"
                 >
@@ -50,8 +50,8 @@ export default function InfiniteParallaxDemo(controls: Partial<ParallaxColumnPro
                 </InfiniteParallax>
 
                 <InfiniteParallax
-                    {...controls}
-                    speed={controls.speed ? controls.speed * 0.2 : 0}
+                    {...restControls}
+                    speed={speed * 0.2}
                     containerRef={containerRef}
                     className="gap-2"
                 >
@@ -63,8 +63,8 @@ export default function InfiniteParallaxDemo(controls: Partial<ParallaxColumnPro
                 </InfiniteParallax>
 
                 <InfiniteParallax
-                    {...controls}
-                    speed={controls.speed ? controls.speed * 0.4 : 0}
+                    {...restControls}
+                    speed={speed * 0.4}
                     containerRef={containerRef}
                     className="gap-2"
                 >
