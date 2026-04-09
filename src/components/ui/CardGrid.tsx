@@ -62,7 +62,7 @@ export default function CardGrid({
                                 <Badge
                                     title={BADGE_CONFIG[badge].title}
                                     variant={BADGE_CONFIG[badge].variant}
-                                    className={cn("absolute top-[6rem]", {
+                                    className={cn("absolute top-[6rem] whitespace-nowrap", {
                                         "opacity-50": BADGE_CONFIG[badge].muted,
                                     })}
                                 />
