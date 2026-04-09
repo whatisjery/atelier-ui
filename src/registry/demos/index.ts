@@ -10,4 +10,5 @@ export const demos: Record<string, React.LazyExoticComponent<React.ComponentType
     "infinite-gallery-demo": lazy(() => import("./infinite-gallery-demo/infinite-gallery-demo")),
     "simple-scramble-demo": lazy(() => import("./simple-scramble-demo/simple-scramble-demo")),
     "liquid-touch-demo": lazy(() => import("./liquid-touch-demo/liquid-touch-demo")),
+    "infinite-parallax-demo": lazy(() => import("./infinite-parallax-demo/infinite-parallax-demo")),
 }

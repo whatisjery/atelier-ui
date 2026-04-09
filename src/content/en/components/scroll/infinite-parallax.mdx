@@ -1,0 +1,65 @@
+---
+title: "Infinite Parallax"
+description: "Infinite parallax column effect with auto-scroll and repeating content."
+tags: ["Scroll Effect", "Parallax", "Auto Scroll", "Motion", "Lenis"]
+---
+
+<DocComponentPreview name="infinite-parallax-demo" controls={{
+    speed: { type: "slider", value: 1, min: -3, max: 3, step: 0.5 },
+    autoScroll: { type: "slider", value: -0.2, min: -3.5, max: 3.5, step: 0.5 },
+}} />
+
+## Installation
+
+<DocInstallGuide name="infinite-parallax" />
+
+---
+
+## Usage
+
+```tsx title="Imports"
+import { InfiniteParallax } from "@/components/InfiniteParallax"
+```
+
+```tsx title="Usage example"
+<div className="h-screen flex overflow-hidden">
+    <InfiniteParallax>
+        <img />
+        <img />
+        <img />
+    </InfiniteParallax>
+</div>
+```
+
+---
+
+## API
+
+| Name         | Type                              | Default     | Description |
+| ------------ | --------------------------------- | ----------- | ----------- |
+| children     | `ReactNode`                       | —           | Items to render in the column. |
+| speed        | `number`                          | `1`         | Parallax intensity. |
+| autoScroll   | `number`                          | `-0.2` | Auto-scroll speed. Negative values reverse direction. 0 to disable. |
+| containerRef | `RefObject<HTMLElement \| null>`   | `undefined` | Scrollable container ref. Defaults is window. |
+| className    | `string`                          | `undefined` | Class for the container element. |
+
+---
+
+## Notes
+
+- Combine multiple columns with different `speed` and `autoScroll` values to create contrast.
+- Negative `autoScroll` reverses direction — use alternating signs across columns for a visually dynamic layout.
+- Pass `containerRef` when the component is not relying on the window scroll (like in the demo preview).
+
+---
+
+## Credits
+
+[Olivier Larose](https://blog.olivierlarose.com/tutorials/smooth-parallax-scroll)  
+Where this idea came from.
+
+[Motion](https://motion.dev)  
+React animation library.
+
+[Lenis](https://lenis.studiofreight.com/)  
+Smooth scroll library used in the demo.

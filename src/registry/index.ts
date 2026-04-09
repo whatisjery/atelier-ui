@@ -75,4 +75,11 @@ export const components: TRegistryComponent[] = [
         shared: ["assets/ripple.png"],
         dependencies: ["three", "@react-three/fiber", "@react-three/drei"],
     },
+    {
+        name: "infinite-parallax",
+        files: ["infinite-parallax.tsx"],
+        description: "Infinite parallax effect",
+        shared: [],
+        dependencies: ["motion"],
+    },
 ]
