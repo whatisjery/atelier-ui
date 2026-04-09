@@ -25,20 +25,17 @@ export default function DocComponentPreview({
 }: DocComponentPreviewProps) {
     const Demo = demos[name]
 
-    /**
-     * Controlled values for the demos, sliders, colors, etc.
-     */
     const defaults = controls
         ? Object.fromEntries(Object.entries(controls).map(([key, { value }]) => [key, value]))
         : {}
 
-    const [controlledValues, setControlledValues] = useState<Record<string, ControlValue>>(defaults)
+    const [controlledValues, setControlledValues] = useState<Record<string, ControlValue>>({})
 
     const updateControlledValues = (key: string, value: ControlValue) => {
         setControlledValues((prev) => ({ ...prev, [key]: value }))
     }
     const resetControlledValues = () => {
-        setControlledValues(defaults)
+        setControlledValues({})
     }
 
     return (
@@ -68,14 +65,13 @@ export default function DocComponentPreview({
                                 controls={controls}
                                 onChange={updateControlledValues}
                                 onReset={resetControlledValues}
-                                values={controlledValues}
+                                values={{ ...defaults, ...controlledValues }}
                             />
                         )}
                     </div>
                 ),
                 code: (
                     <div className="flex flex-col overflow-scroll rounded-sm">
-                        {/* Shiki is SSR: passed as slot to avoid 'use client' conflict */}
                         {codePreviewSlot}
                     </div>
                 ),
