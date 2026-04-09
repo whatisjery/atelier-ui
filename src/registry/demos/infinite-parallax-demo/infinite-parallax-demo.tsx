@@ -35,7 +35,7 @@ export default function InfiniteParallaxDemo(controls: Partial<ParallaxColumnPro
                 Scroll down
             </div>
 
-            <div className="h-[530px] bg-mat-1 flex overflow-hidden gap-2">
+            <div className="h-[530px] bg-background flex overflow-hidden gap-2">
                 <InfiniteParallax
                     {...controls}
                     speed={controls.speed ? controls.speed * 0.4 : 0}
