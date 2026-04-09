@@ -28,12 +28,17 @@ export default function DocComponentPreview({
     /**
      * Controlled values for the demos, sliders, colors, etc.
      */
-    const [controlledValues, setControlledValues] = useState<Record<string, ControlValue>>({})
+    const defaults = controls
+        ? Object.fromEntries(Object.entries(controls).map(([key, { value }]) => [key, value]))
+        : {}
+
+    const [controlledValues, setControlledValues] = useState<Record<string, ControlValue>>(defaults)
+
     const updateControlledValues = (key: string, value: ControlValue) => {
         setControlledValues((prev) => ({ ...prev, [key]: value }))
     }
     const resetControlledValues = () => {
-        setControlledValues({})
+        setControlledValues(defaults)
     }
 
     return (
