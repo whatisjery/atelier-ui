@@ -4,6 +4,7 @@ type TRegistryComponent = {
     shared: string[]
     dependencies: string[]
     files: string[]
+    pro?: boolean
 }
 
 export const components: TRegistryComponent[] = [
@@ -39,6 +40,7 @@ export const components: TRegistryComponent[] = [
         description: "Half tone glow effect",
         shared: [],
         dependencies: ["three", "@react-three/fiber", "@react-three/drei"],
+        pro: true,
     },
     {
         name: "pixelated-text",
