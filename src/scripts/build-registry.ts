@@ -8,23 +8,22 @@ const OUTPUT_DIR = path.join(process.cwd(), "public/registry")
 async function buildRegistry() {
     await mkdir(OUTPUT_DIR, { recursive: true })
 
-    const index = components.map((c) => ({
-        name: c.name,
-        description: c.description,
+    const freeComponents = components.filter((component) => !component.pro)
+
+    const index = components.map((component) => ({
+        name: component.name,
+        description: component.description,
+        pro: component.pro ?? false,
     }))
 
     await writeFile(path.join(OUTPUT_DIR, "index.json"), JSON.stringify(index, null, 2), "utf-8")
 
-    for (const component of components) {
+    for (const component of freeComponents) {
         const files = await Promise.all(
             component.files.map(async (filePath) => {
                 const fullPath = path.join(REGISTRY_DIR, "base", component.name, filePath)
                 const content = await readFile(fullPath, "utf-8")
-
-                return {
-                    path: filePath,
-                    content,
-                }
+                return { path: filePath, content }
             }),
         )
 
