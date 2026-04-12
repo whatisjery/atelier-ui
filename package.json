@@ -8,8 +8,8 @@
         "lint:check": "biome lint",
         "lint:fix": "biome lint --fix",
         "test:all": "vitest run",
-        "prebuild": "tsx src/scripts/build-registry.ts && tsx src/scripts/search-index.ts && tsx src/scripts/generate-timestamps.ts",
-        "dev": "tsx src/scripts/build-registry.ts && tsx src/scripts/search-index.ts && tsx src/scripts/generate-timestamps.ts && next dev --webpack"
+        "prebuild": "tsx src/scripts/merge-pro.ts && tsx src/scripts/build-registry.ts && tsx src/scripts/search-index.ts && tsx src/scripts/generate-timestamps.ts",
+        "dev": "tsx src/scripts/merge-pro.ts && tsx src/scripts/build-registry.ts && tsx src/scripts/search-index.ts && tsx src/scripts/generate-timestamps.ts && next dev --webpack"
     },
     "dependencies": {
         "@mdx-js/loader": "^3.1.1",
