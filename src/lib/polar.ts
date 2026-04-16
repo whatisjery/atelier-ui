@@ -8,7 +8,7 @@ const THIRTY_DAYS = 60 * 60 * 24 * 30
 
 export const polar = new Polar({
     accessToken: process.env.POLAR_ACCESS_TOKEN as string,
-    server: process.env.NODE_ENV === "production" ? "production" : "sandbox",
+    server: process.env.POLAR_SERVER === "sandbox" ? "sandbox" : "production",
 })
 
 /**
