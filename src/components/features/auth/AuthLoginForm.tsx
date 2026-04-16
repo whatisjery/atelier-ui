@@ -35,15 +35,11 @@ export default function AuthLoginForm() {
         if (state.status === "sent") {
             toast.success(
                 "If an account exists with that email, a login link has been sent. Check your inbox",
-                {
-                    position: "top-center",
-                    duration: Infinity,
-                },
+                { position: "top-center" },
             )
         } else if (state.status === "error") {
             toast.error(state.message, {
                 position: "top-center",
-                duration: Infinity,
             })
         }
     }, [state])
