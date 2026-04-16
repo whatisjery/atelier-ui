@@ -12,6 +12,9 @@ jobs:
 
         steps:
             - uses: actions/checkout@v4
+              with:
+                  submodules: recursive
+                  token: ${{ secrets.GH_PRO_TOKEN }}
 
             - name: Setup pnpm
               uses: pnpm/action-setup@v4
