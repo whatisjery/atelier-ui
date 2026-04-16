@@ -20,7 +20,8 @@ export async function GET(req: Request) {
         }
 
         if (user.customerId) await setPolarSessionCookie(user.customerId, licenseKey)
-    } catch {
+    } catch (error) {
+        console.log("error in polar from checkout", error)
         redirect("/error?error=payment_failed")
     }
 

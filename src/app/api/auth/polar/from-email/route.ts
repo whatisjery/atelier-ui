@@ -21,7 +21,8 @@ export async function GET(req: Request) {
         if (keys.result.items.length > 0) {
             licenseKey = keys.result.items[0].key
         }
-    } catch {
+    } catch (error) {
+        console.log("error in polar from email", error)
         redirect("/error?error=email_failed")
     }
 
