@@ -1,0 +1,3 @@
+[submodule "src/pro"]
+	path = src/pro
+	url = https://github.com/whatisjery/atelier-ui-pro.git

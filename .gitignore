@@ -29,9 +29,6 @@ public/registry/*
 # search index
 public/search-index/*
 
-# submodule config (rewritten by bin/init-submodule.sh with token)
-.gitmodules
-
 # misc
 .DS_Store
 *.pem
