@@ -1,7 +1,7 @@
 import { useFBO, useTexture } from "@react-three/drei"
 import { createPortal, useFrame, useThree } from "@react-three/fiber"
 import { useCallback, useEffect, useMemo, useRef } from "react"
-import type { Group, Mesh, Texture } from "three"
+import type { Group, Mesh, ShaderMaterial, Texture } from "three"
 import {
     AdditiveBlending,
     HalfFloatType,
@@ -85,14 +85,15 @@ export function LiquidTouchMaterial({
     const displacementSmoothed = useRef(0)
     const spriteScene = useMemo(() => new Scene(), [])
     const spriteCamera = useMemo(() => new OrthographicCamera(-1, 1, 1, -1, 0, 1), [])
+    const materialRef = useRef<ShaderMaterial>(null)
 
     const uniforms = useMemo<Uniforms>(
         () => ({
-            uTexture: { value: null },
+            uTexture: { value: map },
             uDisplacement: { value: null },
             uDisplacementIntensity: { value: 0 },
         }),
-        [],
+        [map],
     )
 
     const FBO = useFBO(size.width, size.height, {
@@ -115,8 +116,8 @@ export function LiquidTouchMaterial({
 
     useFrame((state, delta) => {
         const parent = anchorRef.current?.parent as Mesh | null
-
-        if (!parent) return
+        const mat = materialRef.current
+        if (!parent || !mat) return
 
         const sprites = spriteRefs.current
         const pointerX = (state.pointer.x * viewport.width) / 2
@@ -170,7 +171,7 @@ export function LiquidTouchMaterial({
         gl.render(spriteScene, spriteCamera)
         gl.setRenderTarget(null)
 
-        uniforms.uDisplacement.value = FBO.texture
+        mat.uniforms.uDisplacement.value = FBO.texture
 
         displacementSmoothed.current = MathUtils.damp(
             displacementSmoothed.current,
@@ -178,7 +179,7 @@ export function LiquidTouchMaterial({
             DISPLACEMENT_DAMPING,
             delta,
         )
-        uniforms.uDisplacementIntensity.value = displacementSmoothed.current
+        mat.uniforms.uDisplacementIntensity.value = displacementSmoothed.current
     })
 
     const setSprite = useCallback((el: Mesh | null, i: number) => {
@@ -218,6 +219,7 @@ export function LiquidTouchMaterial({
             <group ref={anchorRef} />
 
             <shaderMaterial
+                ref={materialRef}
                 attach="material"
                 vertexShader={vertexShader}
                 fragmentShader={fragmentShader}
