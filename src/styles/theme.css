@@ -6,15 +6,13 @@
     --breakpoint-md: 48rem; /* 768px */
     --breakpoint-lg: 64rem; /* 1024px */
     --breakpoint-xl: 80rem; /* 1280px */
+    --breakpoint-2xl: 96rem; /* 1536px */
 
-    --spacing-landing-max-w: 1400px;
-    --spacing-landing-inner-w: 60rem;
-    --spacing-doc-max-w: 1440px;
-    --spacing-nav-h: 7rem;
-    --spacing-footer-h: 5rem;
-    --spacing-offset-top: calc(var(--spacing-nav-h) + 1.9rem);
-    --spacing-aside-h: calc(100vh - var(--spacing-offset-top));
-    --spacing-doc-w: 792px;
+    --spacing-base-w: 1460px;
+    --spacing-nav-h: 4.5rem;
+    --spacing-offset: 2.5rem;
+    --spacing-sticky: calc(var(--spacing-nav-h) + var(--spacing-offset));
+    --spacing-aside-h: calc(100vh - var(--spacing-offset));
 
     --font-weight-regular: 400;
     --font-weight-medium: 500;
@@ -35,7 +33,6 @@
     --color-highlight: var(--highlight);
     --color-accent-focus: var(--accent-focus);
     --color-accent-calm: var(--accent-calm);
-    --color-accent-neutral: var(--accent-neutral);
     --color-background: var(--background);
     --color-transparent: var(--transparent);
     --color-backdrop: var(--backdrop);
@@ -54,10 +51,9 @@
 
     --accent-focus: oklch(0.7 0.2 41.87 / 1);
     --accent-calm: oklch(0.59 0.21 258.69 / 1);
-    --accent-neutral: oklch(0.41 0 0 / 1);
 
     --highlight: oklch(0.62 0.2 264.82 / 1);
-    --border: oklch(0.95 0 0);
+    --border: oklch(0.92 0 0);
     --background: oklch(1 0 0);
     --transparent: oklch(1 0 0 / 0);
     --backdrop: oklch(0.91 0 0 / 0.53);
@@ -65,7 +61,7 @@
 }
 
 .dark {
-    --mat-1: oklch(0.9 0.01 286.1);
+    --mat-1: oklch(0.92 0.01 286.13);
     --mat-2: oklch(0.7 0.03 256.14 / 1);
     --mat-3: oklch(0.27 0.02 281.08);
     --mat-4: oklch(0.2 0.01 285.26 / 1);
@@ -73,10 +69,9 @@
 
     --accent-focus: oklch(0.65 0.19 251.47 / 1);
     --accent-calm: oklch(0.74 0.18 56.46 / 1);
-    --accent-neutral: oklch(0.75 0 0 / 1);
 
     --highlight: oklch(0.91 0.18 99.34);
-    --border: oklch(0.21 0.01 278.71);
+    --border: oklch(0.24 0.01 276.69);
     --background: oklch(0.14 0.01 285.45);
     --transparent: oklch(0 0 0 / 0);
     --backdrop: oklch(0.17 0.01 285.25 / 0.84);
