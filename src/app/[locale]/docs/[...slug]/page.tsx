@@ -72,11 +72,13 @@ export default async function Page({ params }: PageProps) {
                                     isSourceCodeDisabled={customer === null && isProComponent}
                                     dreiLoader={hasR3f ?? false}
                                     codePreviewSlot={
-                                        <DocCodeBlock
-                                            title={demoCode[props.name][0].path}
-                                            code={demoCode[props.name][0].content}
-                                            lang={demoCode[props.name][0].extension}
-                                        />
+                                        (!isProComponent || customer !== null) && (
+                                            <DocCodeBlock
+                                                title={demoCode[props.name][0].path}
+                                                code={demoCode[props.name][0].content}
+                                                lang={demoCode[props.name][0].extension}
+                                            />
+                                        )
                                     }
                                 />
                             )
