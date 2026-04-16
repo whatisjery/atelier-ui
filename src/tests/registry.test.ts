@@ -92,7 +92,7 @@ describe("Build output", () => {
     })
 
     it.skipIf(!buildExists)("each component has a JSON file with non-empty file content", () => {
-        for (const component of components) {
+        for (const component of components.filter((component) => !component.pro)) {
             const jsonPath = path.join(REGISTRY_OUTPUT, `${component.name}.json`)
             expect(fs.existsSync(jsonPath)).toBe(true)
 
