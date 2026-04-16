@@ -30,5 +30,5 @@
         ".next/dev/types/**/*.ts",
         "**/*.mts"
     ],
-    "exclude": ["CLI", "node_modules", "packages/cli-tool"]
+    "exclude": ["CLI", "node_modules", "packages/cli-tool", "src/pro"]
 }
