@@ -1,4 +1,4 @@
-import Link from "next/link"
+import { Link } from "@/i18n/navigation"
 import { BRAND } from "@/lib/constants"
 import { cn } from "@/lib/utils"
 import Logo from "./Logo"
@@ -15,7 +15,9 @@ export default function BrandLink({ slot, className }: BrandLinkProps) {
             href="/"
         >
             <Logo />
+
             <h1 className="font-serif text-xl whitespace-nowrap">{BRAND}</h1>
+
             {slot}
         </Link>
     )
