@@ -9,7 +9,8 @@
         "lint:fix": "biome lint --fix",
         "test:all": "vitest run",
         "prebuild": "tsx src/scripts/merge-pro.ts && tsx src/scripts/build-registry.ts && tsx src/scripts/search-index.ts && tsx src/scripts/generate-timestamps.ts",
-        "dev": "tsx src/scripts/merge-pro.ts && tsx src/scripts/build-registry.ts && tsx src/scripts/search-index.ts && tsx src/scripts/generate-timestamps.ts && next dev --webpack"
+        "dev": "tsx src/scripts/merge-pro.ts && tsx src/scripts/build-registry.ts && tsx src/scripts/search-index.ts && tsx src/scripts/generate-timestamps.ts && next dev --webpack",
+        "install:vercel": "bash ./bin/init-submodule.sh && pnpm install"
     },
     "dependencies": {
         "@mdx-js/loader": "^3.1.1",
