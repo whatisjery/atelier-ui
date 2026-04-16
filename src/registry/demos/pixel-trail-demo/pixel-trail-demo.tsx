@@ -13,7 +13,8 @@ export default function PixelTrailDemo(controls: Partial<PixelTrailProps>) {
                 <Image
                     src="/images/demo/pixel-trail/cloud.webp"
                     alt="Pixel Trail Demo"
-                    objectFit="cover"
+                    className="object-cover"
+                    sizes="10vw"
                     fill
                 />
             </div>

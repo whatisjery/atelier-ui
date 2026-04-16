@@ -28,7 +28,7 @@ export default function ImageTrailDemo(controls: Partial<PropsMouseTrail<string>
                 data={ITEMS}
                 renderItems={(src) => (
                     <div className="w-28 h-28 flex items-center justify-center relative rounded-lg overflow-hidden">
-                        <Image src={src} alt="Image" fill objectFit="cover" />
+                        <Image src={src} alt="Image" fill sizes="10vw" className="object-cover" />
                     </div>
                 )}
                 {...controls}

@@ -34,7 +34,7 @@ export default function Footer() {
 
     return (
         <footer className="z-2 relative overflow-hidden bg-background">
-            <div className="xs:px-5 px-0 py-16 w-full relative overflow-hidden">
+            <div className="xs:px-5 px-0 py-16 w-full relative overflow-hidden border-border/80 border-t border-b">
                 <BackgroundPixelGrid pixelSize={DEFAULT_PIXEL_SIZE} />
 
                 <div className="bg-background/70 border border-border/50 backdrop-blur-[1.5px] z-2 relative flex flex-col gap-y-28 p-5 rounded-sm max-w-[37rem] mx-auto">

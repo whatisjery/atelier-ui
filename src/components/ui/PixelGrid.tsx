@@ -32,6 +32,7 @@ export default function BackgroundPixelGrid({
                 style={{
                     backgroundSize: `${pixelSize}px ${pixelSize}px`,
                     backgroundPosition: position,
+                    clipPath: "inset(2px 0px 2px 0px)",
                     backgroundImage: [
                         `linear-gradient(to right, var(--color-border) 1px, transparent 1px)`,
                         `linear-gradient(to bottom, var(--color-border) 1px, transparent 1px)`,

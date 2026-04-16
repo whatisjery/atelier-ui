@@ -13,12 +13,17 @@ export default function CardPixelBlur({
     containerClassName,
 }: CardPixelBlurProps) {
     return (
-        <div className={cn("relative rounded-xl border not-prose", containerClassName)}>
+        <div
+            className={cn(
+                "relative rounded-xl border not-prose overflow-hidden",
+                containerClassName,
+            )}
+        >
             <BackgroundPixelGrid position="center" />
 
             <div
                 className={cn(
-                    "relative z-2 bg-background/2 backdrop-blur-[1px] rounded-xl",
+                    "relative z-2 bg-background/7 backdrop-blur-[2px] rounded-xl",
                     className,
                 )}
             >

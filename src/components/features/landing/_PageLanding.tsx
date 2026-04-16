@@ -61,18 +61,18 @@ export default function PageLanding({ showcaseComponents }: PageLadingProps) {
 
     return (
         <>
-            <main className="w-full max-w-base-w mx-auto relative">
+            <main className="w-full px-2 max-w-base-w mx-auto relative">
                 <MainNav />
 
                 <div className="w-full relative">
-                    <section className="pb-30 pt-25 flex  mx-auto flex-col relative items-center justify-center">
+                    <section className="pb-30 pt-20 flex mx-auto flex-col relative items-center justify-center">
                         <BackgroundPixelGrid
-                            className="left-[calc(50%-50vw)] w-screen -z-1"
+                            className="left-[calc(50%-50vw)] w-screen -z-1 top-px"
                             pixelSize={DEFAULT_PIXEL_SIZE}
                         />
 
                         <div className="border border-mat-4 font-serif px-3 py-1 rounded-full text-md bg-mat-5 mb-5 flex items-center gap-x-2">
-                            Atelier UI (beta 0.2.0) &mdash; &copy;2026.
+                            Atelier UI (v{VERSION}) &mdash; &copy;{new Date().getFullYear()}
                         </div>
 
                         <h1 className="intro-text font-semibold md:text-[3.9rem] lg:text-[5rem] text-[3.3rem] lg:leading-[1.1em] text-center tracking-[-0.05em] leading-[1.1em] w-full">

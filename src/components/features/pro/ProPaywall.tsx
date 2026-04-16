@@ -24,7 +24,7 @@ export default function ProPaywall() {
             </div>
 
             <div className="flex items-center justify-center gap-2">
-                <Button className="gap-x-2" variant="secondary">
+                <Button asChild className="gap-x-2" variant="secondary">
                     <a
                         target="_blank"
                         rel="noopener noreferrer"

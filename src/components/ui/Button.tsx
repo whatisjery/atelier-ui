@@ -44,7 +44,7 @@ export default function Button({
         <Tag
             {...props}
             className={cn(
-                "group cursor-pointer rounded-md font-medium flex items-center justify-center text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring/40",
+                "group cursor-pointer rounded-md font-medium flex items-center justify-center text-sm            outline-none [&:not(:hover)]:focus-visible:ring-2 [&:not(:hover)]:focus-visible:ring-ring/40",
                 variantMap[variant],
                 sizeMap[size],
                 className,
