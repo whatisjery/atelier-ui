@@ -3,11 +3,11 @@ import { notFound } from "next/navigation"
 import { hasLocale } from "next-intl"
 import { setRequestLocale } from "next-intl/server"
 import Footer from "@/components/common/Footer"
+import MainNav from "@/components/common/MainNav"
 import DocSidebar from "@/components/features/docs/DocSidebar"
-import DocTopNav from "@/components/features/docs/DocTopNav"
-import Border from "@/components/ui/Border"
 import { routing } from "@/i18n/routing"
 import { getComponentsList, getSidebarData } from "@/lib/docs"
+import { getPolarCustomer } from "@/lib/polar"
 
 export const metadata: Metadata = {
     title: "Create Next App",
@@ -26,6 +26,7 @@ export default async function DocsLayout({ children, params }: DocsLayoutProps) 
     const { menuSections } = getSidebarData(locale)
 
     const components = getComponentsList(locale).flatMap(({ children }) => children)
+    const customer = await getPolarCustomer()
 
     if (!hasLocale(routing.locales, locale)) {
         notFound()
@@ -33,17 +34,19 @@ export default async function DocsLayout({ children, params }: DocsLayoutProps) 
 
     return (
         <>
-            <div className="mx-auto max-w-doc-max-w relative w-full flex flex-col">
-                <DocTopNav />
-                <div className="flex">
+            <div className="mx-auto max-w-base-w relative w-full flex flex-col">
+                <MainNav />
+
+                <div className="flex pt-offset">
                     <DocSidebar
                         activeComponentCount={components.length}
                         menuSections={menuSections}
+                        hasLicense={customer !== null}
                     />
                     {children}
                 </div>
-                <Border direction="horizontal" className="bottom-0" />
             </div>
+
             <Footer />
         </>
     )

@@ -10,13 +10,40 @@ const execAsync = promisify(exec)
 const COMPONENTS_PATH = path.resolve(__dirname, "../test/fixtures/project/components")
 const SHARED_PATH = path.resolve(__dirname, "../test/fixtures/project")
 const REGISTRY_DIR = path.resolve(__dirname, "../../../public/registry")
+const VALID_PRO_KEY = "test-pro-key-123"
+const PRO_COMPONENTS = new Set(["halftone-glow"])
+
+const PRO_FIXTURE = {
+    name: "halftone-glow",
+    description: "Half tone glow effect",
+    dependencies: [],
+    shared: [],
+    files: [{ path: "halftone-glow.tsx", content: "export default function HalftoneGlow() {}" }],
+}
 
 let server: http.Server
 let port: number
 
 beforeAll(async () => {
     server = http.createServer((req, res) => {
-        const filePath = path.join(REGISTRY_DIR, req.url || "")
+        const componentName = (req.url || "").replace(/^\//, "").replace(/\.json$/, "")
+
+        if (PRO_COMPONENTS.has(componentName)) {
+            const authHeader = req.headers.authorization
+            const key = authHeader?.replace("Bearer ", "")
+
+            if (key !== VALID_PRO_KEY) {
+                res.writeHead(401, { "Content-Type": "application/json" })
+                res.end(JSON.stringify({ error: "License key required" }))
+                return
+            }
+
+            res.writeHead(200, { "Content-Type": "application/json" })
+            res.end(JSON.stringify(PRO_FIXTURE))
+            return
+        }
+
+        const filePath = path.join(REGISTRY_DIR, `${req.url || ""}.json`)
         if (fs.existsSync(filePath)) {
             res.writeHead(200, { "Content-Type": "application/json" })
             res.end(fs.readFileSync(filePath))
@@ -78,5 +105,52 @@ describe("add command", () => {
         )
         expect(fs.existsSync(`${COMPONENTS_PATH}/liquid-touch/liquid-touch.tsx`)).toBe(true)
         expect(fs.existsSync(`${SHARED_PATH}/assets/ripple.png`)).toBe(true)
+    })
+
+    it("installs a pro component with a valid key", async () => {
+        await execAsync(
+            `npx tsx src/index.ts add halftone-glow --path ${COMPONENTS_PATH} --no-install`,
+            {
+                cwd: path.resolve(__dirname, ".."),
+                env: {
+                    ...process.env,
+                    ATELIER_REGISTRY: `http://localhost:${port}`,
+                    ATELIER_PRO_KEY: VALID_PRO_KEY,
+                },
+            },
+        )
+        expect(fs.existsSync(`${COMPONENTS_PATH}/halftone-glow/halftone-glow.tsx`)).toBe(true)
+    })
+
+    it("rejects a pro component without a key", async () => {
+        await expect(
+            execAsync(
+                `npx tsx src/index.ts add halftone-glow --path ${COMPONENTS_PATH} --no-install`,
+                {
+                    cwd: path.resolve(__dirname, ".."),
+                    env: {
+                        ...process.env,
+                        ATELIER_REGISTRY: `http://localhost:${port}`,
+                        ATELIER_PRO_KEY: "",
+                    },
+                },
+            ),
+        ).rejects.toThrow()
+    })
+
+    it("rejects a pro component with an invalid key", async () => {
+        await expect(
+            execAsync(
+                `npx tsx src/index.ts add halftone-glow --path ${COMPONENTS_PATH} --no-install`,
+                {
+                    cwd: path.resolve(__dirname, ".."),
+                    env: {
+                        ...process.env,
+                        ATELIER_REGISTRY: `http://localhost:${port}`,
+                        ATELIER_PRO_KEY: "wrong-key",
+                    },
+                },
+            ),
+        ).rejects.toThrow()
     })
 })

@@ -52,4 +52,10 @@ next-env.d.ts
 packages/cli-tool/dist
 packages/cli-tool/node_modules
 packages/cli-tool/test-project/src/components/*
-!packages/cli-tool/test-project/src/components/.gitkeep  
+!packages/cli-tool/test-project/src/components/.gitkeep
+
+# PRO-MERGE (auto-generated, do not edit)
+src/content/en/components/background/halftone-glow.mdx
+src/registry/base/halftone-glow/halftone-glow.tsx
+src/registry/demos/halftone-glow-demo/halftone-glow-demo.tsx
+# END PRO-MERGE

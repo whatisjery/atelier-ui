@@ -4,7 +4,7 @@ import { Command } from "commander"
 import fs from "fs-extra"
 import { getPackageManager } from "./utils"
 
-const REGISTRY_URL = process.env.ATELIER_REGISTRY || "https://atelier-ui.com/registry"
+const REGISTRY_URL = process.env.ATELIER_REGISTRY || "https://atelier-ui.com/api/registry"
 
 export const addCommand = new Command()
     .command("add <component>")
@@ -17,15 +17,26 @@ export const addCommand = new Command()
     .action(async (component, options) => {
         let res: Response
 
-        const url = `${options.registry}/${component}.json`
+        const url = `${options.registry}/${component}`
+        const headers: Record<string, string> = {}
+        const proKey = process.env.ATELIER_PRO_KEY
+
+        if (proKey) {
+            headers.Authorization = `Bearer ${proKey}`
+        }
 
         try {
-            res = await fetch(url)
+            res = await fetch(url, { headers })
         } catch (err) {
             console.error("Network error:", (err as Error).message)
             process.exit(1)
         }
+
         if (!res.ok) {
+            if (res.status === 401) {
+                console.error(`"${component}" is a pro component. Add ATELIER_PRO_KEY to your .env`)
+                process.exit(1)
+            }
             console.error(`Component "${component}" not found`)
             process.exit(1)
         }

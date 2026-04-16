@@ -1,50 +1,35 @@
 "use client"
 
-import { BookOpen, ChevronRight, Layers2, X } from "lucide-react"
+import { ArrowRight, Layers2, X } from "lucide-react"
 import { AnimatePresence, motion, type Variants } from "motion/react"
 import { useTranslations } from "next-intl"
 import { useEffect } from "react"
 import BrandLink from "@/components/common/BrandLink"
 import ThemeToggle from "@/components/common/ThemeToggle"
+import AnimatedArrow from "@/components/ui/AnimatedArrow"
+import Badge from "@/components/ui/Badge"
 import Button from "@/components/ui/Button"
 import { Link, usePathname } from "@/i18n/navigation"
-import { VERSION } from "@/lib/constants"
 import { expoOut } from "@/lib/easing"
 import { useGlobalStore } from "@/lib/store"
 import { cn, formatComponentNumber } from "@/lib/utils"
 import type { DocTree } from "@/types/docs"
-import DocSidebarTempSelect from "./DocSidebarTempSelect"
 
 type SideBarCoreProps = {
     className: string
     menuSections: DocTree[]
     headerSlot?: React.ReactNode
     activeComponentCount: number
+    hasLicense: boolean
 }
 
 type DocSidebarProps = {
     menuSections: DocTree[]
     activeComponentCount: number
+    hasLicense: boolean
 }
 
 const MotionButton = motion.create(Button)
-
-const TOP_LINKS = [
-    {
-        href: "/docs",
-        icon: <BookOpen className="size-4 text-mat-1" />,
-        key: "atelier-ui-docs",
-        descriptionKey: "version",
-        params: { version: VERSION },
-    },
-    {
-        href: "/docs/components",
-        icon: <Layers2 className="size-4 text-mat-1" />,
-        key: "components",
-        descriptionKey: "explore-components",
-        params: undefined,
-    },
-] as const
 
 const transition = {
     ease: expoOut,
@@ -78,63 +63,53 @@ function SideBarCore({
     menuSections,
     headerSlot,
     activeComponentCount,
+    hasLicense,
 }: SideBarCoreProps) {
     const tCommon = useTranslations("common")
     const pathname = usePathname()
+    const isActive = pathname === "/docs"
 
     return (
-        <aside
-            className={cn("relative max-h-[92vh] lg:max-h-aside-h scrollbar-overlay", className)}
-        >
+        <aside className={cn("relative h-full", className)}>
             {headerSlot && headerSlot}
 
-            <div>
-                {TOP_LINKS.map(({ href, icon, key, descriptionKey, params }) => {
-                    const isActive = pathname === href
+            <Link
+                className={cn(
+                    "flex border group mb-0 border-dashed items-center hover:bg-mat-5/50 gap-x-2 px-4 py-3 rounded-md",
+                    {
+                        "bg-mat-5/50": isActive,
+                    },
+                )}
+                href="/docs"
+            >
+                <span
+                    className={cn("border p-2 rounded-md bg-mat-5/50 group-hover:bg-background", {
+                        "bg-background": isActive,
+                    })}
+                >
+                    <Layers2 className="size-4 text-mat-1" />
+                </span>
 
-                    return (
-                        <Link
-                            key={key}
-                            className={cn(
-                                "flex items-center gap-x-2 hover:bg-mat-5/80 px-2 py-3 leading-4.5 rounded-xl",
-                                {
-                                    "bg-mat-5 hover:bg-mat-4/80": isActive,
-                                },
-                            )}
-                            href={href}
-                        >
-                            <span className="border p-2 rounded-md bg-background border-mat-3/80">
-                                {icon}
-                            </span>
+                <div className="flex items-center justify-between w-full leading-4.5">
+                    <div>
+                        <span className="font-medium text-sm">{tCommon("components")}</span>
 
-                            <div className="flex items-center justify-between w-full">
-                                <span>
-                                    <span className="font-medium text-sm">{tCommon(key)}</span>
-                                    {key === "components" && (
-                                        <sup className="ml-1 font-mono text-[0.65rem]">
-                                            {formatComponentNumber(activeComponentCount)}
-                                        </sup>
-                                    )}
-                                    <p className="text-xs text-mat-2">
-                                        {tCommon(descriptionKey, params)}
-                                    </p>
-                                </span>
+                        <sup className="ml-1 font-mono text-[0.65rem]">
+                            {formatComponentNumber(activeComponentCount)}
+                        </sup>
 
-                                <ChevronRight
-                                    strokeWidth={2}
-                                    className={cn(
-                                        "size-4",
-                                        isActive ? "text-highlight" : "text-mat-3",
-                                    )}
-                                />
-                            </div>
-                        </Link>
-                    )
-                })}
-            </div>
+                        <p className="text-xs text-mat-2">{tCommon("explore-components")}</p>
+                    </div>
+
+                    <AnimatedArrow
+                        className={isActive ? "text-mat-1" : "text-mat-3"}
+                    ></AnimatedArrow>
+                </div>
+            </Link>
+
             <nav
                 aria-label="Documentation"
-                className="space-y-5  text-sm pl-2 overflow-y-auto scrollbar-overlay h-[calc(100vh-19rem)] pb-20"
+                className="space-y-5 text-sm pl-2 pt-5 pb-20 h-[calc(100vh-11rem)] overflow-y-auto scrollbar-overlay"
             >
                 {menuSections.map((section) => (
                     <div key={section.title}>
@@ -149,17 +124,29 @@ function SideBarCore({
                                     <li key={child.title}>
                                         <Link
                                             className={cn(
-                                                "py-1.5 px-2 hover:text-mat-1 rounded-md w-full flex items-center justify-between text-mat-2",
+                                                "py-1 group px-2 hover:text-mat-1 rounded-md w-full flex items-center justify-between text-mat-2",
                                                 {
                                                     "text-highlight font-medium": isActive,
                                                 },
                                             )}
                                             href={child.url}
                                         >
-                                            {child.title}
-                                            {isActive && (
-                                                <ChevronRight className="size-4 !text-highlight" />
-                                            )}
+                                            <span className="flex items-center gap-x-2">
+                                                {child.title}
+
+                                                {child.pro && !hasLicense && (
+                                                    <Badge title="pro" variant="neutral" />
+                                                )}
+                                            </span>
+
+                                            <ArrowRight
+                                                className={cn(
+                                                    "size-4 opacity-0 -translate-x-1 transition duration-300",
+                                                    {
+                                                        "opacity-100 translate-x-0": isActive,
+                                                    },
+                                                )}
+                                            />
                                         </Link>
                                     </li>
                                 )
@@ -172,7 +159,11 @@ function SideBarCore({
     )
 }
 
-export default function DocSidebar({ menuSections, activeComponentCount }: DocSidebarProps) {
+export default function DocSidebar({
+    menuSections,
+    activeComponentCount,
+    hasLicense,
+}: DocSidebarProps) {
     const isSidebarOpen = useGlobalStore((state) => state.isSidebarOpen)
     const toggleSidebar = useGlobalStore((state) => state.toggleSidebar)
     const pathname = usePathname()
@@ -198,8 +189,9 @@ export default function DocSidebar({ menuSections, activeComponentCount }: DocSi
             {/* Desktop sidebar */}
             <SideBarCore
                 activeComponentCount={activeComponentCount}
-                className="lg:block hidden min-w-75 sticky space-y-7 pl-3 top-offset-top"
+                className="max-xl:hidden min-w-70 sticky space-y-7 pl-3 top-sticky"
                 menuSections={menuSections}
+                hasLicense={hasLicense}
             />
 
             {/* Mobile sidebar */}
@@ -228,14 +220,11 @@ export default function DocSidebar({ menuSections, activeComponentCount }: DocSi
                                 activeComponentCount={activeComponentCount}
                                 className="space-y-7"
                                 menuSections={menuSections}
+                                hasLicense={hasLicense}
                                 headerSlot={
-                                    <div className="space-y-6 mb-5">
-                                        <div className="flex items-center justify-between">
-                                            <BrandLink />
-                                            <ThemeToggle />
-                                        </div>
-
-                                        <DocSidebarTempSelect />
+                                    <div className="flex items-center justify-between">
+                                        <BrandLink />
+                                        <ThemeToggle />
                                     </div>
                                 }
                             />

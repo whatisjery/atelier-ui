@@ -1,6 +1,6 @@
 {
     "name": "atelier-ui",
-    "version": "0.2.0",
+    "version": "0.3.0",
     "files": [
         "dist"
     ],
@@ -21,8 +21,8 @@
     "scripts": {
         "build": "tsc",
         "test": "vitest run",
-        "dev:add": "cross-env ATELIER_REGISTRY=http://localhost:3000/registry tsx src/index.ts add --path test/fixtures/project/components",
-        "dev:test": "cross-env ATELIER_REGISTRY=http://localhost:3000/registry vitest run"
+        "dev:add": "cross-env ATELIER_REGISTRY=http://localhost:3000/api/registry tsx src/index.ts add --path test/fixtures/project/components",
+        "dev:test": "cross-env ATELIER_REGISTRY=http://localhost:3000/api/registry vitest run"
     },
     "dependencies": {
         "@react-three/drei": "^10.7.7",
