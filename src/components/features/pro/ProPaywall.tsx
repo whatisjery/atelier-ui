@@ -8,7 +8,7 @@ import { Link } from "@/i18n/navigation"
 
 export default function ProPaywall() {
     return (
-        <CardPixelBlur className="flex flex-col w-full h-full rounded-xl items-center justify-between py-5 ">
+        <CardPixelBlur className="flex flex-col w-full h-full rounded-xl items-center justify-between p-5 ">
             <div className="p-3 border rounded-full mb-3">
                 <Lock className="size-6" />
             </div>
@@ -43,7 +43,7 @@ export default function ProPaywall() {
                 </Button>
             </div>
 
-            <small className="text-xs text-mat-2/80 pt-20 pb-5 italic max-w-sm text-center mt-auto">
+            <small className="text-xs text-mat-2/80 pt-20 pb-2 italic max-w-sm text-center mt-auto">
                 One-time payment. Lifetime access to all current and future pro components.
             </small>
         </CardPixelBlur>

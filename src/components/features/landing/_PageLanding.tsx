@@ -61,11 +61,11 @@ export default function PageLanding({ showcaseComponents }: PageLadingProps) {
 
     return (
         <>
-            <main className="w-full px-2 max-w-base-w mx-auto relative">
+            <main className="w-full max-w-base-w mx-auto relative">
                 <MainNav />
 
                 <div className="w-full relative">
-                    <section className="pb-30 pt-20 flex mx-auto flex-col relative items-center justify-center">
+                    <section className="pb-18 pt-12 px-4 sm:px-2 sm:pb-30 sm:pt-25 flex mx-auto flex-col relative items-center justify-center">
                         <BackgroundPixelGrid
                             className="left-[calc(50%-50vw)] w-screen -z-1 top-px"
                             pixelSize={DEFAULT_PIXEL_SIZE}
