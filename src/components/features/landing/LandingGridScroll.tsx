@@ -15,8 +15,6 @@ import { getLucideIcon } from "@/lib/utils"
 import type { DocTree } from "@/types/docs"
 
 const PER_COLUMN = 2
-const DEFAULT_DASH = 4
-const DEFAULT_GAP = 4
 
 type LandingGridScrollProps = {
     items: DocTree[]
@@ -51,33 +49,8 @@ export default function LandingGridScroll({ items }: LandingGridScrollProps) {
     })
 
     return (
-        <div ref={containerRef} className="w-full h-full p-5 text-2xl capitalize z-2 relative">
+        <div ref={containerRef} className="w-full h-full text-2xl capitalize z-2 relative">
             <div className="w-full h-full relative flex overflow-hidden bg-background">
-                <svg
-                    aria-label="Dashed Frame"
-                    className="absolute inset-0 w-full h-full pointer-events-none"
-                    viewBox="0 0 100 100"
-                    preserveAspectRatio="none"
-                >
-                    <rect
-                        width="100"
-                        height="100"
-                        fill="none"
-                        vectorEffect="non-scaling-stroke"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeDasharray={`${DEFAULT_DASH} ${DEFAULT_GAP}`}
-                        className="text-mat-3"
-                    >
-                        <animate
-                            attributeName="stroke-dashoffset"
-                            values="0;-24"
-                            dur="0.8s"
-                            repeatCount="indefinite"
-                        />
-                    </rect>
-                </svg>
-
                 <div className="aspect-[2/4] h-full w-full relative">
                     <motion.div ref={mesureRef} style={{ y }} className="h-full w-full">
                         {[...col1, ...col1].map((item, index) => {

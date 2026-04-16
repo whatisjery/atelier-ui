@@ -1,11 +1,11 @@
 import { setRequestLocale } from "next-intl/server"
-import ScrollableTechStack from "@/components/common/ScrollableTechStack"
 import PageDocLayout from "@/components/features/docs/_PageDocLayout"
+import DocComponentList from "@/components/features/docs/DocComponentList"
 import DocHeaderGroupTitle from "@/components/features/docs/DocHeaderGroupTitle"
-import DocQuickLinks from "@/components/features/docs/DocQuickLinks"
+import DocPageDropdown from "@/components/features/docs/DocPageDropdown"
 import DocTableOfContent from "@/components/features/docs/DocTableOfContent"
 import { routing } from "@/i18n/routing"
-import { getDocBySlug, getQuickLinksMeta } from "@/lib/docs"
+import { getComponentsList, getDocBySlug } from "@/lib/docs"
 
 type PageProps = {
     params: Promise<{ locale: string }>
@@ -29,38 +29,28 @@ export default async function Page({ params }: PageProps) {
     const { locale } = await params
     setRequestLocale(locale)
 
+    const { headings, rawMarkdown } = getDocBySlug(locale, ["index"])
     const content = await import(`@/content/${locale}/index.mdx`)
-
-    const { headings } = getDocBySlug(locale, ["index"])
-
-    const quickLinks = getQuickLinksMeta(locale, [
-        "components/index",
-        "getting-started/installation",
-        "getting-started/contribution",
-        "getting-started/code-of-conduct",
-    ])
+    const componentsList = getComponentsList(locale)
 
     return (
         <PageDocLayout
-            TOCSlot={<DocTableOfContent headings={headings} />}
             headerSlot={
                 <DocHeaderGroupTitle
-                    className="-mb-3"
-                    showBreadcrumb={false}
+                    headerSlot={<DocPageDropdown rawMarkdown={rawMarkdown} />}
+                    className="mb-15"
                     meta={content.frontmatter}
                 />
             }
+            TOCSlot={<DocTableOfContent headings={headings} />}
             contentSlot={
-                <>
-                    <ScrollableTechStack />
-                    <content.default
-                        components={{
-                            DocQuickLinks: () => {
-                                return <DocQuickLinks links={quickLinks} />
-                            },
-                        }}
-                    />
-                </>
+                <content.default
+                    components={{
+                        DocComponentList: () => {
+                            return <DocComponentList componentsList={componentsList} />
+                        },
+                    }}
+                />
             }
         />
     )

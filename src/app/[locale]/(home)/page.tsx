@@ -25,5 +25,5 @@ export default async function Page({ params }: PageProps) {
         (_, i) => components[i % components.length],
     )
 
-    return <PageLanding activeComponents={components} showcaseComponents={showcaseComponents} />
+    return <PageLanding showcaseComponents={showcaseComponents} />
 }

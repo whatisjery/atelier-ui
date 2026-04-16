@@ -1,10 +1,10 @@
 "use client"
 
-import { Copy, FileText } from "lucide-react"
+import { Copy, Ellipsis, FileText } from "lucide-react"
 import { useTranslations } from "next-intl"
 import { DropdownMenu } from "radix-ui"
 import { toast } from "sonner"
-import Button from "@/components/ui/Button"
+import DropdownButton from "@/components/ui/DropdownButton"
 import { useCopy } from "@/hooks/use-copy"
 
 const DROPDOWN_ACTIONS = [
@@ -38,19 +38,19 @@ export default function DocPageDropdown({ rawMarkdown }: DocPageDropdownProps) {
     }
 
     return (
-        <div className="flex items-center isolate">
+        <div className="flex items-center isolate max-lg:hidden">
             <DropdownMenu.Root modal={false}>
                 <DropdownMenu.Trigger asChild>
-                    <Button size="icon" variant="outline">
-                        <Copy className="size-4" />
-                    </Button>
+                    <DropdownButton variant="primary">
+                        <Ellipsis className="size-4" />
+                    </DropdownButton>
                 </DropdownMenu.Trigger>
 
                 <DropdownMenu.Portal>
                     <DropdownMenu.Content
                         align="end"
                         sideOffset={4}
-                        className="min-w-70 rounded-xl border bg-background p-1 animate-in fade-in-0  slide-in-from-top-2"
+                        className="min-w-70 rounded-xl border shadow-lg/3 bg-background p-4 data-[state=open]:a-slide-in data-[state=closed]:a-slide-out"
                     >
                         {DROPDOWN_ACTIONS.map(({ key, icon: Icon, action }) => (
                             <DropdownMenu.Item

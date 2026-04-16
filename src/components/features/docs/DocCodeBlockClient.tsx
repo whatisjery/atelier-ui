@@ -1,7 +1,7 @@
 "use client"
 
 import { toJsxRuntime } from "hast-util-to-jsx-runtime"
-import { Check, ChevronDown, ChevronUp, Copy, ListChevronsDownUp } from "lucide-react"
+import { ArrowDown, ArrowUp, Check, Copy, ListChevronsDownUp } from "lucide-react"
 import { useTranslations } from "next-intl"
 import { type ComponentRef, useRef, useState } from "react"
 import { Fragment, jsx, jsxs } from "react/jsx-runtime"
@@ -20,10 +20,10 @@ type DocCodBlockClientProps = {
 } & CodeBlock
 
 const iconMap: Record<string, React.ReactNode> = {
-    tsx: <SiTypescript size={14} className="text-mat-2" />,
-    ts: <SiTypescript size={14} className="text-mat-2" />,
-    css: <SiCss size={14} className="text-mat-2" />,
-    bash: <IoTerminal size={15} className="text-mat-2" />,
+    tsx: <SiTypescript size={14} className="text-mat-1" />,
+    ts: <SiTypescript size={14} className="text-mat-1" />,
+    css: <SiCss size={14} className="text-mat-1" />,
+    bash: <IoTerminal size={15} className="text-mat-1" />,
 }
 
 export function DocCodeBlockClient({
@@ -120,12 +120,16 @@ export function DocCodeBlockClient({
                         <pre
                             ref={ref}
                             {...props}
-                            className={cn("p-5 not-prose scrollbar-hide [tab-size:2]", {
-                                "overflow-y-auto max-h-[500px]": mode === "scroll",
-                                "max-h-[150px] overflow-y-hidden": mode === "expand" && !isExpanded,
-                                "max-h-full overflow-y-auto": mode === "expand" && isExpanded,
-                                "[&_*]:!text-mat-1": installTabs,
-                            })}
+                            className={cn(
+                                "p-5 relative not-prose rounded-lg m-0.5 scrollbar-hide [tab-size:2]",
+                                {
+                                    "overflow-y-auto max-h-[500px]": mode === "scroll",
+                                    "max-h-[150px] overflow-y-hidden":
+                                        mode === "expand" && !isExpanded,
+                                    "max-h-full overflow-y-auto": mode === "expand" && isExpanded,
+                                    "[&_*]:!text-mat-1": installTabs,
+                                },
+                            )}
                         >
                             {installTabs && (
                                 <>
@@ -134,34 +138,39 @@ export function DocCodeBlockClient({
                             )}
 
                             {!installTabs && props.children}
+
+                            {mode === "expand" && (
+                                <div
+                                    className={cn(
+                                        "bg-gradient-to-t from-30% from-background to-100% to-transparent flex items-end h-full w-full absolute bottom-0 left-0 right-0",
+                                        { "bg-transparent": isExpanded },
+                                    )}
+                                >
+                                    <Button
+                                        onClick={() => setIsExpanded(!isExpanded)}
+                                        variant="primary"
+                                        className="w-fit p-3 mx-auto mb-4 font-sans rounded-full"
+                                        aria-expanded={isExpanded}
+                                    >
+                                        {isExpanded ? (
+                                            <>
+                                                <ArrowUp className="size-4" />
+                                                {t("collapse")}
+                                            </>
+                                        ) : (
+                                            <>
+                                                <ArrowDown className="size-4" />
+                                                {t("expand-code")}
+                                            </>
+                                        )}
+                                    </Button>
+                                </div>
+                            )}
                         </pre>
                     ),
                     code: (props) => <code {...props}>{props.children}</code>,
                 },
             })}
-
-            {mode === "expand" && (
-                <>
-                    <Button
-                        onClick={() => setIsExpanded(!isExpanded)}
-                        variant="solid"
-                        className="bg-transparent hover:text-mat-2 mt-2 w-full relative z-1"
-                        aria-expanded={isExpanded}
-                    >
-                        {isExpanded ? t("collapse") : t("expand")}
-
-                        {isExpanded ? (
-                            <ChevronUp className="size-4" />
-                        ) : (
-                            <ChevronDown className="size-4" />
-                        )}
-                    </Button>
-
-                    {!isExpanded && (
-                        <div className="absolute pointer-events-none z-0 bottom-0 left-0 right-0 h-[80%] w-full bg-gradient-to-t from-background to-transparent" />
-                    )}
-                </>
-            )}
         </figure>
     )
 }

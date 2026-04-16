@@ -7,7 +7,10 @@ import DocInstallGuide from "@/components/features/docs/DocInstallGuide"
 import DocPageDropdown from "@/components/features/docs/DocPageDropdown"
 import DocPagination from "@/components/features/docs/DocPagination"
 import DocTableOfContent from "@/components/features/docs/DocTableOfContent"
+import ProLicenseHelper from "@/components/features/pro/ProLicenseHelper"
+import ProPaywall from "@/components/features/pro/ProPaywall"
 import { getAllDocs, getCodesBlock, getDocBySlug, getDocNavigation } from "@/lib/docs"
+import { getPolarCustomer } from "@/lib/polar"
 import { getComponentSnippets } from "@/lib/registry"
 import { components } from "@/registry"
 
@@ -31,16 +34,16 @@ export async function generateMetadata({ params }: PageProps) {
 
 export default async function Page({ params }: PageProps) {
     const { locale, slug } = await params
+    const customer = await getPolarCustomer()
 
     setRequestLocale(locale)
 
     const { headings, rawMarkdown } = getDocBySlug(locale, slug)
     const navigation = getDocNavigation(locale, slug)
-
     const demoCode = getCodesBlock("src/registry/demos")
     const snippets = getComponentSnippets()
-
     const content = await import(`@/content/${locale}/${slug.join("/")}.mdx`)
+    const isProComponent = components.some((c) => c.name === slug[slug.length - 1] && c.pro)
 
     const getDemoComponent = (name: string) => {
         return components.find((component) => name.replace("-demo", "") === component.name)
@@ -49,10 +52,10 @@ export default async function Page({ params }: PageProps) {
     return (
         <PageDocLayout
             bottomSlot={navigation ? <DocPagination navigation={navigation} /> : undefined}
-            TOCSlot={headings ? <DocTableOfContent headings={headings} /> : undefined}
+            TOCSlot={<DocTableOfContent showCommunityLinks={!isProComponent} headings={headings} />}
             headerSlot={
                 <DocHeaderGroupTitle
-                    headerSlot={<DocPageDropdown rawMarkdown={rawMarkdown} />}
+                    headerSlot={!isProComponent && <DocPageDropdown rawMarkdown={rawMarkdown} />}
                     meta={content.frontmatter}
                 />
             }
@@ -62,10 +65,11 @@ export default async function Page({ params }: PageProps) {
                         DocComponentPreview: (props: { name: string }) => {
                             const component = getDemoComponent(props.name)
                             const hasR3f = component?.dependencies.includes("@react-three/drei")
+
                             return (
                                 <DocComponentPreview
                                     {...props}
-                                    snippets={demoCode[props.name][0]}
+                                    isSourceCodeDisabled={customer === null && isProComponent}
                                     dreiLoader={hasR3f ?? false}
                                     codePreviewSlot={
                                         <DocCodeBlock
@@ -76,6 +80,15 @@ export default async function Page({ params }: PageProps) {
                                     }
                                 />
                             )
+                        },
+
+                        ProGate: ({ children }: { children: React.ReactNode }) => {
+                            if (customer !== null) return children
+                            return <ProPaywall />
+                        },
+
+                        ProLicenseHelper: () => {
+                            return <ProLicenseHelper licenseKey={customer?.licenseKey ?? ""} />
                         },
 
                         DocInstallGuide: (props: { name: string }) => {

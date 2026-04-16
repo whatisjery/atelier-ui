@@ -1,4 +1,4 @@
-export type DocComponentStatus = "wip" | "new" | "update"
+export type DocComponentStatus = "new" | "update"
 
 export type DocTree = {
     children: DocTree[]
@@ -11,6 +11,7 @@ export type DocTree = {
     icon?: string
     tags?: string[]
     status?: DocComponentStatus
+    pro?: boolean
 }
 
 export type DocMeta = {

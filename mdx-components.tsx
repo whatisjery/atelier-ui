@@ -12,6 +12,7 @@ const components: MDXComponents = {
             </div>
         )
     },
+
     th: ({ children }) => (
         <th className="px-3 py-2 text-sm bg-mat-5 text-left font-medium border-b last:border-r-0">
             {children}
@@ -45,9 +46,7 @@ const components: MDXComponents = {
     ol: ({ children }) => {
         return <ol className="pl-2">{children}</ol>
     },
-    p: ({ children }) => {
-        return <p>{children}</p>
-    },
+
     li: ({ children }) => {
         return (
             <li className="list-disc list-outside ml-5 pl-1 marker:text-mat-2/40 marker:font-light">
@@ -59,7 +58,7 @@ const components: MDXComponents = {
     h2: ({ children }) => {
         const id = children?.toString().toLowerCase().replace(/\s+/g, "-")
         return (
-            <h2 id={id} className="scroll-mt-offset-top text-2xl font-semibold">
+            <h2 id={id} className="scroll-mt-offset text-2xl font-semibold">
                 {children}
             </h2>
         )
@@ -67,7 +66,7 @@ const components: MDXComponents = {
     h3: ({ children }) => {
         const id = children?.toString().toLowerCase().replace(/\s+/g, "-")
         return (
-            <h3 id={id} className="scroll-mt-offset-top text-xl font-semibold">
+            <h3 id={id} className="scroll-mt-offset text-xl font-semibold">
                 {children}
             </h3>
         )
@@ -75,7 +74,7 @@ const components: MDXComponents = {
     h4: ({ children }) => {
         const id = children?.toString().toLowerCase().replace(/\s+/g, "-")
         return (
-            <h4 id={id} className="scroll-mt-offset-top">
+            <h4 id={id} className="scroll-mt-offset">
                 {children}
             </h4>
         )
@@ -83,7 +82,7 @@ const components: MDXComponents = {
     h5: ({ children }) => {
         const id = children?.toString().toLowerCase().replace(/\s+/g, "-")
         return (
-            <h5 id={id} className="scroll-mt-offset-top">
+            <h5 id={id} className="scroll-mt-offset">
                 {children}
             </h5>
         )

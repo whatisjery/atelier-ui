@@ -1,6 +1,6 @@
 ---
-title: Quick setup
-description: How to get started with Atelier UI.
+title: Installation
+description: How to install Atelier UI.
 icon: "FolderDown"
 order: 1
 tags: ["Tailwind CSS", "Copy & paste", "Ready in minutes"]
@@ -9,105 +9,29 @@ tags: ["Tailwind CSS", "Copy & paste", "Ready in minutes"]
 import DocStep from '@/components/features/docs/DocStep'
 import { Sticker } from 'lucide-react'
 
-
-
-**Tailwind CSS** is our default styling framework. We recommend installing it in your project and using our shared CSS variables to ensure everything looks right out of the box.
-
-Each component includes its own documentation with installation instructions. You can install it via the CLI, or (recommended) copy and paste the code directly into your project.
-
-
----
+<ProLicenseHelper />
 
 <DocStep title="Setup Tailwind CSS" step={1}>
 
-You can follow the official [Tailwind CSS installation guide](https://tailwindcss.com/docs/installation).
-
+Follow the official [Tailwind CSS installation guide](https://tailwindcss.com/docs/installation) to get started.
 </DocStep>
 
-<DocStep title="Match the styles of the demo" step={2}>
+<DocStep title="License usage (optional)" step={2}>
 
-The variables below control the **base colors**, **borders**, and **highlights** used across the components. 
+Purchasing a license creates an account with access to the **source code**. Your **license key** lets you install **pro components** via the **CLI**.
 
-Copy them into your **Tailwind global CSS file** to get everything looking right out of the box. 
-You can always adjust the values to match your own design later.
+Simply create or update your `.env.local` file in your project root and add your license key:
 
-
-```css title="global.css" mode="expand"
-@theme inline {
-    --color-mat-1: var(--mat-1);
-    --color-mat-2: var(--mat-2);
-    --color-mat-3: var(--mat-3);
-    --color-mat-4: var(--mat-4);
-    --color-mat-5: var(--mat-5);
-    --color-border: var(--border);
-    --color-highlight: var(--highlight);
-    --color-accent-focus: var(--accent-focus);
-    --color-accent-calm: var(--accent-calm);
-    --color-accent-neutral: var(--accent-neutral);
-    --color-background: var(--background);
-    --color-transparent: var(--transparent);
-    --color-backdrop: var(--backdrop);
-    --color-grid: var(--grid);
-    --font-sans: var(--font-geist-sans);
-    --font-serif: var(--font-instrument-serif);
-}
-
-:root {
-    --mat-1: oklch(0.12 0 285.88 / 1);
-    --mat-2: oklch(0.51 0.01 264.48);
-    --mat-3: oklch(0.86 0 258.33 / 1);
-    --mat-4: oklch(0.94 0 0 / 0.97);
-    --mat-5: oklch(0.96 0 0 / 0.9);
-
-    --accent-focus: oklch(0.7 0.2 41.87);
-    --accent-calm: oklch(0.59 0.21 258.69);
-    --accent-neutral: oklch(0.41 0 0);
-
-    --highlight: oklch(0.62 0.2 264.82);
-    --border: oklch(0.93 0 17.18);
-    --background: oklch(0.99 0 0 / 1);
-    --transparent: oklch(1 0 0 / 0);
-    --backdrop: oklch(0.88 0.01 286.2 / 0.53);
-    --grid: oklch(0.91 0 0);
-}
-
-.dark {
-    --mat-1: oklch(1 0 0 / 1);
-    --mat-2: oklch(0.58 0.03 277.17 / 1);
-    --mat-3: oklch(0.37 0.03 279.08 / 1);
-    --mat-4: oklch(0.2 0.01 285.29 / 1);
-    --mat-5: oklch(0.18 0.01 285.33 / 0.87);
-
-    --accent-focus: oklch(0.65 0.19 251.47);
-    --accent-calm: oklch(0.74 0.18 56.46);
-    --accent-neutral: oklch(0.75 0 0);
-
-    --highlight: oklch(0.87 0.17 90.46);
-    --border: oklch(0.21 0.01 260.67);
-    --background: oklch(0.15 0.01 285.34 / 1);
-    --transparent: oklch(0 0 0 / 0);
-    --backdrop: oklch(0.21 0.02 284.95 / 0.84);
-    --grid: oklch(0.25 0.01 278.06);
-}
+```text title=".env.local"
+ATELIER_PRO_KEY=your-license-key
 ```
 </DocStep>
 
+<DocStep title="Installation" step={3}>
 
-<DocStep title="Pick a component" step={3}>
-
-Each component has its own dependencies and documentation.
-
-- **Manual Install (Recommended)**: Copy the source code directly into your project.
-
-- **CLI Install**: Use the Atelier CLI to add a component and auto-install its dependencies.
+Find a component you like and choose whether to **copy and paste** the code directly into your project or **install it via the CLI**:
 
 ```text title="CLI example"
 npx atelier-ui add fluid-distortion
 ```
-
-</DocStep>
-
-
-<DocStep title="Start using Atelier UI" step={4}>
-You're all set. Head over to the [components](/docs/components) page and pick something to build with.
 </DocStep>

@@ -1,6 +1,7 @@
 "use client"
 
 import { ArrowLeft, ArrowRight } from "lucide-react"
+import { Fragment } from "react/jsx-runtime"
 import { Link } from "@/i18n/navigation"
 import type { DocNavigation } from "@/types/docs"
 
@@ -13,21 +14,23 @@ const LINKS = [
 
 export default function DocPagination({ navigation }: DocPaginationProps) {
     return (
-        <nav className="not-prose border-t flex justify-between mb-10 gap-5 pt-10">
-            {LINKS.map(({ key, icon: Icon, position }) => {
+        <nav className="not-prose flex items-center justify-center gap-x-4 mb-30">
+            {LINKS.map(({ key, icon: Icon, position }, index) => {
                 const item = navigation[key]
                 if (!item) return null
 
                 return (
-                    <Link
-                        key={key}
-                        className="text-sm flex items-center gap-2 font-medium hover:text-mat-2"
-                        href={item.url}
-                    >
-                        {position === "left" && <Icon className="size-4" />}
-                        {item.title}
-                        {position === "right" && <Icon className="size-4" />}
-                    </Link>
+                    <Fragment key={key}>
+                        {index > 0 && <span className="text-sm">&mdash;</span>}
+                        <Link
+                            className="text-sm flex w-fit items-center gap-x-2 hover:opacity-50"
+                            href={item.url}
+                        >
+                            {position === "left" && <Icon className="size-4" />}
+                            {item.title}
+                            {position === "right" && <Icon className="size-4" />}
+                        </Link>
+                    </Fragment>
                 )
             })}
         </nav>

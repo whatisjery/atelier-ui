@@ -15,12 +15,12 @@ export default function PageDocLayout({
 }: PageDocLayoutProps) {
     return (
         <div className="flex w-full min-w-0">
-            <main className="pt-offset-top flex-1 flex flex-col min-w-0">
-                <div className="min-w-0 lg:px-15 px-3 prose max-w-none text-mat-1 prose-h2:mt-9">
+            <main className="flex-1 flex flex-col min-w-0">
+                <div className="min-w-0 max-w-[55rem] mx-auto lg:px-12 px-3 prose w-full text-mat-1 prose-h2:mt-9">
                     {headerSlot && headerSlot}
 
                     {contentSlot && (
-                        <article className="[&>*:first-child]:mt-0 w-full relative pb-30 mt-8">
+                        <article className="[&>*:first-child]:mt-0 w-full relative pb-20 mt-8">
                             {contentSlot}
                         </article>
                     )}
@@ -28,7 +28,7 @@ export default function PageDocLayout({
                 </div>
             </main>
 
-            <aside className="sticky xl:flex hidden flex-col justify-between top-offset-top text-sm min-w-70 max-h-aside-h">
+            <aside className="sticky xl:flex hidden flex-col justify-between top-sticky text-sm min-w-70 max-h-aside-h">
                 {TOCSlot}
             </aside>
         </div>

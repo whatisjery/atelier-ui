@@ -20,7 +20,7 @@ export async function DocCodeBlock({
         defaultColor: false,
         colorReplacements: {
             // Replace the background color of the dark theme.
-            "#24292e": "oklch(0.21 0.01 285.87)",
+            "#24292e": "oklch(0.15 0.01 284.79)",
         },
     })
 

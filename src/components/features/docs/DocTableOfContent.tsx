@@ -4,7 +4,6 @@ import { ArrowUpRight, Bug, Pen, Star } from "lucide-react"
 import { motion, useSpring } from "motion/react"
 import { useLocale, useTranslations } from "next-intl"
 import { useLayoutEffect, useRef, useState } from "react"
-import { FiGithub } from "react-icons/fi"
 import DashedBorder from "@/components/ui/DashedBorder"
 import { Link, usePathname } from "@/i18n/navigation"
 import { REPO_URL } from "@/lib/constants"
@@ -13,11 +12,11 @@ import type { DocHeading } from "@/types/docs"
 
 type DocTableOfContentProps = {
     headings: DocHeading[]
+    showCommunityLinks?: boolean
 }
 
 const EDIT_PATH_OVERRIDES: Record<string, string> = {
     "/docs": "src/content/en/index.mdx",
-    "/docs/components": "src/content/en/components/index.mdx",
 } as const
 
 function getEditUrl(pathname: string, locale: string) {
@@ -28,11 +27,6 @@ function getEditUrl(pathname: string, locale: string) {
 
 function getCommunityLinks(editUrl: string) {
     return [
-        {
-            key: "open-in-github",
-            href: REPO_URL,
-            icon: <FiGithub size={15} opacity={0.6} />,
-        },
         {
             key: "star-this-project",
             href: REPO_URL,
@@ -52,7 +46,10 @@ function getCommunityLinks(editUrl: string) {
     ]
 }
 
-export default function DocTableOfContent({ headings }: DocTableOfContentProps) {
+export default function DocTableOfContent({
+    headings,
+    showCommunityLinks = true,
+}: DocTableOfContentProps) {
     const t = useTranslations("docs.toc")
     const itemRefs = useRef<Map<string, HTMLLIElement>>(new Map())
     const top = useSpring(0, { stiffness: 500, damping: 40 })
@@ -154,28 +151,32 @@ export default function DocTableOfContent({ headings }: DocTableOfContentProps) 
                     </ul>
                 )}
 
-                <h5 className="mb-4 text-sm font-semibold flex">Community</h5>
+                {showCommunityLinks && (
+                    <>
+                        <h5 className="mb-4 text-sm font-semibold flex">Community</h5>
 
-                <nav className="space-y-2.5">
-                    {getCommunityLinks(editUrl).map(({ key, href, icon }) => {
-                        return (
-                            <a
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                key={key}
-                                className="flex items-center gap-2 text-mat-2 hover:text-mat-1"
-                                href={href}
-                            >
-                                {icon}
+                        <nav className="space-y-2.5">
+                            {getCommunityLinks(editUrl).map(({ key, href, icon }) => {
+                                return (
+                                    <a
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        key={key}
+                                        className="flex items-center gap-2 text-mat-2 hover:text-mat-1"
+                                        href={href}
+                                    >
+                                        {icon}
 
-                                <span className="flex items-start">
-                                    {t(key)}
-                                    <ArrowUpRight className="size-3" />
-                                </span>
-                            </a>
-                        )
-                    })}
-                </nav>
+                                        <span className="flex items-start">
+                                            {t(key)}
+                                            <ArrowUpRight className="size-3" />
+                                        </span>
+                                    </a>
+                                )
+                            })}
+                        </nav>
+                    </>
+                )}
             </div>
         </div>
     )

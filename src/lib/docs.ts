@@ -4,6 +4,7 @@ import { glob } from "fast-glob"
 import matter from "gray-matter"
 import yaml from "js-yaml"
 import { cache } from "react"
+import { components } from "@/registry"
 import type { CodeFile } from "@/types/code"
 import type { DocComponentStatus, DocNavigation, DocTree, QuickLink } from "@/types/docs"
 import type { TOCItem } from "@/types/toc"
@@ -41,6 +42,7 @@ function getDirMeta(dirPath: string) {
         order: Infinity,
         icon: undefined,
         tags: [],
+        pro: false,
     }
 
     if (fs.existsSync(ymlPath)) {
@@ -202,6 +204,7 @@ function walkDir(dirPath: string, urlPath: string): DocTree[] {
             const slug = item.replace(".mdx", "")
             const fileContents = fs.readFileSync(fullPath, "utf-8")
             const { data } = matter(fileContents)
+            const isPro = components.some((component) => component.name === slug && component.pro)
 
             result.push({
                 type: "file",
@@ -213,6 +216,7 @@ function walkDir(dirPath: string, urlPath: string): DocTree[] {
                 order: data.order,
                 tags: data.tags,
                 status: getComponentStatus(fullPath) || undefined,
+                pro: isPro,
             })
         }
     }

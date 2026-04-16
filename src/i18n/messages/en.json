@@ -24,7 +24,7 @@
             "theme-toggle": "Invert colors",
             "copy": "Copy",
             "collapse": "Collapse",
-            "expand": "Expand"
+            "expand-code": "Expand code"
         },
         "controls": {
             "controls-description": "Check documentation below for more options",
@@ -56,7 +56,6 @@
         "social": "Social",
         "opens-in-new-tab": "opens in new tab",
         "location": "In Paris, France 🇫🇷",
-        "all-rights-reserved": "{brand} ©{year} / All rights are reserved.",
         "docs": "Docs",
         "getting-started": "Getting started",
         "components": "Components",

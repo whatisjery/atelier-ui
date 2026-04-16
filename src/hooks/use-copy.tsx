@@ -1,6 +1,8 @@
 "use client"
 
 import { useState } from "react"
+import { toast } from "sonner"
+import { getErrorMessage } from "@/lib/utils"
 
 type UseCopyOptions = {
     onSuccess?: () => void
@@ -22,7 +24,7 @@ export function useCopy(options?: UseCopyOptions) {
                 setTimeout(() => setCopied(false), options.resetAfterMs)
             }
         } catch (error) {
-            console.error("Failed to copy:", error)
+            toast.error(getErrorMessage(error))
             options?.onError?.(error as Error)
         }
     }

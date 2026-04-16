@@ -4,17 +4,16 @@ import { useState } from "react"
 import GridPattern from "@/components/ui/GridPattern"
 import Tabs from "@/components/ui/Tabs"
 import { demos } from "@/registry/demos"
-import type { CodeFile } from "@/types/code"
 import type { ControlDef, ControlValue } from "@/types/controls"
 import ControlsPanel from "./controls/ControlPanel"
 import Docr3fDemoLoader from "./Docr3fDemoLoader"
 
 type DocComponentPreviewProps = {
     name: string
-    snippets: CodeFile
     dreiLoader?: boolean
     controls?: Record<string, ControlDef> | undefined
     codePreviewSlot: React.ReactNode
+    isSourceCodeDisabled?: boolean
 }
 
 export default function DocComponentPreview({
@@ -22,6 +21,7 @@ export default function DocComponentPreview({
     codePreviewSlot,
     dreiLoader = false,
     controls = undefined,
+    isSourceCodeDisabled,
 }: DocComponentPreviewProps) {
     const Demo = demos[name]
 
@@ -42,7 +42,7 @@ export default function DocComponentPreview({
         <Tabs
             tabs={[
                 { label: "Live preview", value: "preview" },
-                { label: "Source code", value: "code" },
+                { label: "Source code", value: "code", disabled: isSourceCodeDisabled },
             ]}
             defaultValue="preview"
             contents={{
@@ -60,7 +60,7 @@ export default function DocComponentPreview({
                             {Demo && <Demo {...controlledValues} />}
                         </div>
 
-                        {controls && (
+                        {controls && !isSourceCodeDisabled && (
                             <ControlsPanel
                                 controls={controls}
                                 onChange={updateControlledValues}
@@ -72,7 +72,7 @@ export default function DocComponentPreview({
                 ),
                 code: (
                     <div className="flex flex-col overflow-scroll rounded-sm">
-                        {codePreviewSlot}
+                        {!isSourceCodeDisabled && codePreviewSlot}
                     </div>
                 ),
             }}

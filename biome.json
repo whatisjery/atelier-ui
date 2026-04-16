@@ -53,14 +53,6 @@
             "tailwindDirectives": true
         }
     },
-    "overrides": [
-        {
-            "includes": ["src/components/shadcn-ui/**"],
-            "linter": {
-                "enabled": false
-            }
-        }
-    ],
     "javascript": {
         "formatter": {
             "semicolons": "asNeeded"

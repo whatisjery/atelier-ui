@@ -8,45 +8,14 @@ tags: ["Add components", "Fix bugs", "Improve docs"]
 
 import Alert from '@/components/ui/Alert'
 
-This guide explains how to get started, the project structure, and the conventions to follow so your contributions fit in.
+<Alert variant="warning" title="Warning">
+This project uses `pnpm` as the package manager; you must have [pnpm installed](https://pnpm.io/) globally to run commands and tests locally.
+</Alert>
+
 
 ---
 
-
-## Getting Started
-
-**Note:** This project uses `pnpm` as the package manager; you must have [pnpm installed](https://pnpm.io/) globally to run commands and tests locally.
-
-1. **Fork the repository:** Create a personal copy of the project on GitHub.
-2. **Clone your fork:** Download the forked repository to your local machine.
-3. **Create a branch:** Make a new branch (`git checkout -b feature/YourFeatureName`).
-4. **Install dependencies:** Run `pnpm install` to set up all required packages.
-
----
-
-## Overview
-
-#### Reporting bugs/issues
-
-Open an issue describing what you **expected, what actually happened, steps to reproduce**, and any helpful screenshots or code.
-
-#### Suggesting improvements
-
-Every suggestion matters. **Describe the context**, what should change, and include examples or references if available.
-
-#### Adding a new component
-
-A good component has a **clear purpose**, performs well, is easy to use, is well documented, and feels considered in both design and animation quality.
-
----
-
-## Conventions
-
-### Naming
-
-Use `kebab-case` for all folder and file names: `fluid-distortion`, `magnetic-button-demo`, etc.
-
-### Project Structure
+## Project Structure
 
 Here’s where each type of file lives:
 
@@ -74,7 +43,7 @@ Here’s where each type of file lives:
 │   │   │   └── your-component.mdx      # Your new component documentation
 ```
 
-### Component Format
+## Component Format
 
 Each component should have a **single responsibility** and reside in a single file to keep it self-contained and easy to reuse.
 
@@ -93,19 +62,17 @@ function helperFunction() {...}
 export function ComponentExample({}: ComponentExampleProps) {...}
 ```
 
-### Styling
+## Dependencies
 
-All components should use **Tailwind CSS** for styling. Inline styles may be used only when the style depends on runtime values that cannot be expressed with Tailwind classes. Use current available Tailwind utilities and CSS variables or add new ones as needed.
+This project uses [motion.dev](https://motion.dev/) for DOM-based animations, [React Three Fiber](https://r3f.docs.pmnd.rs/) for WebG effects, and [Tailwind CSS](https://tailwindcss.com/) for styling.
 
-### Dependencies
+Vanilla JS animations such as `requestAnimationFrame`, `Web Animations API` can also be used where a library isn't needed.
 
-This project uses [motion.dev](https://motion.dev/) for DOM-based animations and [React Three Fiber](https://r3f.docs.pmnd.rs/) for WebGL/shader effects. Choose the library that best fits the effect you are implementing.
+---
 
-### Accessibility
+## Testing
 
-For interactive components, add **keyboard support** and **ARIA roles/labels** where practical. Purely visual or complex animations that can’t fully support accessibility are exempt. Optimization like **reduced motion** should be handled by the developer using the component.
-
-
+Tests run **automatically** on every pull request. They verify that every component has its files, demo, export, and documentation in sync. Unit test per components are not required by default.
 
 ---
 
@@ -119,6 +86,8 @@ export function ComponentName() {
     return <></>
 }
 ```
+
+---
 
 ### Demo component
 
@@ -252,23 +221,4 @@ Designed the original component concept.
 [Library Name](https://example.com)
 Used for animation utilities within this component.
 ```
-
----
-
-## Git Guidelines
-
-Use [conventional commits](https://www.conventionalcommits.org/en/v1.0.0/): start your commit message with the type of change (`feat`, `fix`, `chore`, `docs`, `refactor`, `style`, `test`) followed by a precise, descriptive message.
-
----
-
-## Testing
-
-<Alert variant="warning" title="Warning">
-To run tests locally be sure you have all the dependencies installed, in both the root and the `packages/cli-tool` folder.
-</Alert>
-
-
-Tests run **automatically** on every pull request. They verify that every component has its files, demo, export, and documentation in sync.
-You can also **run them locally** to catch issues early by running ```pnpm test```
-
 

@@ -4,7 +4,9 @@ import React from "react"
 import { usePathname } from "@/i18n/navigation"
 import { cn } from "@/lib/utils"
 
-const LABEL_OVERRIDES: Record<string, string> = {}
+const LABEL_OVERRIDES: Record<string, string> = {
+    docs: "Introduction",
+}
 
 function formatSegment(seg: string): string {
     if (LABEL_OVERRIDES[seg]) return LABEL_OVERRIDES[seg]
@@ -28,7 +30,7 @@ export default function RouteBreadCrumb({ className }: RouteBreadCrumbProps) {
 
     return (
         <nav aria-label="breadcrumb" className={cn("overflow-x-auto max-w-full", className)}>
-            <ol className="text-mat-2 scrollbar-overlay max-xs:py-2 flex items-center gap-1.5 text-sm whitespace-nowrap">
+            <ol className="text-mat-2 scrollbar-overlay py-2 flex items-center gap-1.5 text-sm whitespace-nowrap">
                 {breadcrumbs.map(({ href, label, isLast, isFirst }) => (
                     <React.Fragment key={href}>
                         {isFirst ? null : (

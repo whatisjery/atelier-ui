@@ -12,9 +12,6 @@ export type PixelTrailProps = {
     trailRadius?: number
     lifetime?: number
     fade?: number
-    showGrid?: boolean
-    gridColor?: string
-    gridThickness?: number
     className?: string
 }
 

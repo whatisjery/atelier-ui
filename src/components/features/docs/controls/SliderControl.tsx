@@ -39,13 +39,13 @@ export default function SliderControl({ label, control, value, onChange }: Slide
                 aria-label={label}
                 className="relative group flex items-center w-full h-5 cursor-pointer select-none touch-none"
             >
-                <Slider.Track className="relative h-0.5 w-full bg-mat-4">
-                    <Slider.Range className="absolute h-full bg-mat-2 group-hover:bg-highlight group-focus-within:bg-highlight rounded-full" />
+                <Slider.Track className="relative h-0.5 rounded-full w-full bg-mat-4">
+                    <Slider.Range className="absolute h-full bg-mat-4 rounded-full" />
                 </Slider.Track>
 
                 <Slider.Thumb
                     ref={thumbRef}
-                    className="w-0.5 h-3 bg-mat-2 block outline-hidden group-hover:bg-highlight group-focus-within:bg-highlight"
+                    className="w-1 rounded-full h-4 bg-mat-1 block outline-hidden group-hover:bg-highlight group-focus-within:bg-highlight"
                 />
             </Slider.Root>
         </div>

@@ -13,7 +13,7 @@ export default function ErrorBoundary({ error, reset }: ErrorProps) {
     }, [error])
 
     return (
-        <div className="flex flex-col min-h-screen mt-offset-top gap-4 p-6 max-w-3xl mx-auto my-10">
+        <div className="flex flex-col min-h-screen mt-offset gap-4 p-6 max-w-3xl mx-auto my-10">
             <div className="flex items-center gap-2 text-red-500">
                 <span className="text-xl">●</span>
                 <span className="font-mono font-semibold">{error.name}</span>

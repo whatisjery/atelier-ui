@@ -23,7 +23,7 @@ export default function ControlsPanel({ controls, onChange, onReset, values }: C
             <header className="flex justify-between items-center mb-5 px-3">
                 <h2 className="text-sm font-medium not-prose">{t("component-controls")}</h2>
                 <Tooltip title={t("reset-controls")}>
-                    <Button onClick={onReset} size="icon" variant="ghost">
+                    <Button onClick={onReset} size="icon" variant="ghost-solid">
                         <RotateCcw className="size-4" />
                     </Button>
                 </Tooltip>

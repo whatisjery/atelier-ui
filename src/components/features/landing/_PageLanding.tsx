@@ -1,25 +1,23 @@
 "use client"
 
-import { ArrowRight, FastForward, Feather, Layout } from "lucide-react"
-import { motion } from "motion/react"
-import Link from "next/link"
+import { FastForward, Feather, Layout } from "lucide-react"
 import { useTranslations } from "next-intl"
-import { useState } from "react"
 import Footer from "@/components/common/Footer"
-import LogoOrnement from "@/components/common/LogoOrnement"
+import MainNav from "@/components/common/MainNav"
 import ScrollableTechStack from "@/components/common/ScrollableTechStack"
+import AnimatedArrow from "@/components/ui/AnimatedArrow"
 import BarCode from "@/components/ui/BarCode"
 import Border from "@/components/ui/Border"
-import { VERSION } from "@/lib/constants"
-import { expoInOut } from "@/lib/easing"
-import { formatComponentNumber } from "@/lib/utils"
+import Button from "@/components/ui/Button"
+import BackgroundPixelGrid from "@/components/ui/PixelGrid"
+import { Link } from "@/i18n/navigation"
+import { DEFAULT_PIXEL_SIZE, VERSION } from "@/lib/constants"
 import { PixelatedText } from "@/registry/base/pixelated-text/pixelated-text"
 import type { DocTree } from "@/types/docs"
 import LandingGridScroll from "./LandingGridScroll"
 import LandingLoopFlexibility from "./LandingLoopFlexibility"
 import LandingLoopIntegration from "./LandingLoopIntegration"
 import LandingLoopPerf from "./LandingLoopPerf"
-import LandingNav from "./LandingNav"
 import LandingTextAnimation from "./LandingTextAnimation"
 
 const PALETTE = [
@@ -56,63 +54,28 @@ const LOOP_FEATURES = [
 
 type PageLadingProps = {
     showcaseComponents: DocTree[]
-    activeComponents: DocTree[]
 }
 
-export default function PageLanding({ activeComponents, showcaseComponents }: PageLadingProps) {
+export default function PageLanding({ showcaseComponents }: PageLadingProps) {
     const t = useTranslations("landing")
-    const tCommon = useTranslations("common")
-    const [isSequenceComplete, setIsSequenceComplete] = useState(false)
 
     return (
         <>
-            {!isSequenceComplete && (
-                <>
-                    <motion.div
-                        initial={{ opacity: 1 }}
-                        animate={{ opacity: 0 }}
-                        transition={{ duration: 1.5, ease: expoInOut, delay: 0.4 }}
-                        onAnimationComplete={() => setIsSequenceComplete(true)}
-                        className="cover fixed w-full h-full bg-background inset-0 z-4 pointer-events-none"
-                    />
-
-                    <motion.div
-                        initial={{ opacity: 1 }}
-                        animate={{ opacity: 0 }}
-                        transition={{ duration: 1, ease: expoInOut, delay: 0.8 }}
-                        onAnimationComplete={() => setIsSequenceComplete(true)}
-                        className="cover fixed w-full h-full backdrop-blur-[10px] bg-background/50 inset-0 z-4 pointer-events-none"
-                    />
-                </>
-            )}
-
-            <main className="w-full max-w-landing-max-w mx-auto px-1 lg:px-5 relative">
-                <LandingNav activeComponentsCount={activeComponents.length} />
-
-                <Border direction="horizontal" className="bottom-0" />
+            <main className="w-full max-w-base-w mx-auto relative">
+                <MainNav />
 
                 <div className="w-full relative">
-                    <Border
-                        direction="vertical"
-                        className="top-0 left-0 max-sm:hidden origin-top"
-                    />
-                    <Border
-                        direction="vertical"
-                        className="top-0 right-0 max-sm:hidden origin-top"
-                    />
-
-                    <section className="md:pt-30 pt-35 flex max-w-landing-inner-w mx-auto flex-col relative items-center justify-center">
-                        <Border
-                            direction="vertical"
-                            className="top-0 left-0 max-sm:hidden h-full origin-bottom"
+                    <section className="pb-30 pt-25 flex  mx-auto flex-col relative items-center justify-center">
+                        <BackgroundPixelGrid
+                            className="left-[calc(50%-50vw)] w-screen -z-1"
+                            pixelSize={DEFAULT_PIXEL_SIZE}
                         />
-                        <Border
-                            direction="vertical"
-                            className="top-0 right-0 max-sm:hidden h-full origin-bottom"
-                        />
-                        <LogoOrnement />
 
-                        <h1 className="intro-text font-semibold mb-5 md:text-[3.9rem] lg:text-[4.8rem] text-5xl lg:leading-[1em] text-center tracking-[-0.04em] w-[90%]">
+                        <div className="border border-mat-4 font-serif px-3 py-1 rounded-full text-md bg-mat-5 mb-5 flex items-center gap-x-2">
+                            Atelier UI (beta 0.2.0) &mdash; &copy;2026.
+                        </div>
+
+                        <h1 className="intro-text font-semibold md:text-[3.9rem] lg:text-[5rem] text-[3.3rem] lg:leading-[1.1em] text-center tracking-[-0.05em] leading-[1.1em] w-full">
                             <span className="block">
                                 React{" "}
                                 <PixelatedText
@@ -123,37 +86,64 @@ export default function PageLanding({ activeComponents, showcaseComponents }: Pa
                                     chaos={0.3}
                                     depth={1}
                                     aberration={0}
-                                    className="font-serif font-bold text-mat-2/40 relative top-[-0.02em]"
+                                    className="font-serif text-mat-2/40 relative top-[-0.02em]"
                                 >
                                     WEB
                                 </PixelatedText>{" "}
-                                animations for{" "}
+                                animations {"("}for{" "}
                             </span>
-                            <span className="block">developers.</span>
+                            <span className="block">developers).</span>
                         </h1>
 
-                        <p className="leading-[1.6em] mb-10 text-mat-2 max-w-full px-2 lg:px-0 lg:max-w-full text-center xs:text-xl text-base">
-                            A growing collection of
-                            <span className="text-mat-1 font-medium"> beautifully handcrafted</span>{" "}
-                            animations, and interactive UI components for React, built with the{" "}
-                            <span className="text-mat-1 font-medium">tools you already use</span>.
+                        <p className="leading-[1.8em] my-8 text-mat-2 max-w-full px-2 lg:px-0 sm:max-w-[40rem] md:max-w-[45rem] text-center xs:text-lg text-base">
+                            A growing collection of{" "}
+                            <span className="text-mat-1 font-medium">premium handcrafted</span>{" "}
+                            react animations built with TypeScript, Tailwind CSS, and Motion and
+                            React Three Fiber.
                         </p>
 
-                        <div className="flex items-center justify-center gap-2">
-                            <Link
-                                href="/docs/components"
-                                className="rounded-xl bg-background text-mat-1 border hover:border-mat-3 duration-100 font-medium relative z-2 py-4 px-5.5 flex items-center justify-center mb-18"
+                        <div className="flex flex-col sm:flex-row w-full items-center justify-center gap-2">
+                            <Button
+                                asChild
+                                variant="secondary"
+                                size="big"
+                                className="gap-x-2 h-12 px-7 max-sm:w-full"
                             >
-                                <ArrowRight className="size-4 mr-2" />
-                                {tCommon("explore-components")}
-                                <sup className="ml-1 font-mono">
-                                    {formatComponentNumber(activeComponents.length)}
-                                </sup>
-                            </Link>
+                                <a
+                                    target="_blank"
+                                    className="text-md"
+                                    href={process.env.NEXT_PUBLIC_POLAR_CHECKOUT_URL ?? ""}
+                                    rel="noopener"
+                                >
+                                    Get pro access
+                                    <AnimatedArrow />
+                                </a>
+                            </Button>
+
+                            <Button
+                                asChild
+                                variant="primary"
+                                size="big"
+                                className="gap-x-2 h-12.5 px-7 max-sm:w-full"
+                            >
+                                <Link className="text-md" href="/docs">
+                                    Read the docs
+                                    <AnimatedArrow />
+                                </Link>
+                            </Button>
                         </div>
                     </section>
 
-                    <section className="relative bg-background">
+                    <section className="relative bg-background max-w-[1280px] mx-auto">
+                        <Border
+                            direction="vertical"
+                            className="top-0 left-0 max-sm:hidden origin-top"
+                        />
+                        <Border
+                            direction="vertical"
+                            className="top-0 right-0 max-sm:hidden origin-top"
+                        />
+
                         <div className="relative flex items-center justify-between gap-5 w-full">
                             <Border direction="horizontal" className="bottom-0 origin-right" />
 
@@ -189,7 +179,15 @@ export default function PageLanding({ activeComponents, showcaseComponents }: Pa
                         <Border direction="horizontal" className="bottom-0" />
                     </section>
 
-                    <section className="flex flex-col relative bg-background">
+                    <section className="flex flex-col relative bg-background max-w-[1280px] mx-auto">
+                        <Border
+                            direction="vertical"
+                            className="top-0 left-0 max-sm:hidden origin-top"
+                        />
+                        <Border
+                            direction="vertical"
+                            className="top-0 right-0 max-sm:hidden origin-top"
+                        />
                         <LandingTextAnimation />
 
                         <LandingGridScroll items={showcaseComponents} />
@@ -201,9 +199,7 @@ export default function PageLanding({ activeComponents, showcaseComponents }: Pa
                         </span>
                     </section>
 
-                    <div className="flex flex-col items-center h-180 justify-end pb-20 relative max-w-landing-inner-w mx-auto">
-                        <Border direction="vertical" className="top-0 left-0 max-sm:hidden" />
-                        <Border direction="vertical" className="top-0 right-0 max-sm:hidden" />
+                    <div className="flex flex-col items-center h-180 justify-end pb-20 relative max-w-[60rem] mx-auto">
                         <div className="w-fit flex-col flex items-center justify-center">
                             <BarCode size={170} />
                             <small className='before:content-["***"] after:content-["***"] flex text-[0.7rem] font-mono uppercase tracking-wider items-center'>

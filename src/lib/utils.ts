@@ -21,3 +21,8 @@ export function getLucideIcon(name: string | undefined): LucideIcon {
 export function toKebabCase(str: string): string {
     return str.replace(/([a-z])([A-Z])/g, "$1-$2").toLowerCase()
 }
+
+export function getErrorMessage(error: unknown): string {
+    if (error instanceof Error) return error.message
+    return String(error)
+}

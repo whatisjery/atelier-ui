@@ -1,5 +1,6 @@
 import type React from "react"
 import RouteBreadCrumb from "@/components/common/RouteBreadCrumb"
+import Badge from "@/components/ui/Badge"
 import { cn } from "@/lib/utils"
 import type { DocMeta } from "@/types/docs"
 
@@ -23,8 +24,8 @@ export default function DocHeaderGroupTitle({
             className={cn("not-prose items-start flex flex-col w-full overflow-x-auto", className)}
         >
             {showBreadcrumb ? (
-                <div className="flex justify-between items-center w-full mb-7">
-                    <RouteBreadCrumb className="lg:block hidden" />
+                <div className="flex flex-col lg:flex-row items-start justify-between lg:items-center w-full mb-7">
+                    <RouteBreadCrumb />
                     {headerSlot}
                 </div>
             ) : (
@@ -38,12 +39,7 @@ export default function DocHeaderGroupTitle({
             {showMetaTags && (
                 <div className="flex flex-wrap gap-1 mt-3 mb-4">
                     {meta.tags?.map((tag) => (
-                        <span
-                            key={tag}
-                            className="text-mat-1 bg-mat-5/50 border px-3 text-xs py-1 rounded-md"
-                        >
-                            {tag}
-                        </span>
+                        <Badge key={tag} title={tag} variant="neutral" />
                     ))}
                 </div>
             )}

@@ -3,6 +3,8 @@
 import Fuse from "fuse.js"
 import { useLocale } from "next-intl"
 import { useEffect, useEffectEvent, useState } from "react"
+import { toast } from "sonner"
+import { getErrorMessage } from "@/lib/utils"
 import type { SearchEntry } from "@/types/scripts"
 
 const LIMIT_RESULTS = 5
@@ -40,7 +42,7 @@ export function useDocSearch() {
                 })
                 onFuseReady(fuseInstance)
             } catch (error) {
-                console.error(error)
+                toast.error(getErrorMessage(error))
             }
         })()
     }, [locale])
