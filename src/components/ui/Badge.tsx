@@ -9,24 +9,26 @@ type BadgeProps = {
     className?: string
     title: string
     variant: BadgeVariant
+    icon?: React.ReactNode
 } & ComponentProps<"div">
 
 const variantMap = {
-    wip: "bg-accent-focus/10 text-accent-focus",
-    new: "bg-accent-calm/12 text-accent-calm",
-    update: "bg-accent-neutral/12 text-accent-neutral",
+    focus: "bg-accent-focus/10 text-accent-focus",
+    calm: "bg-accent-calm/12 text-accent-calm",
+    neutral: "text-mat-1 bg-background border",
 }
 
-export default function Badge({ title, className, variant, ...props }: BadgeProps) {
+export default function Badge({ title, className, variant, icon, ...props }: BadgeProps) {
     return (
         <div
             {...props}
             className={cn(
-                "text-xs font-medium px-2 py-1 rounded-sm",
+                "text-xs font-regular px-1.5 py-[0.15rem] rounded-md flex items-center gap-x-1",
                 variantMap[variant],
                 className,
             )}
         >
+            {icon}
             {title}
         </div>
     )

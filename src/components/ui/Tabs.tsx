@@ -1,5 +1,6 @@
 "use client"
 
+import { LockIcon } from "lucide-react"
 import { motion } from "motion/react"
 import { useId, useState } from "react"
 import { expoOut } from "@/lib/easing"
@@ -9,6 +10,7 @@ type Tab<T extends string> = {
     label: string
     value: T
     icon?: React.ReactNode
+    disabled?: boolean
 }
 
 type Props<T extends string> = {
@@ -41,6 +43,7 @@ export default function Tabs<T extends string>({
                             {
                                 "text-background": activeTab === tab.value,
                                 "hover:text-mat-1 text-mat-2": activeTab !== tab.value,
+                                "opacity-70 pointer-events-none": tab.disabled,
                             },
                         )}
                     >
@@ -51,7 +54,9 @@ export default function Tabs<T extends string>({
                                 transition={{ ease: expoOut, duration: 0.3 }}
                             />
                         )}
+
                         <span className="relative z-10 flex items-center gap-x-1.5">
+                            {tab.disabled && <LockIcon className="size-4" />}
                             {tab.icon && tab.icon}
                             {tab.label}
                         </span>

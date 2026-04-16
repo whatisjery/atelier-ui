@@ -23,9 +23,8 @@ type BadgeConfig = {
 }
 
 const BADGE_CONFIG: Record<DocComponentStatus, BadgeConfig> = {
-    wip: { title: "WIP", variant: "update", muted: true },
-    new: { title: "New", variant: "new" },
-    update: { title: "Updated recently", variant: "update" },
+    new: { title: "New", variant: "calm" },
+    update: { title: "Updated", variant: "neutral" },
 }
 
 export default function CardGrid({

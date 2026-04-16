@@ -28,8 +28,8 @@ export default function Tooltip({
                     sideOffset={sideOffset}
                     className={cn(
                         "z-50 bg-mat-1 text-background font-medium rounded-full px-2.5 py-1 text-xs",
-                        "data-[state=delayed-open]:a-fade-in",
-                        "data-[state=closed]:a-fade-out",
+                        "data-[state=delayed-open]:a-pop-in",
+                        "data-[state=closed]:a-pop-out",
                         className,
                     )}
                 >
