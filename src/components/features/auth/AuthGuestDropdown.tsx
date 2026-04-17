@@ -29,7 +29,7 @@ export default function AuthGuestDropdown() {
                     <div className="space-y-1 px-1">
                         <p className="text-sm font-medium">Welcome!</p>
                         <p className="text-xs text-mat-2">
-                            Sign in to access pro components access and get your license key.
+                            Sign in to access pro components and get your license key.
                         </p>
                     </div>
 
