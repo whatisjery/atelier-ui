@@ -1,9 +1,11 @@
 #!/usr/bin/env node
 
-import "dotenv/config"
 import { Command } from "commander"
+import dotenv from "dotenv"
 import packageJson from "../package.json"
 import { addCommand } from "./addCommand"
+
+dotenv.config({ path: [".env.local", ".env"] })
 
 async function cliTool() {
     const program = new Command()
