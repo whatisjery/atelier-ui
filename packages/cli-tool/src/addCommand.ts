@@ -4,7 +4,7 @@ import { Command } from "commander"
 import fs from "fs-extra"
 import { getPackageManager } from "./utils"
 
-const REGISTRY_URL = process.env.ATELIER_REGISTRY || "https://atelier-ui.com/api/registry"
+const REGISTRY_URL = process.env.ATELIER_REGISTRY || "https://www.atelier-ui.com/api/registry"
 
 export const addCommand = new Command()
     .command("add <component>")
