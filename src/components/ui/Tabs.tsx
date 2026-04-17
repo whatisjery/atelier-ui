@@ -17,20 +17,14 @@ type Props<T extends string> = {
     tabs: Tab<T>[]
     defaultValue: T
     contents: Record<T, React.ReactNode>
-    className?: string
 }
 
-export default function Tabs<T extends string>({
-    tabs,
-    defaultValue,
-    contents,
-    className,
-}: Props<T>) {
+export default function Tabs<T extends string>({ tabs, defaultValue, contents }: Props<T>) {
     const [activeTab, setActiveTab] = useState<T>(defaultValue)
     const id = useId()
 
     return (
-        <div className={className}>
+        <>
             <div className="flex mb-3 w-fit p-1 rounded-lg">
                 {tabs.map((tab) => (
                     <button
@@ -64,6 +58,6 @@ export default function Tabs<T extends string>({
                 ))}
             </div>
             {contents[activeTab]}
-        </div>
+        </>
     )
 }

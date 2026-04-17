@@ -13,7 +13,7 @@ export default function DocStep({ children, step, title }: DocStepProps) {
                 {step}
             </div>
 
-            <div>
+            <div className="w-full min-w-0">
                 <h3 className="text-mat-1 -mt-1.5" id={title.toLowerCase().replace(/\s+/g, "-")}>
                     {title}
                 </h3>
