@@ -7,6 +7,7 @@ import { setRequestLocale } from "next-intl/server"
 import { Tooltip } from "radix-ui"
 import { ScrollRestorer } from "@/components/common/ScrollRestorer"
 import { ThemeProvider } from "@/components/common/ThemeProvider"
+import AuthInit from "@/components/features/auth/AuthInit"
 import Toaster from "@/components/ui/Toaster"
 import { routing } from "@/i18n/routing"
 import { getCodeThemeColors } from "@/lib/shiki"
@@ -89,6 +90,7 @@ export default async function RootLayout({ children, params }: RootLayoutProps) 
                         <ThemeProvider attribute="class" enableSystem>
                             <ScrollRestorer />
                             <Toaster />
+                            <AuthInit />
                             {children}
                         </ThemeProvider>
                     </Tooltip.Provider>

@@ -20,13 +20,11 @@ type SideBarCoreProps = {
     menuSections: DocTree[]
     headerSlot?: React.ReactNode
     activeComponentCount: number
-    hasLicense: boolean
 }
 
 type DocSidebarProps = {
     menuSections: DocTree[]
     activeComponentCount: number
-    hasLicense: boolean
 }
 
 const MotionButton = motion.create(Button)
@@ -63,8 +61,8 @@ function SideBarCore({
     menuSections,
     headerSlot,
     activeComponentCount,
-    hasLicense,
 }: SideBarCoreProps) {
+    const hasCustomer = useGlobalStore((state) => state.customer !== null)
     const tCommon = useTranslations("common")
     const pathname = usePathname()
     const isActive = pathname === "/docs"
@@ -134,7 +132,7 @@ function SideBarCore({
                                             <span className="flex items-center gap-x-2">
                                                 {child.title}
 
-                                                {child.pro && !hasLicense && (
+                                                {child.pro && !hasCustomer && (
                                                     <Badge title="pro" variant="neutral" />
                                                 )}
                                             </span>
@@ -159,11 +157,7 @@ function SideBarCore({
     )
 }
 
-export default function DocSidebar({
-    menuSections,
-    activeComponentCount,
-    hasLicense,
-}: DocSidebarProps) {
+export default function DocSidebar({ menuSections, activeComponentCount }: DocSidebarProps) {
     const isSidebarOpen = useGlobalStore((state) => state.isSidebarOpen)
     const toggleSidebar = useGlobalStore((state) => state.toggleSidebar)
     const pathname = usePathname()
@@ -191,7 +185,6 @@ export default function DocSidebar({
                 activeComponentCount={activeComponentCount}
                 className="max-xl:hidden min-w-70 sticky space-y-7 pl-3 top-sticky"
                 menuSections={menuSections}
-                hasLicense={hasLicense}
             />
 
             {/* Mobile sidebar */}
@@ -220,7 +213,6 @@ export default function DocSidebar({
                                 activeComponentCount={activeComponentCount}
                                 className="space-y-7"
                                 menuSections={menuSections}
-                                hasLicense={hasLicense}
                                 headerSlot={
                                     <div className="flex items-center justify-between">
                                         <BrandLink />

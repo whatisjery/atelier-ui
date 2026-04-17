@@ -10,7 +10,6 @@ import AuthGuestDropdown from "@/components/features/auth/AuthGuestDropdown"
 import Button from "@/components/ui/Button"
 import Skeleton from "@/components/ui/Skeleton"
 import { useIsMobile } from "@/hooks/use-mobile"
-import { usePolarCustomer } from "@/hooks/use-polar-customer"
 import { Link, usePathname } from "@/i18n/navigation"
 import { REPO_URL, VERSION } from "@/lib/constants"
 import { useGlobalStore } from "@/lib/store"
@@ -32,13 +31,13 @@ const LINKS = [
 
 export default function MainNav() {
     const isMobile = useIsMobile(1024)
-    const { toggleSidebar } = useGlobalStore()
-    const { customer, isLoading, signOut } = usePolarCustomer()
+    const toggleSidebar = useGlobalStore((s) => s.toggleSidebar)
+    const customer = useGlobalStore((s) => s.customer)
+    const isCustomerPending = useGlobalStore((s) => s.isCustomerPending)
     const tCommon = useTranslations("common")
-
     const pathname = usePathname()
     const isLanding = pathname === "/"
-
+    console.log(customer)
     return (
         <header className="w-full sticky top-0 z-20 left-0">
             <div className="bg-background/70 backdrop-blur-sm -z-1 w-screen fixed top-0 left-0 h-nav-h" />
@@ -120,17 +119,11 @@ export default function MainNav() {
                     />
                     <ThemeToggle key="theme" />
 
-                    {isLoading && <Skeleton className="size-9 rounded-lg" />}
+                    {isCustomerPending && <Skeleton className="size-9 rounded-lg" />}
 
-                    {!isLoading && customer && (
-                        <AuthAccountDropdown
-                            customer={customer}
-                            isLoadingCustomer={isLoading}
-                            onSignOut={signOut}
-                        />
-                    )}
+                    {!isCustomerPending && customer && <AuthAccountDropdown />}
 
-                    {!isLoading && !customer && <AuthGuestDropdown />}
+                    {!isCustomerPending && !customer && <AuthGuestDropdown />}
                 </div>
             </div>
         </header>

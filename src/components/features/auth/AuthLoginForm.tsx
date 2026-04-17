@@ -1,13 +1,13 @@
 "use client"
 
 import { ArrowLeftIcon, LoaderIcon } from "lucide-react"
-import { useRouter } from "next/navigation"
 import { useActionState, useEffect } from "react"
 import { toast } from "sonner"
 import BrandLink from "@/components/common/BrandLink"
 import Button from "@/components/ui/Button"
 import BackgroundPixelGrid from "@/components/ui/PixelGrid"
-import { signIn } from "@/hooks/use-polar-customer"
+import { useRouter } from "@/i18n/navigation"
+import { signIn } from "@/lib/api"
 import { DEFAULT_PIXEL_SIZE, VERSION } from "@/lib/constants"
 import { getErrorMessage } from "@/lib/utils"
 

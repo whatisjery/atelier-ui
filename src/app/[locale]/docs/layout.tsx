@@ -7,7 +7,6 @@ import MainNav from "@/components/common/MainNav"
 import DocSidebar from "@/components/features/docs/DocSidebar"
 import { routing } from "@/i18n/routing"
 import { getComponentsList, getSidebarData } from "@/lib/docs"
-import { getPolarCustomer } from "@/lib/polar"
 
 export const metadata: Metadata = {
     title: "Create Next App",
@@ -26,7 +25,6 @@ export default async function DocsLayout({ children, params }: DocsLayoutProps) 
     const { menuSections } = getSidebarData(locale)
 
     const components = getComponentsList(locale).flatMap(({ children }) => children)
-    const customer = await getPolarCustomer()
 
     if (!hasLocale(routing.locales, locale)) {
         notFound()
@@ -41,7 +39,6 @@ export default async function DocsLayout({ children, params }: DocsLayoutProps) 
                     <DocSidebar
                         activeComponentCount={components.length}
                         menuSections={menuSections}
-                        hasLicense={customer !== null}
                     />
                     {children}
                 </div>
