@@ -22,6 +22,8 @@
         "@react-three/fiber": "^9.5.0",
         "@react-three/postprocessing": "^3.0.4",
         "@uiw/react-color-colorful": "^2.9.6",
+        "@upstash/ratelimit": "^2.0.8",
+        "@upstash/redis": "^1.37.0",
         "clsx": "^2.1.1",
         "fast-glob": "^3.3.3",
         "fuse.js": "^7.1.0",
