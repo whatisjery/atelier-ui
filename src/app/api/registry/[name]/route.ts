@@ -42,7 +42,8 @@ export async function GET(request: NextRequest, { params }: GetRouteParams) {
         if (result.status !== "granted") {
             return NextResponse.json({ error: "Invalid license key" }, { status: 401 })
         }
-    } catch {
+    } catch (error) {
+        console.error("license validation error", error)
         return NextResponse.json({ error: "Invalid license key" }, { status: 401 })
     }
 
