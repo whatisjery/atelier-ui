@@ -3,27 +3,35 @@ import { polar, setPolarSessionCookie } from "@/lib/polar"
 
 export async function GET(req: Request) {
     const url = new URL(req.url)
-    const token = url.searchParams.get("customer_session_token")
+    const checkoutId = url.searchParams.get("checkout_id")
 
-    if (!token) redirect("/error?error=payment_failed")
+    if (!checkoutId) redirect("/")
+
+    let customerId: string | null = null
+    let licenseKey: string | null = null
 
     try {
-        const user = await polar.customerPortal.customerSession.getAuthenticatedUser({
-            customerSession: token,
-        })
+        const checkout = await polar.checkouts.get({ id: checkoutId })
+        customerId = checkout.customerId
 
-        let licenseKey: string | null = null
+        if (customerId) {
+            const grants = await polar.benefitGrants.list({ customerId })
+            const licenseKeyId = grants.result.items
+                .map((grant) => (grant.properties as { licenseKeyId?: string }).licenseKeyId)
+                .find(Boolean)
 
-        const keys = await polar.customerPortal.licenseKeys.list({ customerSession: token }, {})
-        if (keys.result.items.length > 0) {
-            licenseKey = keys.result.items[0].key
+            if (licenseKeyId) {
+                const key = await polar.licenseKeys.get({ id: licenseKeyId })
+                licenseKey = key.key
+            }
         }
-
-        if (user.customerId) await setPolarSessionCookie(user.customerId, licenseKey)
     } catch (error) {
-        console.log("error in polar from checkout", error)
+        console.error("error in polar from checkout", error)
         redirect("/error?error=payment_failed")
     }
 
+    if (!customerId) redirect("/error?error=payment_failed")
+
+    await setPolarSessionCookie(customerId, licenseKey)
     redirect("/success")
 }

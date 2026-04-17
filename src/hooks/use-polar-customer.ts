@@ -6,11 +6,8 @@ import { useRouter } from "@/i18n/navigation"
 import { getErrorMessage } from "@/lib/utils"
 import type { PolarCustomer } from "@/types/polar"
 
-/*
- * Plain function so it can be imported without triggering the customer fetch.
- */
 export async function signIn(email: string) {
-    const res = await fetch("/api/auth/polar/request", {
+    const res = await fetch("/api/auth/polar/magic-link", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email }),

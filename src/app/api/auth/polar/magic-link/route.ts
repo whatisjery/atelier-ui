@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server"
 import { Resend } from "resend"
 import { loginEmail } from "@/lib/email"
-import { polar } from "@/lib/polar"
+import { polar, signEmailToken } from "@/lib/polar"
 
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL
 const RESEND = new Resend(process.env.RESEND_API_KEY)
@@ -24,14 +24,7 @@ export async function POST(req: Request) {
 
         if (!customer) return NextResponse.json({ ok: true })
 
-        const { token } = await polar.customerSessions.create({
-            customerId: customer.id,
-        })
-
-        if (!token) {
-            return NextResponse.json({ error: "Failed to create session" }, { status: 500 })
-        }
-
+        const token = await signEmailToken(customer.id)
         const loginLink = `${BASE_URL}/api/auth/polar/from-email?token=${encodeURIComponent(token)}`
 
         await RESEND.emails.send({

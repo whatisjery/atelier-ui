@@ -1,5 +1,5 @@
-import crypto from "node:crypto"
 import { Polar } from "@polar-sh/sdk"
+import { jwtVerify, SignJWT } from "jose"
 import { cookies } from "next/headers"
 import type { PolarCustomer } from "@/types/polar"
 
@@ -8,65 +8,47 @@ const THIRTY_DAYS = 60 * 60 * 24 * 30
 
 export const polar = new Polar({
     accessToken: process.env.POLAR_ACCESS_TOKEN as string,
-    server: process.env.POLAR_SERVER === "sandbox" ? "sandbox" : "production",
+    server: process.env.NODE_ENV === "production" ? "production" : "sandbox",
 })
 
+const jwtSecret = new TextEncoder().encode(process.env.SESSION_SECRET as string)
+
 /**
- * Generates a signature for the given payload using the SESSION_SECRET.
+ * Signs a short-lived JWT for email login links.
  */
-function sign(payload: string) {
-    return crypto
-        .createHmac("sha256", process.env.SESSION_SECRET as string)
-        .update(payload)
-        .digest("base64url")
+export async function signEmailToken(customerId: string) {
+    return await new SignJWT({ customerId })
+        .setProtectedHeader({ alg: "HS256" })
+        .setIssuedAt()
+        .setExpirationTime("15m")
+        .sign(jwtSecret)
 }
 
 /**
- * Encodes the given customerId and licenseKey into a base64url encoded string.
+ * Verifies a JWT from an email login link and returns the customerId if valid.
  */
-function encodeSession(customerId: string, licenseKey: string | null) {
-    const payload = Buffer.from(JSON.stringify({ customerId, licenseKey })).toString("base64url")
-    return `${payload}.${sign(payload)}`
-}
-
-/**
- * Decodes the given cookie and returns the session if valid.
- * Returns null if the cookie is invalid or corrupted.
- */
-function decodeSession(cookie: string): {
-    customerId: string
-    licenseKey: string | null
-} | null {
-    const [payload, signature] = cookie.split(".")
-
-    if (!payload || !signature) return null
-
-    const expected = sign(payload)
-    const signatureB = Buffer.from(signature)
-    const expectedB = Buffer.from(expected)
-
-    if (signatureB.length !== expectedB.length || !crypto.timingSafeEqual(signatureB, expectedB)) {
-        return null
-    }
-
+export async function verifyEmailToken(token: string): Promise<string | null> {
     try {
-        const data = JSON.parse(Buffer.from(payload, "base64url").toString())
-        if (typeof data.customerId !== "string") return null
-        return {
-            customerId: data.customerId,
-            licenseKey: typeof data.licenseKey === "string" ? data.licenseKey : null,
-        }
+        const { payload } = await jwtVerify(token, jwtSecret)
+        return typeof payload.customerId === "string" ? payload.customerId : null
     } catch {
         return null
     }
 }
+
 /*
  * Sets the Polar session cookie with the given customerId and licenseKey.
  */
 export async function setPolarSessionCookie(customerId: string, licenseKey: string | null) {
+    const token = await new SignJWT({ customerId, licenseKey })
+        .setProtectedHeader({ alg: "HS256" })
+        .setIssuedAt()
+        .setExpirationTime("30d")
+        .sign(jwtSecret)
+
     const store = await cookies()
 
-    store.set(POLAR_SESSION_COOKIE, encodeSession(customerId, licenseKey), {
+    store.set(POLAR_SESSION_COOKIE, token, {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
         sameSite: "lax",
@@ -86,7 +68,17 @@ export async function getPolarSession(): Promise<{
     const cookie = store.get(POLAR_SESSION_COOKIE)?.value
 
     if (!cookie) return null
-    return decodeSession(cookie)
+
+    try {
+        const { payload } = await jwtVerify(cookie, jwtSecret)
+        if (typeof payload.customerId !== "string") return null
+        return {
+            customerId: payload.customerId,
+            licenseKey: typeof payload.licenseKey === "string" ? payload.licenseKey : null,
+        }
+    } catch {
+        return null
+    }
 }
 
 /*
