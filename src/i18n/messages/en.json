@@ -1,0 +1,112 @@
+{
+    "docs": {
+        "page-dropdown": {
+            "copy-page": "Copy page",
+            "copy-page-description": "Copy page as Markdown",
+            "copy-page-success-description": "Page successfully copied as Markdown.",
+            "view-as-markdown": "View as markdown",
+            "view-as-markdown-description": "View this page as plain text."
+        },
+        "tooltips": {
+            "theme-toggle": "Toggle light/dark",
+            "expand-code": "Expand code",
+            "expand-preview": "Expand preview",
+            "refresh-preview": "Refresh preview"
+        },
+        "controls": {
+            "controls-description": "See the documentation below for more options.",
+            "component-controls": "Settings",
+            "reset-controls": "Reset settings"
+        },
+        "demo-preview": {
+            "hide-code": "Hide Code",
+            "show-code": "Show Code",
+            "unlock-code": "Unlock Code",
+            "tap-to-preview": "Tap to preview",
+            "click-to-preview": "Click to preview"
+        },
+        "sidebar": {
+            "browse-catalog": "Browse Catalog"
+        },
+        "catalog": {
+            "results-count": "Showing {filtered} of {total}",
+            "clear-filters": "Clear filters"
+        }
+    },
+
+    "footer": {
+        "design-and-built-by": "Designed & Built by <name></name>",
+        "pages": "Pages",
+        "social": "Social",
+        "opens-in-new-tab": "opens in new tab",
+        "docs": "Docs",
+        "getting-started": "Getting started",
+        "components": "Components",
+        "contribute": "Contribute"
+    },
+
+    "common": {
+        "search": "Search...",
+        "copied": "Copied",
+        "read-the-docs": "Read the docs",
+        "search-empty": "Start typing to search",
+        "search-results": "{count, plural, =0 {No entries found} one {# entry found} other {# entries found}}",
+        "sign-in": "Sign in",
+        "go-back": "Go back",
+        "support": "Support",
+        "go-pro": "Get pro access",
+        "try-again": "Try again"
+    },
+
+    "metadata": {
+        "title": "Atelier UI — Handcrafted React Animations & UI Components",
+        "description": "Atelier UI is a growing collection of quality web animations built with React, TypeScript, Tailwind CSS, and Motion and React Three Fiber."
+    },
+
+    "auth": {
+        "login": {
+            "magic-link-sent": "If an account exists with that email, a login link has been sent. Check your inbox",
+            "intro": "If you already have a license, we'll email you a secure link to sign in.",
+            "sending-link": "Sending the link...",
+            "submit": "Send login link",
+            "need-pro": "Need pro access?",
+            "buy-license": "Buy a license"
+        },
+        "success": {
+            "title": "Thank you for your support! ♥️",
+            "subtitle": "You now have access to everything on atelier, forever.",
+            "installation-guide": "Installation Guide",
+            "footer-note": "Add the key to your .env.local file to access pro components via CLI."
+        },
+        "error": {
+            "title": "Something went wrong",
+            "email-failed": "The link you used to access the page is invalid or expired, try again.",
+            "payment-failed": "We couldn't verify your purchase. Try signing in from your account.",
+            "help": "If the problem persists, <link>send us an email</link> and include the address you used at purchase."
+        },
+        "guest-dropdown": {
+            "welcome": "Welcome!",
+            "intro": "Sign in to access pro components and get your license key."
+        },
+        "account-dropdown": {
+            "signed-in-as": "Signed in as:",
+            "license-active": "Pro license active",
+            "license-help": "Copy and add to your .env file to install pro components.",
+            "get-license": "Get a license",
+            "sign-out": "Sign out"
+        }
+    },
+
+    "pro": {
+        "license-helper": {
+            "title": "Your license key",
+            "description": "Needed to install pro component — see instructions below.",
+            "sign-in-prompt": "Sign in to view your license key."
+        },
+        "paywall": {
+            "title": "Unlock component",
+            "description": "Unlock the source code and CLI installation with a one-time license.",
+            "footer-note": "One-time payment. Lifetime access to all current and future pro components."
+        }
+    }
+}

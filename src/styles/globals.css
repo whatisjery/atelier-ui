@@ -1,0 +1,65 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "./utilities.css";
+@import "./animations.css";
+@import "./theme.css";
+@plugin "@tailwindcss/typography";
+
+@layer base {
+    * {
+        border-color: var(--color-theme-border);
+        outline-color: var(--color-ring);
+    }
+
+    body {
+        background-color: var(--color-bg);
+        color: var(--color-accent-1);
+    }
+
+    code span {
+        color: var(--shiki-light);
+    }
+
+    .dark code span {
+        color: var(--shiki-dark);
+    }
+
+    pre {
+        background-color: var(--shiki-light-bg);
+    }
+
+    .dark pre {
+        background-color: var(--shiki-dark-bg);
+    }
+
+    .font-mono {
+        font-weight: 300;
+    }
+
+    .code-block-line code {
+        counter-reset: line;
+    }
+
+    .code-block-line .line {
+        counter-increment: line;
+        display: inline-block;
+        width: 100%;
+    }
+
+    .code-block-line .line::before {
+        content: counter(line);
+        display: inline-block;
+        width: 1rem;
+        margin-right: 1.5rem;
+        text-align: right;
+        color: var(--color-accent-2);
+        opacity: 0.4;
+        user-select: none;
+        -webkit-user-select: none;
+        font-variant-numeric: tabular-nums;
+    }
+
+    .dark .code-block-line .line::before {
+        opacity: 0.5;
+    }
+}

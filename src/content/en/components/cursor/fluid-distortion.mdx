@@ -1,0 +1,66 @@
+---
+title: "Fluid Distortion"
+description: "A GPU-accelerated fluid distortion effect that reacts to cursor movement"
+tags: ["React Three Fiber", "Drei", "Postprocessing"]
+---
+
+<DemoPreview name="fluid-distortion" controls={{
+    intensity: { type: "slider", value: 7, min: 0, max: 10, step: 0.01 },
+    force: { type: "slider", value: 1.1, min: 0, max: 20, step: 0.01 },
+    distortion: { type: "slider", value: 0.8, min: 0, max: 2, step: 0.01 },
+    radius: { type: "slider", value: 0.5, min: 0, max: 1, step: 0.01 },
+    curl: { type: "slider", value: 0.8, min: 0, max: 50, step: 0.01 },
+    swirl: { type: "slider", value: 2, min: 0, max: 20, step: 0.01 },
+    velocityDissipation: { type: "slider", value: 0.98, min: 0, max: 0.99, step: 0.01 },
+    densityDissipation: { type: "slider", value: 0.98, min: 0, max: 0.99, step: 0.01 },
+    pressure: { type: "slider", value: 0.7, min: 0, max: 1, step: 0.01 },
+    fluidColor: { type: "color", value: "#b4a6ff" },
+
+}} />
+
+## CLI Install
+
+<InstalGuideCLI name="fluid-distorition" />
+
+---
+
+## Manual Install
+
+<InstalGuideManual name="fluid-distortion" />
+
+---
+
+## API
+
+| Name                   | Type               | Default       | Description |
+| ---------------------- | ------------------ | ------------- | -------------------------------------------------------------------|
+| fluidColor           | `hexadecimal`      | `#b4a6ff`     | Sets the fluid color. Effective only when `rainbow` is set to `false`. |
+| backgroundColor      | `hexadecimal`      | `#070410`     | Sets the background color. Effective only when `showBackground` is `true`. |
+| showBackground       | `boolean`          | `false`       | Toggles the background color's visibility. If `false` it becomes transparent. |
+| blend                | `number`           | `5`           | Blends fluid into the scene when `showBackground` is true. Valid range: `0.00` to `10.0`. |
+| intensity            | `number`           | `7`           | Sets the fluid intensity. Valid range: `0` to `10`. |
+| force                | `number`           | `1.1`         | Multiplies the mouse velocity to increase fluid splatter. Valid range: `0.0` to `20`. |
+| distortion           | `number`           | `0.8`         | Sets the distortion amount. Valid range: `0.00` to `2.00`. |
+| radius               | `number`           | `0.5`         | Sets the fluid radius. Valid range: `0.01` to `1.00`. |
+| curl                 | `number`           | `0.8`         | Sets the amount of the curl effect. Valid range: `0.0` to `50`. |
+| swirl                | `number`           | `2`           | Sets the amount of the swirling effect. Valid range: `0` to `20`. |
+| velocityDissipation  | `number`           | `0.98`        | Reduces the fluid velocity over time. Valid range: `0.00` to `1.00`. |
+| densityDissipation   | `number`           | `0.98`        | Reduces the fluid density over time. Valid range: `0.00` to `1.00`. |
+| pressure             | `number`           | `0.70`        | Controls the reduction of pressure. Valid range: `0.00` to `1.00`. |
+| rainbow              | `boolean`          | `false`       | Activates color mode based on mouse direction. |
+
+---
+
+## Credits
+
+[Pavel Dobryakov](https://github.com/PavelDoGreat/WebGL-Fluid-Simulation)  
+Creator of the original WebGL fluid simulation.
+
+[React Three Fiber](https://r3f.docs.pmnd.rs/)  
+React renderer for Three.js
+
+[@react-three/postprocessing](https://github.com/pmndrs/react-postprocessing)  
+Post-processing effects for React Three Fiber
+
+[Drei](https://drei.docs.pmnd.rs/)  
+React Three Fiber utilities.

@@ -1,0 +1,43 @@
+---
+title: "Infinite Gallery"
+description: "Zero-dependency infinite horizontal gallery with drag/wheel input, and transform modes."
+tags: ["JS Animation", "Tailwind CSS"]
+---
+
+<DemoPreview name="infinite-gallery" controls={{
+    speed: { type: "slider", value: 6, min: 1, max: 10, step: 1 },
+    inertia: { type: "slider", value: 0.6, min: 0, max: 0.9, step: 0.1 },
+    mode: { type: "select", value: "flip", options: ["flip", "shrink"] },
+}} />
+
+## CLI Install
+
+<InstalGuideCLI name="infinite-gallery" />
+
+---
+
+## Manual Install
+
+<InstalGuideManual name="infinite-gallery" />
+
+---
+
+## API
+
+| Name            | Type                              | Default             | Description |
+| --------------- | --------------------------------- | ------------------- | ------------------------|
+| data          | `T[]`                             | —                   | Array of items to render.|
+| renderItem    | `(item: T) => ReactNode`          | —                   | Render function called for each item.|
+| mode          | `"shrink" \| "flip"`              | `"flip"`            | `flip` tilts items in 3D. `shrink` compresses edges.|
+| perView      | `number`                          | `4`                 | Number of items visible at once.|
+| speed         | `number`                          | `6`                 | Speed of the scroll.|
+| inertia       | `number`                          | `0.6`               | Inertia of the scroll.|
+| gap          | `number`                          | `5`                 | Gap between items.|
+| className     | `string`                          | `undefined`         | Class for the container element.|
+
+---
+
+## Credits
+
+[The Lookback](https://tlb.betteroff.studio/)  
+Infinite gallery effect inspired by the website of Better Off® Studio.

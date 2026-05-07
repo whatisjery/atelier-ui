@@ -1,0 +1,55 @@
+---
+title: "Magnetic Dot Grid"
+description: "A 2D canvas-based interactive dot grid with magnetic cursor effect"
+tags: ["Canvas", "Tailwind CSS"]
+---
+
+<DemoPreview name="magnetic-dot-grid" controls={{
+    dotRadius: { type: "slider", value: 1, min: 0.5, max: 5, step: 0.1 },
+    spacing: { type: "slider", value: 20, min: 10, max: 100, step: 1 },
+    strength: { type: "slider", value: 20, min: 0, max: 100, step: 1 },
+    interactionRadius: { type: "slider", value: 300, min: 0, max: 1000, step: 1 },
+    snapSpeed: { type: "slider", value: 8, min: 0, max: 10, step: 1 },
+    returnSpeed: { type: "slider", value: 3, min: 0, max: 10, step: 1 },
+    floatAmplitude: { type: "slider", value: 1.8, min: 0, max: 10, step: 0.1 },
+    floatSpeed: { type: "slider", value: 2, min: 0, max: 10, step: 1 },
+    baseColor: { type: "color", value: "#000000" },
+}} />
+
+## CLI Install
+
+<InstalGuideCLI name="magnetic-dot-grid" />
+
+---
+
+## Manual Install
+
+<InstalGuideManual name="magnetic-dot-grid" />
+
+---
+
+## API
+
+| Name               | Type               | Default                                        | Description |
+| ------------------ | ------------------ | ---------------------------------------------- | --------------------------|
+| dotRadius          | `number`           | `1`                                            | Radius of each dot in px. |
+| spacing            | `number`           | `20`                                           | Distance between dots in px. |
+| strength           | `number`           | `20`                                           | Strength of the magnetic force in px. |
+| interactionRadius  | `number`           | `300`                                          | Cursor influence range in px. |
+| snapSpeed          | `number`           | `8`                                            | How fast dots react to the cursor. |
+| returnSpeed        | `number`           | `3`                                            | How slowly dots return to their base position.|
+| floatAmplitude     | `number`           | `1.8`                                          | How far dots floats from the cursor. |
+| floatSpeed         | `number`           | `2`                                            | Speed of the floating fx.animation. |
+| opacityRange       | `[number, number]` | `[1, 1]`                                       | Dot opacity `[min, max]` from cursor proximity. |
+| baseColor          | `string`           | `"#000000"`                                  | Default dot color. |
+| centerColors       | `string[]`         | `["#000000"]`                                | Colors near the cursor. Cycles through the array. |
+| cycleSpeed         | `number`           | `1.5`                                          | Color cycle speed. |
+| className          | `string`           | `"absolute inset-0 touch-none w-full h-full"`  | Canvas element classes for positioning and sizing. |
+
+
+---
+
+## Credits
+
+[Google Stitch](https://stitch.withgoogle.com/)  
+Re-creation of the canvas hero effect (as of March 22, 2026). Enable dark mode to see the similarity.

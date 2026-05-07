@@ -1,0 +1,54 @@
+---
+title: "Pixel Trail"
+description: "A 2D canvas-based pixelated cursor trail that can sample colors from images."
+tags: ["Canvas", "Tailwind CSS"]
+---
+
+<DemoPreview
+    name="pixel-trail"
+    controls={{
+        mode: { type: "select", value: "sample", options: ["color", "sample"] },
+        color: { type: "color", value: "#000000"  },
+        lighten: { type: "slider", value: 20, min: 0, max: 255, step: 1 },
+        pixelSize: { type: "slider", value: 20, min: 1, max: 50, step: 1 },
+        trailRadius: { type: "slider", value: 2, min: 0, max: 10, step: 1 },
+        lifetime: { type: "slider", value: 1, min: 0, max: 10, step: 1 },
+        fade: { type: "slider", value: 0, min: 0, max: 1, step: 0.1 },
+    }}
+/>
+
+## CLI Install
+
+<InstalGuideCLI name="pixel-trail" />
+
+---
+
+## Manual Install
+
+<InstalGuideManual name="pixel-trail" />
+
+---
+
+## API
+
+| Name            | Type                  | Default                      | Description   |
+| --------------- | --------------------- | ---------------------------- | -------------------------------------------------- |
+| mode           | `"color" \| "sample"` | `"color"`                    | Solid color trail or sample colors from images. |
+| color          | `string`              | `"#000000"`                  | Trail color. Fallback when sampling misses.  |
+| imageSelector  | `string`              | `"img"`                      | CSS selector for images to sample. |
+| lighten        | `number`              | `20`                         | Brightness boost on sampled colors (`0`–`255`). |
+| pixelSize      | `number`              | `20`                         | Size of each pixel square in px. |
+| trailRadius    | `number`              | `2`                          | Brush radius in grid cells. `0` for single pixel. |
+| lifetime       | `number`              | `1`                          | Max pixel lifetime in seconds. |
+| fade           | `number`              | `0.5`                        | Fade-out duration in seconds. `0` to disable. |
+| showGrid       | `boolean`             | `false`                      | Show a grid overlay. |
+| gridColor      | `string`              | `"rgba(255, 255, 255, 0.1)"` | Grid line color.  |
+| gridThickness  | `number`              | `1`                          | Grid line thickness in px. |
+| className      | `string`              | —                            | Root element classes for positioning and sizing. |
+
+---
+
+## Credits
+
+[Jonas Reymondin](https://jonasreymondin.com/)  
+Pixel trail effect inspired by his portfolio, reimplemented using a 2D canvas.

@@ -1,0 +1,56 @@
+---
+title: "Text Roll"
+description: "Interactive CSS rolling text effect on hover, mount and scroll."
+tags: ["Tailwind CSS", "CSS"]
+---
+
+import Alert from '@/components/ui/Alert'
+import { Sticker } from 'lucide-react'
+
+<DemoPreview name="text-roll" controls={{
+    axis: { type: "select", value: "y", options: ["x", "y"] },
+    mode: { type: "select", value: "letters", options: ["letters", "group"] },
+    direction: { type: "select", value: "forward", options: ["forward", "backward", "random"] },
+    stagger: { type: "slider", value: 0.01, min: 0, max: 0.1, step: 0.005 },
+    duration: { type: "slider", value: 0.8, min: 0.1, max: 3, step: 0.1 },
+    cycles: { type: "slider", value: 2, min: 1, max: 5, step: 1 },
+    playOnHover: { type: "boolean", value: true },
+    playOnScroll: { type: "boolean", value: true },
+    playOnMount: { type: "boolean", value: true },
+}} />
+
+---
+
+## CLI Install
+
+<InstalGuideCLI name="text-roll" />
+
+---
+
+## Manual Install
+
+<InstalGuideManual name="text-roll" />
+
+---
+
+
+<Alert icon={<Sticker strokeWidth={1.5} className="size-6" />} title="Notes">
+Each letter is wrapped in an `overflow-clip` span. Some descenders and ascenders (g, p, t, f) can get clipped. Increase `line-height` / `leading` on the parent if needed.
+</Alert>
+
+---
+
+## API
+
+| Name          | Type                              | Default      | Description |
+| ------------- | --------------------------------- | ------------ | ----------- |
+| children      | `string`                          | —            | The text content to animate. |
+| axis          | `"x" \| "y"`                     | `"y"`        | Axis along which letters roll. |
+| mode          | `"letters" \| "group"`           | `"letters"`  | Animate each letter independently on hover, or the entire group at once. |
+| direction     | `"forward" \| "backward" \| "random"` | `"forward"` | Roll direction. |
+| playOnScroll  | `boolean`                         | `true`      | Trigger the animation when the element enters the viewport. |
+| playOnMount   | `boolean`                         | `true`       | Trigger the animation on mount. |
+| playOnHover   | `boolean`                         | `true`       | Trigger the animation on hover. |
+| stagger       | `number`                          | `0.01`       | Delay in seconds between each letter's animation start. |
+| duration      | `number`                          | `0.8`        | Duration of each letter's roll animation in seconds. |
+| cycles        | `number`                          | `1`          | Number of times the letter rolls before settling (clones do not linger in the DOM). |

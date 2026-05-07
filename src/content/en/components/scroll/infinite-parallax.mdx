@@ -1,0 +1,44 @@
+---
+title: "Infinite Parallax"
+description: "Infinite parallax column effect with auto-scroll and repeating content."
+tags: ["Motion", "Lenis", "Tailwind CSS"]
+---
+
+<DemoPreview name="infinite-parallax" controls={{
+    speed: { type: "slider", value: 3, min: -3, max: 3, step: 0.5 },
+    autoScroll: { type: "slider", value: -0.2, min: -3.5, max: 3.5, step: 0.5 },
+}} />
+
+## CLI Install
+
+<InstalGuideCLI name="infinite-parallax" />
+
+---
+
+## Manual Install
+
+<InstalGuideManual name="infinite-parallax" />
+
+---
+
+## API
+
+| Name         | Type                              | Default     | Description |
+| ------------ | --------------------------------- | ----------- | ----------- |
+| children     | `ReactNode`                       | —           | Items to render in the column. |
+| speed        | `number`                          | `1`         | Parallax intensity. |
+| autoScroll   | `number`                          | `-0.2` | Auto-scroll speed. Negative values reverse direction. 0 to disable. |
+| className    | `string`                          | `undefined` | Class for the container element. |
+
+---
+
+## Credits
+
+[Olivier Larose](https://blog.olivierlarose.com/tutorials/smooth-parallax-scroll)  
+Where this idea came from.
+
+[Motion](https://motion.dev)  
+React animation library.
+
+[Lenis](https://www.lenis.dev/)
+Smooth scroll library used in the demo.

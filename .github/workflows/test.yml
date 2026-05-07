@@ -1,0 +1,45 @@
+name: CI
+
+on:
+    push:
+        branches: [main]
+    pull_request:
+        branches: [main]
+
+jobs:
+    test:
+        runs-on: ubuntu-latest
+
+        steps:
+            - uses: actions/checkout@v4
+              with:
+                  submodules: recursive
+                  token: ${{ secrets.GH_PRO_TOKEN }}
+
+            - name: Setup pnpm
+              uses: pnpm/action-setup@v4
+              with:
+                  version: 10
+
+            - name: Setup Node.js
+              uses: actions/setup-node@v6
+              with:
+                  node-version: '22.x'
+                  cache: 'pnpm'
+
+            - name: Install all dependencies
+              run: pnpm install
+
+            - name: Build all packages
+              run: pnpm run build
+              env:
+                  RESEND_API_KEY: re_dummy
+                  RESEND_FROM_EMAIL: noreply@example.com
+                  POLAR_ACCESS_TOKEN: dummy
+                  POLAR_ORGANIZATION_ID: dummy
+                  SESSION_SECRET: dummy-session-secret
+                  NEXT_PUBLIC_SITE_URL: https://example.com
+                  NEXT_PUBLIC_POLAR_CHECKOUT_URL: https://example.com
+
+            - name: Run integration tests
+              run: pnpm test:all

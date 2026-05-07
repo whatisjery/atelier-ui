@@ -1,0 +1,149 @@
+type TRegistryComponent = {
+    name: string
+    description: string
+    shared: string[]
+    files: string[]
+    pro?: boolean
+    dependencies: string[]
+    registryDependencies: string[]
+}
+
+export const components: TRegistryComponent[] = [
+    {
+        name: "fluid-distortion",
+        files: ["fluid-distortion.tsx"],
+        description: "WebGL fluid distortion cursor effect",
+        shared: [],
+        dependencies: [
+            "three",
+            "@react-three/fiber",
+            "@react-three/drei",
+            "@react-three/postprocessing",
+            "postprocessing",
+        ],
+        registryDependencies: [],
+    },
+    {
+        name: "pixel-trail",
+        files: ["pixel-trail.tsx"],
+        description: "Pixel trail effect",
+        shared: ["hooks/use-frame-loop.ts"],
+        dependencies: [],
+        registryDependencies: [],
+    },
+    {
+        name: "magnetic-dot-grid",
+        files: ["magnetic-dot-grid.tsx"],
+        description: "Magnetic dot grid effect",
+        shared: ["hooks/use-frame-loop.ts"],
+        dependencies: [],
+        registryDependencies: [],
+    },
+    {
+        name: "pixelated-text",
+        files: ["pixelated-text.tsx"],
+        description: "Pixelated text effect",
+        shared: ["hooks/use-frame-loop.ts"],
+        dependencies: [],
+        registryDependencies: [],
+    },
+    {
+        name: "image-trail",
+        files: ["image-trail.tsx"],
+        description: "Image trail effect",
+        shared: [],
+        dependencies: ["motion"],
+        registryDependencies: [],
+    },
+    {
+        name: "infinite-gallery",
+        files: ["infinite-gallery.tsx"],
+        description: "Infinite gallery effect",
+        shared: ["hooks/use-frame-loop.ts"],
+        dependencies: [],
+        registryDependencies: [],
+    },
+    {
+        name: "simple-scramble",
+        files: ["simple-scramble.tsx"],
+        description: "Simple scramble effect",
+        shared: ["hooks/use-frame-loop.ts"],
+        dependencies: [],
+        registryDependencies: [],
+    },
+    {
+        name: "liquid-touch",
+        files: ["liquid-touch.tsx"],
+        description: "Liquid touch effect",
+        shared: ["assets/ripple.png"],
+        dependencies: ["three", "@react-three/fiber", "@react-three/drei"],
+        registryDependencies: [],
+    },
+    {
+        name: "infinite-parallax",
+        files: ["infinite-parallax.tsx"],
+        description: "Infinite parallax effect",
+        shared: [],
+        dependencies: ["motion"],
+        registryDependencies: [],
+    },
+    {
+        name: "infinite-zoom",
+        files: ["infinite-zoom.tsx"],
+        description: "Infinite zoom effect",
+        shared: [],
+        dependencies: ["motion"],
+        registryDependencies: [],
+    },
+    {
+        name: "scattered-scroll",
+        files: ["scattered-scroll.tsx"],
+        description: "Scattered scroll effect",
+        shared: [],
+        dependencies: ["motion"],
+        registryDependencies: [],
+    },
+    {
+        name: "text-roll",
+        files: ["text-roll.tsx", "text-roll.css"],
+        description: "Text roll effect",
+        shared: [],
+        dependencies: [],
+        registryDependencies: ["text-split"],
+    },
+    {
+        name: "text-split",
+        files: ["text-split.tsx"],
+        description: "Text split utility",
+        shared: [],
+        dependencies: [],
+        registryDependencies: [],
+    },
+    {
+        name: "halftone-glow",
+        files: ["halftone-glow.tsx"],
+        description: "Half tone glow effect",
+        shared: [],
+        dependencies: ["three", "@react-three/fiber", "@react-three/drei"],
+        registryDependencies: [],
+        pro: true,
+    },
+    {
+        name: "elastic-stick",
+        files: ["elastic-stick.tsx"],
+        description: "Elastic stick effect",
+        shared: [],
+        dependencies: ["motion"],
+        registryDependencies: [],
+        pro: true,
+    },
+    {
+        name: "glowing-fog",
+        files: ["glowing-fog.tsx"],
+        description: "Glowing fog effect",
+        shared: [],
+        dependencies: ["three", "@react-three/fiber", "@react-three/drei"],
+        registryDependencies: [],
+        pro: true,
+    },
+]

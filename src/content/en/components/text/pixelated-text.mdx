@@ -1,0 +1,43 @@
+---
+title: "Pixelated Text"
+description: "A 2D canvas-based animated pixelated SEO friendly text effect."
+tags: ["Canvas", "Tailwind CSS"]
+---
+
+<DemoPreview name="pixelated-text" controls={{
+    pixelSize: { type: "slider", value: 2, min: 1, max: 10, step: 1 },
+    flicker: { type: "slider", value: 1.5, min: 0, max: 10, step: 0.1 },
+    chaos: { type: "slider", value: 0.1, min: 0, max: 1, step: 0.1 },
+    depth: { type: "slider", value: 1, min: 0, max: 1, step: 0.1 },
+    aberration: { type: "slider", value: 0, min: 0, max: 1, step: 0.1 },
+    fps: { type: "slider", value: 200, min: 50, max: 500, step: 1 },
+}} />
+
+---
+
+## CLI Install
+
+<InstalGuideCLI name="pixelated-text" />
+
+---
+
+## Manual Install
+
+<InstalGuideManual name="pixelated-text" />
+
+---
+
+## API
+
+| Name          | Type       | Default     | Description |
+| ------------- | ---------- | ----------- | ------------|
+| pixelSize   | `number`   | `2`         | Pixel size.|
+| flicker     | `number`   | `1.5`       | Amount of flickers.|
+| chaos       | `number`   | `0.1`       | Amount of chaos.|
+| depth       | `number`   | `1`         | Amplitude(contrast) between clear and pixelated.|
+| aberration  | `number`   | `0`         | Chromatic aberration amount.|
+| colors      | `string[]` | `undefined` | Cycles through colors each tick. Fallback to the default color.|
+| fps         | `number`   | `200`         | Frames per second. |
+| as          | `React.ElementType` | `"span"` | Polymorphic tag: render as any HTML element.|
+| className   | `string`   | `undefined` | Class for the container element.|
+

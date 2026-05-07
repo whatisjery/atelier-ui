@@ -1,0 +1,96 @@
+@keyframes kf-scroll-x {
+    from {
+        transform: translateX(0);
+    }
+    to {
+        transform: translateX(calc(-100% / 3));
+    }
+}
+
+@keyframes kf-march-x {
+    to {
+        background-position: 0 -24px;
+    }
+}
+
+@keyframes kf-march-y {
+    to {
+        background-position: -24px 0;
+    }
+}
+
+@keyframes kf-slide-in {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0%);
+    }
+}
+
+@keyframes kf-slide-out {
+    from {
+        opacity: 1;
+        transform: translateY(0%);
+    }
+    to {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+}
+
+@keyframes kf-pop-in {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes kf-pop-out {
+    from {
+        opacity: 1;
+        transform: scale(1);
+    }
+    to {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+}
+
+@utility a-slide-in {
+    will-change: transform, opacity;
+    animation: kf-slide-in 150ms cubic-bezier(0, 0.7, 0.35, 1);
+}
+
+@utility a-slide-out {
+    will-change: transform, opacity;
+    animation: kf-slide-out 150ms cubic-bezier(0.66, 0, 0.47, 1);
+}
+
+@utility a-pop-in {
+    will-change: transform, opacity;
+    animation: kf-pop-in 150ms cubic-bezier(0, 0.7, 0.35, 1);
+}
+
+@utility a-pop-out {
+    will-change: transform, opacity;
+    animation: kf-pop-out 150ms cubic-bezier(0.66, 0, 0.47, 1);
+}
+
+@utility a-march-x {
+    animation: kf-march-x 0.8s linear infinite;
+}
+
+@utility a-march-y {
+    animation: kf-march-y 0.8s linear infinite;
+}
+
+@utility a-scroll-x {
+    animation: kf-scroll-x 20s linear infinite;
+}
