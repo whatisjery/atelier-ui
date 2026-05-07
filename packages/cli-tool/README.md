@@ -8,7 +8,7 @@
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/whatisjery/atelier-ui/main/public/images/og_img_dark.jpg" />
     <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/whatisjery/atelier-ui/main/public/images/og_img_light.jpg" />
-    <img style="max-width: 100%;" src="https://raw.githubusercontent.com/whatisjery/atelier-ui/main/public/images/logo-variant-light.png" alt="Logo" />
+    <img style="max-width: 100%;" src="https://raw.githubusercontent.com/whatisjery/atelier-ui/main/public/images/og_img_light.jpg" alt="Logo" />
   </picture>
 </a>
 
