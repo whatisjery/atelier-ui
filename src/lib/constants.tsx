@@ -1,5 +1,5 @@
 export const BRAND = "Atelier UI" as const
-export const VERSION = "0.5.0" as const
+export const VERSION = "0.6.0" as const
 export const PACKAGE_NAME = "atelier-ui" as const
 export const REPO_URL = "https://github.com/whatisjery/atelier-ui" as const
 export const GIT_DAYS_THRESHOLD = 20 as const
