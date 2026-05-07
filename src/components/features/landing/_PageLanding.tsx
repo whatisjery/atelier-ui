@@ -96,7 +96,7 @@ export default function PageLanding({ showcaseComponents }: PageLadingProps) {
     }, [isSceneReady])
 
     return (
-        <ReactLenis root options={{ syncTouch: true, lerp: 0.11, smoothWheel: !isMobile }}>
+        <ReactLenis root options={{ lerp: 0.11, smoothWheel: !isMobile }}>
             <LandingPreloader isLoaded={!showLoader} />
 
             <MainNav className="max-w-[calc(var(--spacing-base-w)+100px)] mx-auto" />
@@ -109,8 +109,8 @@ export default function PageLanding({ showcaseComponents }: PageLadingProps) {
             <main className="w-full max-w-base-w mx-auto relative sm:px-3">
                 <section className="sm:-mt-nav-h" ref={heroSectionRef}>
                     <motion.div
-                        style={isMobile ? undefined : { y: heroY }}
-                        className="flex flex-col items-center justify-center h-fit max-sm:-mb-50 sm:h-210 px-5 pt-10 sm:pt-130 relative"
+                        style={{ y: heroY }}
+                        className="max-sm:transform-none! flex flex-col items-center justify-center h-fit max-sm:-mb-50 sm:h-210 px-5 pt-10 sm:pt-130 relative"
                     >
                         <h1 className="flex flex-col items-center justify-center text-4xl xxs:text-5xl sm:text-6xl lg:text-7xl font-light mb-2">
                             <span className="flex items-center leading-[1.1em] sm:flex-row flex-col">

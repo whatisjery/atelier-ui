@@ -5,7 +5,6 @@ import { motion, useScroll, useTransform } from "motion/react"
 import { useTranslations } from "next-intl"
 import { type ComponentRef, useRef } from "react"
 import { SiGithub } from "react-icons/si"
-import { useIsMobile } from "@/hooks/use-mobile"
 import { Link } from "@/i18n/navigation"
 import { BRAND, BUY_ME_A_COFFEE_URL, REPO_URL, SUPPORT_EMAIL } from "@/lib/constants"
 import Button from "../ui/Button"
@@ -24,7 +23,6 @@ export default function Footer() {
     const footerRef = useRef<ComponentRef<"footer">>(null)
     const tFooter = useTranslations("footer")
     const tCommon = useTranslations("common")
-    const isMobile = useIsMobile(640)
 
     const { scrollYProgress } = useScroll({
         target: footerRef,
@@ -36,8 +34,8 @@ export default function Footer() {
     return (
         <footer ref={footerRef} className="overflow-hidden border-t text-sm">
             <motion.div
-                style={isMobile ? undefined : { y }}
-                className="px-3 sm:px-7 py-18 w-full relative pattern-line border-b"
+                style={{ y }}
+                className="px-3 sm:px-7 py-18 w-full relative pattern-line border-b max-sm:transform-none!"
             >
                 <Card className="z-2 relative flex flex-col gap-y-28 max-w-[37rem] mx-auto">
                     <div className="flex items-start xs:flex-row h-full flex-col gap-y-10 p-5">
