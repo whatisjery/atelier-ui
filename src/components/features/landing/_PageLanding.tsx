@@ -182,6 +182,8 @@ export default function PageLanding({ showcaseComponents }: PageLadingProps) {
                     </motion.div>
 
                     <div className="relative py-6 bg-bg border-r border-l h-20">
+                        <Border direction="vertical" className="-left-px h-10 -top-10" />
+                        <Border direction="vertical" className="-right-px h-10 -top-10" />
                         <div className="absolute mt-px h-full -z-1 bg-bg top-0 w-screen left-[calc(50%-50vw)]" />
                         <Border direction="horizontal" className="top-0" />
                         <Border direction="horizontal" className="bottom-0" />
