@@ -88,7 +88,7 @@ export default function Catalog({ catalogItems, title }: CatalogProps) {
 
                     <Button
                         size="icon"
-                        variant="primary"
+                        variant="ghost"
                         onClick={handleToggleSearch}
                         aria-label={tCommon("search")}
                     >
@@ -96,7 +96,7 @@ export default function Catalog({ catalogItems, title }: CatalogProps) {
                     </Button>
                 </div>
 
-                <div className="flex flex-col relative">
+                <div className="flex flex-col relative min-h-11">
                     {!searchOpen && (
                         <div className="flex flex-wrap gap-1.5">
                             {Object.keys(tagCounts).map((tag) => {
@@ -120,9 +120,12 @@ export default function Catalog({ catalogItems, title }: CatalogProps) {
                             type="search"
                             value={query}
                             ref={searchInputRef}
-                            onChange={(e) => setQuery(e.target.value)}
                             placeholder={tCommon("search")}
                             aria-label={tCommon("search")}
+                            onChange={(e) => setQuery(e.target.value)}
+                            onBlur={() => {
+                                if (!query) setSearchOpen(false)
+                            }}
                         />
                     )}
                 </div>
