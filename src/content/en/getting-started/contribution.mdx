@@ -6,13 +6,13 @@ order: 2
 tags: ["Add components", "Fix bugs", "Improve docs"]
 ---
 
-import Alert from '@/components/ui/Alert'
-import { Sticker } from 'lucide-react'
+import Alert from "@/components/ui/Alert";
+import { Sticker } from "lucide-react";
 
 <Alert icon={<Sticker strokeWidth={1.5} className="size-6" />} title="Notes">
-This project uses `pnpm` as the package manager; you must have [pnpm installed](https://pnpm.io/) globally to run commands and tests locally.
+  This project uses `pnpm` as the package manager; you must have [pnpm
+  installed](https://pnpm.io/) globally to run commands and tests locally.
 </Alert>
-
 
 ---
 
@@ -24,6 +24,7 @@ Here’s where each type of file lives:
 - `src/registry/demos` holds demo components.
 - `src/registry/demos/index.ts` exports the demo components.
 - `src/content` holds documentation.
+
 ```text title="Visual representation"
 (src/registry)
 |-- base
@@ -79,53 +80,66 @@ Tests run **automatically** on every pull request. They verify that every compon
 
 ## How to add a new component
 
+Use the `pnpm scafold-new` command to create a new component. This creates the empty base component, demo, empty templated MDX doc, and patches the registry and demo index automatically.
+
+Example:
+
+`# e.g. pnpm scafold-new animated-text --category scroll`
+`# e.g. pnpm scafold-new sparkle --category background`
+
+---
+
+If you prefer to do it manually, follow the steps below.
+
 ### Base component
 
 Create a new folder in the `src/registry/base` folder with the name of the component:
+
 ```tsx title="src/registry/base/component-name/component-name.tsx"
 export function ComponentName() {
-    return <></>
+  return <></>;
 }
 ```
-
----
 
 ### Demo component
 
 Create a demo component in the `src/registry/demos` folder and structure it how you want:
+
 ```tsx title="src/registry/demos/component-name/component-name.tsx"
-import ComponentName from '@/registry/base/component-name/component-name'
+import ComponentName from "@/registry/base/component-name/component-name";
 
 export function ComponentNameDemo() {
-    return <ComponentName />
+  return <ComponentName />;
 }
 ```
 
 ### Exporting the demo
 
 Export the demo component in the `src/registry/demos/index.ts` file:
+
 ```tsx title="src/registry/demos/index.ts"
-export const demos: Record<string, React.LazyExoticComponent<React.ComponentType>> = {
-    'component-name': lazy(() => import('./component-name/component-name')),
-}
+export const demos: Record<
+  string,
+  React.LazyExoticComponent<React.ComponentType>
+> = {
+  "component-name": lazy(() => import("./component-name/component-name")),
+};
 ```
 
 ### Adding to the registry
 
 Add the component to the registry by including its name and dependencies in `src/registry/index.ts`:
+
 ```tsx title="src/registry/index.ts"
 export const components: TRegistryComponent[] = [
-    {
-        name: 'new-component',
-        files: ['new-component.tsx'],
-        description: 'My new component',
-        shared: ["hooks/my-shared-hook", "utils/my-shared-utility"],
-        dependencies: [
-            'example-dependency-1',
-            'example-dependency-2',
-        ],
-    },
-]
+  {
+    name: "new-component",
+    files: ["new-component.tsx"],
+    description: "My new component",
+    shared: ["hooks/my-shared-hook", "utils/my-shared-utility"],
+    dependencies: ["example-dependency-1", "example-dependency-2"],
+  },
+];
 ```
 
 ---
@@ -135,67 +149,76 @@ export const components: TRegistryComponent[] = [
 ### Frontmatter
 
 Add the metadata for the component in the frontmatter:
+
 ```yaml title="Frontmatter"
 ---
 title: "New Component"
 description: "My new component"
-icon: 'Component'
+icon: "Component"
 ---
 ```
 
 ### Guide and preview
 
 Add a preview of the component by using the `<DemoPreview />` component with **the same exact name** of the demo component.
+
 ```tsx title="Preview example"
 <DemoPreview name="component-name" />
 ```
 
-Add the installation guide by using the `<DocInstallGuide />` component with **the same exact name** of the base component.
-```tsx title="Installation guide example"
-<DocInstallGuide name="component-name" />
+Add the CLI installation guide by using the `<InstalGuideCLI />` component with **the same exact name** of the base component.
+
+```tsx title="CLI install example"
+<InstalGuideCLI name="component-name" />
+```
+
+Add the manual installation guide by using the `<InstalGuideManual />` component with **the same exact name** of the base component.
+
+```tsx title="Manual install example"
+<InstalGuideManual name="component-name" />
 ```
 
 ### Controls
 
-You can add interactive controls to the preview so users can tweak component props live. Pass a `controls` object to `<DemoPreview />`.  
+You can add interactive controls to the preview so users can tweak component props live. Pass a `controls` object to `<DemoPreview />`.
 
 Always make sure the values match the default props of the base component:
 
 ```tsx title="Controls example"
 <DemoPreview
-    name="component-name"
-    controls={{
-        speed: { type: "slider", value: 1, min: 0, max: 10, step: 0.1 },
-        color: { type: "color", value: "#ff5733" },
-        variant: { type: "select", value: "solid", options: ["solid", "outline"] },
-        enabled: { type: "boolean", value: true },
-    }}
+  name="component-name"
+  controls={{
+    speed: { type: "slider", value: 1, min: 0, max: 10, step: 0.1 },
+    color: { type: "color", value: "#ff5733" },
+    variant: { type: "select", value: "solid", options: ["solid", "outline"] },
+    enabled: { type: "boolean", value: true },
+  }}
 />
 ```
 
-
-
 **Available control types:**
 
-| Type     | Fields                         | Renders |
-| -------- | ------------------------------ | -------------- |
-| `slider` | `value` `min` `max` `step`  | Slider |
-| `color`  | `value`                        | Color picker |
-| `select` | `value` `options`             | Select |
-| `boolean` | `value`                       | Toggle switch |
+| Type      | Fields                     | Renders       |
+| --------- | -------------------------- | ------------- |
+| `slider`  | `value` `min` `max` `step` | Slider        |
+| `color`   | `value`                    | Color picker  |
+| `select`  | `value` `options`          | Select        |
+| `boolean` | `value`                    | Toggle switch |
 
 Export the base component's props type, then spread `controls` onto it:
 
 ```tsx title="Demo component"
-export default function ComponentNameDemo(controls: Partial<ComponentNameProps>) {
-    return 
+export default function ComponentNameDemo(
+  controls: Partial<ComponentNameProps>,
+) {
+  return;
 }
 ```
-
 
 ### API
 
 Add the API of the component by using the following table format:
+
 ```text title="API example"
 | Name              | Type    | Default   | Description                                                          |
 | ----------------- | ------- | --------- | -------------------------------------------------------------------- |
@@ -214,4 +237,3 @@ Designed the original component concept.
 [Library Name](https://example.com)
 Used for animation utilities within this component.
 ```
-
