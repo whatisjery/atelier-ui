@@ -51,7 +51,7 @@ export function TextSplit({
                         {elements.map((char, i) => {
                             return (
                                 <React.Fragment key={i}>
-                                    {renderItems?.(char, index)}
+                                    {renderItems ? renderItems(char, index) : char}
                                 </React.Fragment>
                             )
                         })}
