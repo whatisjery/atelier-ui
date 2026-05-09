@@ -55,7 +55,7 @@ const components: MDXComponents = {
     h2: ({ children }) => {
         const id = slugify(children?.toString())
         return (
-            <h2 id={id} className="scroll-mt-sticky text-2xl font-semibold">
+            <h2 id={id} className="scroll-mt-sticky-nested text-2xl font-semibold">
                 {children}
             </h2>
         )
@@ -63,7 +63,7 @@ const components: MDXComponents = {
     h3: ({ children }) => {
         const id = slugify(children?.toString())
         return (
-            <h3 id={id} className="scroll-mt-sticky text-xl font-semibold">
+            <h3 id={id} className="scroll-mt-sticky-nested text-xl font-semibold">
                 {children}
             </h3>
         )
@@ -71,7 +71,7 @@ const components: MDXComponents = {
     h4: ({ children }) => {
         const id = slugify(children?.toString())
         return (
-            <h4 id={id} className="scroll-mt-sticky">
+            <h4 id={id} className="scroll-mt-sticky-nested">
                 {children}
             </h4>
         )
@@ -79,7 +79,7 @@ const components: MDXComponents = {
     h5: ({ children }) => {
         const id = slugify(children?.toString())
         return (
-            <h5 id={id} className="scroll-mt-sticky">
+            <h5 id={id} className="scroll-mt-sticky-nested">
                 {children}
             </h5>
         )

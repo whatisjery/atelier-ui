@@ -26,7 +26,7 @@ export default function PageDocLayout({
 }: PageDocLayoutProps) {
     return (
         <div className="flex flex-col min-w-0 w-full relative">
-            <header className="flex top-sticky w-full border-b h-under-nav-h sticky bg-bg z-2">
+            <header className="flex top-sticky w-full border-b h-under-nav-h sticky bg-bg z-3">
                 <div className={cn("w-full flex items-center", maxWidth, paddingX)}>
                     <div className="flex-1 flex items-center justify-between">
                         {topBarSlot}

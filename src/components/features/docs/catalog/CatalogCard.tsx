@@ -42,9 +42,9 @@ export default function CatalogCard({ catalogItem }: CatalogCardProps) {
                     </div>
                 </div>
 
-                <div className="flex h-14 pattern-line relative z-1 px-5 border-t w-full items-center justify-between">
+                <div className="flex h-14 pattern-line relative px-5 border-t w-full items-center justify-between">
                     <div className="flex items-center justify-between w-full gap-x-1">
-                        <span className="flex items-center gap-x-1">
+                        <span className="flex items-center gap-x-1 relative z-2">
                             {catalogItem.status && badgeMap[catalogItem.status]}
                         </span>
                         <AnimatedArrow className="size-4" />
