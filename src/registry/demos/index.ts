@@ -16,4 +16,5 @@ export const demos: Record<string, React.LazyExoticComponent<React.ComponentType
     "infinite-zoom": lazy(() => import("./infinite-zoom/infinite-zoom")),
     "scattered-scroll": lazy(() => import("./scattered-scroll/scattered-scroll")),
     "text-roll": lazy(() => import("./text-roll/text-roll")),
+    "text-bounce": lazy(() => import("./text-bounce/text-bounce")),
 }

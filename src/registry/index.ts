@@ -146,4 +146,12 @@ export const components: TRegistryComponent[] = [
         registryDependencies: [],
         pro: true,
     },
+    {
+        name: "text-bounce",
+        files: ["text-bounce.tsx"],
+        description: "Text bounce effect on hover",
+        shared: [],
+        dependencies: ["motion"],
+        registryDependencies: ["text-split"],
+    },
 ]
