@@ -49,6 +49,12 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
+# Temp (*minion*)
+AGENTS.md
+.claude*
+.agents*
+skills-lock.json
+
 packages/cli-tool/dist
 packages/cli-tool/node_modules
 packages/cli-tool/test-project/src/components/*
