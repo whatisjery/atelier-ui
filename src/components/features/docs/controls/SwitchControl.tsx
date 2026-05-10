@@ -1,5 +1,3 @@
-"use client"
-
 import { Switch } from "radix-ui"
 import { toKebabCase } from "@/lib/utils"
 import type { ControlBoolean } from "@/types/controls"
@@ -22,7 +20,7 @@ export default function SwitchControl({ label, value, onChange }: SwitchControlP
                 onCheckedChange={onChange}
                 aria-label={label}
                 className="relative h-6 w-11 cursor-pointer rounded-full transition-colors hover:ring-1 hover:ring-accent-3"
-                style={{ backgroundColor: value ? "var(--theme)" : "var(--accent-4)" }}
+                style={{ backgroundColor: value ? "var(--theme-bg)" : "var(--accent-4)" }}
             >
                 <Switch.Thumb
                     className="block size-5 rounded-full bg-bg shadow-md transition-transform"

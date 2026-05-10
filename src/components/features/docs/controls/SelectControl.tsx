@@ -1,5 +1,3 @@
-"use client"
-
 import { Check, ChevronDown } from "lucide-react"
 import { Select } from "radix-ui"
 import type { ControlSelect } from "@/types/controls"
@@ -15,7 +13,7 @@ export default function SelectControl({ label, control, value, onChange }: Selec
     return (
         <Select.Root value={value} onValueChange={onChange}>
             <Select.Trigger
-                className="h-10 bg-accent-5 data-[state=open]:bg-bg hover:bg-bg w-[calc(100%+0.5rem)] mx-[-0.25rem] flex items-center justify-between cursor-pointer rounded border p-3 font-mono text-sm"
+                className="h-10 bg-accent-5 data-[state=open]:bg-bg hover:bg-bg w-[calc(100%+0.5rem)] mx-1 flex items-center justify-between cursor-pointer rounded border p-3 font-mono text-sm"
                 aria-label={label}
             >
                 <Select.Value />
@@ -29,7 +27,7 @@ export default function SelectControl({ label, control, value, onChange }: Selec
                 <Select.Content
                     position="popper"
                     sideOffset={4}
-                    className="min-w-[var(--radix-select-trigger-width)] rounded-xl border bg-bg p-1"
+                    className="min-w-(--radix-select-trigger-width) rounded-xl border bg-bg p-1"
                 >
                     <Select.Viewport>
                         {control.options.map((option) => (

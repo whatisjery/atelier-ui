@@ -1,5 +1,3 @@
-"use client"
-
 import type { ControlDef, ControlValue } from "@/types/controls"
 import ColorControl from "./ColorControl"
 import SelectControl from "./SelectControl"
