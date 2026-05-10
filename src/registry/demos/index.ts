@@ -17,4 +17,5 @@ export const demos: Record<string, React.LazyExoticComponent<React.ComponentType
     "scattered-scroll": lazy(() => import("./scattered-scroll/scattered-scroll")),
     "text-roll": lazy(() => import("./text-roll/text-roll")),
     "text-bounce": lazy(() => import("./text-bounce/text-bounce")),
+    "dither-flow": lazy(() => import("./dither-flow/dither-flow")),
 }

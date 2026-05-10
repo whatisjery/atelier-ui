@@ -154,4 +154,13 @@ export const components: TRegistryComponent[] = [
         dependencies: ["motion"],
         registryDependencies: ["text-split"],
     },
+    {
+        name: "dither-flow",
+        files: ["dither-flow.tsx"],
+        description: "TODO",
+        shared: [],
+        dependencies: ["three", "@react-three/fiber", "@react-three/drei"],
+        registryDependencies: [],
+        pro: true,
+    },
 ]
