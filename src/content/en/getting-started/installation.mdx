@@ -6,39 +6,72 @@ order: 1
 tags: ["Tailwind CSS", "Copy & paste", "Ready in minutes"]
 ---
 
-import DocStep from '@/components/features/docs/DocStep'
-import { Sticker } from 'lucide-react'
+import DocStep from "@/components/features/docs/DocStep";
 
 <ProLicenseHelper />
 
 <DocStep step={1}>
 
-## Setup Tailwind CSS
+## Set up Tailwind CSS
 
-This library uses Tailwind CSS v4. If your project doesn't have it, follow the [Tailwind CSS installation guide](https://tailwindcss.com/docs/installation) to get started.
+This library is built on **Tailwind CSS v4**. If your project doesn't already use it, follow the [Tailwind CSS installation guide](https://tailwindcss.com/docs/installation) before continuing.
 
 </DocStep>
 
-<DocStep  step={2}>
+<DocStep step={2}>
 
-## License usage (optional)
+## Set up WebGL
 
-Purchasing a license creates an account with access to the **source code** of **pro components** and lets you install them via the **CLI**.
+**WebGL components** share a single [React Three Fiber](https://r3f.docs.pmnd.rs/) render context so they can portal their content into one Canvas. If you plan to use one of these, install the `webgl-rig` package.
 
-Simply create or update your `.env` file in your project root and add your license key:
+<InstalGuideCLI name="webgl-rig" />
 
-```text title=".env.local"
-ATELIER_PRO_KEY=your-license-key
+Then mount the rig at the **root of your app**.
+
+```tsx title="Root layout"
+import { Canvas } from "@react-three/fiber";
+import { AtelierRig } from "./webgl-rig";
+
+<Canvas
+  style={{
+    position: "fixed",
+    inset: 0,
+    width: "100%",
+    height: "100%",
+    pointerEvents: "none",
+  }}
+>
+  <AtelierRig />
+</Canvas>;
 ```
+
 </DocStep>
 
 <DocStep step={3}>
 
-## Installation
+## Set up pro license
 
-Find a component you like and choose whether to **copy and paste** the code directly into your project or **install it via the CLI**:
+**Pro components** require a license. Copy your key from the panel at the top of this page and add it to `.env.local`.
+
+```text title=".env.local"
+ATELIER_PRO_KEY=<your-license-key>
+```
+
+Restart your dev server after adding the key.
+
+</DocStep>
+
+<DocStep step={4}>
+
+## Install a component
+
+Pick a component from the docs, then install it:
+
+- **CLI** — installs the source and any shared dependencies.
+- **Manual** — copy each file by hand from the component page.
 
 ```text title="CLI example"
 npx atelier-ui add fluid-distortion
 ```
+
 </DocStep>
