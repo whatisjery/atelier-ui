@@ -99,8 +99,8 @@
 
     "pro": {
         "license-helper": {
-            "title": "Your license key",
-            "description": "Needed to install pro component — see instructions below.",
+            "title": "License key",
+            "description": "Only required for pro components: <link>see step 3</link>.",
             "sign-in-prompt": "Sign in to view your license key."
         },
         "paywall": {
