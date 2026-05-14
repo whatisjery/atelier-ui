@@ -17,9 +17,7 @@ export default function CardPixelHover({
         <Card className={cn("relative not-prose overflow-hidden", containerClassName)}>
             <BackgroundPixelGrid pixelSize={22} position="center" />
 
-            <div className={cn("relative z-2 bg-bg/40 backdrop-blur-[0px] rounded-xl", className)}>
-                {children}
-            </div>
+            <div className={cn("relative z-2 bg-bg/40 rounded-xl", className)}>{children}</div>
         </Card>
     )
 }
