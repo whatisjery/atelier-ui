@@ -1,6 +1,6 @@
 "use client"
 
-import { Check, Copy, Eye, EyeOff, KeyRound } from "lucide-react"
+import { Check, Copy, Eye, EyeOff } from "lucide-react"
 import { useTranslations } from "next-intl"
 import { useState } from "react"
 import Button from "@/components/ui/Button"
@@ -22,13 +22,21 @@ export default function ProLicenseHelper() {
     const licenseKey = customer?.licenseKey
 
     return (
-        <CardPixelHover className="p-5 sm:p-8 space-y-4" containerClassName="mb-12">
+        <CardPixelHover className="p-6 space-y-4" containerClassName="mb-12">
             <div className="flex flex-col">
                 <p className="text-2xl font-semibold flex items-center gap-2 justify-between w-full">
                     {tPro("title")}
-                    <KeyRound className="size-5" />
                 </p>
-                <p className="text-sm text-accent-2">{tPro("description")}</p>
+
+                <p className="text-sm">
+                    {tPro.rich("description", {
+                        link: (chunks) => (
+                            <a href="#set-up-pro-license" className="underline hover:no-underline">
+                                {chunks}
+                            </a>
+                        ),
+                    })}
+                </p>
             </div>
 
             <div className="relative">

@@ -163,4 +163,28 @@ export const components: TRegistryComponent[] = [
         registryDependencies: [],
         pro: true,
     },
+    {
+        name: "webgl-rig",
+        files: ["webgl-rig.tsx"],
+        description: "Shared R3F rig: screen-space camera and DOM↔Canvas teleport.",
+        shared: [],
+        dependencies: ["three", "@react-three/fiber"],
+        registryDependencies: [],
+    },
+    {
+        name: "webgl-image",
+        files: ["webgl-image.tsx"],
+        description: "DOM-aligned WebGL plane that mirrors an <img> via the AtelierRig.",
+        shared: [],
+        dependencies: ["three", "@react-three/fiber", "@react-three/drei"],
+        registryDependencies: ["webgl-rig"],
+    },
+    {
+        name: "curve-image",
+        files: ["curve-image.tsx"],
+        description: "Scroll-reactive WebGL image with sine-based vertex displacement.",
+        shared: [],
+        dependencies: ["three", "@react-three/fiber"],
+        registryDependencies: ["webgl-image"],
+    },
 ]
