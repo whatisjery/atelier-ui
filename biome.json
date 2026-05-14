@@ -24,7 +24,8 @@
                 "noArrayIndexKey": "off"
             },
             "a11y": {
-                "noStaticElementInteractions": "off"
+                "noStaticElementInteractions": "off",
+                "noRedundantAlt": "off"
             },
             "correctness": {
                 "noUnusedImports": "warn",
@@ -34,6 +35,9 @@
                         "reportUnnecessaryDependencies": false
                     }
                 }
+            },
+            "performance": {
+                "noImgElement": "off"
             }
         },
         "domains": {
