@@ -37,15 +37,7 @@ function RotatingCube() {
 export default function FluidCursorDemo(controls: Partial<FluidDistortionProps>) {
     return (
         <Suspense fallback={<Docr3fDemoLoader />}>
-            <Canvas
-                style={{
-                    width: "100%",
-                    height: "100%",
-                    position: "absolute",
-                    top: 0,
-                    left: 0,
-                }}
-            >
+            <Canvas style={{ position: "fixed", inset: 0, pointerEvents: "none" }}>
                 <Environment files={suspend(warehouse) as string} />
                 <RotatingCube />
                 <EffectComposer>

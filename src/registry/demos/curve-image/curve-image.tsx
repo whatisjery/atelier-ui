@@ -1,8 +1,8 @@
 import { addEffect, Canvas } from "@react-three/fiber"
 import { type LenisRef, ReactLenis } from "lenis/react"
-import { Suspense, useEffect, useRef } from "react"
+import { useEffect, useRef } from "react"
 import { CurveImage, type CurveImageProps } from "@/registry/base/curve-image/curve-image"
-import { AtelierRig } from "@/registry/base/webgl-rig/webgl-rig"
+import { WebglPortal } from "@/registry/base/webgl-portal/webgl-portal"
 
 export default function CurveImageDemo(controls: Partial<CurveImageProps>) {
     const lenisRef = useRef<LenisRef>(null)
@@ -15,19 +15,8 @@ export default function CurveImageDemo(controls: Partial<CurveImageProps>) {
 
     return (
         <ReactLenis root ref={lenisRef} options={{ autoRaf: false, syncTouch: true }}>
-            <Canvas
-                gl={{ antialias: true, alpha: true }}
-                style={{
-                    position: "fixed",
-                    inset: 0,
-                    width: "100%",
-                    height: "100%",
-                    pointerEvents: "none",
-                }}
-            >
-                <Suspense fallback={null}>
-                    <AtelierRig />
-                </Suspense>
+            <Canvas style={{ position: "fixed", inset: 0, pointerEvents: "none" }}>
+                <WebglPortal />
             </Canvas>
 
             <div className="h-screen flex items-center justify-center font-serif text-5xl">
