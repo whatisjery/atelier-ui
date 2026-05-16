@@ -44,6 +44,7 @@
     --color-transparent: var(--transparent);
     --color-backdrop: var(--backdrop);
     --color-ring: var(--ring);
+    --color-link: var(--link);
 
     --font-sans: var(--font-geist-sans);
     --font-serif: var(--font-instrument-serif);
@@ -73,6 +74,8 @@
     --theme-fg: var(--theme-1-fg);
     --theme-border: var(--theme-1-border);
 
+    --link: oklch(0.59 0.21 258.71);
+
     --pattern-grid: oklch(0.91 0 0 / 1);
     --pattern-line: oklch(0.94 0 0);
     --bg: oklch(1 0 0);
@@ -85,7 +88,7 @@
     --accent-2: oklch(0.7 0.03 256.14 / 1);
     --accent-3: oklch(0.31 0.02 281.29);
     --accent-4: oklch(0.2 0.01 285.26 / 1);
-    --accent-5: oklch(0.18 0.01 285.55);
+    --accent-5: oklch(0.19 0.01 285.55);
 
     --theme-1-bg: oklch(0.86 0.17 90.01);
     --theme-2-bg: oklch(1 0 0);
@@ -95,13 +98,15 @@
     --theme-2-fg: oklch(0.35 0.01 253.97);
     --theme-3-fg: oklch(0.35 0.01 253.97);
 
-    --theme-1-border: oklch(0.22 0.01 285.38);
+    --theme-1-border: oklch(0.23 0.01 285.38);
     --theme-2-border: oklch(0.28 0.01 285.53);
     --theme-3-border: oklch(0.2 0.01 285.65);
 
     --theme-border: var(--theme-1-border);
     --theme-bg: var(--theme-1-bg);
     --theme-fg: var(--theme-1-fg);
+
+    --link: oklch(73.68% 0.1379 255.71);
 
     --pattern-line: oklch(0.21 0.01 278.71);
     --pattern-grid: oklch(0.25 0.02 279.63);

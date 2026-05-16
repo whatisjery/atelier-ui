@@ -7,7 +7,7 @@ const components: MDXComponents = {
     table: ({ children }) => {
         return (
             <div className="w-full overflow-x-auto text-sm">
-                <table className="not-prose w-full min-w-[600px] overflow-hidden border-separate border-spacing-0 border rounded-lg bg-bg">
+                <table className="not-prose w-full min-w-150 overflow-hidden border-separate border-spacing-0 border rounded-lg bg-bg">
                     {children}
                 </table>
             </div>
@@ -29,7 +29,7 @@ const components: MDXComponents = {
     em: ({ children }) => <em className="font-light text-accent-2">{children}</em>,
 
     a: ({ children, href }) => (
-        <Link className="font-medium underline hover:no-underline" target="_blank" href={href}>
+        <Link className="text-link no-underline hover:underline" target="_blank" href={href}>
             {children}
         </Link>
     ),
