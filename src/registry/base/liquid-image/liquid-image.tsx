@@ -12,6 +12,7 @@ import {
     Scene,
 } from "three"
 import ripple from "../../assets/ripple.png"
+import { type Pointer, WebglImage } from "../webgl-image/webgl-image"
 
 const ROTATION_SPEED = 0.1 as const
 const INITIAL_OPACITY = 0.22 as const
@@ -49,8 +50,9 @@ void main() {
     gl_FragColor = color;
 }`
 
-export type LiquidTouchMaterialProps = {
+type LiquidImageMaterialProps = {
     map: Texture
+    pointer: Pointer
     rippleMap?: Texture
     intensity?: number
     radius?: number
@@ -65,15 +67,29 @@ type Uniforms = {
     uDisplacementIntensity: { value: number }
 }
 
-export function LiquidTouchMaterial({
+export type LiquidImageProps = {
+    src: string
+    alt: string
+    rippleMap?: Texture
+    intensity?: number
+    radius?: number
+    expandRate?: number
+    decayRate?: number
+    maxRipples?: number
+    segments?: number
+    webglEnabled?: boolean
+} & Omit<React.ComponentPropsWithoutRef<"img">, "src" | "alt">
+
+function LiquidImageMaterial({
     map,
+    pointer,
     rippleMap,
     intensity = 0.14,
     radius = 3,
     expandRate = 7,
     decayRate = 3,
     maxRipples = 50,
-}: LiquidTouchMaterialProps) {
+}: LiquidImageMaterialProps) {
     const { viewport, size, gl } = useThree()
 
     const defaultBrush = useTexture(typeof ripple === "string" ? ripple : ripple.src)
@@ -114,14 +130,14 @@ export function LiquidTouchMaterial({
         spriteCamera.updateProjectionMatrix()
     }, [viewport, spriteCamera])
 
-    useFrame((state, delta) => {
+    useFrame((_, delta) => {
         const parent = anchorRef.current?.parent as Mesh | null
         const mat = materialRef.current
         if (!parent || !mat) return
 
         const sprites = spriteRefs.current
-        const pointerX = (state.pointer.x * viewport.width) / 2
-        const pointerY = (state.pointer.y * viewport.height) / 2
+        const pointerX = parent.position.x + (pointer.uv.x - 0.5) * parent.scale.x
+        const pointerY = parent.position.y + (pointer.uv.y - 0.5) * parent.scale.y
         const dx = pointerX - prevMouse.current.x
         const dy = pointerY - prevMouse.current.y
         const dist = Math.sqrt(dx * dx + dy * dy)
@@ -129,8 +145,7 @@ export function LiquidTouchMaterial({
         prevMouse.current.x = pointerX
         prevMouse.current.y = pointerY
 
-        state.raycaster.setFromCamera(state.pointer, state.camera)
-        const hovering = state.raycaster.intersectObject(parent).length > 0
+        const hovering = pointer.hover > 0.5
 
         if (hovering) {
             prevMouse.current.velocity = Math.max(
@@ -144,7 +159,7 @@ export function LiquidTouchMaterial({
             const sprite = sprites[idx]
 
             if (sprite.material instanceof MeshBasicMaterial) {
-                const scale = radius / Math.min(viewport.width, viewport.height)
+                const scale = (radius * Math.min(viewport.width, viewport.height)) / 100
                 sprite.visible = true
                 sprite.position.set(pointerX, pointerY, 0)
                 sprite.scale.set(scale, scale, 1)
@@ -228,5 +243,41 @@ export function LiquidTouchMaterial({
 
             {portal}
         </>
+    )
+}
+
+export function LiquidImage({
+    src,
+    alt,
+    rippleMap,
+    intensity,
+    radius,
+    expandRate,
+    decayRate,
+    maxRipples,
+    segments,
+    webglEnabled,
+    ...rest
+}: LiquidImageProps) {
+    return (
+        <WebglImage
+            src={src}
+            alt={alt}
+            segments={segments}
+            webglEnabled={webglEnabled}
+            material={(map, pointer) => (
+                <LiquidImageMaterial
+                    map={map}
+                    pointer={pointer}
+                    rippleMap={rippleMap}
+                    intensity={intensity}
+                    radius={radius}
+                    expandRate={expandRate}
+                    decayRate={decayRate}
+                    maxRipples={maxRipples}
+                />
+            )}
+            {...rest}
+        />
     )
 }

@@ -1,0 +1,63 @@
+---
+title: "Liquid Image"
+description: "An SEO-friendly WebGL image with a cursor-driven liquid ripple effect"
+tags: ["React Three Fiber", "Drei"]
+---
+
+<DemoPreview
+  name="liquid-image"
+  controls={{
+    intensity: { type: "slider", value: 0.14, min: 0, max: 1, step: 0.01 },
+    radius: { type: "slider", value: 3, min: 0, max: 10, step: 1 },
+    expandRate: { type: "slider", value: 7, min: 0, max: 10, step: 1 },
+    decayRate: { type: "slider", value: 3, min: 0, max: 10, step: 1 },
+    maxRipples: { type: "slider", value: 50, min: 0, max: 100, step: 1 },
+    webglEnabled: { type: "boolean", value: true },
+  }}
+/>
+
+## CLI Install
+
+<InstalGuideCLI name="liquid-image" />
+
+---
+
+## Manual Install
+
+<InstalGuideManual name="liquid-image" />
+
+---
+
+## API
+
+| Name         | Type      | Default      | Description                  |
+| ------------ | --------- | ------------ | ---------------------------- |
+| src          | `string`  | —            | Image source.                |
+| alt          | `string`  | —            | Image alt text.              |
+| rippleMap    | `Texture` | `ripple.png` | Custom ripple texture.       |
+| intensity    | `number`  | `0.14`       | Displacement strength.       |
+| radius       | `number`  | `3`          | Initial ripple size.         |
+| expandRate   | `number`  | `7`          | How fast ripples grow.       |
+| decayRate    | `number`  | `3`          | How fast ripples fade out.   |
+| maxRipples   | `number`  | `50`         | Max simultaneous ripples.    |
+| segments     | `number`  | `1`          | Plane geometry subdivisions. |
+| webglEnabled | `boolean` | `true`       | Toggle WebGL effect on/off.  |
+
+---
+
+## Credits
+
+[14islands](https://14islands.com/)  
+Re-creation of the ripple effect from their website.
+
+[homunculus Inc.](https://homunculus.jp/)  
+Original ripple effect from their portfolio website.
+
+[Yuri Artiukh](https://www.youtube.com/watch?v=vWAci72MtME)  
+Deconstructed the effect on his stream.
+
+[React Three Fiber](https://r3f.docs.pmnd.rs/)  
+React renderer for Three.js.
+
+[Drei](https://drei.docs.pmnd.rs/)  
+React Three Fiber utilities.
