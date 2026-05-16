@@ -8,35 +8,29 @@ import {
     useRef,
 } from "react"
 import { CanvasTexture, type Mesh, type Texture, Vector2 } from "three"
-import { webglTeleport } from "../webgl-rig/webgl-rig"
+import { webglTeleport } from "../webgl-portal/webgl-portal"
 
-export type WebglTextPointer = {
+export type Pointer = {
     uv: Vector2
     hover: number
-}
-
-type Bounds = {
-    x: number
-    y: number
-    width: number
-    height: number
 }
 
 type WebglTextProps = {
     children: string
     segments?: number
     webglEnabled?: boolean
-    material?: (map: Texture, pointer: WebglTextPointer) => React.ReactNode
+    material?: (map: Texture, pointer: Pointer) => React.ReactNode
 } & Omit<React.HTMLAttributes<HTMLSpanElement>, "children">
 
 type PlaneProps = {
     el: RefObject<ComponentRef<"span"> | null>
     text: string
     segments: number
-    material?: (map: Texture, pointer: WebglTextPointer) => React.ReactNode
-    pointer: WebglTextPointer
+    material?: (map: Texture, pointer: Pointer) => React.ReactNode
+    pointer: Pointer
 }
 
+// Paints the content of the text on a canvas, mirroring its computed CSS typography so it looks identical to the DOM element.
 function paint(el: HTMLElement, canvas: HTMLCanvasElement, width: number, height: number) {
     const ctx = canvas.getContext("2d")
     if (!ctx) return
@@ -65,6 +59,8 @@ function paint(el: HTMLElement, canvas: HTMLCanvasElement, width: number, height
 function Plane({ el, text, segments, material, pointer }: PlaneProps) {
     const mesh = useRef<Mesh>(null)
     const size = useThree((s) => s.size)
+    const viewport = useThree((s) => s.viewport)
+    const bounds = useRef({ x: 0, y: 0, width: 0, height: 0 })
 
     const { canvas, texture } = useMemo(() => {
         const canvas = document.createElement("canvas")
@@ -78,24 +74,20 @@ function Plane({ el, text, segments, material, pointer }: PlaneProps) {
         }
     }, [texture])
 
-    const bounds = useRef<Bounds>({
-        x: 0,
-        y: 0,
-        width: 0,
-        height: 0,
-    })
-
     useLayoutEffect(() => {
         const target = el.current
         if (!target) return
 
         const measure = () => {
-            const r = target.getBoundingClientRect()
-            bounds.current.x = r.left + window.scrollX
-            bounds.current.y = r.top + window.scrollY
-            bounds.current.width = r.width
-            bounds.current.height = r.height
-            paint(target, canvas, r.width, r.height)
+            // Rect in document coords (top/left offset by current scroll at measure time),
+            // so we can later derive viewport position with just `window.scrollX/Y`,
+            // instead of recalculating bounds on every render
+            const rect = target.getBoundingClientRect()
+            bounds.current.x = rect.left + window.scrollX
+            bounds.current.y = rect.top + window.scrollY
+            bounds.current.width = rect.width
+            bounds.current.height = rect.height
+            paint(target, canvas, rect.width, rect.height)
             texture.needsUpdate = true
         }
 
@@ -111,11 +103,13 @@ function Plane({ el, text, segments, material, pointer }: PlaneProps) {
     useFrame(() => {
         const m = mesh.current
         if (!m) return
-        const b = bounds.current
-        m.position.x = b.x + b.width / 2 - window.scrollX - size.width / 2
-        m.position.y = -(b.y + b.height / 2 - window.scrollY - size.height / 2)
-        m.scale.x = b.width
-        m.scale.y = b.height
+        const { x, y, width, height } = bounds.current
+        const pxToWorld = viewport.height / size.height
+
+        m.position.x = (x + width / 2 - window.scrollX - size.width / 2) * pxToWorld
+        m.position.y = -(y + height / 2 - window.scrollY - size.height / 2) * pxToWorld
+        m.scale.x = width * pxToWorld
+        m.scale.y = height * pxToWorld
     })
 
     return (
@@ -140,7 +134,7 @@ export function WebglText({
     ...rest
 }: WebglTextProps) {
     const el = useRef<ComponentRef<"span">>(null)
-    const pointer = useMemo<WebglTextPointer>(() => {
+    const pointer = useMemo<Pointer>(() => {
         return {
             uv: new Vector2(0.5, 0.5),
             hover: 0,
@@ -152,6 +146,7 @@ export function WebglText({
         const target = el.current
         if (!target) return
 
+        // Track the pointer on the dom element directly and passed to the material
         const onMove = (e: PointerEvent) => {
             const { width, left, top, height } = target.getBoundingClientRect()
             const x = (e.clientX - left) / width
