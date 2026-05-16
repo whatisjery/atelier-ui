@@ -14,8 +14,7 @@ import ThemeToggle from "./ThemeToggle"
 
 export const FOOTER_LINKS = [
     { key: "docs", href: "/docs" },
-    { key: "getting-started", href: "/docs/getting-started" },
-    { key: "components", href: "/docs" },
+    { key: "getting-started", href: "/docs/getting-started/installation" },
     { key: "contribute", href: "/docs/getting-started/contribution" },
 ] as const
 
@@ -54,6 +53,15 @@ export default function Footer() {
                                         <span>{tFooter(key)}</span>
                                     </Link>
                                 ))}
+
+                                <a
+                                    className="hover:text-accent-1 text-accent-2 normal-case"
+                                    href="/llms.txt"
+                                    aria-label="LLMs.txt — documentation for AI assistants"
+                                    title="LLMs.txt — documentation for AI assistants"
+                                >
+                                    llms.txt
+                                </a>
                             </nav>
 
                             <nav className="flex flex-col gap-2" aria-label={tFooter("social")}>

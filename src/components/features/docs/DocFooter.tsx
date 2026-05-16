@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils"
 const LINKS = [
     { label: "Star on github", href: REPO_URL },
     { label: "Buy me a coffee", href: BUY_ME_A_COFFEE_URL },
+    { label: "llms.txt", href: "/llms.txt" },
 ]
 
 type DocFooterProps = {

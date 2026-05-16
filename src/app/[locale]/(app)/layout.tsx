@@ -55,6 +55,7 @@ export async function generateMetadata({
         },
         alternates: { canonical: `/${locale}`, languages: { en: "/en", "x-default": "/en" } },
         twitter: { card: "summary_large_image" },
+        other: { "llms-txt": "https://atelier-ui.com/llms.txt" },
     }
 }
 
