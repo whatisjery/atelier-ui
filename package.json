@@ -10,8 +10,8 @@
         "test:all": "vitest run",
         "pro:update": "git submodule update --remote src/pro",
         "pro:merge": "tsx src/scripts/merge-pro.ts",
-        "prebuild": "pnpm pro:merge && tsx src/scripts/build-registry.ts && tsx src/scripts/search-index.ts && tsx src/scripts/generate-timestamps.ts",
-        "dev": "tsx src/scripts/build-registry.ts && tsx src/scripts/search-index.ts && tsx src/scripts/generate-timestamps.ts && next dev",
+        "prebuild": "pnpm pro:merge && tsx src/scripts/build-registry.ts && tsx src/scripts/search-index.ts && tsx src/scripts/generate-timestamps.ts && tsx src/scripts/generate-llms-full.ts",
+        "dev": "tsx src/scripts/build-registry.ts && tsx src/scripts/search-index.ts && tsx src/scripts/generate-timestamps.ts && tsx src/scripts/generate-llms-full.ts && next dev",
         "install:vercel": "bash ./bin/init-submodule.sh && pnpm install",
         "scafold-new": "tsx src/scripts/scafold-new.ts"
     },

@@ -1,0 +1,72 @@
+# Atelier UI
+
+> React animation and WebGL effect components you own as source — no runtime `atelier-ui` package, but peer dependencies are installed via npm.
+
+Atelier UI is an open-source library of visual effects and animations built with React. Instead of importing from a versioned package, you copy the component's TypeScript source file directly into your project. You own the code and can modify it freely. The CLI (`npx atelier-ui add <name>`) handles this: it copies the source file(s), copies any shared internal utilities (hooks, assets), and runs your package manager to install peer npm dependencies (e.g. `three`, `motion`).
+
+Some components (canvas-based and pure CSS ones) have **zero npm dependencies** — you get a single `.tsx` file and that is all. Others require peer packages that must be installed:
+
+- **WebGL components** require: `three`, `@react-three/fiber`, `@react-three/drei` — and some add `@react-three/postprocessing`, `postprocessing`
+- **Motion-based components** require: `motion`
+- **Canvas/CSS components** require: nothing — pure browser APIs
+
+The library is built on Tailwind CSS v4, React Three Fiber (R3F), GLSL shaders, the Motion animation library, and the native Canvas 2D API.
+
+WebGL-based components share a single `<WebglPortal />` placed once at the app root. It bridges the DOM React tree with the R3F Canvas via a `useSyncExternalStore`-based teleport — components like `CurveImage` or `LiquidImage` can live anywhere in the DOM tree and push their Three.js meshes into the Canvas without being nested inside it.
+
+**Two tiers:** Free components are fully open. Pro components require a license key (`ATELIER_PRO_KEY` in `.env.local`). Both tiers use the same CLI and installation flow.
+
+**CLI:** `npx atelier-ui add <component-name>` — copies source files, copies shared utilities, and installs peer npm deps automatically.
+
+## Getting Started
+
+- [Installation](https://atelier-ui.com/docs/getting-started/installation): Set up Tailwind CSS v4, the R3F Canvas with `<WebglPortal />`, add a Pro license key if needed, then install components via CLI or manual copy
+- [Contribution](https://atelier-ui.com/docs/getting-started/contribution): Project structure, how to scaffold a new component (`pnpm scafold-new`), how to write docs, demo controls format, and testing conventions
+
+## WebGL Architecture (shared primitives)
+
+These are internal utilities required by WebGL components. Install `webgl-portal` first for any WebGL effect.
+
+- [WebglPortal](https://atelier-ui.com/docs/components/webgl-portal): The required root component. Place it inside a fullscreen fixed `<Canvas>` at the app root. All WebGL components teleport their R3F meshes here from anywhere in the DOM tree. Dependencies: `three`, `@react-three/fiber`
+- [WebglImage](https://atelier-ui.com/docs/components/webgl-image): DOM-aligned WebGL plane that mirrors a standard `<img>` element. Accepts a `material` render prop to inject custom shaders. Used as the base for `CurveImage` and `LiquidImage`. Dependencies: `three`, `@react-three/fiber`, `@react-three/drei`
+- [WebglText](https://atelier-ui.com/docs/components/webgl-text): DOM-aligned WebGL plane that rasterizes text onto a canvas texture, then renders it as a WebGL mesh. Dependencies: `three`, `@react-three/fiber`, `@react-three/drei`
+
+## Components — Cursor
+
+- [FluidDistortion](https://atelier-ui.com/docs/components/cursor/fluid-distortion): GPU-accelerated full-screen fluid simulation that reacts to cursor movement. Based on Navier–Stokes pressure solver running entirely on the GPU via R3F postprocessing. Key props: `fluidColor`, `intensity` (0–10), `force` (mouse velocity multiplier), `radius` (fluid spread), `curl`, `swirl`, `velocityDissipation`, `densityDissipation`, `pressure`, `rainbow` (direction-based color mode). Dependencies: `three`, `@react-three/fiber`, `@react-three/drei`, `@react-three/postprocessing`, `postprocessing`
+- [LiquidImage](https://atelier-ui.com/docs/components/cursor/liquid-image): SEO-friendly `<img>` with a cursor-driven water ripple effect. Renders a DOM `<img>` for SEO plus a GPU-aligned plane with a custom GLSL displacement shader driven by a ripple FBO. Key props: `src`, `alt`, `intensity` (displacement strength), `radius` (ripple initial size), `expandRate`, `decayRate`, `maxRipples` (up to 100 simultaneous), `webglEnabled` (toggle off for SSR or reduced motion). Requires `webgl-portal` and `webgl-image`. Dependencies: `three`, `@react-three/fiber`, `@react-three/drei`
+- [ImageTrail](https://atelier-ui.com/docs/components/cursor/image-trail): Cursor trail that spawns arbitrary React elements along its path. Fully generic via `data` array + `renderItem` render prop. Key props: `data`, `renderItem`, `spawnDistance` (px between spawns), `driftAmount` (px drift from spawn point), `removeDelay` (seconds). Dependencies: `motion`
+- [MagneticDotGrid](https://atelier-ui.com/docs/components/cursor/magnetic-dot-grid): 2D canvas-based interactive dot grid with magnetic cursor repulsion and ambient float animation. Dots cycle through colors near the cursor. Inspired by Google Stitch. Key props: `dotRadius`, `spacing`, `strength`, `interactionRadius`, `snapSpeed`, `returnSpeed`, `floatAmplitude`, `floatSpeed`, `baseColor`, `centerColors`, `opacityRange`, `cycleSpeed`. Zero dependencies (native Canvas 2D API).
+- [PixelTrail](https://atelier-ui.com/docs/components/cursor/pixel-trail): 2D canvas-based pixelated cursor trail. Two modes: `"color"` (solid color pixels) or `"sample"` (samples colors from underlying `<img>` elements via CSS selector). Key props: `mode`, `color`, `imageSelector`, `lighten`, `pixelSize`, `trailRadius`, `lifetime`, `fade`, `showGrid`, `gridColor`. Zero dependencies (native Canvas 2D API).
+
+## Components — Scroll
+
+- [CurveImage](https://atelier-ui.com/docs/components/scroll/curve-image): SEO-friendly `<img>` that bends with scroll velocity using sine-based vertex displacement and adds chromatic aberration on the scroll axis. Renders a DOM `<img>` for SEO. WebGL plane uses a custom GLSL vertex shader driven by Lenis scroll velocity. Key props: `src`, `alt`, `amplitude` (max bend, default 0.03), `aberration` (RGB split, default 0.003), `smoothing` (velocity smoothing, 1–20), `segments` (geometry subdivisions, 4–64), `webglEnabled`. Requires `webgl-portal` and `webgl-image`. Dependencies: `three`, `@react-three/fiber`, `@react-three/drei`
+- [InfiniteGallery](https://atelier-ui.com/docs/components/scroll/infinite-gallery): Zero-dependency infinite horizontal gallery with drag and wheel input, momentum, and two transform modes. Generic via `data` + `renderItem`. Modes: `"flip"` (3D tilt on edges) or `"shrink"` (scale compression). Key props: `data`, `renderItem`, `mode`, `perView`, `speed`, `inertia`, `gap`. Zero dependencies (pure JS animation via `requestAnimationFrame`).
+- [InfiniteParallax](https://atelier-ui.com/docs/components/scroll/infinite-parallax): Vertically infinite parallax column with auto-scroll and looping content. Wraps any `children`. Key props: `speed` (parallax intensity, negative reverses), `autoScroll` (continuous scroll speed, 0 to disable), `className`. Dependencies: `motion`, `lenis`
+- [InfiniteZoom](https://atelier-ui.com/docs/components/scroll/infinite-zoom): Mouse-wheel infinite zoom illusion using stacked, cycling layers. Key props: `children` (zoom layers), `zoomAmount` (scale factor between layers), `lerpValue` (wheel smoothing), `backgroundSpeed` (last-item deceleration), `className`. Dependencies: `motion`
+- [ScatteredScroll](https://atelier-ui.com/docs/components/scroll/scattered-scroll): Scroll-driven horizontal scatter — children spread apart along the x-axis as the user scrolls. Key props: `children`, `scrollTargetRef`. Dependencies: `motion`, `lenis`
+- [ElasticStick](https://atelier-ui.com/docs/components/scroll/elastic-stick): **(Pro)** Items spring and stick to the center of the viewport while scrolling, with staggered timing between children. Key props: `children`, `staggerValue` (time offset between each child), `scrollTargetRef`. Dependencies: `motion`, `lenis`
+
+## Shared Internal Utilities (not standalone components)
+
+- **TextSplit**: Pure utility that splits a string into letters or words, wraps each in an `overflow-clip` span, and exposes them via a `renderItems` render prop. No docs page — installed automatically as a dependency of `TextBounce` and `TextRoll`. Zero npm deps.
+- **use-frame-loop**: Lightweight `requestAnimationFrame` hook with delta timing. Auto-installed as a dependency of canvas-based components (`PixelTrail`, `MagneticDotGrid`, `PixelatedText`, `InfiniteGallery`, `SimpleScramble`). Zero npm deps.
+- **ripple.png**: Brush texture asset used by `LiquidImage` for ripple displacement. Copied automatically.
+
+## Components — Text
+
+- [PixelatedText](https://atelier-ui.com/docs/components/text/pixelated-text): SEO-friendly 2D canvas-based text that animates between pixelated and sharp states with flicker, chaos, depth, and chromatic aberration. The underlying text is real DOM text for accessibility. Key props: `pixelSize`, `flicker`, `chaos`, `depth` (contrast between sharp/pixelated), `aberration`, `colors` (cycle array), `fps`, `as` (polymorphic tag), `className`. Zero dependencies (native Canvas 2D API).
+- [SimpleScramble](https://atelier-ui.com/docs/components/text/simple-scramble): Text scramble animation that reveals characters sequentially left-to-right using randomized characters. Key props: `duration`, `playOnMount`, `playOnHover`, `as` (polymorphic), `characters` (pool of scramble chars). Zero dependencies.
+- [TextBounce](https://atelier-ui.com/docs/components/text/text-bounce): Per-letter bounce effect — letters fly away from the cursor on hover and spring back with configurable bounciness. Key props: `children` (string), `pause`, `outDuration`, `inDuration`, `bounce` (0 = no overshoot, 1 = max oscillation), `distance` (px drift), `rotation` (deg). Dependencies: `motion`
+- [TextRoll](https://atelier-ui.com/docs/components/text/text-roll): CSS-based rolling text effect with per-letter or group animation. Supports scroll, mount, and hover triggers. Clones letters with `overflow-clip` — increase `line-height` if descenders clip. Key props: `children`, `axis` (x/y), `mode` (letters/group), `direction` (forward/backward/random), `playOnScroll`, `playOnMount`, `playOnHover`, `stagger`, `duration`, `cycles`. Pure CSS/Tailwind, zero JS animation deps.
+
+## Components — Background
+
+- [DitherFlow](https://atelier-ui.com/docs/components/background/dither-flow): **(Pro)** Animated dithered WebGL flow field background rendered via R3F postprocessing. Supports two-tone color palette and exposes `onTextureReady` to pipe the rendered texture elsewhere (e.g., into another material). Key props: `speed`, `scale`, `ditherSize` (cell px size), `tones` (1–5 gradient levels), `colorA` (dark tone), `colorB` (light tone), `onTextureReady`. Dependencies: `three`, `@react-three/fiber`, `@react-three/drei`, `@react-three/postprocessing`, `postprocessing`
+- [GlowingFog](https://atelier-ui.com/docs/components/background/glowing-fog): **(Pro)** Dynamic animated fog with a central light beam that follows the cursor. Full-screen WebGL postprocessing effect with film grain. `onTextureReady` lets you use the result as a texture. Key props: `speed`, `beamColor`, `beamX`, `beamY`, `beamScale`, `fogDensity`, `grainIntensity`, `mouseFollow` (cursor parallax strength), `onTextureReady`. Dependencies: `three`, `@react-three/fiber`, `@react-three/drei`, `@react-three/postprocessing`, `postprocessing`
+- [HalftoneGlow](https://atelier-ui.com/docs/components/background/halftone-glow): **(Pro)** Pulsing WebGL background with concentric halftone ring animation and edge glow. Noise warps both edge and ring shapes independently. `onTextureReady` exposes the texture. Key props: `speed`, `blurAmount`, `edgeSize`, `edgeDistortion`, `ringDistortion`, `edgeColor`, `ringColor`, `onTextureReady`. Dependencies: `three`, `@react-three/fiber`, `@react-three/drei`, `@react-three/postprocessing`, `postprocessing`
+
+## Optional Full Docs
+
+- [llms-full.txt](https://atelier-ui.com/llms-full.txt): All documentation pages concatenated into a single file for LLM ingestion

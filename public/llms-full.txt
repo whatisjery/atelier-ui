@@ -1,0 +1,893 @@
+# Atelier UI — Full Documentation
+
+Source: https://atelier-ui.com/docs
+
+Generated: 2026-05-16T19:48:14.162Z
+
+---
+
+
+============================================================
+## Dither Flow
+> A dithered WebGL flow field background.
+
+Source file: components/background/dither-flow.mdx
+
+## API
+
+| Name           | Type                | Default     | Description                                                 |
+| -------------- | ------------------- | ----------- | ----------------------------------------------------------- |
+| speed          | `number`            | `1.5`       | Animation speed of the flow field.                          |
+| scale          | `number`            | `5`         | Scale of the flow pattern.                                  |
+| ditherSize     | `number`            | `4`         | Size of each dither cell in pixels.                         |
+| tones          | `number`            | `3`         | Number of levels. Higher values produce smoother gradients. |
+| colorA         | `string`            | `"#000000"` | Dark tone color.                                            |
+| colorB         | `string`            | `"#ff0000"` | Light tone color.                                           |
+| onTextureReady | `(texture) => void` | `undefined` | Returns the rendered effect as a texture.                   |
+
+
+============================================================
+## Glowing Fog
+> Dynamic fog and light beam cursor follow effect.
+
+Source file: components/background/glowing-fog.mdx
+
+## API
+
+| Name           | Type                | Default     | Description                                          |
+| -------------- | ------------------- | ----------- | ---------------------------------------------------- |
+| speed          | `number`            | `18`        | Animation speed of the effect.                       |
+| beamColor      | `string`            | `"#6031ff"` | Color of the central light beam.                     |
+| beamX          | `number`            | `0.5`       | Horizontal position of the beam.                     |
+| beamY          | `number`            | `0.5`       | Vertical position of the beam.                       |
+| beamScale      | `number`            | `0.5`       | Intensity / size of the beam glow.                   |
+| fogDensity     | `number`            | `1`         | Density of the fog.                                  |
+| grainIntensity | `number`            | `0.1`       | Amount of grain.                                     |
+| mouseFollow    | `number`            | `0.2`       | Strength of mouse-based parallax follow on the beam. |
+| onTextureReady | `(texture) => void` | `undefined` | Returns the rendered result as a texture.            |
+
+***
+
+
+============================================================
+## Halftone Glow
+> A WebGL pulsing glow effect with halftone rendering.
+
+Source file: components/background/halftone-glow.mdx
+
+## API
+
+| Name           | Type                | Default     | Description                               |
+| -------------- | ------------------- | ----------- | ----------------------------------------- |
+| speed          | `number`            | `16`        | Pulse speed.                              |
+| blurAmount     | `number`            | `0.2`       | Amount of blur.                           |
+| edgeSize       | `number`            | `10`        | Thickness of the edge glow.               |
+| edgeDistortion | `number`            | `0.02`      | How much noise warps the edge glow.       |
+| ringDistortion | `number`            | `0.1`       | How much noise warps the ring pulse.      |
+| edgeColor      | `string`            | `"#1d334e"` | Color of the edge glow.                   |
+| ringColor      | `string`            | `"#4599ff"` | Color of the ring pulse.                  |
+| onTextureReady | `(texture) => void` | `undefined` | Returns the rendered effect as a texture. |
+
+
+============================================================
+## Fluid Distortion
+> A GPU-accelerated fluid distortion effect that reacts to cursor movement
+
+Source file: components/cursor/fluid-distortion.mdx
+
+## CLI Install
+
+***
+
+## Manual Install
+
+***
+
+## API
+
+| Name                | Type          | Default   | Description                                                                               |
+| ------------------- | ------------- | --------- | ----------------------------------------------------------------------------------------- |
+| fluidColor          | `hexadecimal` | `#b4a6ff` | Sets the fluid color. Effective only when `rainbow` is set to `false`.                    |
+| backgroundColor     | `hexadecimal` | `#070410` | Sets the background color. Effective only when `showBackground` is `true`.                |
+| showBackground      | `boolean`     | `false`   | Toggles the background color's visibility. If `false` it becomes transparent.             |
+| blend               | `number`      | `5`       | Blends fluid into the scene when `showBackground` is true. Valid range: `0.00` to `10.0`. |
+| intensity           | `number`      | `7`       | Sets the fluid intensity. Valid range: `0` to `10`.                                       |
+| force               | `number`      | `1.1`     | Multiplies the mouse velocity to increase fluid splatter. Valid range: `0.0` to `20`.     |
+| distortion          | `number`      | `0.8`     | Sets the distortion amount. Valid range: `0.00` to `2.00`.                                |
+| radius              | `number`      | `0.5`     | Sets the fluid radius. Valid range: `0.01` to `1.00`.                                     |
+| curl                | `number`      | `0.8`     | Sets the amount of the curl effect. Valid range: `0.0` to `50`.                           |
+| swirl               | `number`      | `2`       | Sets the amount of the swirling effect. Valid range: `0` to `20`.                         |
+| velocityDissipation | `number`      | `0.98`    | Reduces the fluid velocity over time. Valid range: `0.00` to `1.00`.                      |
+| densityDissipation  | `number`      | `0.98`    | Reduces the fluid density over time. Valid range: `0.00` to `1.00`.                       |
+| pressure            | `number`      | `0.70`    | Controls the reduction of pressure. Valid range: `0.00` to `1.00`.                        |
+| rainbow             | `boolean`     | `false`   | Activates color mode based on mouse direction.                                            |
+
+***
+
+## Credits
+
+[Pavel Dobryakov](https://github.com/PavelDoGreat/WebGL-Fluid-Simulation)\
+Creator of the original WebGL fluid simulation.
+
+[React Three Fiber](https://r3f.docs.pmnd.rs/)\
+React renderer for Three.js
+
+[@react-three/postprocessing](https://github.com/pmndrs/react-postprocessing)\
+Post-processing effects for React Three Fiber
+
+[Drei](https://drei.docs.pmnd.rs/)\
+React Three Fiber utilities.
+
+
+============================================================
+## Image Trail
+> Cursor trail effect that spawns images along it's path.
+
+Source file: components/cursor/image-trail.mdx
+
+## CLI Install
+
+***
+
+## Manual Install
+
+***
+
+## API
+
+| Name          | Type                     | Default | Description                                          |
+| ------------- | ------------------------ | ------- | ---------------------------------------------------- |
+| data          | `T[]`                    | —       | Array of items.                                      |
+| renderItem    | `(item: T) => ReactNode` | —       | Render function called for each items.               |
+| spawnDistance | `number`                 | `120`   | Distance in pixels before spawning an item.          |
+| driftAmount   | `number`                 | `60`    | How far each item drifts from its spawn point in px. |
+| removeDelay   | `number`                 | `1.2`   | Seconds before a spawned item is removed.            |
+
+***
+
+## Credits
+
+[Motion](https://motion.dev)\
+React animation library.
+
+
+============================================================
+## Liquid Image
+> An SEO-friendly WebGL image with a cursor-driven liquid ripple effect
+
+Source file: components/cursor/liquid-image.mdx
+
+## CLI Install
+
+***
+
+## Manual Install
+
+***
+
+## API
+
+| Name         | Type      | Default      | Description                  |
+| ------------ | --------- | ------------ | ---------------------------- |
+| src          | `string`  | —            | Image source.                |
+| alt          | `string`  | —            | Image alt text.              |
+| rippleMap    | `Texture` | `ripple.png` | Custom ripple texture.       |
+| intensity    | `number`  | `0.14`       | Displacement strength.       |
+| radius       | `number`  | `3`          | Initial ripple size.         |
+| expandRate   | `number`  | `7`          | How fast ripples grow.       |
+| decayRate    | `number`  | `3`          | How fast ripples fade out.   |
+| maxRipples   | `number`  | `50`         | Max simultaneous ripples.    |
+| segments     | `number`  | `1`          | Plane geometry subdivisions. |
+| webglEnabled | `boolean` | `true`       | Toggle WebGL effect on/off.  |
+
+***
+
+## Credits
+
+[14islands](https://14islands.com/)\
+Re-creation of the ripple effect from their website.
+
+[homunculus Inc.](https://homunculus.jp/)\
+Original ripple effect from their portfolio website.
+
+[Yuri Artiukh](https://www.youtube.com/watch?v=vWAci72MtME)\
+Deconstructed the effect on his stream.
+
+[React Three Fiber](https://r3f.docs.pmnd.rs/)\
+React renderer for Three.js.
+
+[Drei](https://drei.docs.pmnd.rs/)\
+React Three Fiber utilities.
+
+
+============================================================
+## Magnetic Dot Grid
+> A 2D canvas-based interactive dot grid with magnetic cursor effect
+
+Source file: components/cursor/magnetic-dot-grid.mdx
+
+## CLI Install
+
+***
+
+## Manual Install
+
+***
+
+## API
+
+| Name              | Type               | Default                                       | Description                                        |
+| ----------------- | ------------------ | --------------------------------------------- | -------------------------------------------------- |
+| dotRadius         | `number`           | `1`                                           | Radius of each dot in px.                          |
+| spacing           | `number`           | `20`                                          | Distance between dots in px.                       |
+| strength          | `number`           | `20`                                          | Strength of the magnetic force in px.              |
+| interactionRadius | `number`           | `300`                                         | Cursor influence range in px.                      |
+| snapSpeed         | `number`           | `8`                                           | How fast dots react to the cursor.                 |
+| returnSpeed       | `number`           | `3`                                           | How slowly dots return to their base position.     |
+| floatAmplitude    | `number`           | `1.8`                                         | How far dots floats from the cursor.               |
+| floatSpeed        | `number`           | `2`                                           | Speed of the floating fx.animation.                |
+| opacityRange      | `[number, number]` | `[1, 1]`                                      | Dot opacity `[min, max]` from cursor proximity.    |
+| baseColor         | `string`           | `"#000000"`                                   | Default dot color.                                 |
+| centerColors      | `string[]`         | `["#000000"]`                                 | Colors near the cursor. Cycles through the array.  |
+| cycleSpeed        | `number`           | `1.5`                                         | Color cycle speed.                                 |
+| className         | `string`           | `"absolute inset-0 touch-none w-full h-full"` | Canvas element classes for positioning and sizing. |
+
+***
+
+## Credits
+
+[Google Stitch](https://stitch.withgoogle.com/)\
+Re-creation of the canvas hero effect (as of March 22, 2026). Enable dark mode to see the similarity.
+
+
+============================================================
+## Pixel Trail
+> A 2D canvas-based pixelated cursor trail that can sample colors from images.
+
+Source file: components/cursor/pixel-trail.mdx
+
+## CLI Install
+
+***
+
+## Manual Install
+
+***
+
+## API
+
+| Name          | Type                  | Default                      | Description                                       |
+| ------------- | --------------------- | ---------------------------- | ------------------------------------------------- |
+| mode          | `"color" \| "sample"` | `"color"`                    | Solid color trail or sample colors from images.   |
+| color         | `string`              | `"#000000"`                  | Trail color. Fallback when sampling misses.       |
+| imageSelector | `string`              | `"img"`                      | CSS selector for images to sample.                |
+| lighten       | `number`              | `20`                         | Brightness boost on sampled colors (`0`–`255`).   |
+| pixelSize     | `number`              | `20`                         | Size of each pixel square in px.                  |
+| trailRadius   | `number`              | `2`                          | Brush radius in grid cells. `0` for single pixel. |
+| lifetime      | `number`              | `1`                          | Max pixel lifetime in seconds.                    |
+| fade          | `number`              | `0.5`                        | Fade-out duration in seconds. `0` to disable.     |
+| showGrid      | `boolean`             | `false`                      | Show a grid overlay.                              |
+| gridColor     | `string`              | `"rgba(255, 255, 255, 0.1)"` | Grid line color.                                  |
+| gridThickness | `number`              | `1`                          | Grid line thickness in px.                        |
+| className     | `string`              | —                            | Root element classes for positioning and sizing.  |
+
+***
+
+## Credits
+
+[Jonas Reymondin](https://jonasreymondin.com/)\
+Pixel trail effect inspired by his portfolio, reimplemented using a 2D canvas.
+
+
+============================================================
+## Curve Image
+> An SEO-friendly WebGL image with scroll-velocity driven bend and chromatic aberration.
+
+Source file: components/scroll/curve-image.mdx
+
+## CLI Install
+
+***
+
+## Manual Install
+
+***
+
+## API
+
+| Name         | Type                | Default | Description                                                                     |
+| ------------ | ------------------- | ------- | ------------------------------------------------------------------------------- |
+| src          | `string`            | —       | Image URL bound to the GPU plane.                                               |
+| alt          | `string`            | —       | Alt text for the underlying `<img>`.                                            |
+| amplitude    | `number`            | `0.03`  | Maximum bend intensity, applied to the smoothed scroll velocity.                |
+| aberration   | `number`            | `0.003` | RGB channel split along the scroll axis, scaled by velocity.                    |
+| smoothing    | `number`            | `6`     | Exponential smoothing for the velocity (higher = snappier, lower = floatier).   |
+| segments     | `number`            | `32`    | Plane subdivision count. Higher = smoother curve, more vertices.                |
+| webglEnabled | `boolean`           | `true`  | When false, the WebGL plane is skipped and the plain `<img>` is rendered as-is. |
+| ...props     | `ImgHTMLAttributes` | —       | Other `<img>` attributes forwarded to the underlying element.                   |
+
+***
+
+## Credits
+
+[React Three Fiber](https://r3f.docs.pmnd.rs/)\
+React renderer for Three.js used for the WebGL plane.
+
+[Lenis](https://www.lenis.dev/)\
+Smooth scroll library used in the demo.
+
+
+============================================================
+## Elastic Stick
+> Items that bounce and stick to the center while scrolling.
+
+Source file: components/scroll/elastic-stick.mdx
+
+## API
+
+| Prop              | Type                             | Default     | Description                                       |
+| ----------------- | -------------------------------- | ----------- | ------------------------------------------------- |
+| `children`        | `ReactNode`                      | —           | The items to animate. Any JSX element allowed.    |
+| `staggerValue`    | `number`                         | `0.03`      | Time offset between each child's animation start. |
+| `scrollTargetRef` | `RefObject<HTMLElement \| null>` | `undefined` | Reference to the scroll target element.           |
+
+
+============================================================
+## Infinite Gallery
+> Zero-dependency infinite horizontal gallery with drag/wheel input, and transform modes.
+
+Source file: components/scroll/infinite-gallery.mdx
+
+## CLI Install
+
+***
+
+## Manual Install
+
+***
+
+## API
+
+| Name       | Type                     | Default     | Description                                          |
+| ---------- | ------------------------ | ----------- | ---------------------------------------------------- |
+| data       | `T[]`                    | —           | Array of items to render.                            |
+| renderItem | `(item: T) => ReactNode` | —           | Render function called for each item.                |
+| mode       | `"shrink" \| "flip"`     | `"flip"`    | `flip` tilts items in 3D. `shrink` compresses edges. |
+| perView    | `number`                 | `4`         | Number of items visible at once.                     |
+| speed      | `number`                 | `6`         | Speed of the scroll.                                 |
+| inertia    | `number`                 | `0.6`       | Inertia of the scroll.                               |
+| gap        | `number`                 | `5`         | Gap between items.                                   |
+| className  | `string`                 | `undefined` | Class for the container element.                     |
+
+***
+
+## Credits
+
+[The Lookback](https://tlb.betteroff.studio/)\
+Infinite gallery effect inspired by the website of Better Off® Studio.
+
+
+============================================================
+## Infinite Parallax
+> Infinite parallax column effect with auto-scroll and repeating content.
+
+Source file: components/scroll/infinite-parallax.mdx
+
+## CLI Install
+
+***
+
+## Manual Install
+
+***
+
+## API
+
+| Name       | Type        | Default     | Description                                                         |
+| ---------- | ----------- | ----------- | ------------------------------------------------------------------- |
+| children   | `ReactNode` | —           | Items to render in the column.                                      |
+| speed      | `number`    | `1`         | Parallax intensity.                                                 |
+| autoScroll | `number`    | `-0.2`      | Auto-scroll speed. Negative values reverse direction. 0 to disable. |
+| className  | `string`    | `undefined` | Class for the container element.                                    |
+
+***
+
+## Credits
+
+[Olivier Larose](https://blog.olivierlarose.com/tutorials/smooth-parallax-scroll)\
+Where this idea came from.
+
+[Motion](https://motion.dev)\
+React animation library.
+
+[Lenis](https://www.lenis.dev/)
+Smooth scroll library used in the demo.
+
+
+============================================================
+## Infinite Zoom
+> Mouse wheel infinite zoom effect.
+
+Source file: components/scroll/infinite-zoom.mdx
+
+## CLI Install
+
+***
+
+## Manual Install
+
+***
+
+## API
+
+| Name            | Type        | Default                                    | Description                                                |
+| --------------- | ----------- | ------------------------------------------ | ---------------------------------------------------------- |
+| children        | `ReactNode` | —                                          | Items to zoom.                                             |
+| zoomAmount      | `number`    | `3`                                        | Scale between items. Higher values equals increased depth. |
+| lerpValue       | `number`    | `0.08`                                     | Smoothing for the wheel input.                             |
+| className       | `string`    | `fixed inset-0 overflow-hidden touch-none` | Class for the outer container.                             |
+| backgroundSpeed | `number`    | `0.2`                                      | Background speed. Deceleration of the last item in view.   |
+
+
+============================================================
+## Scattered Scroll
+> Items that spread apart horizontally while scrolling.
+
+Source file: components/scroll/scattered-scroll.mdx
+
+***
+
+## CLI Install
+
+***
+
+## Manual Install
+
+***
+
+## API
+
+| Prop              | Type                             | Default | Description                                    |
+| ----------------- | -------------------------------- | ------- | ---------------------------------------------- |
+| `children`        | `ReactNode`                      | —       | The items to animate. Any JSX element allowed. |
+| `scrollTargetRef` | `RefObject<HTMLElement \| null>` | —       | Reference to the scroll target element.        |
+
+***
+
+## Credits
+
+[NoMoney](https://www.museumofmoney.com/)\
+Re-creation of the slider on the landing page with motion.
+
+[Motion](https://motion.dev)\
+React animation library.
+
+[Lenis](https://www.lenis.dev/)\
+Smooth scroll library used in the demo.
+
+
+============================================================
+## Pixelated Text
+> A 2D canvas-based animated pixelated SEO friendly text effect.
+
+Source file: components/text/pixelated-text.mdx
+
+***
+
+## CLI Install
+
+***
+
+## Manual Install
+
+***
+
+## API
+
+| Name       | Type                | Default     | Description                                                     |
+| ---------- | ------------------- | ----------- | --------------------------------------------------------------- |
+| pixelSize  | `number`            | `2`         | Pixel size.                                                     |
+| flicker    | `number`            | `1.5`       | Amount of flickers.                                             |
+| chaos      | `number`            | `0.1`       | Amount of chaos.                                                |
+| depth      | `number`            | `1`         | Amplitude(contrast) between clear and pixelated.                |
+| aberration | `number`            | `0`         | Chromatic aberration amount.                                    |
+| colors     | `string[]`          | `undefined` | Cycles through colors each tick. Fallback to the default color. |
+| fps        | `number`            | `200`       | Frames per second.                                              |
+| as         | `React.ElementType` | `"span"`    | Polymorphic tag: render as any HTML element.                    |
+| className  | `string`            | `undefined` | Class for the container element.                                |
+
+
+============================================================
+## Simple Scramble
+> A simple text scramble effect that reveals characters from left to right.
+
+Source file: components/text/simple-scramble.mdx
+
+## CLI Install
+
+***
+
+## Manual Install
+
+***
+
+## API
+
+| Name        | Type                | Default                                      | Description                                  |
+| ----------- | ------------------- | -------------------------------------------- | -------------------------------------------- |
+| duration    | `number`            | `1`                                          | Total duration of the reveal in seconds.     |
+| playOnMount | `boolean`           | `true`                                       | Plays the scramble animation on mount.       |
+| playOnHover | `boolean`           | `true`                                       | Replays the scramble animation on hover.     |
+| as          | `React.ElementType` | `"span"`                                     | Polymorphic tag: render as any HTML element. |
+| characters  | `string`            | `"abcdefghijkl mnopqrstuv wxyz!@#$%^&*()_+"` | Characters to scramble.                      |
+
+***
+
+## Credits
+
+[Yugop Nakamura](https://tha.jp/)\
+Original text scramble effect
+
+[use-scramble](https://www.use-scramble.dev/)\
+A react hook for text scrambling by [tolis](https://tol.is/)
+
+
+============================================================
+## Text Bounce
+> Letters bounce away from the cursor on hover and spring back into place.
+
+Source file: components/text/text-bounce.mdx
+
+## CLI Install
+
+***
+
+## Manual Install
+
+***
+
+## API
+
+| Name          | Type   | Default | Description                                                                       |
+| ------------- | ------ | ------- | --------------------------------------------------------------------------------- |
+| `children`    | string | —       | Text content to render. Required.                                                 |
+| `pause`       | number | `0`     | Delay in seconds before springing back.                                           |
+| `outDuration` | number | `0.35`  | Duration in seconds for the letter drifting away.                                 |
+| `inDuration`  | number | `0.8`   | Duration in seconds for the spring-back animation.                                |
+| `bounce`      | number | `0.5`   | Bounciness of the spring-back. `0` = no overshoot, `1` = maximum oscillation.     |
+| `distance`    | number | `35`    | How many pixels the letter drifts from its origin.                                |
+| `rotation`    | number | `25`    | Max rotation in degrees applied along the horizontal drift axis. `0` disables it. |
+
+
+============================================================
+## Text Roll
+> Interactive CSS rolling text effect on hover, mount and scroll.
+
+Source file: components/text/text-roll.mdx
+
+***
+
+## CLI Install
+
+***
+
+## Manual Install
+
+***
+
+***
+
+## API
+
+| Name         | Type                                  | Default     | Description                                                                         |
+| ------------ | ------------------------------------- | ----------- | ----------------------------------------------------------------------------------- |
+| children     | `string`                              | —           | The text content to animate.                                                        |
+| axis         | `"x" \| "y"`                          | `"y"`       | Axis along which letters roll.                                                      |
+| mode         | `"letters" \| "group"`                | `"letters"` | Animate each letter independently on hover, or the entire group at once.            |
+| direction    | `"forward" \| "backward" \| "random"` | `"forward"` | Roll direction.                                                                     |
+| playOnScroll | `boolean`                             | `true`      | Trigger the animation when the element enters the viewport.                         |
+| playOnMount  | `boolean`                             | `true`      | Trigger the animation on mount.                                                     |
+| playOnHover  | `boolean`                             | `true`      | Trigger the animation on hover.                                                     |
+| stagger      | `number`                              | `0.01`      | Delay in seconds between each letter's animation start.                             |
+| duration     | `number`                              | `0.8`       | Duration of each letter's roll animation in seconds.                                |
+| cycles       | `number`                              | `1`         | Number of times the letter rolls before settling (clones do not linger in the DOM). |
+
+
+============================================================
+## Code of conduct
+> Code of conduct for the Atelier UI project
+
+Source file: getting-started/code-of-conduct.mdx
+
+We are committed to making **Atelier UI** a welcoming, inclusive, and harassment-free community for everyone, regardless of age, body size, disability, ethnicity, gender identity and expression, level of experience, nationality, personal appearance, race, religion, or sexual identity and orientation.
+
+***
+
+## Expected Behavior
+
+* Be respectful, empathetic, and kind toward others.
+* Be open to differing opinions, viewpoints, and experiences.
+* Give and gracefully accept constructive feedback.
+* Take responsibility for your mistakes, apologize when needed, and learn from the experience.
+* Focus on what is best for the community, not just for yourself.
+
+***
+
+## Unacceptable Behavior
+
+* Harassment, discrimination, or derogatory comments of any kind.
+* Personal attacks, trolling, or deliberately inflammatory remarks.
+* Publishing others' private information without explicit permission.
+* Sexual language, imagery, or unwanted attention.
+* Any conduct that would be considered inappropriate in a professional setting.
+
+***
+
+## Reporting
+
+If you experience or witness unacceptable behavior, please report it by opening an issue on our [GitHub repository](https://github.com/your-org/atelier-ui/issues). When reporting, include a clear description of the incident, the people involved, and any supporting evidence such as screenshots or links.
+
+All reports will be reviewed promptly and handled confidentially.
+
+***
+
+## Enforcement
+
+Project maintainers are responsible for enforcing this Code of Conduct and will take appropriate action in response to unacceptable behavior. This may include:
+
+* A private warning to the individual.
+* Temporary or permanent ban from the project and its spaces.
+* Removal of contributions that violate this Code of Conduct.
+
+Maintainers have the right to remove, edit, or reject comments, commits, issues, and other contributions that do not align with this Code of Conduct.
+
+***
+
+## Scope
+
+This Code of Conduct applies to all project spaces, including GitHub repositories, issues, pull requests, discussions, and any public space where someone is representing Atelier UI. It also applies when interacting with the community on social media or at events.
+
+***
+
+## Attribution
+
+This Code of Conduct is adapted from the [Contributor Covenant](https://www.contributor-covenant.org/version/2/1/code_of_conduct/), version 2.1.
+
+
+============================================================
+## How to contribute
+> Contribution guidelines for the project.
+
+Source file: getting-started/contribution.mdx
+
+***
+
+## Project Structure
+
+Here’s where each type of file lives:
+
+* `src/registry/base` holds the main components for export.
+* `src/registry/demos` holds demo components.
+* `src/registry/demos/index.ts` exports the demo components.
+* `src/content` holds documentation.
+
+```text title="Visual representation"
+(src/registry)
+|-- base
+|   |-+ your-component
+|       |-+ your-component.tsx          # Your new component
+|-- hooks
+|   |-+ use-frame-loop.ts               # Shared hooks
+|-- demos
+|   |-+ your-component
+|   |   |-+ your-component.tsx          # Your new demo component
+|   |
+|   |-- index.ts                        # Exports the demo components
+
+
+(src/content)
+|-- en
+    |-- components
+        |-- _dir.yml
+        |-+ your-component
+            |-+ your-component.mdx      # Your new component documentation
+```
+
+## Component Format
+
+Each component should have a **single responsibility** and reside in a single file to keep it self-contained and easy to reuse.
+
+If some logic, like a hook, is shared across multiple components, place it in a shared folder in `src/registry` and reference it in the component's `shared` field in `src/registry/index.ts`. One example is the `use-frame-loop` hook.
+
+```tsx title="Component structure"
+const NAMED_X_CONSTANT = {...} as const
+const NAMED_Y_CONSTANT = "value" as const
+
+function helperFunction() {...}
+
+type ComponentExampleProps = {...} & ComponentProps<'div'>
+
+export function ComponentExample({}: ComponentExampleProps) {...}
+```
+
+## Dependencies
+
+This project uses [motion.dev](https://motion.dev/) for DOM-based animations, [React Three Fiber](https://r3f.docs.pmnd.rs/) for WebG effects, and [Tailwind CSS](https://tailwindcss.com/) for styling.
+
+Vanilla JS animations such as `requestAnimationFrame`, `Web Animations API` can also be used where a library isn't needed.
+
+***
+
+## Testing
+
+Tests run **automatically** on every pull request. They verify that every component has its files, demo, export, and documentation in sync. Unit test per components are not required by default.
+
+***
+
+## How to add a new component
+
+Use the `pnpm scafold-new` command to create a new component. This creates the empty base component, demo, empty templated MDX doc, and patches the registry and demo index automatically.
+
+Example:
+
+`# e.g. pnpm scafold-new animated-text --category scroll`
+`# e.g. pnpm scafold-new sparkle --category background`
+
+***
+
+If you prefer to do it manually, follow the steps below.
+
+### Base component
+
+Create a new folder in the `src/registry/base` folder with the name of the component:
+
+```tsx title="src/registry/base/component-name/component-name.tsx"
+export function ComponentName() {
+  return <></>;
+}
+```
+
+### Demo component
+
+Create a demo component in the `src/registry/demos` folder and structure it how you want:
+
+```tsx title="src/registry/demos/component-name/component-name.tsx"
+import ComponentName from "@/registry/base/component-name/component-name";
+
+export function ComponentNameDemo() {
+  return <ComponentName />;
+}
+```
+
+### Exporting the demo
+
+Export the demo component in the `src/registry/demos/index.ts` file:
+
+```tsx title="src/registry/demos/index.ts"
+export const demos: Record<
+  string,
+  React.LazyExoticComponent<React.ComponentType>
+> = {
+  "component-name": lazy(() => import("./component-name/component-name")),
+};
+```
+
+### Adding to the registry
+
+Add the component to the registry by including its name and dependencies in `src/registry/index.ts`:
+
+```tsx title="src/registry/index.ts"
+export const components: TRegistryComponent[] = [
+  {
+    name: "new-component",
+    files: ["new-component.tsx"],
+    description: "My new component",
+    shared: ["hooks/my-shared-hook", "utils/my-shared-utility"],
+    dependencies: ["example-dependency-1", "example-dependency-2"],
+  },
+];
+```
+
+***
+
+## How to write documentation
+
+### Frontmatter
+
+Add the metadata for the component in the frontmatter:
+
+```yaml title="Frontmatter"
+---
+title: "New Component"
+description: "My new component"
+icon: "Component"
+---
+```
+
+### Guide and preview
+
+Add a preview of the component by using the `<DemoPreview />` component with **the same exact name** of the demo component.
+
+```tsx title="Preview example"
+<DemoPreview name="component-name" />
+```
+
+Add the CLI installation guide by using the `<InstalGuideCLI />` component with **the same exact name** of the base component.
+
+```tsx title="CLI install example"
+<InstalGuideCLI name="component-name" />
+```
+
+Add the manual installation guide by using the `<InstalGuideManual />` component with **the same exact name** of the base component.
+
+```tsx title="Manual install example"
+<InstalGuideManual name="component-name" />
+```
+
+### Controls
+
+You can add interactive controls to the preview so users can tweak component props live. Pass a `controls` object to `<DemoPreview />`.
+
+Always make sure the values match the default props of the base component:
+
+```tsx title="Controls example"
+<DemoPreview
+  name="component-name"
+  controls={{
+    speed: { type: "slider", value: 1, min: 0, max: 10, step: 0.1 },
+    color: { type: "color", value: "#ff5733" },
+    variant: { type: "select", value: "solid", options: ["solid", "outline"] },
+    enabled: { type: "boolean", value: true },
+  }}
+/>
+```
+
+**Available control types:**
+
+| Type      | Fields                     | Renders       |
+| --------- | -------------------------- | ------------- |
+| `slider`  | `value` `min` `max` `step` | Slider        |
+| `color`   | `value`                    | Color picker  |
+| `select`  | `value` `options`          | Select        |
+| `boolean` | `value`                    | Toggle switch |
+
+Export the base component's props type, then spread `controls` onto it:
+
+```tsx title="Demo component"
+export default function ComponentNameDemo(
+  controls: Partial<ComponentNameProps>,
+) {
+  return;
+}
+```
+
+### API
+
+Add the API of the component by using the following table format:
+
+```text title="API example"
+| Name              | Type    | Default   | Description                                                          |
+| ----------------- | ------- | --------- | -------------------------------------------------------------------- |
+| `speed`           | number  | `1.0`     | Controls the animation speed multiplier.                             |
+| `color`           | string  | `#ff5733` | Sets the primary color of the component.                             |
+```
+
+### Credits
+
+Provide a detailed list of the component's credits:
+
+```text title="Credits example"
+[Author Name](https://example.com)
+Designed the original component concept.
+
+[Library Name](https://example.com)
+Used for animation utilities within this component.
+```
+
+
+============================================================
+## Installation
+> How to start using Atelier UI, not much.
+
+Source file: getting-started/installation.mdx
+
