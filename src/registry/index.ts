@@ -180,6 +180,14 @@ export const components: TRegistryComponent[] = [
         registryDependencies: ["webgl-rig"],
     },
     {
+        name: "webgl-text",
+        files: ["webgl-text.tsx"],
+        description: "DOM-aligned WebGL plane that rasterizes text via the AtelierRig.",
+        shared: [],
+        dependencies: ["three", "@react-three/fiber"],
+        registryDependencies: ["webgl-rig"],
+    },
+    {
         name: "curve-image",
         files: ["curve-image.tsx"],
         description: "Scroll-reactive WebGL image with sine-based vertex displacement.",
