@@ -124,8 +124,12 @@ export function CurveImage({
     ...rest
 }: CurveImageProps) {
     return (
-        <WebglImage src={src} alt={alt} segments={segments} webglEnabled={webglEnabled} {...rest}>
-            {(map) => (
+        <WebglImage
+            src={src}
+            alt={alt}
+            segments={segments}
+            webglEnabled={webglEnabled}
+            material={(map) => (
                 <CurveImageMaterial
                     map={map}
                     amplitude={amplitude}
@@ -133,6 +137,7 @@ export function CurveImage({
                     smoothing={smoothing}
                 />
             )}
-        </WebglImage>
+            {...rest}
+        />
     )
 }

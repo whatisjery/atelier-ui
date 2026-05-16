@@ -1,8 +1,20 @@
 import { useTexture } from "@react-three/drei"
 import { useFrame, useThree } from "@react-three/fiber"
-import { type ComponentRef, type RefObject, useLayoutEffect, useRef } from "react"
-import type { Mesh, Texture } from "three"
+import {
+    type ComponentRef,
+    type RefObject,
+    useEffect,
+    useLayoutEffect,
+    useMemo,
+    useRef,
+} from "react"
+import { type Mesh, type Texture, Vector2 } from "three"
 import { webglTeleport } from "../webgl-rig/webgl-rig"
+
+export type WebglImagePointer = {
+    uv: Vector2
+    hover: number
+}
 
 type Bounds = {
     x: number
@@ -15,7 +27,7 @@ type WebglImageProps = {
     src: string
     alt: string
     segments?: number
-    children?: (map: Texture) => React.ReactNode
+    material: (map: Texture, pointer: WebglImagePointer) => React.ReactNode
     webglEnabled?: boolean
 } & Omit<React.ComponentPropsWithoutRef<"img">, "children" | "src" | "alt">
 
@@ -23,10 +35,11 @@ type PlaneProps = {
     el: RefObject<HTMLImageElement | null>
     src: string
     segments: number
-    children?: (map: Texture) => React.ReactNode
+    material: (map: Texture, pointer: WebglImagePointer) => React.ReactNode
+    pointer: WebglImagePointer
 }
 
-function Plane({ el, src, segments, children }: PlaneProps) {
+function Plane({ el, src, segments, material, pointer }: PlaneProps) {
     const mesh = useRef<Mesh>(null)
     const map = useTexture(src)
     const size = useThree((s) => s.size)
@@ -74,7 +87,7 @@ function Plane({ el, src, segments, children }: PlaneProps) {
     return (
         <mesh ref={mesh}>
             <planeGeometry args={[1, 1, segments, segments]} />
-            {children ? children(map) : <meshBasicMaterial map={map} />}
+            {material(map, pointer)}
         </mesh>
     )
 }
@@ -84,12 +97,43 @@ export function WebglImage({
     alt,
     className,
     style,
-    children,
+    material,
     webglEnabled = true,
     segments = 1,
     ...rest
 }: WebglImageProps) {
     const el = useRef<ComponentRef<"img">>(null)
+    const pointer = useMemo<WebglImagePointer>(() => {
+        return {
+            uv: new Vector2(0.5, 0.5),
+            hover: 0,
+        }
+    }, [])
+
+    useEffect(() => {
+        if (!webglEnabled) return
+        const target = el.current
+        if (!target) return
+
+        const onMove = (e: PointerEvent) => {
+            const { width, left, top, height } = target.getBoundingClientRect()
+            const x = (e.clientX - left) / width
+            const y = 1 - (e.clientY - top) / height
+            pointer.uv.set(x, y)
+        }
+
+        const onEnter = () => (pointer.hover = 1)
+        const onLeave = () => (pointer.hover = 0)
+
+        target.addEventListener("pointermove", onMove)
+        target.addEventListener("pointerenter", onEnter)
+        target.addEventListener("pointerleave", onLeave)
+        return () => {
+            target.removeEventListener("pointermove", onMove)
+            target.removeEventListener("pointerenter", onEnter)
+            target.removeEventListener("pointerleave", onLeave)
+        }
+    }, [webglEnabled, pointer])
 
     return (
         <>
@@ -104,9 +148,13 @@ export function WebglImage({
 
             {webglEnabled && (
                 <webglTeleport.In>
-                    <Plane el={el} src={src} segments={segments}>
-                        {children}
-                    </Plane>
+                    <Plane
+                        el={el}
+                        src={src}
+                        segments={segments}
+                        material={material}
+                        pointer={pointer}
+                    />
                 </webglTeleport.In>
             )}
         </>
