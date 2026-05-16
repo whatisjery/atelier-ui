@@ -14,34 +14,28 @@ import DocStep from "@/components/features/docs/DocStep";
 
 ## Set up Tailwind CSS
 
-This library is built on **Tailwind CSS v4**. If your project doesn't already use it, follow the [Tailwind CSS installation guide](https://tailwindcss.com/docs/installation) before continuing.
+This library is built on Tailwind CSS v4. If your project doesn't already use it, follow the Tailwind CSS [installation guide](https://tailwindcss.com/docs/installation) before continuing.
 
 </DocStep>
 
 <DocStep step={2}>
 
-## Set up WebGL
+## Set up React Three Fiber
 
-**WebGL components** share a single [React Three Fiber](https://r3f.docs.pmnd.rs/) render context so they can portal their content into one Canvas. If you plan to use one of these, install the `webgl-rig` package.
+You only need one `<Canvas>` for the whole app. Place it at your app's root with `<WebglPortal />` inside. It connects components like [CurveImage](/docs/components/scroll/curve-image) to the Canvas so they can render their effects from anywhere in your React tree.
 
-<InstalGuideCLI name="webgl-rig" />
-
-Then mount the rig at the **root of your app**.
+<InstalGuideCLI name="webgl-portal" />
 
 ```tsx title="Root layout"
 import { Canvas } from "@react-three/fiber";
-import { AtelierRig } from "./webgl-rig";
+import { WebglPortal } from "./webgl-portal";
 
-<Canvas
-  style={{
-    position: "fixed",
-    inset: 0,
-    width: "100%",
-    height: "100%",
-    pointerEvents: "none",
-  }}
->
-  <AtelierRig />
+// The canvas must cover the full viewport
+<Canvas style={{ position: "fixed", inset: 0, pointerEvents: "none" }}>
+  {/* required for components used elsewhere in your tree */}
+  <WebglPortal />
+
+  {/* components that live inside the Canvas go here */}
 </Canvas>;
 ```
 

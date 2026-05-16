@@ -1,33 +1,25 @@
 ---
 title: "Curve Image"
 description: "An SEO-friendly WebGL image with scroll-velocity driven bend and chromatic aberration."
-tags: ["React Three Fiber", "Drei", "Lenis", "Tailwind CSS"]
+tags: ["React Three Fiber", "Drei", "Lenis"]
 ---
-
-import Alert from "@/components/ui/Alert";
-import { Box } from "lucide-react";
 
 <DemoPreview
   name="curve-image"
   controls={{
     amplitude: { type: "slider", value: 0.03, min: 0, max: 0.15, step: 0.01 },
-    aberration: { type: "slider", value: 0.003, min: 0, max: 0.02, step: 0.001 },
+    aberration: {
+      type: "slider",
+      value: 0.003,
+      min: 0,
+      max: 0.02,
+      step: 0.001,
+    },
     smoothing: { type: "slider", value: 6, min: 1, max: 20, step: 0.5 },
     segments: { type: "slider", value: 32, min: 4, max: 64, step: 4 },
     webglEnabled: { type: "boolean", value: true },
   }}
 />
-
----
-
-<Alert icon={<Box strokeWidth={1.5} className="size-6" />} title="Prerequisite">
-  This component renders into a shared React Three Fiber Canvas via the
-  AtelierRig. Follow the [WebGL
-  setup](/docs/getting-started/installation#set-up-webgl) once and every
-  component will work.
-</Alert>
-
----
 
 ## CLI Install
 
