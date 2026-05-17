@@ -16,27 +16,16 @@ const PALETTE = [
 
 export default function PixelatedTextDemo(controls: Partial<PixelatedTextProps>) {
     return (
-        <div className="flex items-center justify-center h-screen w-screen flex-col space-y-2">
-            <span className="font-serif xs:text-5xl text-center text-4xl">
-                Seo friendly{" "}
-                <PixelatedText
-                    pixelSize={2.1}
-                    flicker={0.7}
-                    chaos={0.2}
-                    depth={0.1}
-                    aberration={0}
-                    colors={PALETTE}
-                    fps={200}
-                    {...controls}
-                >
-                    pixelated
+        <div className="font-serif xs:text-7xl text-center text-4xl flex items-center justify-center h-screen w-screen flex-col space-y-2">
+            <span>
+                <PixelatedText colors={PALETTE} {...controls}>
+                    Pixelated
                 </PixelatedText>{" "}
-                text.
+                text
             </span>
+            <span>seo friendly.</span>
 
-            <span className="text-sm text-accent-1 italic">
-                Responsive and scales with your current font size.
-            </span>
+            <span className="font-sans text-xs mt-5">(Responsive and match your font style)</span>
         </div>
     )
 }
