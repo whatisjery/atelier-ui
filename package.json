@@ -9,7 +9,7 @@
         "lint:fix": "biome lint --fix",
         "test:all": "vitest run",
         "pro:update": "git submodule update --remote src/pro && tsx src/scripts/merge-pro.ts",
-        "prebuild": "pnpm pro:merge && tsx src/scripts/build-registry.ts && tsx src/scripts/search-index.ts && tsx src/scripts/generate-timestamps.ts && tsx src/scripts/generate-llms-full.ts",
+        "prebuild": "pnpm pro:update && tsx src/scripts/build-registry.ts && tsx src/scripts/search-index.ts && tsx src/scripts/generate-timestamps.ts && tsx src/scripts/generate-llms-full.ts",
         "dev": "tsx src/scripts/build-registry.ts && tsx src/scripts/search-index.ts && tsx src/scripts/generate-timestamps.ts && tsx src/scripts/generate-llms-full.ts && next dev",
         "install:vercel": "bash ./bin/init-submodule.sh && pnpm install",
         "scafold-new": "tsx src/scripts/scafold-new.ts"
