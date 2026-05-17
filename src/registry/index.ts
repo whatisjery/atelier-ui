@@ -198,8 +198,9 @@ export const components: TRegistryComponent[] = [
     {
         name: "text-fluid",
         files: ["text-fluid.tsx"],
-        description: "Floating watery text with FBM scatter, caustic light shimmer and water refraction.",
+        description: "SEO-friendly text with an animated WebGL shimmer and distortion effect.",
         shared: [],
+        pro: true,
         dependencies: ["three", "@react-three/fiber", "@react-three/drei"],
         registryDependencies: ["webgl-text"],
     },
