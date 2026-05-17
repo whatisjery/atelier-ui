@@ -65,12 +65,15 @@ src/content/en/components/background/dither-flow.mdx
 src/content/en/components/background/glowing-fog.mdx
 src/content/en/components/background/halftone-glow.mdx
 src/content/en/components/scroll/elastic-stick.mdx
+src/content/en/components/text/text-fluid.mdx
 src/registry/base/dither-flow/dither-flow.tsx
 src/registry/base/elastic-stick/elastic-stick.tsx
 src/registry/base/glowing-fog/glowing-fog.tsx
 src/registry/base/halftone-glow/halftone-glow.tsx
+src/registry/base/text-fluid/text-fluid.tsx
 src/registry/demos/dither-flow/dither-flow.tsx
 src/registry/demos/elastic-stick/elastic-stick.tsx
 src/registry/demos/glowing-fog/glowing-fog.tsx
 src/registry/demos/halftone-glow/halftone-glow.tsx
+src/registry/demos/text-fluid/text-fluid.tsx
 # END PRO-MERGE

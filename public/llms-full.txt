@@ -2,7 +2,7 @@
 
 Source: https://atelier-ui.com/docs
 
-Generated: 2026-05-16T19:48:14.162Z
+Generated: 2026-05-17T12:28:33.850Z
 
 ---
 
@@ -557,6 +557,27 @@ Source file: components/text/text-bounce.mdx
 | `bounce`      | number | `0.5`   | Bounciness of the spring-back. `0` = no overshoot, `1` = maximum oscillation.     |
 | `distance`    | number | `35`    | How many pixels the letter drifts from its origin.                                |
 | `rotation`    | number | `25`    | Max rotation in degrees applied along the horizontal drift axis. `0` disables it. |
+
+
+============================================================
+## Text Fluid
+> SEO-friendly text with an animated WebGL shimmer and distortion effect.
+
+Source file: components/text/text-fluid.mdx
+
+## API
+
+| Name         | Type      | Default | Description                                           |
+| ------------ | --------- | ------- | ----------------------------------------------------- |
+| children     | `string`  | —       | Text content.                                         |
+| speed        | `number`  | `0.2`   | Overall animation speed multiplier.                   |
+| opacity      | `number`  | `1`     | Overall opacity.                                      |
+| ripple       | `number`  | `0.015` | UV warp strength: how much the surface refracts.      |
+| amplitude    | `number`  | `0.002` | FBM displacement amplitude: how far vertices scatter. |
+| frequency    | `number`  | `1.5`   | FBM spatial frequency: size of the noise pattern.     |
+| segments     | `number`  | `20`    | Plane geometry subdivisions, higher = better quality. |
+| webglEnabled | `boolean` | `true`  | Toggle WebGL effect on/off, falls back to plain text. |
+| className    | `string`  | —       | Class applied to the underlying span.                 |
 
 
 ============================================================

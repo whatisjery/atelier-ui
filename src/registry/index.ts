@@ -195,4 +195,12 @@ export const components: TRegistryComponent[] = [
         dependencies: ["three", "@react-three/fiber"],
         registryDependencies: ["webgl-image"],
     },
+    {
+        name: "text-fluid",
+        files: ["text-fluid.tsx"],
+        description: "Floating watery text with FBM scatter, caustic light shimmer and water refraction.",
+        shared: [],
+        dependencies: ["three", "@react-three/fiber", "@react-three/drei"],
+        registryDependencies: ["webgl-text"],
+    },
 ]
