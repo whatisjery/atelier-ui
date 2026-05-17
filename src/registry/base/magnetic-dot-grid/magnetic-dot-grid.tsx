@@ -23,7 +23,6 @@ export type MagneticDotGridProps = {
     returnSpeed?: number
     floatAmplitude?: number
     floatSpeed?: number
-    opacityRange?: [number, number]
     baseColor?: string
     centerColors?: string[]
     cycleSpeed?: number
@@ -33,12 +32,6 @@ export type MagneticDotGridProps = {
 function hexToRgb(hex: string): [number, number, number] {
     const v = parseInt(hex.replace("#", ""), 16)
     return [(v >> 16) & 0xff, (v >> 8) & 0xff, v & 0xff]
-}
-
-function getContext(canvas: HTMLCanvasElement) {
-    const ctx = canvas.getContext("2d")
-    if (!ctx) throw new Error("Canvas 2D context not supported")
-    return ctx
 }
 
 function createGrid(width: number, height: number, spacing: number): DotGrid {
@@ -81,15 +74,14 @@ function createGrid(width: number, height: number, spacing: number): DotGrid {
 }
 
 export function MagneticDotGrid({
-    dotRadius = 1,
-    spacing = 20,
+    dotRadius = 0.6,
+    spacing = 16,
     strength = 20,
-    interactionRadius = 300,
-    snapSpeed = 8,
-    returnSpeed = 3,
+    interactionRadius = 500,
+    snapSpeed = 9,
+    returnSpeed = 5,
     floatAmplitude = 1.8,
     floatSpeed = 2,
-    opacityRange = [1, 1],
     baseColor = "#000000",
     centerColors = ["#BCBCBC"],
     cycleSpeed = 1.5,
@@ -98,19 +90,24 @@ export function MagneticDotGrid({
     const canvasRef = useRef<ComponentRef<"canvas">>(null)
     const gridRef = useRef<DotGrid | null>(null)
     const pointerRef = useRef({ x: 0, y: 0, active: false })
+    const baseColorRef = useRef(hexToRgb(baseColor))
+    const centerColorsRef = useRef(centerColors.map(hexToRgb))
+
+    useEffect(() => {
+        baseColorRef.current = hexToRgb(baseColor)
+        centerColorsRef.current = centerColors.map(hexToRgb)
+    }, [baseColor, centerColors])
 
     useFrameLoop((time, delta) => {
         const canvas = canvasRef.current
         if (!canvas) return
-        const ctx = getContext(canvas)
+        const ctx = canvas.getContext("2d")
         const grid = gridRef.current
-
-        if (!canvas || !grid) return
+        if (!grid || !ctx) return
 
         const pointer = pointerRef.current
-        const parsedCenterColors = centerColors.map(hexToRgb)
-        const parsedBaseColor = hexToRgb(baseColor)
-
+        const parsedCenterColors = centerColorsRef.current
+        const parsedBaseColor = baseColorRef.current
         const progress = ((time * cycleSpeed) % 1) * parsedCenterColors.length
         const currentColorIndex = Math.floor(progress) % parsedCenterColors.length
         const nextColorIndex = (currentColorIndex + 1) % parsedCenterColors.length
@@ -123,6 +120,8 @@ export function MagneticDotGrid({
         const centerB = currentColor[2] + (nextColor[2] - currentColor[2]) * blend
 
         ctx.clearRect(0, 0, canvas.clientWidth, canvas.clientHeight)
+
+        const interactionRadiusSq = interactionRadius * interactionRadius
 
         for (let i = 0; i < grid.count; i++) {
             const bx = grid.baseX[i]
@@ -139,7 +138,7 @@ export function MagneticDotGrid({
                 const dy = by - pointer.y
                 const distSq = dx * dx + dy * dy
 
-                if (distSq < interactionRadius * interactionRadius) {
+                if (distSq < interactionRadiusSq) {
                     const dist = Math.sqrt(distSq)
                     const normalizedDist = dist / interactionRadius
 
@@ -166,13 +165,11 @@ export function MagneticDotGrid({
             grid.currentX[i] += (targetX - grid.currentX[i]) * factor
             grid.currentY[i] += (targetY - grid.currentY[i]) * factor
 
-            const opacity = opacityRange[0] + influence * (opacityRange[1] - opacityRange[0])
-
             const r = parsedBaseColor[0] + (centerR - parsedBaseColor[0]) * influence
             const g = parsedBaseColor[1] + (centerG - parsedBaseColor[1]) * influence
             const b = parsedBaseColor[2] + (centerB - parsedBaseColor[2]) * influence
 
-            ctx.fillStyle = `rgba(${r},${g},${b},${opacity})`
+            ctx.fillStyle = `rgb(${r},${g},${b})`
             ctx.fillRect(
                 grid.currentX[i] - dotRadius,
                 grid.currentY[i] - dotRadius,
@@ -198,12 +195,7 @@ export function MagneticDotGrid({
             pointerRef.current.active = true
         }
 
-        const handleTouchMove = (event: TouchEvent) => {
-            const touch = event.touches[0]
-            if (touch) updatePointer(touch.clientX, touch.clientY)
-        }
-
-        const handleMouseMove = (event: MouseEvent) => {
+        const handlePointerMove = (event: PointerEvent) => {
             updatePointer(event.clientX, event.clientY)
         }
 
@@ -223,18 +215,15 @@ export function MagneticDotGrid({
         }
 
         displayGrid()
-        window.addEventListener("resize", displayGrid)
-        canvas.addEventListener("mousemove", handleMouseMove)
-        canvas.addEventListener("touchmove", handleTouchMove)
-        canvas.addEventListener("mouseleave", handlePointerLeave)
-        canvas.addEventListener("touchend", handlePointerLeave)
+        const observer = new ResizeObserver(displayGrid)
+        observer.observe(canvas)
+        canvas.addEventListener("pointermove", handlePointerMove)
+        canvas.addEventListener("pointerleave", handlePointerLeave)
 
         return () => {
-            window.removeEventListener("resize", displayGrid)
-            canvas.removeEventListener("mousemove", handleMouseMove)
-            canvas.removeEventListener("touchmove", handleTouchMove)
-            canvas.removeEventListener("mouseleave", handlePointerLeave)
-            canvas.removeEventListener("touchend", handlePointerLeave)
+            observer.disconnect()
+            canvas.removeEventListener("pointermove", handlePointerMove)
+            canvas.removeEventListener("pointerleave", handlePointerLeave)
         }
     }, [spacing])
 

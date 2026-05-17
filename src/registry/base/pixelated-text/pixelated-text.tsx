@@ -3,10 +3,8 @@ import { useFrameLoop } from "../../hooks/use-frame-loop"
 
 export type PixelatedTextProps = {
     pixelSize?: number
-    flicker?: number
     chaos?: number
     depth?: number
-    aberration?: number
     colors?: string[]
     fps?: number
     children: React.ReactNode
@@ -14,47 +12,20 @@ export type PixelatedTextProps = {
     as?: React.ElementType
 }
 
-type DrawTextProps = {
-    ctx: CanvasRenderingContext2D
-    textEl: HTMLElement
-    color: string
-    width: number
-    height: number
-}
-
-type PixelateProps = {
-    source: HTMLCanvasElement
-    output: CanvasRenderingContext2D
-    shrinkCanvas: HTMLCanvasElement
-    shrinkCtx: CanvasRenderingContext2D
-    pixelWidth: number
-    pixelHeight: number
-    currentPixel: number
-    chaos: number
-    className?: string
-}
-
-function aberrationFilter(aberration: number) {
-    if (aberration === 0) return ""
-    return [
-        `drop-shadow(${aberration}px 0 0 rgba(255,0,0,0.5))`,
-        `drop-shadow(-${aberration}px 0 0 rgba(0,0,255,0.5))`,
-    ].join(" ")
-}
-
-function getContext(canvas: HTMLCanvasElement) {
-    const ctx = canvas.getContext("2d")
-    if (!ctx) throw new Error("Canvas 2D context not supported")
-    return ctx
-}
-
 function randomIndex(length: number, exclude: number) {
     if (length <= 1) return 0
+    if (exclude < 0) return Math.floor(Math.random() * length)
     const index = Math.floor(Math.random() * (length - 1))
     return index >= exclude ? index + 1 : index
 }
 
-function drawText({ ctx, textEl, color, width, height }: DrawTextProps) {
+function drawText(
+    ctx: CanvasRenderingContext2D,
+    textEl: HTMLElement,
+    color: string,
+    width: number,
+    height: number,
+) {
     const dpr = Math.min(window.devicePixelRatio || 1, 2)
     const computed = getComputedStyle(textEl)
 
@@ -74,63 +45,11 @@ function drawText({ ctx, textEl, color, width, height }: DrawTextProps) {
     ctx.fillText(textEl.textContent || "", 0, y)
 }
 
-function pixelate({
-    source,
-    output,
-    shrinkCanvas,
-    shrinkCtx,
-    pixelWidth,
-    pixelHeight,
-    currentPixel,
-    chaos,
-}: PixelateProps) {
-    const tinyWidth = Math.max(1, Math.ceil(pixelWidth / currentPixel))
-    const tinyHeight = Math.max(1, Math.ceil(pixelHeight / currentPixel))
-
-    shrinkCanvas.width = tinyWidth
-    shrinkCanvas.height = tinyHeight
-
-    const gridOffsetX = Math.round((Math.random() - 0.5) * currentPixel * chaos)
-    const gridOffsetY = Math.round((Math.random() - 0.5) * currentPixel * chaos)
-
-    shrinkCtx.imageSmoothingEnabled = false
-    shrinkCtx.drawImage(
-        source,
-        gridOffsetX,
-        gridOffsetY,
-        pixelWidth,
-        pixelHeight,
-        0,
-        0,
-        tinyWidth,
-        tinyHeight,
-    )
-
-    output.clearRect(0, 0, pixelWidth, pixelHeight)
-    output.imageSmoothingEnabled = false
-
-    const dilate = Math.round(currentPixel * chaos * 0.4)
-
-    output.drawImage(
-        shrinkCanvas,
-        0,
-        0,
-        tinyWidth,
-        tinyHeight,
-        -dilate,
-        -dilate,
-        pixelWidth + dilate * 2,
-        pixelHeight + dilate * 2,
-    )
-}
-
 export function PixelatedText({
     as,
-    pixelSize = 2,
-    flicker = 1.5,
+    pixelSize = 5,
     chaos = 0.1,
-    depth = 1,
-    aberration = 0,
+    depth = 6,
     colors,
     fps = 200,
     children,
@@ -167,42 +86,62 @@ export function PixelatedText({
         if (!canvas || !ctx || !textEl || !buffer || !containerRef.current) return
 
         const state = stateRef.current
-        const fallback = getComputedStyle(containerRef.current).color
 
-        let color = fallback
+        let color: string
+
         if (colors && colors.length > 0) {
             const index = randomIndex(colors.length, state.colorIndex)
             state.colorIndex = index
             color = colors[index]
+        } else {
+            color = getComputedStyle(containerRef.current).color
         }
 
-        drawText({
-            ctx: buffer.sourceCtx,
-            textEl: textEl,
-            color: color,
-            width: state.width,
-            height: state.height,
-        })
+        drawText(buffer.sourceCtx, textEl, color, state.width, state.height)
 
-        const baseFlicker = 1 + flicker * 2.5
-        const randomFlicker = Math.random() * flicker * 1.2
-        const randomDepth = depth * pixelSize * 5 * (Math.random() - 0.3)
-
+        const scale = state.pixelHeight / 100
         const currentPixel = Math.max(
             2,
-            Math.round(pixelSize * (baseFlicker + randomFlicker) + randomDepth),
+            Math.round((pixelSize + (Math.random() - 0.5) * depth) * scale),
         )
 
-        pixelate({
-            source: buffer.source,
-            output: ctx,
-            shrinkCanvas: buffer.shrink,
-            shrinkCtx: buffer.shrinkCtx,
-            pixelWidth: state.pixelWidth,
-            pixelHeight: state.pixelHeight,
-            currentPixel,
-            chaos,
-        })
+        const tinyWidth = Math.max(1, Math.ceil(state.pixelWidth / currentPixel))
+        const tinyHeight = Math.max(1, Math.ceil(state.pixelHeight / currentPixel))
+
+        buffer.shrink.width = tinyWidth
+        buffer.shrink.height = tinyHeight
+
+        const gridOffsetX = Math.round((Math.random() - 0.5) * currentPixel * chaos)
+        const gridOffsetY = Math.round((Math.random() - 0.5) * currentPixel * chaos)
+
+        buffer.shrinkCtx.imageSmoothingEnabled = false
+        buffer.shrinkCtx.drawImage(
+            buffer.source,
+            gridOffsetX,
+            gridOffsetY,
+            state.pixelWidth,
+            state.pixelHeight,
+            0,
+            0,
+            tinyWidth,
+            tinyHeight,
+        )
+
+        const dilate = Math.round(currentPixel * chaos * 0.4)
+
+        ctx.clearRect(0, 0, state.pixelWidth, state.pixelHeight)
+        ctx.imageSmoothingEnabled = false
+        ctx.drawImage(
+            buffer.shrink,
+            0,
+            0,
+            tinyWidth,
+            tinyHeight,
+            -dilate,
+            -dilate,
+            state.pixelWidth + dilate * 2,
+            state.pixelHeight + dilate * 2,
+        )
 
         const randChaos = Math.random() * chaos * 3 - (chaos * 3) / 2
 
@@ -225,14 +164,11 @@ export function PixelatedText({
         const state = stateRef.current
 
         bufferRef.current = {
-            source: source,
-            sourceCtx: getContext(source),
-            shrink: shrink,
-            shrinkCtx: getContext(shrink),
+            sourceCtx: source.getContext("2d")!,
+            shrinkCtx: shrink.getContext("2d")!,
+            source,
+            shrink,
         }
-
-        canvas.style.willChange = "transform"
-        canvas.style.filter = aberrationFilter(aberration)
 
         const measure = () => {
             const textEl = sizingRef.current
@@ -258,6 +194,7 @@ export function PixelatedText({
         }
 
         document.fonts.ready.then(measure)
+
         const resizeObserver = new ResizeObserver(measure)
         resizeObserver.observe(container)
 
@@ -267,7 +204,7 @@ export function PixelatedText({
             stateRef.current.hasRendered = false
             if (sizingRef.current) sizingRef.current.style.visibility = ""
         }
-    }, [aberration])
+    }, [])
 
     return (
         <Tag ref={containerRef} className={`relative inline-block ${className}`}>

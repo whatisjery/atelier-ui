@@ -6,8 +6,6 @@ const DEFAULT_SCROLL_STATE = {
     target: 0,
     momentum: 0,
     prev: 0,
-    velocity: 0,
-    dragMultiplier: 2.5,
 }
 
 export type InfiniteGalleryMode = "shrink" | "flip"
@@ -19,6 +17,7 @@ export type InfiniteGalleryProps<T> = {
     gap?: number
     speed?: number
     inertia?: number
+    dragMultiplier?: number
     className?: string
     renderItem: (item: T) => React.ReactNode
 }
@@ -40,10 +39,11 @@ export function InfiniteGallery<T>({
     className,
     speed = 6,
     inertia = 0.6,
+    dragMultiplier = 3,
 }: InfiniteGalleryProps<T>) {
     const containerRef = useRef<ComponentRef<"div">>(null)
     const measureRef = useRef({ containerWidth: 0, itemWidth: 0, offsetWidth: 0 })
-    const scrollRef = useRef(DEFAULT_SCROLL_STATE).current
+    const scrollRef = useRef({ ...DEFAULT_SCROLL_STATE }).current
 
     const calcItemsPositions = useCallback(
         (scrollOffset: number, velocity: number) => {
@@ -81,11 +81,9 @@ export function InfiniteGallery<T>({
                         } else {
                             containerEl.style.transformOrigin = "center"
                         }
-                    }
-
-                    if (mode === "flip") {
+                    } else if (mode === "flip") {
                         const maxDeg = 85
-                        const rotate = Math.max(-maxDeg, Math.min(maxDeg, velocity * 0.02))
+                        const rotate = clamp(-maxDeg, maxDeg, velocity * 0.02)
                         transform += ` perspective(800px) rotateY(${rotate}deg)`
                     }
 
@@ -129,9 +127,7 @@ export function InfiniteGallery<T>({
             const frameDelta = (next - scrollRef.prev) * 60
             scrollRef.prev = next
 
-            scrollRef.velocity = lerp(scrollRef.velocity, frameDelta, 0.3)
-
-            calcItemsPositions(next, scrollRef.velocity)
+            calcItemsPositions(next, frameDelta)
         }
     })
 
@@ -149,7 +145,7 @@ export function InfiniteGallery<T>({
 
         const onWheel = (event: WheelEvent) => {
             event.preventDefault()
-            scrollRef.momentum -= event.deltaY * 0.5
+            scrollRef.momentum -= event.deltaY
         }
 
         const dragState = {
@@ -168,7 +164,7 @@ export function InfiniteGallery<T>({
 
         const onPointerMove = (event: PointerEvent) => {
             if (!dragState.isDragging) return
-            const delta = (event.clientX - dragState.startX) * scrollRef.dragMultiplier
+            const delta = (event.clientX - dragState.startX) * dragMultiplier
             scrollRef.target = dragState.start + delta
         }
 
@@ -191,7 +187,7 @@ export function InfiniteGallery<T>({
             container.removeEventListener("wheel", onWheel)
             resizeObserver.disconnect()
         }
-    }, [calcItemsPositions, perView, scrollRef, inertia, speed, measure])
+    }, [calcItemsPositions, perView, scrollRef, inertia, speed, dragMultiplier, measure])
 
     return (
         <div
@@ -203,7 +199,7 @@ export function InfiniteGallery<T>({
                 return (
                     <div
                         key={index}
-                        className="shrink-0"
+                        className="shrink-0 will-change-transform"
                         style={{ width: `calc(${100 / perView}%)` }}
                     >
                         {renderItem(item)}

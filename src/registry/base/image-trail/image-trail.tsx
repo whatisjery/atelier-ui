@@ -29,9 +29,9 @@ export type PropsMouseTrail<T> = {
 export function ImageTrail<T>({
     data,
     renderItems,
-    removeDelay = 1.2,
-    driftAmount = 60,
-    spawnDistance = 120,
+    removeDelay = 1.0,
+    driftAmount = 36,
+    spawnDistance = 76,
 }: PropsMouseTrail<T>) {
     const [items, setItems] = useState<Items<T>[]>([])
     const sum = useRef(0)

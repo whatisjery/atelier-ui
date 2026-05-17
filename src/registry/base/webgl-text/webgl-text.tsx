@@ -56,7 +56,7 @@ function paint(el: HTMLElement, canvas: HTMLCanvasElement, width: number, height
     ctx.fillText(text, 0, y)
 }
 
-function Plane({ el, text, segments, material, pointer }: PlaneProps) {
+function Plane({ el, segments, material, pointer }: PlaneProps) {
     const mesh = useRef<Mesh>(null)
     const size = useThree((s) => s.size)
     const viewport = useThree((s) => s.viewport)

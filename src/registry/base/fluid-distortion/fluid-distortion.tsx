@@ -1,49 +1,11 @@
 import type { FboProps } from "@react-three/drei"
 import { useFBO } from "@react-three/drei"
-import { createPortal, useFrame, useThree } from "@react-three/fiber"
+import { createPortal, extend, type ThreeElement, useFrame, useThree } from "@react-three/fiber"
 import { BlendFunction, Effect, EffectAttribute } from "postprocessing"
 import { useCallback, useEffect, useMemo, useRef, useState } from "react"
-import {
-    Camera,
-    Color,
-    HalfFloatType,
-    LinearFilter,
-    type Mesh,
-    NearestFilter,
-    RedFormat,
-    RGBAFormat,
-    RGFormat,
-    Scene,
-    ShaderMaterial,
-    Texture,
-    Uniform,
-    Vector2,
-    Vector3,
-} from "three"
+import * as THREE from "three"
 
-export const DEFAULT_CONFIG = {
-    blend: 5,
-    intensity: 7,
-    force: 1.1,
-    distortion: 0.8,
-    curl: 0.8,
-    radius: 0.5,
-    swirl: 2,
-    pressure: 0.7,
-    densityDissipation: 0.98,
-    velocityDissipation: 0.98,
-    fluidColor: "#b4a6ff",
-    backgroundColor: "#070410",
-    showBackground: false,
-    rainbow: false,
-    dyeRes: 512,
-    simRes: 128,
-    blendFunction: BlendFunction.SET,
-} as const
-
-const REFRESH_RATE = 60
-
-const baseVertex = `
+const baseVertex = /* glsl */ `
 #ifdef USE_V_UV
   varying vec2 vUv;
 #endif
@@ -72,7 +34,7 @@ void main() {
 }
 `
 
-const advectionFrag = `
+const advectionFrag = /* glsl */ `
 precision highp float;
 varying vec2 vUv;
 uniform sampler2D uVelocity;
@@ -88,7 +50,7 @@ void main() {
 }
 `
 
-const clearFrag = `
+const clearFrag = /* glsl */ `
 precision highp float;
 varying vec2 vUv;
 uniform sampler2D uTexture;
@@ -97,7 +59,7 @@ uniform float uClearValue;
 void main() { gl_FragColor = uClearValue * texture2D(uTexture, vUv); }
 `
 
-const curlFrag = `
+const curlFrag = /* glsl */ `
 precision highp float;
 varying vec2 vL;
 varying vec2 vR;
@@ -115,7 +77,7 @@ void main() {
 }
 `
 
-const divergenceFrag = `
+const divergenceFrag = /* glsl */ `
 precision highp float;
 
 varying highp vec2 vUv;
@@ -141,7 +103,7 @@ void main() {
 }
 `
 
-const gradientSubstractFrag = `
+const gradientSubstractFrag = /* glsl */ `
 precision highp float;
 
 varying highp vec2 vUv;
@@ -163,7 +125,7 @@ void main() {
 }
 `
 
-const pressureFrag = `
+const pressureFrag = /* glsl */ `
 precision highp float;
 
 varying highp vec2 vUv;
@@ -187,7 +149,7 @@ void main() {
 }
 `
 
-const splatFrag = `
+const splatFrag = /* glsl */ `
 varying vec2 vUv;
 
 uniform sampler2D uTarget;
@@ -205,7 +167,7 @@ void main() {
 }
 `
 
-const vorticityFrag = `
+const vorticityFrag = /* glsl */ `
 precision highp float;
 
 varying vec2 vUv;
@@ -234,7 +196,7 @@ void main() {
 }
 `
 
-const compositeFrag = `
+const compositeFrag = /* glsl */ `
 uniform sampler2D tFluid;
 
 uniform vec3 uColor;
@@ -268,6 +230,12 @@ void mainImage(const in vec4 inputColor, const in vec2 uv, out vec4 outputColor)
 }
 `
 
+declare module "@react-three/fiber" {
+    interface ThreeElements {
+        fluidEffect: ThreeElement<typeof FluidEffect>
+    }
+}
+
 export type FluidDistortionProps = {
     blend?: number
     intensity?: number
@@ -286,40 +254,15 @@ export type FluidDistortionProps = {
     swirl?: number
 }
 
-type EffectProps = Required<
-    Pick<
-        FluidDistortionProps,
-        | "blend"
-        | "intensity"
-        | "distortion"
-        | "rainbow"
-        | "fluidColor"
-        | "backgroundColor"
-        | "showBackground"
-        | "blendFunction"
-    >
-> & { tFluid: Texture }
-
-type EffectUniforms = {
-    tFluid: Texture
-    uColor: Vector3
-    uBackgroundColor: Vector3
-    uRainbow: boolean
-    uShowBackground: boolean
-    uDistort: number
-    uBlend: number
-    uIntensity: number
-}
-
 type Materials = {
-    splat: ShaderMaterial
-    curl: ShaderMaterial
-    clear: ShaderMaterial
-    divergence: ShaderMaterial
-    pressure: ShaderMaterial
-    gradientSubstract: ShaderMaterial
-    advection: ShaderMaterial
-    vorticity: ShaderMaterial
+    splat: THREE.ShaderMaterial
+    curl: THREE.ShaderMaterial
+    clear: THREE.ShaderMaterial
+    divergence: THREE.ShaderMaterial
+    pressure: THREE.ShaderMaterial
+    gradientSubstract: THREE.ShaderMaterial
+    advection: THREE.ShaderMaterial
+    vorticity: THREE.ShaderMaterial
 }
 
 type SplatStack = {
@@ -329,57 +272,98 @@ type SplatStack = {
     velocityY: number
 }
 
-function hexToRgb(hex: string) {
-    const color = new Color(hex)
-    return new Vector3(color.r, color.g, color.b)
+type DoubleFBO = {
+    read: THREE.WebGLRenderTarget
+    write: THREE.WebGLRenderTarget
+    swap: () => void
+    dispose: () => void
 }
+
+const DYE_RES = 512
+const SIM_RES = 128
+const REFRESH_RATE = 60
+const EMPTY_TEXTURE = new THREE.Texture()
 
 function normalizeScreenHz(value: number, dt: number) {
     return value ** (dt * REFRESH_RATE)
 }
 
 class FluidEffect extends Effect {
-    state: EffectProps
+    private uTFluid: THREE.Uniform<THREE.Texture | null>
+    private uDistort: THREE.Uniform<number>
+    private uRainbow: THREE.Uniform<boolean>
+    private uIntensity: THREE.Uniform<number>
+    private uBlend: THREE.Uniform<number>
+    private uShowBackground: THREE.Uniform<boolean>
+    private uColor: THREE.Uniform<THREE.Color>
+    private uBackgroundColor: THREE.Uniform<THREE.Color>
 
-    constructor(props: EffectProps) {
-        const uniforms: Record<keyof EffectUniforms, Uniform> = {
-            tFluid: new Uniform(props.tFluid),
-            uDistort: new Uniform(props.distortion),
-            uRainbow: new Uniform(props.rainbow),
-            uIntensity: new Uniform(props.intensity),
-            uBlend: new Uniform(props.blend),
-            uShowBackground: new Uniform(props.showBackground),
-            uColor: new Uniform(hexToRgb(props.fluidColor)),
-            uBackgroundColor: new Uniform(hexToRgb(props.backgroundColor)),
-        }
+    constructor() {
+        const uTFluid = new THREE.Uniform<THREE.Texture | null>(null)
+        const uDistort = new THREE.Uniform(0)
+        const uRainbow = new THREE.Uniform(false)
+        const uIntensity = new THREE.Uniform(0)
+        const uBlend = new THREE.Uniform(0)
+        const uShowBackground = new THREE.Uniform(false)
+        const uColor = new THREE.Uniform(new THREE.Color())
+        const uBackgroundColor = new THREE.Uniform(new THREE.Color())
 
         super("FluidEffect", compositeFrag, {
-            blendFunction: props.blendFunction,
             attributes: EffectAttribute.CONVOLUTION,
-            uniforms: new Map(Object.entries(uniforms)),
+            uniforms: new Map<string, THREE.Uniform>([
+                ["tFluid", uTFluid],
+                ["uDistort", uDistort],
+                ["uRainbow", uRainbow],
+                ["uIntensity", uIntensity],
+                ["uBlend", uBlend],
+                ["uShowBackground", uShowBackground],
+                ["uColor", uColor],
+                ["uBackgroundColor", uBackgroundColor],
+            ]),
         })
 
-        this.state = props
+        this.uTFluid = uTFluid
+        this.uDistort = uDistort
+        this.uRainbow = uRainbow
+        this.uIntensity = uIntensity
+        this.uBlend = uBlend
+        this.uShowBackground = uShowBackground
+        this.uColor = uColor
+        this.uBackgroundColor = uBackgroundColor
     }
 
-    private updateUniform<K extends keyof EffectUniforms>(key: K, value: EffectUniforms[K]) {
-        const uniform = this.uniforms.get(key)
-        if (uniform) {
-            uniform.value = value
-        }
+    set tFluid(v: THREE.Texture) {
+        this.uTFluid.value = v
     }
-
-    update() {
-        this.updateUniform("uIntensity", this.state.intensity)
-        this.updateUniform("uDistort", this.state.distortion)
-        this.updateUniform("uRainbow", this.state.rainbow)
-        this.updateUniform("uBlend", this.state.blend)
-        this.updateUniform("uShowBackground", this.state.showBackground)
-        this.updateUniform("uColor", hexToRgb(this.state.fluidColor))
-        this.updateUniform("uBackgroundColor", hexToRgb(this.state.backgroundColor))
+    set distortion(v: number) {
+        this.uDistort.value = v
+    }
+    set rainbow(v: boolean) {
+        this.uRainbow.value = v
+    }
+    set intensity(v: number) {
+        this.uIntensity.value = v
+    }
+    set blend(v: number) {
+        this.uBlend.value = v
+    }
+    set showBackground(v: boolean) {
+        this.uShowBackground.value = v
+    }
+    set fluidColor(v: string) {
+        this.uColor.value.set(v)
+    }
+    set backgroundColor(v: string) {
+        this.uBackgroundColor.value.set(v)
+    }
+    set blendFunction(v: BlendFunction) {
+        this.blendMode.blendFunction = v
     }
 }
 
+extend({ FluidEffect })
+
+// derived from useFBO: 2 render targets we swap between, so a shader can read from one and write to the other
 function useDoubleFBO(width: number, height: number, options: FboProps) {
     const read = useFBO(width, height, options)
     const write = useFBO(width, height, options)
@@ -404,79 +388,89 @@ function useDoubleFBO(width: number, height: number, options: FboProps) {
     return fbo
 }
 
-function useFBOs() {
-    const density = useDoubleFBO(DEFAULT_CONFIG.dyeRes, DEFAULT_CONFIG.dyeRes, {
-        type: HalfFloatType,
-        format: RGBAFormat,
-        minFilter: LinearFilter,
-        depthBuffer: false,
-    })
+export const FluidDistortion = ({
+    blend = 5,
+    force = 1.1,
+    radius = 0.65,
+    curl = 0.8,
+    swirl = 2,
+    intensity = 7,
+    distortion = 0.8,
+    fluidColor = "#b4a6ff",
+    backgroundColor = "#070410",
+    showBackground = false,
+    rainbow = false,
+    pressure = 0.7,
+    densityDissipation = 0.98,
+    velocityDissipation = 0.98,
+    blendFunction = BlendFunction.SET,
+}: FluidDistortionProps) => {
+    const size = useThree((three) => three.size)
+    const gl = useThree((three) => three.gl)
+    const [bufferScene] = useState(() => new THREE.Scene())
+    const bufferCamera = useMemo(() => new THREE.Camera(), [])
+    const meshRef = useRef<THREE.Mesh>(null)
+    const pointerRef = useRef(new THREE.Vector2())
+    const colorRef = useRef(new THREE.Vector3())
+    const splatStack = useRef<SplatStack[]>([])
+    const lastMouse = useRef<THREE.Vector2>(new THREE.Vector2())
+    const hasMoved = useRef<boolean>(false)
+    const rectRef = useRef<DOMRect | null>(null)
 
-    const velocity = useDoubleFBO(DEFAULT_CONFIG.simRes, DEFAULT_CONFIG.simRes, {
-        type: HalfFloatType,
-        format: RGFormat,
-        minFilter: LinearFilter,
-        depthBuffer: false,
-    })
-
-    const pressure = useDoubleFBO(DEFAULT_CONFIG.simRes, DEFAULT_CONFIG.simRes, {
-        type: HalfFloatType,
-        format: RedFormat,
-        minFilter: NearestFilter,
-        depthBuffer: false,
-    })
-
-    const divergence = useFBO(DEFAULT_CONFIG.simRes, DEFAULT_CONFIG.simRes, {
-        type: HalfFloatType,
-        format: RedFormat,
-        minFilter: NearestFilter,
-        depthBuffer: false,
-    })
-
-    const curl = useFBO(DEFAULT_CONFIG.simRes, DEFAULT_CONFIG.simRes, {
-        type: HalfFloatType,
-        format: RedFormat,
-        minFilter: NearestFilter,
-        depthBuffer: false,
-    })
-
-    const FBOs = useMemo(
-        () => ({ density, velocity, pressure, divergence, curl }),
-        [curl, density, divergence, pressure, velocity],
-    )
-
+    // cache rect so onPointerMove doesn't trigger layout on each event
     useEffect(() => {
-        for (const FBO of Object.values(FBOs)) {
-            if ("write" in FBO) {
-                FBO.read.texture.generateMipmaps = false
-                FBO.write.texture.generateMipmaps = false
-            } else {
-                FBO.texture.generateMipmaps = false
-            }
-        }
+        rectRef.current = gl.domElement.getBoundingClientRect()
+    }, [gl.domElement, size])
 
-        return () => {
-            for (const FBO of Object.values(FBOs)) {
-                FBO.dispose()
-            }
-        }
-    }, [FBOs])
+    const densityFBO = useDoubleFBO(DYE_RES, DYE_RES, {
+        type: THREE.HalfFloatType,
+        format: THREE.RGBAFormat,
+        minFilter: THREE.LinearFilter,
+        depthBuffer: false,
+        generateMipmaps: false,
+    })
 
-    return FBOs
-}
+    const velocityFBO = useDoubleFBO(SIM_RES, SIM_RES, {
+        type: THREE.HalfFloatType,
+        format: THREE.RGFormat,
+        minFilter: THREE.LinearFilter,
+        depthBuffer: false,
+        generateMipmaps: false,
+    })
 
-function useMaterials(): Materials {
-    const size = useThree((s) => s.size)
+    const pressureFBO = useDoubleFBO(SIM_RES, SIM_RES, {
+        type: THREE.HalfFloatType,
+        format: THREE.RedFormat,
+        minFilter: THREE.NearestFilter,
+        depthBuffer: false,
+        generateMipmaps: false,
+    })
+
+    const divergenceFBO = useFBO(SIM_RES, SIM_RES, {
+        type: THREE.HalfFloatType,
+        format: THREE.RedFormat,
+        minFilter: THREE.NearestFilter,
+        depthBuffer: false,
+        generateMipmaps: false,
+    })
+
+    const curlFBO = useFBO(SIM_RES, SIM_RES, {
+        type: THREE.HalfFloatType,
+        format: THREE.RedFormat,
+        minFilter: THREE.NearestFilter,
+        depthBuffer: false,
+        generateMipmaps: false,
+    })
 
     const materials = useMemo<Materials>(() => {
-        const advection = new ShaderMaterial({
+        const advection = new THREE.ShaderMaterial({
             name: "Fluid/Advection",
             uniforms: {
-                uVelocity: { value: new Texture() },
-                uSource: { value: new Texture() },
+                uVelocity: { value: EMPTY_TEXTURE },
+                uSource: { value: EMPTY_TEXTURE },
                 dt: { value: 1 / REFRESH_RATE },
                 uDissipation: { value: 1.0 },
-                texelSize: { value: new Vector2() },
+                texelSize: { value: new THREE.Vector2() },
             },
             fragmentShader: advectionFrag,
             vertexShader: baseVertex,
@@ -485,12 +479,12 @@ function useMaterials(): Materials {
             depthWrite: false,
         })
 
-        const clear = new ShaderMaterial({
+        const clear = new THREE.ShaderMaterial({
             name: "Fluid/Clear",
             uniforms: {
-                uTexture: { value: new Texture() },
-                uClearValue: { value: DEFAULT_CONFIG.pressure },
-                texelSize: { value: new Vector2() },
+                uTexture: { value: EMPTY_TEXTURE },
+                uClearValue: { value: 0 },
+                texelSize: { value: new THREE.Vector2() },
             },
             fragmentShader: clearFrag,
             vertexShader: baseVertex,
@@ -499,11 +493,11 @@ function useMaterials(): Materials {
             depthWrite: false,
         })
 
-        const curl = new ShaderMaterial({
+        const curl = new THREE.ShaderMaterial({
             name: "Fluid/Curl",
             uniforms: {
-                uVelocity: { value: new Texture() },
-                texelSize: { value: new Vector2() },
+                uVelocity: { value: EMPTY_TEXTURE },
+                texelSize: { value: new THREE.Vector2() },
             },
             fragmentShader: curlFrag,
             vertexShader: baseVertex,
@@ -512,11 +506,11 @@ function useMaterials(): Materials {
             depthWrite: false,
         })
 
-        const divergence = new ShaderMaterial({
+        const divergence = new THREE.ShaderMaterial({
             name: "Fluid/Divergence",
             uniforms: {
-                uVelocity: { value: new Texture() },
-                texelSize: { value: new Vector2() },
+                uVelocity: { value: EMPTY_TEXTURE },
+                texelSize: { value: new THREE.Vector2() },
             },
             fragmentShader: divergenceFrag,
             vertexShader: baseVertex,
@@ -525,12 +519,12 @@ function useMaterials(): Materials {
             depthWrite: false,
         })
 
-        const gradientSubstract = new ShaderMaterial({
+        const gradientSubstract = new THREE.ShaderMaterial({
             name: "Fluid/GradientSubtract",
             uniforms: {
-                uPressure: { value: new Texture() },
-                uVelocity: { value: new Texture() },
-                texelSize: { value: new Vector2() },
+                uPressure: { value: EMPTY_TEXTURE },
+                uVelocity: { value: EMPTY_TEXTURE },
+                texelSize: { value: new THREE.Vector2() },
             },
             fragmentShader: gradientSubstractFrag,
             vertexShader: baseVertex,
@@ -539,12 +533,12 @@ function useMaterials(): Materials {
             depthWrite: false,
         })
 
-        const pressure = new ShaderMaterial({
+        const pressure = new THREE.ShaderMaterial({
             name: "Fluid/Pressure",
             uniforms: {
-                uPressure: { value: new Texture() },
-                uDivergence: { value: new Texture() },
-                texelSize: { value: new Vector2() },
+                uPressure: { value: EMPTY_TEXTURE },
+                uDivergence: { value: EMPTY_TEXTURE },
+                texelSize: { value: new THREE.Vector2() },
             },
             fragmentShader: pressureFrag,
             vertexShader: baseVertex,
@@ -553,15 +547,15 @@ function useMaterials(): Materials {
             depthWrite: false,
         })
 
-        const splat = new ShaderMaterial({
+        const splat = new THREE.ShaderMaterial({
             name: "Fluid/Splat",
             uniforms: {
-                uTarget: { value: new Texture() },
-                aspectRatio: { value: size.width / size.height },
-                uColor: { value: new Vector3() },
-                uPointer: { value: new Vector2() },
-                uRadius: { value: DEFAULT_CONFIG.radius / 100.0 },
-                texelSize: { value: new Vector2() },
+                uTarget: { value: EMPTY_TEXTURE },
+                aspectRatio: { value: 1 },
+                uColor: { value: new THREE.Vector3() },
+                uPointer: { value: new THREE.Vector2() },
+                uRadius: { value: 0 },
+                texelSize: { value: new THREE.Vector2() },
             },
             fragmentShader: splatFrag,
             vertexShader: baseVertex,
@@ -570,14 +564,14 @@ function useMaterials(): Materials {
             depthWrite: false,
         })
 
-        const vorticity = new ShaderMaterial({
+        const vorticity = new THREE.ShaderMaterial({
             name: "Fluid/Vorticity",
             uniforms: {
-                uVelocity: { value: new Texture() },
-                uCurl: { value: new Texture() },
-                uCurlValue: { value: DEFAULT_CONFIG.curl },
+                uVelocity: { value: EMPTY_TEXTURE },
+                uCurl: { value: EMPTY_TEXTURE },
+                uCurlValue: { value: 0 },
                 dt: { value: 1 / REFRESH_RATE },
-                texelSize: { value: new Vector2() },
+                texelSize: { value: new THREE.Vector2() },
             },
             fragmentShader: vorticityFrag,
             vertexShader: baseVertex,
@@ -586,39 +580,38 @@ function useMaterials(): Materials {
             depthWrite: false,
         })
 
-        return { splat, curl, clear, divergence, pressure, gradientSubstract, advection, vorticity }
-    }, [size])
+        return {
+            splat,
+            curl,
+            clear,
+            divergence,
+            pressure,
+            gradientSubstract,
+            advection,
+            vorticity,
+        }
+    }, [])
 
     useEffect(() => {
+        const texelAspect = size.width / size.height
         for (const material of Object.values(materials)) {
-            const aspectRatio = size.width / (size.height + 400)
-            material.uniforms.texelSize.value.set(
-                1 / (DEFAULT_CONFIG.simRes * aspectRatio),
-                1 / DEFAULT_CONFIG.simRes,
-            )
+            material.uniforms.texelSize.value.set(1 / (SIM_RES * texelAspect), 1 / SIM_RES)
         }
+        materials.splat.uniforms.aspectRatio.value = size.width / size.height
+    }, [materials, size])
 
+    useEffect(() => {
         return () => {
             for (const material of Object.values(materials)) {
                 material.dispose()
             }
         }
-    }, [materials, size])
-
-    return materials
-}
-
-function usePointer({ force }: { force: number }) {
-    const gl = useThree((three) => three.gl)
-
-    const splatStack = useRef<SplatStack[]>([])
-    const lastMouse = useRef<Vector2>(new Vector2())
-    const hasMoved = useRef<boolean>(false)
+    }, [materials])
 
     const onPointerMove = useCallback(
         (event: PointerEvent) => {
-            const canvas = gl.domElement
-            const rect = canvas.getBoundingClientRect()
+            const rect = rectRef.current
+            if (!rect) return
 
             const x = event.clientX - rect.left
             const y = event.clientY - rect.top
@@ -641,176 +634,108 @@ function usePointer({ force }: { force: number }) {
                 velocityY: -deltaY * force,
             })
         },
-        [force, gl.domElement],
+        [force],
     )
 
     useEffect(() => {
-        addEventListener("pointermove", onPointerMove)
+        function onPointerDown() {
+            hasMoved.current = false
+        }
+        addEventListener("pointermove", onPointerMove, { passive: true })
+        addEventListener("pointerdown", onPointerDown, { passive: true })
         return () => {
             removeEventListener("pointermove", onPointerMove)
+            removeEventListener("pointerdown", onPointerDown)
         }
     }, [onPointerMove])
 
-    return splatStack
-}
-
-export const FluidDistortion = ({
-    blend = DEFAULT_CONFIG.blend,
-    force = DEFAULT_CONFIG.force,
-    radius = DEFAULT_CONFIG.radius,
-    curl = DEFAULT_CONFIG.curl,
-    swirl = DEFAULT_CONFIG.swirl,
-    intensity = DEFAULT_CONFIG.intensity,
-    distortion = DEFAULT_CONFIG.distortion,
-    fluidColor = DEFAULT_CONFIG.fluidColor,
-    backgroundColor = DEFAULT_CONFIG.backgroundColor,
-    showBackground = DEFAULT_CONFIG.showBackground,
-    rainbow = DEFAULT_CONFIG.rainbow,
-    pressure = DEFAULT_CONFIG.pressure,
-    densityDissipation = DEFAULT_CONFIG.densityDissipation,
-    velocityDissipation = DEFAULT_CONFIG.velocityDissipation,
-    blendFunction = DEFAULT_CONFIG.blendFunction,
-}: FluidDistortionProps) => {
-    const size = useThree((three) => three.size)
-    const gl = useThree((three) => three.gl)
-
-    const [bufferScene] = useState(() => new Scene())
-    const bufferCamera = useMemo(() => new Camera(), [])
-
-    const meshRef = useRef<Mesh>(null)
-    const pointerRef = useRef(new Vector2())
-    const colorRef = useRef(new Vector3())
-
-    const FBOs = useFBOs()
-    const materials = useMaterials()
-    const splatStack = usePointer({ force }).current
-
-    const setShaderMaterial = useCallback(
-        (name: keyof Materials) => {
-            if (!meshRef.current) return
-            meshRef.current.material = materials[name]
-            meshRef.current.material.needsUpdate = true
-        },
-        [materials],
-    )
-
-    const setRenderTarget = useCallback(
-        (name: keyof typeof FBOs) => {
-            const target = FBOs[name]
-            if ("write" in target) {
-                gl.setRenderTarget(target.write)
-                gl.clear()
-                gl.render(bufferScene, bufferCamera)
-                target.swap()
-            } else {
-                gl.setRenderTarget(target)
-                gl.clear()
-                gl.render(bufferScene, bufferCamera)
-            }
-        },
-        [bufferCamera, bufferScene, FBOs, gl],
-    )
-
-    const setUniforms = useCallback(
-        (material: keyof Materials, uniform: string, value: unknown) => {
-            const mat = materials[material]
-            if (mat?.uniforms[uniform]) {
-                mat.uniforms[uniform].value = value
-            }
-        },
-        [materials],
-    )
+    const setRenderTarget = (fbo: THREE.WebGLRenderTarget | DoubleFBO) => {
+        // checking if it's a DoubleFBO
+        if ("write" in fbo) {
+            gl.setRenderTarget(fbo.write)
+            gl.clear()
+            gl.render(bufferScene, bufferCamera)
+            fbo.swap()
+        } else {
+            gl.setRenderTarget(fbo)
+            gl.clear()
+            gl.render(bufferScene, bufferCamera)
+        }
+    }
 
     useFrame((_, delta) => {
-        if (!meshRef.current) return
+        const mesh = meshRef.current
+        if (!mesh) return
 
-        for (let i = splatStack.length - 1; i >= 0; i--) {
-            const { mouseX, mouseY, velocityX, velocityY } = splatStack[i]
+        for (let i = splatStack.current.length - 1; i >= 0; i--) {
+            const { mouseX, mouseY, velocityX, velocityY } = splatStack.current[i]
 
             pointerRef.current.set(mouseX, mouseY)
             colorRef.current.set(velocityX, velocityY, 2.0)
 
-            setShaderMaterial("splat")
-            setUniforms("splat", "uTarget", FBOs.velocity.read.texture)
-            setUniforms("splat", "uPointer", pointerRef.current)
-            setUniforms("splat", "uColor", colorRef.current)
-            setUniforms("splat", "uRadius", radius / 100.0)
-            setRenderTarget("velocity")
-            setUniforms("splat", "uTarget", FBOs.density.read.texture)
-            setRenderTarget("density")
+            mesh.material = materials.splat
+            materials.splat.uniforms.uTarget.value = velocityFBO.read.texture
+            materials.splat.uniforms.uPointer.value = pointerRef.current
+            materials.splat.uniforms.uColor.value = colorRef.current
+            materials.splat.uniforms.uRadius.value = radius / 100.0
+            setRenderTarget(velocityFBO)
 
-            splatStack.pop()
+            materials.splat.uniforms.uTarget.value = densityFBO.read.texture
+            setRenderTarget(densityFBO)
+
+            splatStack.current.pop()
         }
 
-        setShaderMaterial("curl")
-        setUniforms("curl", "uVelocity", FBOs.velocity.read.texture)
-        setRenderTarget("curl")
+        mesh.material = materials.curl
+        materials.curl.uniforms.uVelocity.value = velocityFBO.read.texture
+        setRenderTarget(curlFBO)
 
-        setShaderMaterial("vorticity")
-        setUniforms("vorticity", "uVelocity", FBOs.velocity.read.texture)
-        setUniforms("vorticity", "uCurl", FBOs.curl.texture)
-        setUniforms("vorticity", "uCurlValue", curl)
-        setRenderTarget("velocity")
+        mesh.material = materials.vorticity
+        materials.vorticity.uniforms.uVelocity.value = velocityFBO.read.texture
+        materials.vorticity.uniforms.uCurl.value = curlFBO.texture
+        materials.vorticity.uniforms.uCurlValue.value = curl
+        setRenderTarget(velocityFBO)
 
-        setShaderMaterial("divergence")
-        setUniforms("divergence", "uVelocity", FBOs.velocity.read.texture)
-        setRenderTarget("divergence")
+        mesh.material = materials.divergence
+        materials.divergence.uniforms.uVelocity.value = velocityFBO.read.texture
+        setRenderTarget(divergenceFBO)
 
-        setShaderMaterial("clear")
-        setUniforms("clear", "uTexture", FBOs.pressure.read.texture)
-        setUniforms("clear", "uClearValue", normalizeScreenHz(pressure, delta))
-        setRenderTarget("pressure")
+        mesh.material = materials.clear
+        materials.clear.uniforms.uTexture.value = pressureFBO.read.texture
+        materials.clear.uniforms.uClearValue.value = normalizeScreenHz(pressure, delta)
+        setRenderTarget(pressureFBO)
 
-        setShaderMaterial("pressure")
-        setUniforms("pressure", "uDivergence", FBOs.divergence.texture)
+        mesh.material = materials.pressure
+        materials.pressure.uniforms.uDivergence.value = divergenceFBO.texture
 
         for (let i = 0; i < swirl; i++) {
-            setUniforms("pressure", "uPressure", FBOs.pressure.read.texture)
-            setRenderTarget("pressure")
+            materials.pressure.uniforms.uPressure.value = pressureFBO.read.texture
+            setRenderTarget(pressureFBO)
         }
 
-        setShaderMaterial("gradientSubstract")
-        setUniforms("gradientSubstract", "uPressure", FBOs.pressure.read.texture)
-        setUniforms("gradientSubstract", "uVelocity", FBOs.velocity.read.texture)
-        setRenderTarget("velocity")
+        mesh.material = materials.gradientSubstract
+        materials.gradientSubstract.uniforms.uPressure.value = pressureFBO.read.texture
+        materials.gradientSubstract.uniforms.uVelocity.value = velocityFBO.read.texture
+        setRenderTarget(velocityFBO)
 
-        setShaderMaterial("advection")
-        setUniforms("advection", "uVelocity", FBOs.velocity.read.texture)
-        setUniforms("advection", "uSource", FBOs.velocity.read.texture)
-        setUniforms("advection", "uDissipation", normalizeScreenHz(velocityDissipation, delta))
+        mesh.material = materials.advection
+        materials.advection.uniforms.uVelocity.value = velocityFBO.read.texture
+        materials.advection.uniforms.uSource.value = velocityFBO.read.texture
+        materials.advection.uniforms.uDissipation.value = normalizeScreenHz(
+            velocityDissipation,
+            delta,
+        )
 
-        setRenderTarget("velocity")
-        setUniforms("advection", "uVelocity", FBOs.velocity.read.texture)
-        setUniforms("advection", "uSource", FBOs.density.read.texture)
-        setUniforms("advection", "uDissipation", normalizeScreenHz(densityDissipation, delta))
+        setRenderTarget(velocityFBO)
+        materials.advection.uniforms.uVelocity.value = velocityFBO.read.texture
+        materials.advection.uniforms.uSource.value = densityFBO.read.texture
+        materials.advection.uniforms.uDissipation.value = normalizeScreenHz(
+            densityDissipation,
+            delta,
+        )
 
-        setRenderTarget("density")
+        setRenderTarget(densityFBO)
     })
-
-    const effectProps: EffectProps = {
-        blend,
-        intensity,
-        distortion,
-        rainbow,
-        backgroundColor,
-        fluidColor,
-        showBackground,
-        blendFunction,
-        tFluid: FBOs.density.read.texture,
-    }
-
-    const effect = useMemo(() => new FluidEffect(effectProps), [])
-
-    useEffect(() => {
-        effect.state = effectProps
-        effect.update()
-    })
-
-    useEffect(() => {
-        return () => {
-            effect.dispose?.()
-        }
-    }, [effect])
 
     return (
         <>
@@ -820,7 +745,17 @@ export const FluidDistortion = ({
                 </mesh>,
                 bufferScene,
             )}
-            <primitive object={effect} dispose={null} />
+            <fluidEffect
+                blend={blend}
+                intensity={intensity}
+                distortion={distortion}
+                rainbow={rainbow}
+                fluidColor={fluidColor}
+                backgroundColor={backgroundColor}
+                showBackground={showBackground}
+                blendFunction={blendFunction}
+                tFluid={densityFBO.read.texture}
+            />
         </>
     )
 }
