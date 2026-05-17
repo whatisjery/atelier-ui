@@ -2,7 +2,7 @@
 
 Source: https://atelier-ui.com/docs
 
-Generated: 2026-05-17T12:28:33.850Z
+Generated: 2026-05-17T21:29:25.119Z
 
 ---
 
@@ -94,7 +94,7 @@ Source file: components/cursor/fluid-distortion.mdx
 | intensity           | `number`      | `7`       | Sets the fluid intensity. Valid range: `0` to `10`.                                       |
 | force               | `number`      | `1.1`     | Multiplies the mouse velocity to increase fluid splatter. Valid range: `0.0` to `20`.     |
 | distortion          | `number`      | `0.8`     | Sets the distortion amount. Valid range: `0.00` to `2.00`.                                |
-| radius              | `number`      | `0.5`     | Sets the fluid radius. Valid range: `0.01` to `1.00`.                                     |
+| radius              | `number`      | `0.65`    | Sets the fluid radius. Valid range: `0.01` to `1.00`.                                     |
 | curl                | `number`      | `0.8`     | Sets the amount of the curl effect. Valid range: `0.0` to `50`.                           |
 | swirl               | `number`      | `2`       | Sets the amount of the swirling effect. Valid range: `0` to `20`.                         |
 | velocityDissipation | `number`      | `0.98`    | Reduces the fluid velocity over time. Valid range: `0.00` to `1.00`.                      |
@@ -216,21 +216,20 @@ Source file: components/cursor/magnetic-dot-grid.mdx
 
 ## API
 
-| Name              | Type               | Default                                       | Description                                        |
-| ----------------- | ------------------ | --------------------------------------------- | -------------------------------------------------- |
-| dotRadius         | `number`           | `1`                                           | Radius of each dot in px.                          |
-| spacing           | `number`           | `20`                                          | Distance between dots in px.                       |
-| strength          | `number`           | `20`                                          | Strength of the magnetic force in px.              |
-| interactionRadius | `number`           | `300`                                         | Cursor influence range in px.                      |
-| snapSpeed         | `number`           | `8`                                           | How fast dots react to the cursor.                 |
-| returnSpeed       | `number`           | `3`                                           | How slowly dots return to their base position.     |
-| floatAmplitude    | `number`           | `1.8`                                         | How far dots floats from the cursor.               |
-| floatSpeed        | `number`           | `2`                                           | Speed of the floating fx.animation.                |
-| opacityRange      | `[number, number]` | `[1, 1]`                                      | Dot opacity `[min, max]` from cursor proximity.    |
-| baseColor         | `string`           | `"#000000"`                                   | Default dot color.                                 |
-| centerColors      | `string[]`         | `["#000000"]`                                 | Colors near the cursor. Cycles through the array.  |
-| cycleSpeed        | `number`           | `1.5`                                         | Color cycle speed.                                 |
-| className         | `string`           | `"absolute inset-0 touch-none w-full h-full"` | Canvas element classes for positioning and sizing. |
+| Name              | Type       | Default                                       | Description                                        |
+| ----------------- | ---------- | --------------------------------------------- | -------------------------------------------------- |
+| dotRadius         | `number`   | `0.6`                                         | Radius of each dot in px.                          |
+| spacing           | `number`   | `16`                                          | Distance between dots in px.                       |
+| strength          | `number`   | `20`                                          | Strength of the magnetic force in px.              |
+| interactionRadius | `number`   | `500`                                         | Cursor influence range in px.                      |
+| snapSpeed         | `number`   | `9`                                           | How fast dots react to the cursor.                 |
+| returnSpeed       | `number`   | `5`                                           | How slowly dots return to their base position.     |
+| floatAmplitude    | `number`   | `1.8`                                         | How far dots floats from the cursor.               |
+| floatSpeed        | `number`   | `2`                                           | Speed of the floating fx.animation.                |
+| baseColor         | `string`   | `"#000000"`                                   | Default dot color.                                 |
+| centerColors      | `string[]` | `["#BCBCBC"]`                                 | Colors near the cursor. Cycles through the array.  |
+| cycleSpeed        | `number`   | `1.5`                                         | Color cycle speed.                                 |
+| className         | `string`   | `"absolute inset-0 touch-none w-full h-full"` | Canvas element classes for positioning and sizing. |
 
 ***
 
@@ -348,16 +347,17 @@ Source file: components/scroll/infinite-gallery.mdx
 
 ## API
 
-| Name       | Type                     | Default     | Description                                          |
-| ---------- | ------------------------ | ----------- | ---------------------------------------------------- |
-| data       | `T[]`                    | —           | Array of items to render.                            |
-| renderItem | `(item: T) => ReactNode` | —           | Render function called for each item.                |
-| mode       | `"shrink" \| "flip"`     | `"flip"`    | `flip` tilts items in 3D. `shrink` compresses edges. |
-| perView    | `number`                 | `4`         | Number of items visible at once.                     |
-| speed      | `number`                 | `6`         | Speed of the scroll.                                 |
-| inertia    | `number`                 | `0.6`       | Inertia of the scroll.                               |
-| gap        | `number`                 | `5`         | Gap between items.                                   |
-| className  | `string`                 | `undefined` | Class for the container element.                     |
+| Name           | Type                     | Default     | Description                                          |
+| -------------- | ------------------------ | ----------- | ---------------------------------------------------- |
+| data           | `T[]`                    | —           | Array of items to render.                            |
+| renderItem     | `(item: T) => ReactNode` | —           | Render function called for each item.                |
+| mode           | `"shrink" \| "flip"`     | `"flip"`    | `flip` tilts items in 3D. `shrink` compresses edges. |
+| perView        | `number`                 | `4`         | Number of items visible at once.                     |
+| speed          | `number`                 | `6`         | Speed of the scroll.                                 |
+| inertia        | `number`                 | `0.6`       | Inertia of the scroll.                               |
+| dragMultiplier | `number`                 | `3`         | Multiplier applied to drag distance.                 |
+| gap            | `number`                 | `5`         | Gap between items.                                   |
+| className      | `string`                 | `undefined` | Class for the container element.                     |
 
 ***
 
@@ -484,17 +484,15 @@ Source file: components/text/pixelated-text.mdx
 
 ## API
 
-| Name       | Type                | Default     | Description                                                     |
-| ---------- | ------------------- | ----------- | --------------------------------------------------------------- |
-| pixelSize  | `number`            | `2`         | Pixel size.                                                     |
-| flicker    | `number`            | `1.5`       | Amount of flickers.                                             |
-| chaos      | `number`            | `0.1`       | Amount of chaos.                                                |
-| depth      | `number`            | `1`         | Amplitude(contrast) between clear and pixelated.                |
-| aberration | `number`            | `0`         | Chromatic aberration amount.                                    |
-| colors     | `string[]`          | `undefined` | Cycles through colors each tick. Fallback to the default color. |
-| fps        | `number`            | `200`       | Frames per second.                                              |
-| as         | `React.ElementType` | `"span"`    | Polymorphic tag: render as any HTML element.                    |
-| className  | `string`            | `undefined` | Class for the container element.                                |
+| Name      | Type                | Default     | Description                                                     |
+| --------- | ------------------- | ----------- | --------------------------------------------------------------- |
+| pixelSize | `number`            | `5`         | Pixel size.                                                     |
+| chaos     | `number`            | `0.1`       | Amount of chaos.                                                |
+| depth     | `number`            | `6`         | Amplitude(contrast) between clear and pixelated.                |
+| colors    | `string[]`          | `undefined` | Cycles through colors each tick. Fallback to the default color. |
+| fps       | `number`            | `200`       | Frames per second.                                              |
+| as        | `React.ElementType` | `"span"`    | Polymorphic tag: render as any HTML element.                    |
+| className | `string`            | `undefined` | Class for the container element.                                |
 
 
 ============================================================
@@ -582,7 +580,7 @@ Source file: components/text/text-fluid.mdx
 
 ============================================================
 ## Text Roll
-> Interactive CSS rolling text effect on hover, mount and scroll.
+> Interactive rolling text effect on hover, mount and scroll.
 
 Source file: components/text/text-roll.mdx
 
@@ -600,18 +598,19 @@ Source file: components/text/text-roll.mdx
 
 ## API
 
-| Name         | Type                                  | Default     | Description                                                                         |
-| ------------ | ------------------------------------- | ----------- | ----------------------------------------------------------------------------------- |
-| children     | `string`                              | —           | The text content to animate.                                                        |
-| axis         | `"x" \| "y"`                          | `"y"`       | Axis along which letters roll.                                                      |
-| mode         | `"letters" \| "group"`                | `"letters"` | Animate each letter independently on hover, or the entire group at once.            |
-| direction    | `"forward" \| "backward" \| "random"` | `"forward"` | Roll direction.                                                                     |
-| playOnScroll | `boolean`                             | `true`      | Trigger the animation when the element enters the viewport.                         |
-| playOnMount  | `boolean`                             | `true`      | Trigger the animation on mount.                                                     |
-| playOnHover  | `boolean`                             | `true`      | Trigger the animation on hover.                                                     |
-| stagger      | `number`                              | `0.01`      | Delay in seconds between each letter's animation start.                             |
-| duration     | `number`                              | `0.8`       | Duration of each letter's roll animation in seconds.                                |
-| cycles       | `number`                              | `1`         | Number of times the letter rolls before settling (clones do not linger in the DOM). |
+| Name         | Type                                  | Default              | Description                                                              |
+| ------------ | ------------------------------------- | -------------------- | ------------------------------------------------------------------------ |
+| children     | `string`                              | —                    | The text content to animate.                                             |
+| axis         | `"x" \| "y"`                          | `"y"`                | Axis along which letters roll.                                           |
+| mode         | `"letters" \| "group"`                | `"letters"`          | Animate each letter independently on hover, or the entire group at once. |
+| direction    | `"forward" \| "backward" \| "random"` | `"forward"`          | Roll direction.                                                          |
+| playOnScroll | `boolean`                             | `true`               | Trigger the animation when the element enters the viewport.              |
+| playOnMount  | `boolean`                             | `true`               | Trigger the animation on mount.                                          |
+| playOnHover  | `boolean`                             | `true`               | Trigger the animation on hover.                                          |
+| stagger      | `number`                              | `0.01`               | Delay in seconds between each letter's animation start.                  |
+| duration     | `number`                              | `0.8`                | Duration of each letter's roll animation in seconds.                     |
+| cycles       | `number`                              | `1`                  | Number of times the letter rolls before settling.                        |
+| ease         | `Easing`                              | `[0.84, 0, 0.22, 1]` | Motion easing: bezier array, named string, or easing function.           |
 
 
 ============================================================
