@@ -98,7 +98,7 @@ function Plane({ el, text, segments, material, pointer }: PlaneProps) {
         ro.observe(target)
         ro.observe(document.body)
         return () => ro.disconnect()
-    }, [el, canvas, texture, text])
+    }, [el, canvas, texture])
 
     useFrame(() => {
         const m = mesh.current
