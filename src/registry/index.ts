@@ -105,7 +105,7 @@ export const components: TRegistryComponent[] = [
     },
     {
         name: "text-roll",
-        files: ["text-roll.tsx", "text-roll.css"],
+        files: ["text-roll.tsx"],
         description: "Text roll effect",
         shared: [],
         dependencies: [],

@@ -1,4 +1,4 @@
-import "./text-roll.css"
+import { animate, type Easing } from "motion"
 import { type ComponentRef, useCallback, useEffect, useImperativeHandle, useRef } from "react"
 import { TextSplit } from "../text-split/text-split"
 
@@ -8,6 +8,7 @@ type AnimationProps = {
     stagger: number
     duration: number
     cycles: number
+    ease: Easing
 }
 
 export type TextRollProps = {
@@ -23,16 +24,17 @@ type DisplaceLetterProps = {
     char: string
     index: number
     enableHover: boolean
+    onComplete?: () => void
 } & AnimationProps
 
 export type DisplaceLetterHandle = {
     play: () => void
 }
 
-function getDir(dir: TextRollProps["direction"]) {
-    if (dir === "random") return Math.random() > 0.5 ? "-1" : "1"
-    if (dir === "forward") return "1"
-    return "-1"
+function getDir(dir: TextRollProps["direction"]): 1 | -1 {
+    if (dir === "random") return Math.random() > 0.5 ? 1 : -1
+    if (dir === "forward") return 1
+    return -1
 }
 
 function DisplaceLetter({
@@ -45,57 +47,67 @@ function DisplaceLetter({
     stagger,
     duration,
     cycles,
+    ease,
+    onComplete,
 }: DisplaceLetterProps) {
-    const wrapperRef = useRef<ComponentRef<"span">>(null)
     const isPlayingRef = useRef(false)
+    const clonedCharsRef = useRef<(ComponentRef<"span"> | null)[]>([])
+    const currentCharRef = useRef<ComponentRef<"span"> | null>(null)
 
-    const startPlay = useCallback(() => {
-        const el = wrapperRef.current
-        if (!el) return
+    const startPlay = useCallback(async () => {
         if (isPlayingRef.current) return
         isPlayingRef.current = true
-        el.style.setProperty("--aui-roll-dir", getDir(direction))
-        el.dataset.auiRollPlaying = "true"
-    }, [direction])
+
+        const dir = getDir(direction)
+
+        clonedCharsRef.current.forEach((clone, i) => {
+            if (!clone) return
+            if (axis === "y") {
+                clone.style.top = `${(i + 1) * dir * -100}%`
+                clone.style.left = "0"
+            } else {
+                clone.style.left = `${(i + 1) * dir * -100}%`
+                clone.style.top = "0"
+            }
+        })
+
+        await animate(
+            [currentCharRef.current, ...clonedCharsRef.current.filter((el) => el !== null)],
+            axis === "y"
+                ? { y: [`${dir * cycles * 100}%`, "0%"] }
+                : { x: [`${dir * cycles * 100}%`, "0%"] },
+            {
+                duration,
+                delay: stagger * index,
+                ease,
+            },
+        )
+        isPlayingRef.current = false
+        onComplete?.()
+    }, [axis, direction, stagger, duration, cycles, ease, index, onComplete])
 
     useImperativeHandle(ref, () => ({ play: startPlay }), [startPlay])
 
-    const handleAnimationEnd = (e: React.AnimationEvent) => {
-        if (e.animationName !== "aui-keyframes-slide") return
-        wrapperRef.current?.removeAttribute("data-aui-roll-playing")
-        isPlayingRef.current = false
-    }
-
     return (
         <span
-            ref={wrapperRef}
             suppressHydrationWarning
             onMouseEnter={enableHover ? startPlay : undefined}
-            onAnimationEnd={handleAnimationEnd}
             className="overflow-clip inline-block relative whitespace-pre"
-            data-aui-roll-letter={true}
-            data-aui-roll-axis={axis}
-            style={
-                {
-                    "--aui-roll-dur": `${duration}s`,
-                    "--aui-roll-delay": `${stagger * index}s`,
-                    "--aui-roll-cycles": cycles,
-                } as React.CSSProperties
-            }
         >
             {Array.from({ length: cycles }, (_, i) => (
                 <span
                     key={i}
+                    ref={(el) => {
+                        clonedCharsRef.current[i] = el
+                    }}
                     aria-hidden={true}
                     className="absolute"
-                    data-aui-roll-clone={true}
-                    style={{ "--aui-roll-clone-step": i + 1 } as React.CSSProperties}
                 >
                     {char}
                 </span>
             ))}
 
-            <span className="block" data-aui-roll-real={true}>
+            <span ref={currentCharRef} className="block">
                 {char}
             </span>
         </span>
@@ -113,29 +125,30 @@ export function TextRoll({
     stagger = 0,
     duration = 0.8,
     cycles = 2,
+    ease = [0.84, 0, 0.22, 1],
 }: TextRollProps) {
     const containerRef = useRef<ComponentRef<"span">>(null)
     const letterRefs = useRef<(DisplaceLetterHandle | null)[]>([])
     const isPlayingRef = useRef(false)
-    const accumulatedEndsRef = useRef(0)
+    const completedRef = useRef(0)
+
+    const handleLetterComplete = useCallback(() => {
+        completedRef.current++
+        if (completedRef.current >= letterRefs.current.length) {
+            isPlayingRef.current = false
+            completedRef.current = 0
+        }
+    }, [])
 
     const triggerPlay = useCallback(() => {
         if (isPlayingRef.current) return
         isPlayingRef.current = true
+        completedRef.current = 0
+
         for (const letter of letterRefs.current) {
             letter?.play()
         }
     }, [])
-
-    const handleGroupAnimationEnd = (e: React.AnimationEvent) => {
-        if (e.animationName !== "aui-keyframes-slide") return
-        accumulatedEndsRef.current++
-        const expected = letterRefs.current.length * (cycles + 1)
-        if (accumulatedEndsRef.current >= expected) {
-            isPlayingRef.current = false
-            accumulatedEndsRef.current = 0
-        }
-    }
 
     useEffect(() => {
         if (playOnMount) triggerPlay()
@@ -161,7 +174,6 @@ export function TextRoll({
         <span
             ref={containerRef}
             onMouseEnter={playOnHover && mode === "group" ? triggerPlay : undefined}
-            onAnimationEnd={handleGroupAnimationEnd}
         >
             <TextSplit
                 showMask={false}
@@ -179,6 +191,8 @@ export function TextRoll({
                         stagger={stagger}
                         duration={duration}
                         cycles={cycles}
+                        ease={ease}
+                        onComplete={handleLetterComplete}
                     />
                 )}
             >
