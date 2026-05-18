@@ -9,6 +9,15 @@ type DocTableOfContentProps = {
     headings: DocHeading[]
 }
 
+function scrollToHeading(id: string, e: React.MouseEvent<HTMLAnchorElement>) {
+    const el = document.getElementById(id)
+    if (!el) return
+    e.preventDefault()
+    el.scrollIntoView({
+        behavior: "smooth",
+    })
+}
+
 export default function DocTableOfContent({ headings }: DocTableOfContentProps) {
     const itemRefs = useRef<Map<string, HTMLLIElement>>(new Map())
     const top = useSpring(0, { stiffness: 500, damping: 40 })
@@ -64,7 +73,7 @@ export default function DocTableOfContent({ headings }: DocTableOfContentProps) 
 
     return (
         <div className="flex-col justify-between w-full relative">
-            <div className="absolute z-10 left-0 bottom-0 w-full h-20 bg-gradient-to-t from-bg to-transparent pointer-events-none" />
+            <div className="absolute z-10 left-0 bottom-0 w-full h-20 bg-linear-to-t from-bg to-transparent pointer-events-none" />
 
             <div className="overflow-y-auto scrollbar-overlay pb-20">
                 {headings.length > 0 && (
@@ -80,6 +89,7 @@ export default function DocTableOfContent({ headings }: DocTableOfContentProps) 
                                 sideLine
                                 linkItem={{ href: `#${heading.id}`, label: heading.text }}
                                 activeItem={activeId === heading.id}
+                                onLinkClick={(e) => scrollToHeading(heading.id, e)}
                             />
                         ))}
                     </ul>

@@ -35,12 +35,12 @@ const ITEMS_PER_COLUMN = 2
 
 function Column({ items, y, className, reversed, measureRef }: ColumnProps) {
     return (
-        <div className={cn("aspect-[2/4] h-full w-full relative", className)}>
+        <div className={cn("aspect-2/4 h-full w-full relative", className)}>
             <motion.div
                 ref={measureRef}
                 style={{ y }}
                 className={cn("h-full w-full", {
-                    "relative bottom-[100%]": reversed,
+                    "relative bottom-full": reversed,
                 })}
             >
                 {[...items, ...items].map((item, index) => {

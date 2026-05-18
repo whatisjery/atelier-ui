@@ -24,11 +24,11 @@ export default function ScrollingMarquee({
                 <>
                     <span
                         aria-hidden="true"
-                        className="absolute left-0 top-0 w-[20%] h-full z-2 bg-gradient-to-l from-transparent to-bg"
+                        className="absolute left-0 top-0 w-[20%] h-full z-2 bg-linear-to-l from-transparent to-bg"
                     />
                     <span
                         aria-hidden="true"
-                        className="absolute right-0 top-0 w-[20%] h-full z-2 bg-gradient-to-r from-transparent to-bg"
+                        className="absolute right-0 top-0 w-[20%] h-full z-2 bg-linear-to-r from-transparent to-bg"
                     />
                 </>
             )}

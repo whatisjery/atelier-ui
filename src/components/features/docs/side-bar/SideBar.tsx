@@ -85,7 +85,7 @@ export default function SideBar({ sections }: DocSidebarProps) {
 
                         <motion.div
                             key="panel"
-                            className="fixed z-51 xs:left-[1rem] xs:top-[1rem] left-0 top-0 h-full w-full xs:w-85"
+                            className="fixed z-51 xs:left-4 xs:top-4 left-0 top-0 h-full w-full xs:w-85"
                             variants={panelVariants}
                             initial="closed"
                             animate="open"

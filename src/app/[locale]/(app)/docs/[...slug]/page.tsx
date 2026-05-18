@@ -1,3 +1,4 @@
+import type { Metadata } from "next"
 import { setRequestLocale } from "next-intl/server"
 import ButtonSideBar from "@/components/common/ButtonSideBar"
 import RouteBreadCrumb from "@/components/common/RouteBreadCrumb"
@@ -47,10 +48,9 @@ async function getDocMeta(locale: string, slug: string[]): Promise<DocMeta> {
     return content.frontmatter as DocMeta
 }
 
-export async function generateMetadata({ params }: PageProps) {
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
     const { locale, slug } = await params
     const { title, description, tags } = await getDocMeta(locale, slug)
-
     return {
         title,
         description,

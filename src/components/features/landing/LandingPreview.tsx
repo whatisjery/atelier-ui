@@ -104,7 +104,7 @@ export default function LandingPreview({ onWebGLReady }: LandingPreviewProps) {
             <div
                 aria-label="Live preview of the Fluid Distortion shader effect"
                 role="img"
-                className="flex relative flex-col items-center justify-center pattern-line  h-[600px]"
+                className="flex relative flex-col items-center justify-center pattern-line h-150"
             >
                 <p className="sr-only">
                     Interactive live preview of the Fluid Distortion shader, an Atelier UI component

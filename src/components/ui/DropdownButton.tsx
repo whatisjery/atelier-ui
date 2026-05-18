@@ -16,7 +16,7 @@ export default function DropdownButton({ children, variant, ...props }: SwitchBu
         <Button variant={variant} size="icon" className="relative group overflow-hidden" {...props}>
             <span
                 className={cn(
-                    "top-0 left-0 opacity-100 group-data-[state=open]:-translate-y-[20%] group-data-[state=open]:opacity-0",
+                    "top-0 left-0 opacity-100 group-data-[state=open]:translate-y-[-20%] group-data-[state=open]:opacity-0",
                     cls,
                 )}
             >

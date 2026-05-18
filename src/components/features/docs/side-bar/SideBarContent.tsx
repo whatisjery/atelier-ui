@@ -1,6 +1,6 @@
 "use client"
 
-import { BookOpen, ChevronDown, Folder, FolderOpen, Receipt } from "lucide-react"
+import { BookOpen, ChevronDown, Folder, FolderOpen } from "lucide-react"
 import { useTranslations } from "next-intl"
 import React, { useState } from "react"
 import Badge from "@/components/ui/Badge"

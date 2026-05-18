@@ -141,14 +141,14 @@ export default function CodeBlockClient({
                         <pre
                             {...props}
                             className={cn("p-5 relative font-mono scrollbar-hide", {
-                                "overflow-y-auto max-h-[500px]": mode === "scroll",
+                                "overflow-y-auto max-h-125": mode === "scroll",
                                 "m-0 flex-1 min-h-0 overflow-y-auto": mode === "preview",
-                                "max-h-[200px] overflow-y-hidden": mode === "expand" && !isExpanded,
+                                "max-h-50 overflow-y-hidden": mode === "expand" && !isExpanded,
                                 "max-h-full overflow-y-auto": mode === "expand" && isExpanded,
                                 "code-block-line": !installTabs && showLineNumbers === true,
 
                                 // makes the text color of the install tabs 'unthemed'.
-                                "[&_*]:!text-accent-1": installTabs,
+                                "**:text-accent-1": installTabs,
                             })}
                         >
                             {installTabs && (
@@ -162,7 +162,7 @@ export default function CodeBlockClient({
                             {mode === "expand" && (
                                 <div
                                     className={cn(
-                                        "bg-gradient-to-t from-30% from-bg to-100% to-transparent flex items-end h-full w-full absolute bottom-0 left-0 right-0",
+                                        "bg-linear-to-t from-30% from-bg to-100% to-transparent flex items-end h-full w-full absolute bottom-0 left-0 right-0",
                                         { "bg-transparent": isExpanded },
                                     )}
                                 >

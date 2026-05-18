@@ -37,8 +37,8 @@ export default function PageDocLayout({
                 </div>
             </header>
 
-            <div className="max-md:hidden pattern-line z-2 border-r h-full w-10 absolute left-0 bg-bg top-0" />
-            <div className="max-md:hidden pattern-line z-2 border-l h-full w-10 absolute right-0 bg-bg top-0" />
+            <div className="max-md:hidden before:bg-fixed pattern-line z-2 border-r h-full w-10 absolute left-0 bg-bg top-0" />
+            <div className="max-md:hidden before:bg-fixed pattern-line z-2 border-l h-full w-10 absolute right-0 bg-bg top-0" />
 
             <main className={cn("flex min-h-screen w-full", maxWidth, paddingX)}>
                 {contentSlot && (

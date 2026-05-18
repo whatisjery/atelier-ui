@@ -8,6 +8,7 @@ type ListItemProps = {
     ref?: React.Ref<HTMLLIElement>
     className?: string
     leftSlot?: React.ReactNode
+    onLinkClick?: React.MouseEventHandler<HTMLAnchorElement>
 } & React.HTMLAttributes<HTMLLIElement>
 
 export default function ListItem({
@@ -17,6 +18,7 @@ export default function ListItem({
     ref,
     className,
     leftSlot,
+    onLinkClick,
     ...rest
 }: ListItemProps) {
     return (
@@ -35,7 +37,7 @@ export default function ListItem({
                 className,
             )}
         >
-            <Link className="flex items-center gap-x-3" href={linkItem.href}>
+            <Link className="flex items-center gap-x-3" href={linkItem.href} onClick={onLinkClick}>
                 {linkItem.icon}
                 <span>{linkItem.label}</span>
             </Link>

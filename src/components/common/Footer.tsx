@@ -36,7 +36,7 @@ export default function Footer() {
                 style={{ y }}
                 className="px-3 sm:px-7 py-18 w-full relative pattern-line border-b max-sm:transform-none!"
             >
-                <Card className="z-2 relative flex flex-col gap-y-28 max-w-[37rem] mx-auto">
+                <Card className="z-2 relative flex flex-col gap-y-28 max-w-148 mx-auto">
                     <div className="flex items-start xs:flex-row h-full flex-col gap-y-10 p-5">
                         <Brand version />
 

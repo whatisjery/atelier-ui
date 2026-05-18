@@ -15,7 +15,7 @@ export default function DocHeaderGroupTitle({
 }: DocHeaderGroupTitleProps) {
     return (
         <div className={cn("not-prose items-start flex flex-col w-full mb-10", className)}>
-            <h1 className="font-semibold text-4xl tracking-[-0.025em] mb-1">{meta.title}</h1>
+            <h1 className="font-semibold text-4xl tracking-tight mb-1">{meta.title}</h1>
             <p className="text-lg text-accent-2">{meta.description}</p>
 
             {showMetaTags && (

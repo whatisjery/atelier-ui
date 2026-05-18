@@ -70,38 +70,30 @@ export default function MainNav({ className }: MainNavProps) {
                 </div>
 
                 <div className="flex items-center gap-x-2">
-                    <GlobalSearch
-                        triggerSlot={({ onClick }) => (
-                            <>
-                                {!isMobile && (
-                                    <Button
-                                        type="button"
-                                        aria-label={tCommon("search")}
-                                        onClick={onClick}
-                                        className="w-55 bg-accent-5 border border-accent-3 hover:border-accent-4 flex justify-between pr-1 pl-3 h-9"
-                                    >
-                                        <div className="flex items-center gap-x-2">
-                                            <Search size={16} />
-                                            <p className="font-regular">{tCommon("search")}</p>
-                                        </div>
-
-                                        <div className="flex text-accent-1 border items-center gap-x-1 bg-bg px-2 rounded-lg">
-                                            <kbd className="pointer-events-none flex items-center">
-                                                <span className="text-[1.1rem]">⌘</span>
-                                                <span className="text-[0.8rem]">K</span>
-                                            </kbd>
-                                        </div>
-                                    </Button>
-                                )}
-
-                                {isMobile && (
-                                    <Button onClick={onClick} size="icon" variant="tertiary">
-                                        <Search className="size-5" />
-                                    </Button>
-                                )}
-                            </>
+                    <GlobalSearch>
+                        {isMobile ? (
+                            <Button size="icon" variant="tertiary" aria-label={tCommon("search")}>
+                                <Search className="size-5" />
+                            </Button>
+                        ) : (
+                            <Button
+                                type="button"
+                                aria-label={tCommon("search")}
+                                className="w-55 bg-accent-5 border border-accent-3 hover:border-accent-4 flex justify-between pr-1 pl-3 h-9"
+                            >
+                                <div className="flex items-center gap-x-2">
+                                    <Search size={16} />
+                                    <p className="font-regular">{tCommon("search")}</p>
+                                </div>
+                                <div className="flex text-accent-1 border items-center gap-x-1 bg-bg px-2 rounded-lg">
+                                    <kbd className="pointer-events-none flex items-center">
+                                        <span className="text-[1.1rem]">⌘</span>
+                                        <span className="text-[0.8rem]">K</span>
+                                    </kbd>
+                                </div>
+                            </Button>
                         )}
-                    />
+                    </GlobalSearch>
 
                     <ThemeToggle key="theme" />
 

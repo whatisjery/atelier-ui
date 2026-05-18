@@ -180,12 +180,15 @@ export default function DemoPreview({
                                 <Button
                                     size="icon"
                                     variant="ghost"
-                                    className="h-full disabled:opacity-20 disabled:cursor-not-allowed disabled:animate-spin disabled:[animation-direction:reverse]"
+                                    className="group h-full disabled:opacity-20 disabled:cursor-not-allowed"
                                     onClick={reload}
                                     disabled={!iframeLoaded}
                                     aria-label="Refresh preview"
                                 >
-                                    <RotateCcw strokeWidth={1.5} className="size-4" />
+                                    <RotateCcw
+                                        strokeWidth={1.5}
+                                        className="size-4 group-disabled:animate-spin group-disabled:direction-[reverse]"
+                                    />
                                 </Button>
                             </Tooltip>
 

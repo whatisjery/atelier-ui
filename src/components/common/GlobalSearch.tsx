@@ -2,7 +2,7 @@
 
 import { Search } from "lucide-react"
 import { useTranslations } from "next-intl"
-import { Dialog } from "radix-ui"
+import { Dialog, Slot } from "radix-ui"
 import { useState } from "react"
 import { useDocSearch } from "@/hooks/use-doc-search"
 import { useKeyDown } from "@/hooks/use-key-down"
@@ -13,10 +13,6 @@ import Card from "../ui/Card"
 import Input from "../ui/Input"
 
 const KEYBOARD_SHORTCUT = "k" as const
-
-type GlobalSearchProps = {
-    triggerSlot: ({ onClick }: { onClick: () => void }) => React.ReactNode
-}
 
 function highlightText(text: string, query: string) {
     if (!query) return text
@@ -36,7 +32,11 @@ function highlightText(text: string, query: string) {
     })
 }
 
-export default function GlobalSearch({ triggerSlot }: GlobalSearchProps) {
+type GlobalSearchProps = {
+    children: React.ReactNode
+}
+
+export default function GlobalSearch({ children }: GlobalSearchProps) {
     const router = useRouter()
     const [open, setOpen] = useState(false)
     const [activeIndex, setActiveIndex] = useState(-1)
@@ -96,7 +96,7 @@ export default function GlobalSearch({ triggerSlot }: GlobalSearchProps) {
 
     return (
         <>
-            {triggerSlot?.({ onClick: () => setOpen(true) })}
+            <Slot.Root onClick={() => setOpen(true)}>{children}</Slot.Root>
 
             <Dialog.Root open={open} onOpenChange={handleOpenChange}>
                 <Dialog.Portal>
@@ -106,7 +106,7 @@ export default function GlobalSearch({ triggerSlot }: GlobalSearchProps) {
                         asChild
                         className="data-[state=open]:a-pop-in data-[state=closed]:a-pop-out"
                     >
-                        <Card className="p-5 rounded-2xl max-w-[600px] fixed left-1/2 max-lg:top-4 top-20 z-21 w-full -translate-x-1/2 max-lg:max-w-[96%] bg-bg">
+                        <Card className="p-5 rounded-2xl max-w-150 fixed left-1/2 max-lg:top-4 top-20 z-21 w-full -translate-x-1/2 max-lg:max-w-[96%] bg-bg">
                             <Dialog.Title className="sr-only">{tCommon("search")}</Dialog.Title>
 
                             <search

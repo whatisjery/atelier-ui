@@ -21,7 +21,7 @@ export default function CatalogNavigation({ locale, activeSlug }: DocNavigationP
                         key={category.url}
                         href={category.url}
                         className={cn(
-                            "flex px-1 items-center border-b-1 border-transparent gap-x-2",
+                            "flex px-1 items-center border-b border-transparent gap-x-2",
                             {
                                 "border-accent-1": isActive,
                             },

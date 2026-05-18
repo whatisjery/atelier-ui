@@ -5,7 +5,6 @@ import { notFound } from "next/navigation"
 import { hasLocale, NextIntlClientProvider } from "next-intl"
 import { getTranslations, setRequestLocale } from "next-intl/server"
 import { Tooltip } from "radix-ui"
-import { ScrollRestorer } from "@/components/common/ScrollRestorer"
 import { ThemeProvider } from "@/components/common/ThemeProvider"
 import { ThemeSync } from "@/components/common/ThemeSync"
 import AuthInit from "@/components/features/auth/AuthInit"
@@ -93,7 +92,6 @@ export default async function AppLayout({ children, params }: AppLayoutProps) {
                     <NextIntlClientProvider>
                         <Tooltip.Provider>
                             <ThemeSync />
-                            <ScrollRestorer />
                             <Toaster />
                             <AuthInit />
                             {children}

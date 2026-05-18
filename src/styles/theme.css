@@ -9,13 +9,12 @@
     --breakpoint-xl: 80rem; /* 1280px */
     --breakpoint-2xl: 96rem; /* 1536px */
 
-    --spacing-base-w: 1360px;
+    --spacing-landing-w: 1360px;
     --spacing-nav-h: 4rem;
     --spacing-under-nav-h: 3.2rem;
     --spacing-offset: 2rem;
     --spacing-sticky: var(--spacing-nav-h);
     --spacing-sticky-nested: calc(var(--spacing-sticky) + var(--spacing-nav-h));
-    --spacing-aside-h: calc(100vh - var(--spacing-offset));
 
     --font-weight-thin: 200;
     --font-weight-light: 300;

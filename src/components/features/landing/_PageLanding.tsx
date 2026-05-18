@@ -99,14 +99,14 @@ export default function PageLanding({ showcaseComponents }: PageLadingProps) {
         <ReactLenis root options={{ lerp: 0.11, smoothWheel: !isMobile }}>
             <LandingPreloader isLoaded={!showLoader} />
 
-            <MainNav className="max-w-[calc(var(--spacing-base-w)+100px)] mx-auto" />
+            <MainNav className="max-w-[calc(var(--spacing-landing-w)+100px)] mx-auto" />
 
             <BackgroundPixelGrid
                 className="left-[calc(50%-50vw)] w-full h-210 top-nav-h -z-1"
                 pixelSize={DEFAULT_PIXEL_SIZE}
             />
 
-            <main className="w-full max-w-base-w mx-auto relative sm:px-3">
+            <main className="w-full max-w-landing-w mx-auto relative sm:px-3">
                 <section className="sm:-mt-nav-h" ref={heroSectionRef}>
                     <motion.div
                         style={{ y: heroY }}
@@ -214,7 +214,7 @@ export default function PageLanding({ showcaseComponents }: PageLadingProps) {
                     <MotionCard
                         ref={bottomCardRef}
                         style={isMobile ? undefined : { y: cardY }}
-                        className="w-full max-w-5xl max-sm:-mt-30  h-[300px] rounded-md overflow-hidden flex flex-col justify-between"
+                        className="w-full max-w-5xl max-sm:-mt-30 h-75 rounded-md overflow-hidden flex flex-col justify-between"
                     >
                         <div className="w-full h-full relative pattern-line"></div>
                         <div className="w-full font-medium text-sm h-15 bg-bg border-t flex items-center justify-center">

@@ -1,5 +1,3 @@
-"use client"
-
 import Colorful from "@uiw/react-color-colorful"
 import { type ComponentRef, useEffect, useRef, useState } from "react"
 import { toKebabCase } from "@/lib/utils"
