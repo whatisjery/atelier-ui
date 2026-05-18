@@ -163,7 +163,7 @@ export default function CodeBlockClient({
                                 <div
                                     className={cn(
                                         "bg-linear-to-t from-30% from-bg to-100% to-transparent flex items-end h-full w-full absolute bottom-0 left-0 right-0",
-                                        { "bg-transparent": isExpanded },
+                                        { "bg-none": isExpanded },
                                     )}
                                 >
                                     <Button
