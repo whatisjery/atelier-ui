@@ -2,7 +2,7 @@
 
 Source: https://atelier-ui.com/docs
 
-Generated: 2026-05-17T21:29:25.119Z
+Generated: 2026-05-18T10:49:31.764Z
 
 ---
 
@@ -139,9 +139,9 @@ Source file: components/cursor/image-trail.mdx
 | ------------- | ------------------------ | ------- | ---------------------------------------------------- |
 | data          | `T[]`                    | —       | Array of items.                                      |
 | renderItem    | `(item: T) => ReactNode` | —       | Render function called for each items.               |
-| spawnDistance | `number`                 | `120`   | Distance in pixels before spawning an item.          |
-| driftAmount   | `number`                 | `60`    | How far each item drifts from its spawn point in px. |
-| removeDelay   | `number`                 | `1.2`   | Seconds before a spawned item is removed.            |
+| spawnDistance | `number`                 | `76`    | Distance in pixels before spawning an item.          |
+| driftAmount   | `number`                 | `36`    | How far each item drifts from its spawn point in px. |
+| removeDelay   | `number`                 | `1.0`   | Seconds before a spawned item is removed.            |
 
 ***
 
