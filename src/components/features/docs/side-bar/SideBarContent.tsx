@@ -1,6 +1,6 @@
 "use client"
 
-import { BookOpen, ChevronDown, Folder, FolderOpen } from "lucide-react"
+import { BookOpen, ChevronDown, Folder, FolderOpen, Receipt } from "lucide-react"
 import { useTranslations } from "next-intl"
 import React, { useState } from "react"
 import Badge from "@/components/ui/Badge"
@@ -47,7 +47,7 @@ function SectionNode({ node, pathname, hasCustomer, closedKeys, toggle }: NodePr
     const FolderIcon = isOpen ? FolderOpen : Folder
 
     return (
-        <nav className={cn({ "mb-5": isOpen })}>
+        <section className={cn({ "mb-5": isOpen })}>
             <button
                 type="button"
                 onClick={() => toggle(node.url)}
@@ -78,7 +78,7 @@ function SectionNode({ node, pathname, hasCustomer, closedKeys, toggle }: NodePr
                     />
                 ))}
             </ul>
-        </nav>
+        </section>
     )
 }
 
@@ -95,8 +95,15 @@ export default function SideBarContent({ className, sections, topBarSlot }: Side
         })
     }
 
-    const flatSection = sections.find((s) => !s.children.some((c) => c.type === "folder"))
-    const nestedSections = sections.filter((s) => s.children.some((c) => c.type === "folder"))
+    const flatSection = sections
+        .filter(({ children }) => {
+            return !children.some(({ type }) => type === "folder")
+        })
+        .sort((a, b) => a.order - b.order)
+
+    const nestedSections = sections.filter(({ children }) => {
+        return children.some(({ type }) => type === "folder")
+    })
 
     return (
         <aside
@@ -107,35 +114,45 @@ export default function SideBarContent({ className, sections, topBarSlot }: Side
         >
             {topBarSlot}
 
-            <div className="px-5 py-5 overflow-y-auto flex-1">
-                <nav className="mb-7">
-                    <ul>
-                        <ListItem
-                            sideLine={false}
-                            activeItem={pathname === "/docs/components"}
-                            linkItem={{
-                                href: "/docs",
-                                label: tSidebar("browse-catalog"),
-                                icon: <BookOpen strokeWidth={1.5} className="size-5" />,
-                            }}
-                        />
-                        {flatSection?.children.map(({ url, title, icon }) => {
-                            const Icon = getLucideIcon(icon)
-                            return (
+            <nav className="px-5 py-5 overflow-y-auto flex-1 overscroll-none">
+                {flatSection.map((section) => {
+                    const isFirst = flatSection.indexOf(section) === 0
+                    return (
+                        <section className="mb-6" key={section.title}>
+                            {!isFirst ? (
+                                <h2 className="font-medium mb-4 text-accent-1">{section.title}</h2>
+                            ) : (
+                                <h2 className="sr-only">{section.title}</h2>
+                            )}
+                            <ul>
                                 <ListItem
-                                    key={url}
                                     sideLine={false}
-                                    activeItem={pathname === url}
+                                    activeItem={pathname === "/docs/components"}
                                     linkItem={{
-                                        href: url,
-                                        label: title,
-                                        icon: <Icon strokeWidth={1.5} className="size-5" />,
+                                        href: "/docs",
+                                        label: tSidebar("browse-catalog"),
+                                        icon: <BookOpen strokeWidth={1.5} className="size-5" />,
                                     }}
                                 />
-                            )
-                        })}
-                    </ul>
-                </nav>
+                                {section?.children.map(({ url, title, icon }) => {
+                                    const Icon = getLucideIcon(icon)
+                                    return (
+                                        <ListItem
+                                            key={url}
+                                            sideLine={false}
+                                            activeItem={pathname === url}
+                                            linkItem={{
+                                                href: url,
+                                                label: title,
+                                                icon: <Icon strokeWidth={1.5} className="size-5" />,
+                                            }}
+                                        />
+                                    )
+                                })}
+                            </ul>
+                        </section>
+                    )
+                })}
 
                 {nestedSections.map((section) => {
                     const subFolders = section.children.filter(({ type }) => type === "folder")
@@ -159,7 +176,7 @@ export default function SideBarContent({ className, sections, topBarSlot }: Side
                         </React.Fragment>
                     )
                 })}
-            </div>
+            </nav>
 
             <div className="w-full text-accent-2 font-mono border-t h-nav-h flex items-center justify-center text-xs">
                 {BRAND} {VERSION} &copy;{new Date().getFullYear()}
