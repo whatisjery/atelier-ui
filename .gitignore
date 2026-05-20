@@ -54,7 +54,6 @@ AGENTS.md
 .claude*
 .agents*
 skills-lock.json
-playground*
 
 packages/cli-tool/dist
 packages/cli-tool/node_modules
