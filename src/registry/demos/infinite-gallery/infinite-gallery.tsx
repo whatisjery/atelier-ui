@@ -1,4 +1,3 @@
-import Image from "next/image"
 import { useIsMobile } from "@/hooks/use-mobile"
 import {
     InfiniteGallery,
@@ -23,7 +22,7 @@ export default function InfiniteGalleryDemo(controls: Partial<InfiniteGalleryPro
                 {...controls}
                 data={ITEMS}
                 renderItem={(item) => (
-                    <Image
+                    <img
                         src={item.src}
                         alt="image"
                         width={600}

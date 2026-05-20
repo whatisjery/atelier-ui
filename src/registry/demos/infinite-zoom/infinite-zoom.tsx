@@ -1,4 +1,3 @@
-import Image from "next/image"
 import InfiniteZoom, { type InfiniteZoomProps } from "@/registry/base/infinite-zoom/infinite-zoom"
 
 const DATA = [
@@ -14,11 +13,11 @@ export default function InfiniteParallaxDemo(controls: Partial<InfiniteZoomProps
             {DATA.map((item) => {
                 return (
                     <div className="relative w-full h-full overflow-hidden" key={item}>
-                        <Image
+                        <img
                             src={item}
                             alt="image"
-                            width={500}
-                            height={500}
+                            width={100}
+                            height={100}
                             className="object-cover w-full h-full select-none pointer-events-none"
                             draggable={false}
                         />

@@ -1,6 +1,5 @@
 import { type LenisRef, ReactLenis } from "lenis/react"
 import { cancelFrame, type FrameData, frame } from "motion"
-import Image from "next/image"
 import { type ComponentRef, useEffect, useRef } from "react"
 import ScatteredScroll, {
     type ScatteredScrollProps,
@@ -39,7 +38,7 @@ export default function ScatteredScrollDemo(controls: Partial<ScatteredScrollPro
                 <div className="sticky top-0 h-screen gap-x-2 flex items-center justify-center">
                     <ScatteredScroll scrollTargetRef={scrollTargetRef} {...controls}>
                         {IMAGE_URLS.map((_, i) => (
-                            <Image
+                            <img
                                 key={i}
                                 className="w-[30vw] aspect-[5/7] object-cover rounded-md"
                                 src={IMAGE_URLS[i]}
