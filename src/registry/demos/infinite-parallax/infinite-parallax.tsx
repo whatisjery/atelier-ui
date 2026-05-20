@@ -1,10 +1,9 @@
 import { type LenisRef, ReactLenis } from "lenis/react"
 import { cancelFrame, type FrameData, frame } from "motion"
-import Image from "next/image"
 import { useEffect, useRef } from "react"
 import {
     InfiniteParallax,
-    type ParallaxColumnProps,
+    type InfiniteParallaxProps,
 } from "@/registry/base/infinite-parallax/infinite-parallax"
 
 const IMAGE_URLS = [
@@ -14,8 +13,7 @@ const IMAGE_URLS = [
     "/images/demo/shared/4.webp",
 ]
 
-export default function InfiniteParallaxDemo(controls: Partial<ParallaxColumnProps>) {
-    const { speed = 3, ...restControls } = controls
+export default function InfiniteParallaxDemo(controls: Partial<InfiniteParallaxProps>) {
     const lenisRef = useRef<LenisRef>(null)
 
     useEffect(() => {
@@ -34,27 +32,42 @@ export default function InfiniteParallaxDemo(controls: Partial<ParallaxColumnPro
             </div>
 
             <div className="h-screen bg-bg flex overflow-hidden gap-2">
-                <InfiniteParallax {...restControls} speed={speed * 0.4} className="gap-2">
+                <InfiniteParallax {...controls}>
                     {IMAGE_URLS.map((url) => (
-                        <div key={url} className="aspect-[5/7] relative overflow-hidden">
-                            <Image sizes="33vw" src={url} alt={url} fill className="object-cover" />
-                        </div>
+                        <img
+                            width={100}
+                            height={100}
+                            key={url}
+                            src={url}
+                            alt={url}
+                            className="aspect-5/7 w-full mb-2"
+                        />
                     ))}
                 </InfiniteParallax>
 
-                <InfiniteParallax {...restControls} speed={speed * 0.2} className="gap-2">
+                <InfiniteParallax {...controls} reversed>
                     {IMAGE_URLS.map((url) => (
-                        <div key={url} className="aspect-[5/7] relative overflow-hidden">
-                            <Image sizes="33vw" src={url} alt={url} fill className="object-cover" />
-                        </div>
+                        <img
+                            width={100}
+                            height={100}
+                            key={url}
+                            src={url}
+                            alt={url}
+                            className="aspect-5/7 w-full mb-2"
+                        />
                     ))}
                 </InfiniteParallax>
 
-                <InfiniteParallax {...restControls} speed={speed * 0.4} className="gap-2">
+                <InfiniteParallax {...controls}>
                     {IMAGE_URLS.map((url) => (
-                        <div key={url} className="aspect-[5/7] relative overflow-hidden">
-                            <Image sizes="33vw" src={url} alt={url} fill className="object-cover" />
-                        </div>
+                        <img
+                            width={100}
+                            height={100}
+                            key={url}
+                            src={url}
+                            alt={url}
+                            className="aspect-5/7 w-full mb-2"
+                        />
                     ))}
                 </InfiniteParallax>
             </div>
