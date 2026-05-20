@@ -5,7 +5,7 @@ tags: ["Motion", "Lenis", "Tailwind CSS"]
 ---
 
 <DemoPreview name="infinite-parallax" controls={{
-    speed: { type: "slider", value: 0.02, min: 0, max: 0.5, step: 0.01 },
+    autoScrollSpeed: { type: "slider", value: 0.02, min: 0, max: 0.5, step: 0.01 },
     parallaxAmount: { type: "slider", value: 2, min: 0, max: 10, step: 0.5 },
 }} />
 
@@ -27,7 +27,7 @@ tags: ["Motion", "Lenis", "Tailwind CSS"]
 | ------------ | --------------------------------- | ----------- | ----------- |
 | children     | `ReactNode`                       | —           | Items to render in the column. |
 | reversed     | `boolean`                         | `false`     | Reverse the column's scroll direction. |
-| speed        | `number`                          | `0.02`       | Auto-scroll speed. |
+| autoScrollSpeed | `number`                       | `0.02`      | Auto-scroll speed. `0` to disable. |
 | parallaxAmount | `number`                        | `2`         | Parallax intensity applied while scrolling. |
 
 ---

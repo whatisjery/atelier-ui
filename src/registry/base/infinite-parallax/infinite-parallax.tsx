@@ -3,7 +3,7 @@ import { type ComponentRef, useRef } from "react"
 
 export type InfiniteParallaxProps = {
     reversed?: boolean
-    speed?: number
+    autoScrollSpeed?: number
     parallaxAmount?: number
     children?: React.ReactNode
 }
@@ -13,7 +13,7 @@ const PARALLAX_SCALE = 0.0001
 
 export function InfiniteParallax({
     reversed,
-    speed = 0.02,
+    autoScrollSpeed = 0.02,
     parallaxAmount = 2,
     children,
 }: InfiniteParallaxProps) {
@@ -34,7 +34,7 @@ export function InfiniteParallax({
         }
 
         const parallax = Math.abs(velocity) * parallaxAmount * PARALLAX_SCALE
-        const step = delta * (speed + parallax) * directionRef.current
+        const step = delta * (autoScrollSpeed + parallax) * directionRef.current
         let next = offsetRef.current + step
 
         if (next <= -height) next = 0
