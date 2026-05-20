@@ -2,7 +2,7 @@
 
 Source: https://atelier-ui.com/docs
 
-Generated: 2026-05-20T07:42:52.392Z
+Generated: 2026-05-20T09:19:20.605Z
 
 ---
 
@@ -369,7 +369,7 @@ Infinite gallery effect inspired by the website of Better Off® Studio.
 
 ============================================================
 ## Infinite Parallax
-> Infinite parallax column effect with auto-scroll and repeating content.
+> Composable infinite parallax column effect with auto-scroll and repeating content.
 
 Source file: components/scroll/infinite-parallax.mdx
 
@@ -383,12 +383,12 @@ Source file: components/scroll/infinite-parallax.mdx
 
 ## API
 
-| Name       | Type        | Default     | Description                                                         |
-| ---------- | ----------- | ----------- | ------------------------------------------------------------------- |
-| children   | `ReactNode` | —           | Items to render in the column.                                      |
-| speed      | `number`    | `1`         | Parallax intensity.                                                 |
-| autoScroll | `number`    | `-0.2`      | Auto-scroll speed. Negative values reverse direction. 0 to disable. |
-| className  | `string`    | `undefined` | Class for the container element.                                    |
+| Name           | Type        | Default | Description                                 |
+| -------------- | ----------- | ------- | ------------------------------------------- |
+| children       | `ReactNode` | —       | Items to render in the column.              |
+| reversed       | `boolean`   | `false` | Reverse the column's scroll direction.      |
+| speed          | `number`    | `0.02`  | Auto-scroll speed.                          |
+| parallaxAmount | `number`    | `2`     | Parallax intensity applied while scrolling. |
 
 ***
 
