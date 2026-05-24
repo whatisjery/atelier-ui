@@ -1,0 +1,82 @@
+---
+title: "WebGL Text"
+description: "A primitive that mirrors a text element onto a DOM-aligned WebGL plane so you can apply custom shaders without losing SEO or accessibility."
+tags: ["Primitive", "React Three Fiber"]
+---
+
+A structural building block for composing your own WebGL text effects, like [Text Fluid](/docs/components/text/text-fluid).
+
+The text is rendered twice: as a real `<span>` for SEO and screen readers (hidden when WebGL is on), and as a `CanvasTexture` painted onto a plane that tracks its bounding box. The two stay pixel-aligned, so the shader feels like it runs on the DOM.
+
+Requires a `<Canvas>` with `<WebglPortal />` at the root of your app, see [Installation](/docs/getting-started/installation).
+
+## Basic usage
+
+With no `material`, the plane uses a `meshBasicMaterial` and looks identical to a plain `<span>`:
+
+```tsx title="Default material"
+<WebglText>Hello world</WebglText>
+```
+
+## With material
+
+`material` lets you provide your own R3F material. It receives the rasterized `Texture` and a live `pointer` (UV + hover):
+
+```tsx title="Custom shader material"
+<WebglText
+    segments={20}
+    material={(map, pointer) => (
+        <myShaderMaterial
+            uMap={map}
+            uPointer={pointer.uv}
+            uHover={pointer.hover}
+            transparent
+        />
+    )}
+>
+    Hello world
+</WebglText>
+```
+
+The `pointer` object is mutated in place, so reading it inside a `useFrame` gives current values without re-renders.
+
+Use `segments` to subdivide the plane when your shader displaces vertices. `1` is enough for fragment-only effects.
+
+## Toggling WebGL off
+
+Set `webglEnabled={false}` to skip the canvas pass and fall back to the plain DOM `<span>`:
+
+```tsx title="Graceful fallback"
+<WebglText webglEnabled={!prefersReducedMotion}>Hello world</WebglText>
+```
+
+---
+
+## CLI Install
+
+<InstalGuideCLI name="webgl-text" />
+
+---
+
+## Manual Install
+
+<InstalGuideManual name="webgl-text" />
+
+---
+
+## API
+
+| Name | Type | Default | Description |
+| --- | --- | --- | --- |
+| `children` | `string` | — | Text to render. Required. |
+| `material` | `(map: Texture, pointer: Pointer) => ReactNode` | — | Custom R3F material. Receives the rasterized texture and a live pointer. |
+| `segments` | `number` | `1` | Plane geometry subdivisions. Increase for vertex-displacing shaders. |
+| `webglEnabled` | `boolean` | `true` | Toggle the WebGL plane. When `false`, only the DOM span is rendered. |
+| `render` | `ReactElement \| function` | `<span />` | Override the wrapper element. |
+
+### Pointer
+
+| Name | Type | Description |
+| --- | --- | --- |
+| `uv` | `Vector2` | Normalized pointer position inside the element. `(0, 0)` is bottom-left, `(1, 1)` is top-right. |
+| `hover` | `number` | `1` while the pointer is over the element, `0` otherwise. |
