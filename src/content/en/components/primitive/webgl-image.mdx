@@ -1,0 +1,96 @@
+---
+title: "WebGL Image"
+description: "A primitive that mirrors an image onto a DOM-aligned WebGL plane so you can apply custom shaders without losing SEO or accessibility."
+tags: ["Primitive", "React Three Fiber"]
+---
+
+A structural building block for composing your own WebGL image effects, like [Curve Image](/docs/components/scroll/curve-image).
+
+The image is rendered twice: as a real `<img>` for SEO and screen readers (hidden when WebGL is on), and as a `Texture` on a plane that tracks the element's bounding box. The two stay pixel-aligned, so the shader feels like it runs on the DOM.
+
+Requires a `<Canvas>` with `<WebglPortal />` at the root of your app, see [Installation](/docs/getting-started/installation).
+
+## Basic usage
+
+With no `material`, the plane uses a `meshBasicMaterial` and looks identical to a plain `<img>`:
+
+```tsx title="Default material"
+<WebglImage src="/photo.jpg" alt="A photo" className="w-full h-auto" />
+```
+
+## Object-fit
+
+`object-fit: cover` and `object-fit: contain` are replicated on the plane. Set it the way you would on a normal `<img>`:
+
+```tsx title="Cover and contain"
+<WebglImage src="/photo.jpg" alt="A photo" className="w-full h-64 object-cover" />
+```
+
+## With material
+
+`material` lets you provide your own R3F material. It receives the loaded `Texture` and a live `pointer` (UV + hover):
+
+```tsx title="Custom shader material"
+<WebglImage
+    src="/photo.jpg"
+    alt="A photo"
+    segments={32}
+    material={(map, pointer) => (
+        <myShaderMaterial
+            uMap={map}
+            uPointer={pointer.uv}
+            uHover={pointer.hover}
+            transparent
+        />
+    )}
+/>
+```
+
+The `pointer` object is mutated in place, so reading it inside a `useFrame` gives current values without re-renders.
+
+Use `segments` to subdivide the plane when your shader displaces vertices. `1` is enough for fragment-only effects.
+
+## Toggling WebGL off
+
+Set `webglEnabled={false}` to skip the canvas pass and fall back to the plain DOM `<img>`:
+
+```tsx title="Graceful fallback"
+<WebglImage
+    src="/photo.jpg"
+    alt="A photo"
+    webglEnabled={!prefersReducedMotion}
+/>
+```
+
+---
+
+## CLI Install
+
+<InstalGuideCLI name="webgl-image" />
+
+---
+
+## Manual Install
+
+<InstalGuideManual name="webgl-image" />
+
+---
+
+## API
+
+| Name | Type | Default | Description |
+| --- | --- | --- | --- |
+| `src` | `string` | — | Image source. Required. |
+| `alt` | `string` | — | Alternative text. Required. |
+| `material` | `(map: Texture, pointer: Pointer) => ReactNode` | — | Custom R3F material. Receives the loaded texture and a live pointer. |
+| `segments` | `number` | `1` | Plane geometry subdivisions. Increase for vertex-displacing shaders. |
+| `webglEnabled` | `boolean` | `true` | Toggle the WebGL plane. When `false`, only the DOM image is rendered. |
+
+Standard `<img>` attributes (`className`, `style`, `width`, `height`, ...) are accepted and forwarded to the DOM element.
+
+### Pointer
+
+| Name | Type | Description |
+| --- | --- | --- |
+| `uv` | `Vector2` | Normalized pointer position inside the element. `(0, 0)` is bottom-left, `(1, 1)` is top-right. |
+| `hover` | `number` | `1` while the pointer is over the element, `0` otherwise. |
