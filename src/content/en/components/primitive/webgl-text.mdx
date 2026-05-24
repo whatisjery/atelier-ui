@@ -1,14 +1,23 @@
 ---
 title: "WebGL Text"
-description: "A primitive that mirrors a text element onto a DOM-aligned WebGL plane so you can apply custom shaders without losing SEO or accessibility."
+description: "A primitive that mirrors an text element onto a WebGL plane while preserving accessibility."
 tags: ["Primitive", "React Three Fiber"]
 ---
+
 
 A structural building block for composing your own WebGL text effects, like [Text Fluid](/docs/components/text/text-fluid).
 
 The text is rendered twice: as a real `<span>` for SEO and screen readers (hidden when WebGL is on), and as a `CanvasTexture` painted onto a plane that tracks its bounding box. The two stay pixel-aligned, so the shader feels like it runs on the DOM.
 
 Requires a `<Canvas>` with `<WebglPortal />` at the root of your app, see [Installation](/docs/getting-started/installation).
+
+---
+
+## Install
+
+<InstallTabs name="webgl-text" />
+
+---
 
 ## Basic usage
 
@@ -49,18 +58,6 @@ Set `webglEnabled={false}` to skip the canvas pass and fall back to the plain DO
 ```tsx title="Graceful fallback"
 <WebglText webglEnabled={!prefersReducedMotion}>Hello world</WebglText>
 ```
-
----
-
-## CLI Install
-
-<InstalGuideCLI name="webgl-text" />
-
----
-
-## Manual Install
-
-<InstalGuideManual name="webgl-text" />
 
 ---
 

@@ -21,7 +21,7 @@ const variantMap = {
         "text-theme-fg hover:bg-theme-bg/70 bg-theme-bg border border-accent-1 dark:border-theme-bg",
     tertiary: "hover:bg-accent-5 border border-transparent hover:border-theme-border",
     dashed: "border-dashed hover:bg-accent-5 border-accent-1 border dark:border-accent-2/70 bg-bg",
-    ghost: "bg-transparent hover:text-accent-3",
+    ghost: "bg-transparent hover:text-accent-3 border border-transparent",
 } as const
 
 const sizeMap = {

@@ -1,12 +1,20 @@
 ---
 title: "Text Split"
-description: "A primitive that splits a string into letters or words so you can render and animate each one independently."
+description: "A primitive that splits a string into letters or words."
 tags: ["Primitive", "Tailwind CSS"]
 ---
 
 A structural building block for composing your own text animations, like [Text Bounce](/docs/components/text/text-bounce).
 
 By default, each item is wrapped in an `overflow-clip` span (disable with `showMask={false}`). This keeps slide and reveal animations clipped to each letter's bounding box.
+
+---
+
+## Install
+
+<InstallTabs name="text-split" />
+
+---
 
 ## Basic usage
 
@@ -37,18 +45,6 @@ Use `splitBy="words"` to split on spaces instead:
     Hello world
 </TextSplit>
 ```
-
----
-
-## CLI Install
-
-<InstalGuideCLI name="text-split" />
-
----
-
-## Manual Install
-
-<InstalGuideManual name="text-split" />
 
 ---
 
