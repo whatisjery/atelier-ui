@@ -20,7 +20,9 @@ export default function InstalGuideManual({ name, snippets }: DocInstallGuidePro
 
     return (
         <>
-            <DocCodeBlock installTabs={manualInstallTabs} code={deps.join(" ")} lang="bash" />
+            {deps.length > 0 && (
+                <DocCodeBlock installTabs={manualInstallTabs} code={deps.join(" ")} lang="bash" />
+            )}
 
             {snippets.map((snippet) => (
                 <DocCodeBlock
