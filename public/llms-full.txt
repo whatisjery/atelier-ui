@@ -2,7 +2,7 @@
 
 Source: https://atelier-ui.com/docs
 
-Generated: 2026-05-24T20:47:56.924Z
+Generated: 2026-05-24T20:54:15.572Z
 
 ---
 
@@ -27,23 +27,26 @@ Source file: components/background/dither-flow.mdx
 
 
 ============================================================
-## Halftone Glow
-> A WebGL pulsing glow effect with halftone rendering.
+## Glowing Fog
+> Dynamic fog and light beam cursor follow effect.
 
 Source file: components/background/glowing-fog.mdx
 
 ## API
 
-| Name           | Type                | Default     | Description                               |
-| -------------- | ------------------- | ----------- | ----------------------------------------- |
-| speed          | `number`            | `16`        | Pulse speed.                              |
-| blurAmount     | `number`            | `0.2`       | Amount of blur.                           |
-| edgeSize       | `number`            | `10`        | Thickness of the edge glow.               |
-| edgeDistortion | `number`            | `0.02`      | How much noise warps the edge glow.       |
-| ringDistortion | `number`            | `0.1`       | How much noise warps the ring pulse.      |
-| edgeColor      | `string`            | `"#1d334e"` | Color of the edge glow.                   |
-| ringColor      | `string`            | `"#4599ff"` | Color of the ring pulse.                  |
-| onTextureReady | `(texture) => void` | `undefined` | Returns the rendered effect as a texture. |
+| Name           | Type                | Default     | Description                                          |
+| -------------- | ------------------- | ----------- | ---------------------------------------------------- |
+| speed          | `number`            | `18`        | Animation speed of the effect.                       |
+| beamColor      | `string`            | `"#6031ff"` | Color of the central light beam.                     |
+| beamX          | `number`            | `0.5`       | Horizontal position of the beam.                     |
+| beamY          | `number`            | `0.5`       | Vertical position of the beam.                       |
+| beamScale      | `number`            | `0.5`       | Intensity / size of the beam glow.                   |
+| fogDensity     | `number`            | `1`         | Density of the fog.                                  |
+| grainIntensity | `number`            | `0.1`       | Amount of grain.                                     |
+| mouseFollow    | `number`            | `0.2`       | Strength of mouse-based parallax follow on the beam. |
+| onTextureReady | `(texture) => void` | `undefined` | Returns the rendered result as a texture.            |
+
+***
 
 
 ============================================================
