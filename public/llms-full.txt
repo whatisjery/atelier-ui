@@ -2,7 +2,7 @@
 
 Source: https://atelier-ui.com/docs
 
-Generated: 2026-05-24T16:14:04.723Z
+Generated: 2026-05-24T20:47:56.924Z
 
 ---
 
@@ -27,26 +27,23 @@ Source file: components/background/dither-flow.mdx
 
 
 ============================================================
-## Glowing Fog
-> Dynamic fog and light beam cursor follow effect.
+## Halftone Glow
+> A WebGL pulsing glow effect with halftone rendering.
 
 Source file: components/background/glowing-fog.mdx
 
 ## API
 
-| Name           | Type                | Default     | Description                                          |
-| -------------- | ------------------- | ----------- | ---------------------------------------------------- |
-| speed          | `number`            | `18`        | Animation speed of the effect.                       |
-| beamColor      | `string`            | `"#6031ff"` | Color of the central light beam.                     |
-| beamX          | `number`            | `0.5`       | Horizontal position of the beam.                     |
-| beamY          | `number`            | `0.5`       | Vertical position of the beam.                       |
-| beamScale      | `number`            | `0.5`       | Intensity / size of the beam glow.                   |
-| fogDensity     | `number`            | `1`         | Density of the fog.                                  |
-| grainIntensity | `number`            | `0.1`       | Amount of grain.                                     |
-| mouseFollow    | `number`            | `0.2`       | Strength of mouse-based parallax follow on the beam. |
-| onTextureReady | `(texture) => void` | `undefined` | Returns the rendered result as a texture.            |
-
-***
+| Name           | Type                | Default     | Description                               |
+| -------------- | ------------------- | ----------- | ----------------------------------------- |
+| speed          | `number`            | `16`        | Pulse speed.                              |
+| blurAmount     | `number`            | `0.2`       | Amount of blur.                           |
+| edgeSize       | `number`            | `10`        | Thickness of the edge glow.               |
+| edgeDistortion | `number`            | `0.02`      | How much noise warps the edge glow.       |
+| ringDistortion | `number`            | `0.1`       | How much noise warps the ring pulse.      |
+| edgeColor      | `string`            | `"#1d334e"` | Color of the edge glow.                   |
+| ringColor      | `string`            | `"#4599ff"` | Color of the ring pulse.                  |
+| onTextureReady | `(texture) => void` | `undefined` | Returns the rendered effect as a texture. |
 
 
 ============================================================
@@ -75,11 +72,9 @@ Source file: components/background/halftone-glow.mdx
 
 Source file: components/cursor/fluid-distortion.mdx
 
-## CLI Install
-
 ***
 
-## Manual Install
+## Install
 
 ***
 
@@ -125,11 +120,9 @@ React Three Fiber utilities.
 
 Source file: components/cursor/image-trail.mdx
 
-## CLI Install
-
 ***
 
-## Manual Install
+## Install
 
 ***
 
@@ -157,11 +150,9 @@ React animation library.
 
 Source file: components/cursor/liquid-image.mdx
 
-## CLI Install
-
 ***
 
-## Manual Install
+## Install
 
 ***
 
@@ -206,11 +197,9 @@ React Three Fiber utilities.
 
 Source file: components/cursor/magnetic-dot-grid.mdx
 
-## CLI Install
-
 ***
 
-## Manual Install
+## Install
 
 ***
 
@@ -245,11 +234,9 @@ Re-creation of the canvas hero effect (as of March 22, 2026). Enable dark mode t
 
 Source file: components/cursor/pixel-trail.mdx
 
-## CLI Install
-
 ***
 
-## Manual Install
+## Install
 
 ***
 
@@ -279,16 +266,243 @@ Pixel trail effect inspired by his portfolio, reimplemented using a 2D canvas.
 
 
 ============================================================
+## Text Split
+> A primitive that splits a string into letters or words.
+
+Source file: components/primitive/text-split.mdx
+
+A structural building block for composing your own text animations, like [Text Bounce](/docs/components/text/text-bounce).
+
+By default, each item is wrapped in an `overflow-clip` span (disable with `showMask={false}`). This keeps slide and reveal animations clipped to each letter's bounding box.
+
+***
+
+## Install
+
+***
+
+## Basic usage
+
+By default, the string is split into individual letters:
+
+```tsx title="Split by letters"
+<TextSplit>Hello world</TextSplit>
+```
+
+Use `splitBy="words"` to split on spaces instead:
+
+```tsx title="Split by words"
+<TextSplit splitBy="words">Hello world</TextSplit>
+```
+
+## With renderItems
+
+`renderItems` lets you render each piece yourself. Here, every letter lifts on hover:
+
+```tsx title="Hover lift"
+<TextSplit
+    renderItems={(char, i) => (
+        <span key={i} className="inline-block transition-transform hover:-translate-y-1">
+            {char}
+        </span>
+    )}
+>
+    Hello world
+</TextSplit>
+```
+
+***
+
+## API
+
+| Name          | Type                                         | Default     | Description                                |
+| ------------- | -------------------------------------------- | ----------- | ------------------------------------------ |
+| `children`    | `string`                                     | —           | Text to split. Required.                   |
+| `splitBy`     | `"letters" \| "words"`                       | `"letters"` | How to split the string.                   |
+| `showMask`    | `boolean`                                    | `true`      | Wrap each item in an `overflow-clip` span. |
+| `renderItems` | `(char: string, index: number) => ReactNode` | —           | Custom render for each split item.         |
+| `render`      | `ReactElement \| function`                   | `<span />`  | Override the wrapper element.              |
+
+
+============================================================
+## WebGL Image
+> A primitive that mirrors an image onto a WebGL plane while preserving accessibility.
+
+Source file: components/primitive/webgl-image.mdx
+
+A structural building block for composing your own WebGL image effects, like [Curve Image](/docs/components/scroll/curve-image).
+
+The image is rendered twice: as a real `<img>` for SEO and screen readers (hidden when WebGL is on), and as a `Texture` on a plane that tracks the element's bounding box. The two stay pixel-aligned, so the shader feels like it runs on the DOM.
+
+Requires a `<Canvas>` with `<WebglPortal />` at the root of your app, see [Installation](/docs/getting-started/installation).
+
+***
+
+## Install
+
+***
+
+## Basic usage
+
+With no `material`, the plane uses a `meshBasicMaterial` and looks identical to a plain `<img>`:
+
+```tsx title="Default material"
+<WebglImage src="/photo.jpg" alt="A photo" className="w-full h-auto" />
+```
+
+## Object-fit
+
+`object-fit: cover` and `object-fit: contain` are replicated on the plane. Set it the way you would on a normal `<img>`:
+
+```tsx title="Cover and contain"
+<WebglImage src="/photo.jpg" alt="A photo" className="w-full h-64 object-cover" />
+```
+
+## With material
+
+`material` lets you provide your own R3F material. It receives the loaded `Texture` and a live `pointer` (UV + hover):
+
+```tsx title="Custom shader material"
+<WebglImage
+    src="/photo.jpg"
+    alt="A photo"
+    segments={32}
+    material={(map, pointer) => (
+        <myShaderMaterial
+            uMap={map}
+            uPointer={pointer.uv}
+            uHover={pointer.hover}
+            transparent
+        />
+    )}
+/>
+```
+
+The `pointer` object is mutated in place, so reading it inside a `useFrame` gives current values without re-renders.
+
+Use `segments` to subdivide the plane when your shader displaces vertices. `1` is enough for fragment-only effects.
+
+## Toggling WebGL off
+
+Set `webglEnabled={false}` to skip the canvas pass and fall back to the plain DOM `<img>`:
+
+```tsx title="Graceful fallback"
+<WebglImage
+    src="/photo.jpg"
+    alt="A photo"
+    webglEnabled={!prefersReducedMotion}
+/>
+```
+
+***
+
+## API
+
+| Name           | Type                                            | Default | Description                                                           |
+| -------------- | ----------------------------------------------- | ------- | --------------------------------------------------------------------- |
+| `src`          | `string`                                        | —       | Image source. Required.                                               |
+| `alt`          | `string`                                        | —       | Alternative text. Required.                                           |
+| `material`     | `(map: Texture, pointer: Pointer) => ReactNode` | —       | Custom R3F material. Receives the loaded texture and a live pointer.  |
+| `segments`     | `number`                                        | `1`     | Plane geometry subdivisions. Increase for vertex-displacing shaders.  |
+| `webglEnabled` | `boolean`                                       | `true`  | Toggle the WebGL plane. When `false`, only the DOM image is rendered. |
+
+Standard `<img>` attributes (`className`, `style`, `width`, `height`, ...) are accepted and forwarded to the DOM element.
+
+### Pointer
+
+| Name    | Type      | Description                                                                                     |
+| ------- | --------- | ----------------------------------------------------------------------------------------------- |
+| `uv`    | `Vector2` | Normalized pointer position inside the element. `(0, 0)` is bottom-left, `(1, 1)` is top-right. |
+| `hover` | `number`  | `1` while the pointer is over the element, `0` otherwise.                                       |
+
+
+============================================================
+## WebGL Text
+> A primitive that mirrors an text element onto a WebGL plane while preserving accessibility.
+
+Source file: components/primitive/webgl-text.mdx
+
+A structural building block for composing your own WebGL text effects, like [Text Fluid](/docs/components/text/text-fluid).
+
+The text is rendered twice: as a real `<span>` for SEO and screen readers (hidden when WebGL is on), and as a `CanvasTexture` painted onto a plane that tracks its bounding box. The two stay pixel-aligned, so the shader feels like it runs on the DOM.
+
+Requires a `<Canvas>` with `<WebglPortal />` at the root of your app, see [Installation](/docs/getting-started/installation).
+
+***
+
+## Install
+
+***
+
+## Basic usage
+
+With no `material`, the plane uses a `meshBasicMaterial` and looks identical to a plain `<span>`:
+
+```tsx title="Default material"
+<WebglText>Hello world</WebglText>
+```
+
+## With material
+
+`material` lets you provide your own R3F material. It receives the rasterized `Texture` and a live `pointer` (UV + hover):
+
+```tsx title="Custom shader material"
+<WebglText
+    segments={20}
+    material={(map, pointer) => (
+        <myShaderMaterial
+            uMap={map}
+            uPointer={pointer.uv}
+            uHover={pointer.hover}
+            transparent
+        />
+    )}
+>
+    Hello world
+</WebglText>
+```
+
+The `pointer` object is mutated in place, so reading it inside a `useFrame` gives current values without re-renders.
+
+Use `segments` to subdivide the plane when your shader displaces vertices. `1` is enough for fragment-only effects.
+
+## Toggling WebGL off
+
+Set `webglEnabled={false}` to skip the canvas pass and fall back to the plain DOM `<span>`:
+
+```tsx title="Graceful fallback"
+<WebglText webglEnabled={!prefersReducedMotion}>Hello world</WebglText>
+```
+
+***
+
+## API
+
+| Name           | Type                                            | Default    | Description                                                              |
+| -------------- | ----------------------------------------------- | ---------- | ------------------------------------------------------------------------ |
+| `children`     | `string`                                        | —          | Text to render. Required.                                                |
+| `material`     | `(map: Texture, pointer: Pointer) => ReactNode` | —          | Custom R3F material. Receives the rasterized texture and a live pointer. |
+| `segments`     | `number`                                        | `1`        | Plane geometry subdivisions. Increase for vertex-displacing shaders.     |
+| `webglEnabled` | `boolean`                                       | `true`     | Toggle the WebGL plane. When `false`, only the DOM span is rendered.     |
+| `render`       | `ReactElement \| function`                      | `<span />` | Override the wrapper element.                                            |
+
+### Pointer
+
+| Name    | Type      | Description                                                                                     |
+| ------- | --------- | ----------------------------------------------------------------------------------------------- |
+| `uv`    | `Vector2` | Normalized pointer position inside the element. `(0, 0)` is bottom-left, `(1, 1)` is top-right. |
+| `hover` | `number`  | `1` while the pointer is over the element, `0` otherwise.                                       |
+
+
+============================================================
 ## Curve Image
 > An SEO-friendly WebGL image with scroll-velocity driven bend and chromatic aberration.
 
 Source file: components/scroll/curve-image.mdx
 
-## CLI Install
-
 ***
 
-## Manual Install
+## Install
 
 ***
 
@@ -337,11 +551,9 @@ Source file: components/scroll/elastic-stick.mdx
 
 Source file: components/scroll/infinite-gallery.mdx
 
-## CLI Install
-
 ***
 
-## Manual Install
+## Install
 
 ***
 
@@ -373,11 +585,9 @@ Infinite gallery effect inspired by the website of Better Off® Studio.
 
 Source file: components/scroll/infinite-parallax.mdx
 
-## CLI Install
-
 ***
 
-## Manual Install
+## Install
 
 ***
 
@@ -410,11 +620,9 @@ Smooth scroll library used in the demo.
 
 Source file: components/scroll/infinite-zoom.mdx
 
-## CLI Install
-
 ***
 
-## Manual Install
+## Install
 
 ***
 
@@ -437,11 +645,7 @@ Source file: components/scroll/scattered-scroll.mdx
 
 ***
 
-## CLI Install
-
-***
-
-## Manual Install
+## Install
 
 ***
 
@@ -474,11 +678,7 @@ Source file: components/text/pixelated-text.mdx
 
 ***
 
-## CLI Install
-
-***
-
-## Manual Install
+## Install
 
 ***
 
@@ -501,11 +701,9 @@ Source file: components/text/pixelated-text.mdx
 
 Source file: components/text/text-bounce.mdx
 
-## CLI Install
-
 ***
 
-## Manual Install
+## Install
 
 ***
 
@@ -528,6 +726,12 @@ Source file: components/text/text-bounce.mdx
 > SEO-friendly text with an animated WebGL shimmer and distortion effect.
 
 Source file: components/text/text-fluid.mdx
+
+***
+
+## Install
+
+***
 
 ## API
 
@@ -552,11 +756,7 @@ Source file: components/text/text-roll.mdx
 
 ***
 
-## CLI Install
-
-***
-
-## Manual Install
+## Install
 
 ***
 
@@ -586,11 +786,9 @@ Source file: components/text/text-roll.mdx
 
 Source file: components/text/text-scramble.mdx
 
-## CLI Install
-
 ***
 
-## Manual Install
+## Install
 
 ***
 
