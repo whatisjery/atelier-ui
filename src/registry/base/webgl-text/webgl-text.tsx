@@ -1,6 +1,7 @@
 import { useFrame, useThree } from "@react-three/fiber"
 import {
     type ComponentRef,
+    cloneElement,
     type RefObject,
     useEffect,
     useLayoutEffect,
@@ -8,6 +9,7 @@ import {
     useRef,
 } from "react"
 import { CanvasTexture, type Mesh, type Texture, Vector2 } from "three"
+import { type RenderProp, useRender } from "../../hooks/use-render"
 import { webglTeleport } from "../webgl-portal/webgl-portal"
 
 export type Pointer = {
@@ -20,7 +22,8 @@ type WebglTextProps = {
     segments?: number
     webglEnabled?: boolean
     material?: (map: Texture, pointer: Pointer) => React.ReactNode
-} & Omit<React.HTMLAttributes<HTMLSpanElement>, "children">
+    render?: RenderProp
+}
 
 type PlaneProps = {
     el: RefObject<ComponentRef<"span"> | null>
@@ -126,12 +129,10 @@ function Plane({ el, segments, material, pointer }: PlaneProps) {
 
 export function WebglText({
     children,
-    className,
-    style,
     material,
     webglEnabled = true,
     segments = 1,
-    ...rest
+    render,
 }: WebglTextProps) {
     const el = useRef<ComponentRef<"span">>(null)
     const pointer = useMemo<Pointer>(() => {
@@ -167,16 +168,20 @@ export function WebglText({
         }
     }, [webglEnabled, pointer])
 
+    const element = useRender({
+        render,
+        defaultElement: <span />,
+        props: { ref: el, children },
+    })
+    // Force opacity:0 to win when WebGL is on, so a consumer can't accidentally
+    // un-hide the DOM fallback through their render element's style.
+    const host = webglEnabled
+        ? cloneElement(element, { style: { ...element.props.style, opacity: 0 } })
+        : element
+
     return (
         <>
-            <span
-                ref={el}
-                className={className}
-                style={webglEnabled ? { ...style, opacity: 0 } : style}
-                {...rest}
-            >
-                {children}
-            </span>
+            {host}
 
             {webglEnabled && (
                 <webglTeleport.In>
