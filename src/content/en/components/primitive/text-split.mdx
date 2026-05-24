@@ -1,0 +1,63 @@
+---
+title: "Text Split"
+description: "A primitive that splits a string into letters or words so you can render and animate each one independently."
+tags: ["Primitive", "Tailwind CSS"]
+---
+
+A structural building block for composing your own text animations, like [Text Bounce](/docs/components/text/text-bounce).
+
+By default, each item is wrapped in an `overflow-clip` span (disable with `showMask={false}`). This keeps slide and reveal animations clipped to each letter's bounding box.
+
+## Basic usage
+
+By default, the string is split into individual letters:
+
+```tsx title="Split by letters"
+<TextSplit>Hello world</TextSplit>
+```
+
+Use `splitBy="words"` to split on spaces instead:
+
+```tsx title="Split by words"
+<TextSplit splitBy="words">Hello world</TextSplit>
+```
+
+## With renderItems
+
+`renderItems` lets you render each piece yourself. Here, every letter lifts on hover:
+
+```tsx title="Hover lift"
+<TextSplit
+    renderItems={(char, i) => (
+        <span key={i} className="inline-block transition-transform hover:-translate-y-1">
+            {char}
+        </span>
+    )}
+>
+    Hello world
+</TextSplit>
+```
+
+---
+
+## CLI Install
+
+<InstalGuideCLI name="text-split" />
+
+---
+
+## Manual Install
+
+<InstalGuideManual name="text-split" />
+
+---
+
+## API
+
+| Name | Type | Default | Description |
+| --- | --- | --- | --- |
+| `children` | `string` | — | Text to split. Required. |
+| `splitBy` | `"letters" \| "words"` | `"letters"` | How to split the string. |
+| `showMask` | `boolean` | `true` | Wrap each item in an `overflow-clip` span. |
+| `renderItems` | `(char: string, index: number) => ReactNode` | — | Custom render for each split item. |
+| `render` | `ReactElement \| function` | `<span />` | Override the wrapper element. |
