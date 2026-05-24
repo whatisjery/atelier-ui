@@ -10,7 +10,7 @@ export default function Input({ className, ref, ...props }: InputProps) {
         <input
             ref={ref}
             className={cn(
-                "focus-visible:border focus-visible:ring-6 focus-visible:ring-accent-4 border rounded-sm bg-transparent outline-none text-sm h-11 px-3 [&::-webkit-search-cancel-button]:hidden",
+                "focus-visible:border focus-visible:ring-5 focus-visible:border-accent-3 dark:focus-visible:border-ring dark:focus-visible:ring-ring/15 focus-visible:ring-accent-4 border rounded-sm bg-transparent outline-none text-sm h-11 px-3 [&::-webkit-search-cancel-button]:hidden",
                 className,
             )}
             {...props}

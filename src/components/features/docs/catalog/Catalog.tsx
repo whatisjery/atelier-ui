@@ -2,7 +2,7 @@
 
 import { Search, X } from "lucide-react"
 import { useTranslations } from "next-intl"
-import { type ComponentRef, useEffect, useRef, useState } from "react"
+import { useState } from "react"
 import Button from "@/components/ui/Button"
 import Input from "@/components/ui/Input"
 import { useKeyDown } from "@/hooks/use-key-down"
@@ -34,8 +34,7 @@ type CatalogProps = {
 export default function Catalog({ catalogItems, title }: CatalogProps) {
     const tCommon = useTranslations("common")
     const tCatalog = useTranslations("docs.catalog")
-    const searchInputRef = useRef<ComponentRef<"input">>(null)
-    const [searchOpen, setSearchOpen] = useState(false)
+
     const [query, setQuery] = useState("")
     const [activeTags, setActiveTags] = useState<string[]>([])
     const { itemCount, tagCounts } = countElements(catalogItems)
@@ -47,14 +46,9 @@ export default function Catalog({ catalogItems, title }: CatalogProps) {
         })
     }
 
-    function handleToggleSearch() {
-        if (searchOpen) setQuery("")
-        setSearchOpen(!searchOpen)
-    }
-
     function filterChildren(item: DocTree) {
         return item.children.filter((child) => {
-            if (query) return child.title.toLowerCase().includes(query.toLowerCase())
+            if (query.trim()) return child.title.toLowerCase().includes(query.trim().toLowerCase())
             if (activeTags.length > 0) return child.tags?.some((tag) => activeTags.includes(tag))
             return true
         })
@@ -66,97 +60,84 @@ export default function Catalog({ catalogItems, title }: CatalogProps) {
 
     const filteredCount = filteredList.flatMap(({ children }) => children).length
 
-    useEffect(() => {
-        if (searchOpen) searchInputRef.current?.focus()
-    }, [searchOpen])
-
     useKeyDown({
         key: "Escape",
         handler: () => {
             setQuery("")
-            setSearchOpen(false)
         },
     })
 
     return (
-        <div className="space-y-6 not-prose">
-            <div className="pb-10 mb-10 border-b border-dashed">
-                <div className="flex items-start justify-between - mb-5">
-                    <h2 className="text-3xl font-semibold">
-                        {title} ({filteredCount})
-                    </h2>
+        <div className="not-prose">
+            <h2 className="text-3xl font-semibold mb-5">
+                {title} ({filteredCount})
+            </h2>
 
-                    <Button
-                        size="icon"
-                        variant="ghost"
-                        onClick={handleToggleSearch}
+            <div className="flex flex-col gap-y-2">
+                <search className="relative flex items-center justify-between h-12">
+                    <Search className="size-4 text-accent-1 ml-3" />
+                    <Input
+                        type="search"
+                        value={query}
+                        className="absolute text-sm px-9 w-full"
+                        placeholder={tCommon("search")}
                         aria-label={tCommon("search")}
-                    >
-                        {searchOpen ? <X className="size-5" /> : <Search className="size-5" />}
-                    </Button>
-                </div>
-
-                <div className="flex flex-col relative min-h-11">
-                    {!searchOpen && (
-                        <div className="flex flex-wrap gap-1.5">
-                            {Object.keys(tagCounts).map((tag) => {
-                                const isActive = activeTags.includes(tag)
-                                return (
-                                    <Button
-                                        key={tag}
-                                        size="tag"
-                                        variant={isActive ? "secondary" : "primary"}
-                                        onClick={() => toggleTag(tag)}
-                                    >
-                                        {tag} ({tagCounts[tag]})
-                                    </Button>
-                                )
-                            })}
-                        </div>
+                        onChange={(e) => setQuery(e.target.value)}
+                    />
+                    {query.length > 0 && (
+                        <Button
+                            variant="ghost"
+                            className="relative z-2"
+                            onClick={() => setQuery("")}
+                        >
+                            <X size={17} />
+                        </Button>
                     )}
+                </search>
 
-                    {searchOpen && (
-                        <Input
-                            type="search"
-                            value={query}
-                            ref={searchInputRef}
-                            placeholder={tCommon("search")}
-                            aria-label={tCommon("search")}
-                            onChange={(e) => setQuery(e.target.value)}
-                            onBlur={() => {
-                                if (!query) setSearchOpen(false)
-                            }}
-                        />
-                    )}
+                <div className="flex flex-wrap gap-1.5">
+                    {Object.keys(tagCounts).map((tag) => {
+                        const isActive = activeTags.includes(tag)
+                        return (
+                            <Button
+                                key={tag}
+                                size="tag"
+                                variant={isActive ? "secondary" : "primary"}
+                                onClick={() => toggleTag(tag)}
+                            >
+                                {tag} ({tagCounts[tag]})
+                            </Button>
+                        )
+                    })}
                 </div>
             </div>
 
+            <div className="text-sm text-accent-2 flex items-center gap-x-3 pt-10 mb-2">
+                {activeTags.length > 0 && (
+                    <button
+                        type="button"
+                        onClick={() => setActiveTags([])}
+                        className="hover:text-accent-3 font-medium text-accent-1 cursor-pointer flex items-center gap-x-0.5"
+                    >
+                        <X size={15} />
+                        {tCatalog("clear-filters")}
+                    </button>
+                )}
+
+                <span>
+                    {tCatalog("results-count", {
+                        filtered: filteredCount,
+                        total: itemCount,
+                    })}
+                </span>
+            </div>
+
             <div className="relative">
-                <div className="max-xs:hidden text-sm text-accent-2 flex items-center gap-x-3 absolute top-1 right-0">
-                    <span>
-                        {tCatalog("results-count", {
-                            filtered: filteredCount,
-                            total: itemCount,
-                        })}
-                    </span>
-
-                    {activeTags.length > 0 && (
-                        <button
-                            type="button"
-                            onClick={() => setActiveTags([])}
-                            className="hover:text-accent-3 font-medium text-accent-1 cursor-pointer flex items-center gap-x-0.5"
-                        >
-                            <X size={15} />
-                            {tCatalog("clear-filters")}
-                        </button>
-                    )}
-                </div>
-
                 {filteredList.map((item) => {
                     const Icon = getLucideIcon(item.icon)
 
                     return (
-                        <div className="mb-15" key={item.title}>
+                        <div className="mb-15 border-t pt-10 border-dashed" key={item.title}>
                             <h3 className="not-prose font-semibold w-full gap-2 pb-2 flex items-center">
                                 <Icon
                                     strokeWidth={1.5}

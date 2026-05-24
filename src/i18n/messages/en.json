@@ -29,7 +29,7 @@
             "browse-catalog": "Browse Catalog"
         },
         "catalog": {
-            "results-count": "Showing {filtered} of {total}",
+            "results-count": "{filtered, plural, =0 {No results} other {Showing {filtered} of {total}}}",
             "clear-filters": "Clear filters"
         }
     },

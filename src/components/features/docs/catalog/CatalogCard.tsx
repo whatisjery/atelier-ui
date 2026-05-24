@@ -4,7 +4,7 @@ import Link from "next/link"
 import AnimatedArrow from "@/components/ui/AnimatedArrow"
 import Badge from "@/components/ui/Badge"
 import Card from "@/components/ui/Card"
-import { cn } from "@/lib/utils"
+import { cn, truncateText } from "@/lib/utils"
 import type { DocComponentStatus, DocTree } from "@/types/docs"
 
 const badgeMap: Record<DocComponentStatus, React.ReactNode> = {
@@ -33,7 +33,9 @@ export default function CatalogCard({ catalogItem }: CatalogCardProps) {
                         </div>
                     </div>
 
-                    <p className="font-light text-accent-2 mb-3">{catalogItem.description}</p>
+                    <p className="font-light text-accent-2 mb-3">
+                        {truncateText(catalogItem.description ?? "", 100)}
+                    </p>
 
                     <div className="flex items-center gap-x-1">
                         {catalogItem.tags?.map((tag) => (
