@@ -2,7 +2,7 @@
 
 Source: https://atelier-ui.com/docs
 
-Generated: 2026-05-20T09:19:20.605Z
+Generated: 2026-05-24T16:14:04.723Z
 
 ---
 
@@ -383,12 +383,12 @@ Source file: components/scroll/infinite-parallax.mdx
 
 ## API
 
-| Name           | Type        | Default | Description                                 |
-| -------------- | ----------- | ------- | ------------------------------------------- |
-| children       | `ReactNode` | —       | Items to render in the column.              |
-| reversed       | `boolean`   | `false` | Reverse the column's scroll direction.      |
-| speed          | `number`    | `0.02`  | Auto-scroll speed.                          |
-| parallaxAmount | `number`    | `2`     | Parallax intensity applied while scrolling. |
+| Name            | Type        | Default | Description                                 |
+| --------------- | ----------- | ------- | ------------------------------------------- |
+| children        | `ReactNode` | —       | Items to render in the column.              |
+| reversed        | `boolean`   | `false` | Reverse the column's scroll direction.      |
+| autoScrollSpeed | `number`    | `0.02`  | Auto-scroll speed. `0` to disable.          |
+| parallaxAmount  | `number`    | `2`     | Parallax intensity applied while scrolling. |
 
 ***
 
@@ -484,50 +484,15 @@ Source file: components/text/pixelated-text.mdx
 
 ## API
 
-| Name      | Type                | Default     | Description                                                     |
-| --------- | ------------------- | ----------- | --------------------------------------------------------------- |
-| pixelSize | `number`            | `5`         | Pixel size.                                                     |
-| chaos     | `number`            | `0.1`       | Amount of chaos.                                                |
-| depth     | `number`            | `6`         | Amplitude(contrast) between clear and pixelated.                |
-| colors    | `string[]`          | `undefined` | Cycles through colors each tick. Fallback to the default color. |
-| fps       | `number`            | `200`       | Frames per second.                                              |
-| as        | `React.ElementType` | `"span"`    | Polymorphic tag: render as any HTML element.                    |
-| className | `string`            | `undefined` | Class for the container element.                                |
-
-
-============================================================
-## Simple Scramble
-> A simple text scramble effect that reveals characters from left to right.
-
-Source file: components/text/simple-scramble.mdx
-
-## CLI Install
-
-***
-
-## Manual Install
-
-***
-
-## API
-
-| Name        | Type                | Default                                      | Description                                  |
-| ----------- | ------------------- | -------------------------------------------- | -------------------------------------------- |
-| duration    | `number`            | `1`                                          | Total duration of the reveal in seconds.     |
-| playOnMount | `boolean`           | `true`                                       | Plays the scramble animation on mount.       |
-| playOnHover | `boolean`           | `true`                                       | Replays the scramble animation on hover.     |
-| as          | `React.ElementType` | `"span"`                                     | Polymorphic tag: render as any HTML element. |
-| characters  | `string`            | `"abcdefghijkl mnopqrstuv wxyz!@#$%^&*()_+"` | Characters to scramble.                      |
-
-***
-
-## Credits
-
-[Yugop Nakamura](https://tha.jp/)\
-Original text scramble effect
-
-[use-scramble](https://www.use-scramble.dev/)\
-A react hook for text scrambling by [tolis](https://tol.is/)
+| Name        | Type                       | Default     | Description                                                     |
+| ----------- | -------------------------- | ----------- | --------------------------------------------------------------- |
+| `children`  | `ReactNode`                | —           | Text content to render. Required.                               |
+| `pixelSize` | `number`                   | `5`         | Pixel size.                                                     |
+| `chaos`     | `number`                   | `0.1`       | Amount of chaos.                                                |
+| `depth`     | `number`                   | `6`         | Amplitude (contrast) between clear and pixelated.               |
+| `colors`    | `string[]`                 | `undefined` | Cycles through colors each tick. Fallback to the default color. |
+| `fps`       | `number`                   | `200`       | Frames per second.                                              |
+| `render`    | `ReactElement \| function` | `<span/>`   | Override the wrapper element.                                   |
 
 
 ============================================================
@@ -546,15 +511,16 @@ Source file: components/text/text-bounce.mdx
 
 ## API
 
-| Name          | Type   | Default | Description                                                                       |
-| ------------- | ------ | ------- | --------------------------------------------------------------------------------- |
-| `children`    | string | —       | Text content to render. Required.                                                 |
-| `pause`       | number | `0`     | Delay in seconds before springing back.                                           |
-| `outDuration` | number | `0.35`  | Duration in seconds for the letter drifting away.                                 |
-| `inDuration`  | number | `0.8`   | Duration in seconds for the spring-back animation.                                |
-| `bounce`      | number | `0.5`   | Bounciness of the spring-back. `0` = no overshoot, `1` = maximum oscillation.     |
-| `distance`    | number | `35`    | How many pixels the letter drifts from its origin.                                |
-| `rotation`    | number | `25`    | Max rotation in degrees applied along the horizontal drift axis. `0` disables it. |
+| Name          | Type                       | Default   | Description                                                                       |
+| ------------- | -------------------------- | --------- | --------------------------------------------------------------------------------- |
+| `children`    | `string`                   | —         | Text content to render. Required.                                                 |
+| `pause`       | `number`                   | `0`       | Delay in seconds before springing back.                                           |
+| `outDuration` | `number`                   | `0.35`    | Duration in seconds for the letter drifting away.                                 |
+| `inDuration`  | `number`                   | `0.8`     | Duration in seconds for the spring-back animation.                                |
+| `bounce`      | `number`                   | `0.5`     | Bounciness of the spring-back. `0` = no overshoot, `1` = maximum oscillation.     |
+| `distance`    | `number`                   | `35`      | How many pixels the letter drifts from its origin.                                |
+| `rotation`    | `number`                   | `25`      | Max rotation in degrees applied along the horizontal drift axis. `0` disables it. |
+| `render`      | `ReactElement \| function` | `<span/>` | Override the wrapper element.                                                     |
 
 
 ============================================================
@@ -598,19 +564,56 @@ Source file: components/text/text-roll.mdx
 
 ## API
 
-| Name         | Type                                  | Default              | Description                                                              |
-| ------------ | ------------------------------------- | -------------------- | ------------------------------------------------------------------------ |
-| children     | `string`                              | —                    | The text content to animate.                                             |
-| axis         | `"x" \| "y"`                          | `"y"`                | Axis along which letters roll.                                           |
-| mode         | `"letters" \| "group"`                | `"letters"`          | Animate each letter independently on hover, or the entire group at once. |
-| direction    | `"forward" \| "backward" \| "random"` | `"forward"`          | Roll direction.                                                          |
-| playOnScroll | `boolean`                             | `true`               | Trigger the animation when the element enters the viewport.              |
-| playOnMount  | `boolean`                             | `true`               | Trigger the animation on mount.                                          |
-| playOnHover  | `boolean`                             | `true`               | Trigger the animation on hover.                                          |
-| stagger      | `number`                              | `0.01`               | Delay in seconds between each letter's animation start.                  |
-| duration     | `number`                              | `0.8`                | Duration of each letter's roll animation in seconds.                     |
-| cycles       | `number`                              | `1`                  | Number of times the letter rolls before settling.                        |
-| ease         | `Easing`                              | `[0.84, 0, 0.22, 1]` | Motion easing: bezier array, named string, or easing function.           |
+| Name           | Type                                  | Default              | Description                                                              |
+| -------------- | ------------------------------------- | -------------------- | ------------------------------------------------------------------------ |
+| `children`     | `string`                              | —                    | The text content to animate.                                             |
+| `axis`         | `"x" \| "y"`                          | `"y"`                | Axis along which letters roll.                                           |
+| `mode`         | `"letters" \| "group"`                | `"letters"`          | Animate each letter independently on hover, or the entire group at once. |
+| `direction`    | `"forward" \| "backward" \| "random"` | `"forward"`          | Roll direction.                                                          |
+| `playOnScroll` | `boolean`                             | `true`               | Trigger the animation when the element enters the viewport.              |
+| `playOnMount`  | `boolean`                             | `true`               | Trigger the animation on mount.                                          |
+| `playOnHover`  | `boolean`                             | `true`               | Trigger the animation on hover.                                          |
+| `stagger`      | `number`                              | `0.01`               | Delay in seconds between each letter's animation start.                  |
+| `duration`     | `number`                              | `0.8`                | Duration of each letter's roll animation in seconds.                     |
+| `cycles`       | `number`                              | `1`                  | Number of times the letter rolls before settling.                        |
+| `ease`         | `Easing`                              | `[0.84, 0, 0.22, 1]` | Motion easing: bezier array, named string, or easing function.           |
+| `render`       | `ReactElement \| function`            | `<span/>`            | Override the wrapper element.                                            |
+
+
+============================================================
+## Text Scramble
+> A simple text scramble effect that reveals characters from left to right.
+
+Source file: components/text/text-scramble.mdx
+
+## CLI Install
+
+***
+
+## Manual Install
+
+***
+
+## API
+
+| Name          | Type                       | Default                                     | Description                              |
+| ------------- | -------------------------- | ------------------------------------------- | ---------------------------------------- |
+| `children`    | `string`                   | —                                           | Text content to scramble. Required.      |
+| `duration`    | `number`                   | `1`                                         | Total duration of the reveal in seconds. |
+| `playOnMount` | `boolean`                  | `true`                                      | Plays the scramble animation on mount.   |
+| `playOnHover` | `boolean`                  | `true`                                      | Replays the scramble animation on hover. |
+| `characters`  | `string`                   | `"abcdefghijklmnopq rstuvwxyz@!#*$%^&+_[]"` | Characters used to scramble.             |
+| `render`      | `ReactElement \| function` | `<span/>`                                   | Override the wrapper element.            |
+
+***
+
+## Credits
+
+[Yugop Nakamura](https://tha.jp/)\
+Original text scramble effect
+
+[use-scramble](https://www.use-scramble.dev/)\
+A react hook for text scrambling by [tolis](https://tol.is/)
 
 
 ============================================================
