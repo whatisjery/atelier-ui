@@ -30,12 +30,13 @@ tags: ["motion", "Tailwind CSS"]
 
 ## API
 
-| Name          | Type   | Default | Description                                                                       |
-| ------------- | ------ | ------- | --------------------------------------------------------------------------------- |
-| `children`    | string | —       | Text content to render. Required.                                                 |
-| `pause`       | number | `0`     | Delay in seconds before springing back.                                           |
-| `outDuration` | number | `0.35`  | Duration in seconds for the letter drifting away.                                 |
-| `inDuration`  | number | `0.8`   | Duration in seconds for the spring-back animation.                                |
-| `bounce`      | number | `0.5`   | Bounciness of the spring-back. `0` = no overshoot, `1` = maximum oscillation.     |
-| `distance`    | number | `35`    | How many pixels the letter drifts from its origin.                                |
-| `rotation`    | number | `25`    | Max rotation in degrees applied along the horizontal drift axis. `0` disables it. |
+| Name | Type | Default | Description |
+| --- | --- | --- | --- |
+| `children` | `string` | — | Text content to render. Required. |
+| `pause` | `number` | `0` | Delay in seconds before springing back. |
+| `outDuration` | `number` | `0.35` | Duration in seconds for the letter drifting away. |
+| `inDuration` | `number` | `0.8` | Duration in seconds for the spring-back animation. |
+| `bounce` | `number` | `0.5` | Bounciness of the spring-back. `0` = no overshoot, `1` = maximum oscillation. |
+| `distance` | `number` | `35` | How many pixels the letter drifts from its origin. |
+| `rotation` | `number` | `25` | Max rotation in degrees applied along the horizontal drift axis. `0` disables it. |
+| `render` | `ReactElement \| function` | `<span/>` | Override the wrapper element. |

@@ -1,5 +1,6 @@
 import { animate, type Easing } from "motion"
 import { type ComponentRef, useCallback, useEffect, useImperativeHandle, useRef } from "react"
+import { type RenderProp, useRender } from "../../hooks/use-render"
 import { TextSplit } from "../text-split/text-split"
 
 type AnimationProps = {
@@ -17,6 +18,7 @@ export type TextRollProps = {
     playOnScroll?: boolean
     playOnMount?: boolean
     playOnHover?: boolean
+    render?: RenderProp
 } & Partial<AnimationProps>
 
 type DisplaceLetterProps = {
@@ -126,6 +128,7 @@ export function TextRoll({
     duration = 0.8,
     cycles = 2,
     ease = [0.84, 0, 0.22, 1],
+    render,
 }: TextRollProps) {
     const containerRef = useRef<ComponentRef<"span">>(null)
     const letterRefs = useRef<(DisplaceLetterHandle | null)[]>([])
@@ -170,34 +173,37 @@ export function TextRoll({
         return () => obs.disconnect()
     }, [playOnScroll, triggerPlay])
 
-    return (
-        <span
-            ref={containerRef}
-            onMouseEnter={playOnHover && mode === "group" ? triggerPlay : undefined}
-        >
-            <TextSplit
-                showMask={false}
-                splitBy="letters"
-                renderItems={(char, index) => (
-                    <DisplaceLetter
-                        ref={(el) => {
-                            letterRefs.current[index] = el
-                        }}
-                        char={char}
-                        index={index}
-                        enableHover={playOnHover && mode === "letters"}
-                        direction={direction}
-                        axis={axis}
-                        stagger={stagger}
-                        duration={duration}
-                        cycles={cycles}
-                        ease={ease}
-                        onComplete={handleLetterComplete}
-                    />
-                )}
-            >
-                {children}
-            </TextSplit>
-        </span>
-    )
+    return useRender({
+        render,
+        defaultElement: <span />,
+        props: {
+            ref: containerRef,
+            onMouseEnter: playOnHover && mode === "group" ? triggerPlay : undefined,
+            children: (
+                <TextSplit
+                    showMask={false}
+                    splitBy="letters"
+                    renderItems={(char, index) => (
+                        <DisplaceLetter
+                            ref={(el) => {
+                                letterRefs.current[index] = el
+                            }}
+                            char={char}
+                            index={index}
+                            enableHover={playOnHover && mode === "letters"}
+                            direction={direction}
+                            axis={axis}
+                            stagger={stagger}
+                            duration={duration}
+                            cycles={cycles}
+                            ease={ease}
+                            onComplete={handleLetterComplete}
+                        />
+                    )}
+                >
+                    {children}
+                </TextSplit>
+            ),
+        },
+    })
 }

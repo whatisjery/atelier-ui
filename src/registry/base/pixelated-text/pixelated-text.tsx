@@ -1,5 +1,6 @@
 import { type ComponentRef, useEffect, useRef } from "react"
 import { useFrameLoop } from "../../hooks/use-frame-loop"
+import { type RenderProp, useRender } from "../../hooks/use-render"
 
 export type PixelatedTextProps = {
     pixelSize?: number
@@ -8,8 +9,7 @@ export type PixelatedTextProps = {
     colors?: string[]
     fps?: number
     children: React.ReactNode
-    className?: string
-    as?: React.ElementType
+    render?: RenderProp
 }
 
 function randomIndex(length: number, exclude: number) {
@@ -46,18 +46,14 @@ function drawText(
 }
 
 export function PixelatedText({
-    as,
     pixelSize = 5,
     chaos = 0.1,
     depth = 6,
     colors,
     fps = 200,
     children,
-    className,
+    render,
 }: PixelatedTextProps) {
-    // biome-ignore lint/suspicious/noExplicitAny: Polymorphic component
-    const Tag = (as || "span") as any
-
     const sizingRef = useRef<ComponentRef<"span">>(null)
     const containerRef = useRef<ComponentRef<"span">>(null)
     const canvasRef = useRef<ComponentRef<"canvas">>(null)
@@ -206,21 +202,29 @@ export function PixelatedText({
         }
     }, [])
 
-    return (
-        <Tag ref={containerRef} className={`relative inline-block ${className}`}>
-            <span ref={sizingRef} aria-hidden="true" className="inline-block">
-                {children}
-            </span>
+    return useRender({
+        render,
+        defaultElement: <span />,
+        props: {
+            ref: containerRef,
+            className: "relative inline-block",
+            children: (
+                <>
+                    <span ref={sizingRef} aria-hidden="true" className="inline-block">
+                        {children}
+                    </span>
 
-            <span className="sr-only">{children}</span>
+                    <span className="sr-only">{children}</span>
 
-            <canvas
-                tabIndex={-1}
-                ref={canvasRef}
-                className="absolute inset-0 pointer-events-none touch-none"
-                style={{ opacity: 0 }}
-                aria-hidden="true"
-            />
-        </Tag>
-    )
+                    <canvas
+                        tabIndex={-1}
+                        ref={canvasRef}
+                        className="absolute inset-0 pointer-events-none touch-none"
+                        style={{ opacity: 0 }}
+                        aria-hidden="true"
+                    />
+                </>
+            ),
+        },
+    })
 }

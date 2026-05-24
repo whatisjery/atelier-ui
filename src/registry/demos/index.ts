@@ -8,7 +8,7 @@ export const demos: Record<string, React.LazyExoticComponent<React.ComponentType
     "pixelated-text": lazy(() => import("./pixelated-text/pixelated-text")),
     "image-trail": lazy(() => import("./image-trail/image-trail")),
     "infinite-gallery": lazy(() => import("./infinite-gallery/infinite-gallery")),
-    "simple-scramble": lazy(() => import("./simple-scramble/simple-scramble")),
+    "text-scramble": lazy(() => import("./text-scramble/text-scramble")),
     "liquid-image": lazy(() => import("./liquid-image/liquid-image")),
     "infinite-parallax": lazy(() => import("./infinite-parallax/infinite-parallax")),
     "elastic-stick": lazy(() => import("./elastic-stick/elastic-stick")),

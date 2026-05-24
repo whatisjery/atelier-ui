@@ -1,32 +1,33 @@
 import { cn } from "@/lib/utils"
-import {
-    SimpleScramble,
-    type SimpleScrambleProps,
-} from "@/registry/base/simple-scramble/simple-scramble"
+import { TextScramble, type TextScrambleProps } from "@/registry/base/text-scramble/text-scramble"
 
 const Text = ({
     children,
     className,
     controls,
 }: {
-    children: React.ReactNode
+    children: string
     className?: string
-    controls: Partial<SimpleScrambleProps>
+    controls: Partial<TextScrambleProps>
 }) => {
     return (
-        <SimpleScramble
-            className={cn(
-                "z-20 relative hover:opacity-100 opacity-40 cursor-default duration-200",
-                className,
-            )}
+        <TextScramble
+            render={
+                <span
+                    className={cn(
+                        "z-20 relative hover:opacity-100 opacity-40 cursor-default duration-200",
+                        className,
+                    )}
+                />
+            }
             {...controls}
         >
             {children}
-        </SimpleScramble>
+        </TextScramble>
     )
 }
 
-export default function SimpleScrambleDemo(controls: Partial<SimpleScrambleProps>) {
+export default function TextScrambleDemo(controls: Partial<TextScrambleProps>) {
     return (
         <div className="w-screen h-screen flex items-start text-lg sm:text-2xl flex-col justify-start p-3">
             <Text controls={controls}>Scramble text effect</Text>

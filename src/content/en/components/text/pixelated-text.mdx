@@ -27,13 +27,13 @@ tags: ["Canvas", "Tailwind CSS"]
 
 ## API
 
-| Name          | Type       | Default     | Description |
-| ------------- | ---------- | ----------- | ------------|
-| pixelSize   | `number`   | `5`         | Pixel size.|
-| chaos       | `number`   | `0.1`       | Amount of chaos.|
-| depth       | `number`   | `6`         | Amplitude(contrast) between clear and pixelated.|
-| colors      | `string[]` | `undefined` | Cycles through colors each tick. Fallback to the default color.|
-| fps         | `number`   | `200`         | Frames per second. |
-| as          | `React.ElementType` | `"span"` | Polymorphic tag: render as any HTML element.|
-| className   | `string`   | `undefined` | Class for the container element.|
+| Name | Type | Default | Description |
+| --- | --- | --- | --- |
+| `children` | `ReactNode` | — | Text content to render. Required. |
+| `pixelSize` | `number` | `5` | Pixel size. |
+| `chaos` | `number` | `0.1` | Amount of chaos. |
+| `depth` | `number` | `6` | Amplitude (contrast) between clear and pixelated. |
+| `colors` | `string[]` | `undefined` | Cycles through colors each tick. Fallback to the default color. |
+| `fps` | `number` | `200` | Frames per second. |
+| `render` | `ReactElement \| function` | `<span/>` | Override the wrapper element. |
 

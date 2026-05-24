@@ -1,19 +1,15 @@
-import React from "react"
+import { Fragment, type ReactNode } from "react"
+import { type RenderProp, useRender } from "../../hooks/use-render"
 
 type SplitBy = "letters" | "words"
 
-type SplitTextProps = {
+export type TextSplitProps = {
     children: string
     splitBy?: SplitBy
     showMask?: boolean
-    side?: "x" | "y"
-    renderItems?: (char: string, index: number) => React.ReactNode
+    renderItems?: (char: string, index: number) => ReactNode
+    render?: RenderProp
 }
-
-type MaskProps = {
-    children: React.ReactNode
-    showMask: boolean
-} & React.HTMLAttributes<HTMLSpanElement>
 
 function splitText(text: string, splitBy: SplitBy) {
     if (splitBy === "letters") return text.split("")
@@ -21,13 +17,9 @@ function splitText(text: string, splitBy: SplitBy) {
     return []
 }
 
-const Mask = ({ children, showMask, ...props }: MaskProps) => {
+function Mask({ children, showMask }: { children: ReactNode; showMask: boolean }) {
     if (!showMask) return children
-    return (
-        <span className="overflow-clip" {...props}>
-            {children}
-        </span>
-    )
+    return <span className="overflow-clip">{children}</span>
 }
 
 export function TextSplit({
@@ -35,31 +27,27 @@ export function TextSplit({
     splitBy = "letters",
     showMask = true,
     renderItems,
-    ...props
-}: SplitTextProps & React.HTMLAttributes<HTMLSpanElement>) {
-    if (typeof children !== "string") throw new Error("SplitText only accepts string children")
+    render,
+}: TextSplitProps) {
+    const parts = splitText(children, splitBy)
 
-    const element = splitText(children, splitBy)
+    const content = parts.map((part, index) => {
+        const spacer = index < parts.length - 1 && " "
+        const elements = splitText(part, splitBy)
+        return (
+            <Mask showMask={showMask} key={index}>
+                {elements.map((char, i) => (
+                    <Fragment key={i}>{renderItems ? renderItems(char, index) : char}</Fragment>
+                ))}
 
-    return (
-        <>
-            {element.map((part, index) => {
-                const spacer = index < element.length - 1 && " "
-                const elements = splitText(part, splitBy)
-                return (
-                    <Mask {...props} showMask={showMask} key={index}>
-                        {elements.map((char, i) => {
-                            return (
-                                <React.Fragment key={i}>
-                                    {renderItems ? renderItems(char, index) : char}
-                                </React.Fragment>
-                            )
-                        })}
+                {splitBy !== "letters" && spacer}
+            </Mask>
+        )
+    })
 
-                        {splitBy !== "letters" && spacer}
-                    </Mask>
-                )
-            })}
-        </>
-    )
+    return useRender({
+        render,
+        defaultElement: <span />,
+        props: { children: content },
+    })
 }

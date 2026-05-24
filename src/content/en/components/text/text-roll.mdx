@@ -43,16 +43,17 @@ Each letter is wrapped in an `overflow-clip` span. Some descenders and ascenders
 
 ## API
 
-| Name          | Type                              | Default      | Description |
-| ------------- | --------------------------------- | ------------ | ----------- |
-| children      | `string`                          | —            | The text content to animate. |
-| axis          | `"x" \| "y"`                     | `"y"`        | Axis along which letters roll. |
-| mode          | `"letters" \| "group"`           | `"letters"`  | Animate each letter independently on hover, or the entire group at once. |
-| direction     | `"forward" \| "backward" \| "random"` | `"forward"` | Roll direction. |
-| playOnScroll  | `boolean`                         | `true`      | Trigger the animation when the element enters the viewport. |
-| playOnMount   | `boolean`                         | `true`       | Trigger the animation on mount. |
-| playOnHover   | `boolean`                         | `true`       | Trigger the animation on hover. |
-| stagger       | `number`                          | `0.01`       | Delay in seconds between each letter's animation start. |
-| duration      | `number`                          | `0.8`        | Duration of each letter's roll animation in seconds. |
-| cycles        | `number`                          | `1`          | Number of times the letter rolls before settling. |
-| ease          | `Easing`                          | `[0.84, 0, 0.22, 1]` | Motion easing: bezier array, named string, or easing function. |
+| Name | Type | Default | Description |
+| --- | --- | --- | --- |
+| `children` | `string` | — | The text content to animate. |
+| `axis` | `"x" \| "y"` | `"y"` | Axis along which letters roll. |
+| `mode` | `"letters" \| "group"` | `"letters"` | Animate each letter independently on hover, or the entire group at once. |
+| `direction` | `"forward" \| "backward" \| "random"` | `"forward"` | Roll direction. |
+| `playOnScroll` | `boolean` | `true` | Trigger the animation when the element enters the viewport. |
+| `playOnMount` | `boolean` | `true` | Trigger the animation on mount. |
+| `playOnHover` | `boolean` | `true` | Trigger the animation on hover. |
+| `stagger` | `number` | `0.01` | Delay in seconds between each letter's animation start. |
+| `duration` | `number` | `0.8` | Duration of each letter's roll animation in seconds. |
+| `cycles` | `number` | `1` | Number of times the letter rolls before settling. |
+| `ease` | `Easing` | `[0.84, 0, 0.22, 1]` | Motion easing: bezier array, named string, or easing function. |
+| `render` | `ReactElement \| function` | `<span/>` | Override the wrapper element. |

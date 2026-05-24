@@ -1,27 +1,25 @@
-import { type HtmlHTMLAttributes, useCallback, useEffect, useRef } from "react"
-import { useFrameLoop } from "@/registry/hooks/use-frame-loop"
+import { useCallback, useEffect, useRef } from "react"
+import { useFrameLoop } from "../../hooks/use-frame-loop"
+import { type RenderProp, useRender } from "../../hooks/use-render"
 
-export type SimpleScrambleProps = {
+export type TextScrambleProps = {
+    children: string
     duration?: number
     playOnMount?: boolean
     playOnHover?: boolean
     characters?: string
-    as?: React.ElementType
-} & HtmlHTMLAttributes<HTMLElement>
+    render?: RenderProp
+}
 
-export function SimpleScramble({
+export function TextScramble({
     children,
     duration = 1,
     playOnMount = true,
     playOnHover = true,
     characters = "abcdefghijklmnopqrstuvwxyz@!#*$%^&+_[]",
-    as,
-    ...rest
-}: SimpleScrambleProps) {
-    // biome-ignore lint/suspicious/noExplicitAny: Polymorphic component
-    const Tag = (as || "span") as any
-
-    const text = typeof children === "string" ? children : ""
+    render,
+}: TextScrambleProps) {
+    const text = children
 
     const ref = useRef<HTMLElement>(null)
     const startTime = useRef(0)
@@ -60,14 +58,14 @@ export function SimpleScramble({
         ref.current.textContent = next
     })
 
-    return (
-        <Tag
-            ref={ref}
-            onTouchStart={playOnHover ? play : undefined}
-            onMouseEnter={playOnHover ? play : undefined}
-            {...rest}
-        >
-            {text}
-        </Tag>
-    )
+    return useRender({
+        render,
+        defaultElement: <span />,
+        props: {
+            ref,
+            onTouchStart: playOnHover ? play : undefined,
+            onMouseEnter: playOnHover ? play : undefined,
+            children: text,
+        },
+    })
 }

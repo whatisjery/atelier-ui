@@ -1,6 +1,7 @@
 import { animate } from "motion"
 import type React from "react"
 import { type ComponentRef, useRef } from "react"
+import type { RenderProp } from "../../hooks/use-render"
 import { TextSplit } from "../text-split/text-split"
 
 export type TextBounceProps = {
@@ -11,6 +12,7 @@ export type TextBounceProps = {
     bounce?: number
     distance?: number
     rotation?: number
+    render?: RenderProp
 }
 
 type LetterProps = {
@@ -73,9 +75,11 @@ export function TextBounce({
     bounce = 0.5,
     distance = 35,
     rotation = 25,
+    render,
 }: TextBounceProps) {
     return (
         <TextSplit
+            render={render}
             showMask={false}
             splitBy="letters"
             renderItems={(char, index) => {
