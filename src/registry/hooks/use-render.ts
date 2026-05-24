@@ -24,18 +24,18 @@ type UseRenderOptions<S> = {
     defaultElement: ReactElement
 }
 
-export function useRender<S = void>(options: UseRenderOptions<S>): ReactElement {
+export function useRender<S = void>(options: UseRenderOptions<S>): ReactElement<AnyProps> {
     const { render, props, state, defaultElement } = options
     const target = render ?? defaultElement
 
     // Function form: consumer wires props themselves, no merging needed.
     if (typeof target === "function") {
-        return target(props, state as S)
+        return target(props, state as S) as ReactElement<AnyProps>
     }
 
     // Element form: clone and merge our internal props with whatever the consumer set on the element.
     const targetProps = (isValidElement(target) ? target.props : {}) as AnyProps
-    return cloneElement(target, mergeProps(props, targetProps))
+    return cloneElement(target, mergeProps(props, targetProps)) as ReactElement<AnyProps>
 }
 
 function mergeProps(internal: AnyProps, external: AnyProps): AnyProps {
