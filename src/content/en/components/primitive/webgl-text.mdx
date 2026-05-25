@@ -70,6 +70,9 @@ Set `webglEnabled={false}` to skip the canvas pass and fall back to the plain DO
 | `segments` | `number` | `1` | Plane geometry subdivisions. Increase for vertex-displacing shaders. |
 | `webglEnabled` | `boolean` | `true` | Toggle the WebGL plane. When `false`, only the DOM span is rendered. |
 | `render` | `ReactElement \| function` | `<span />` | Override the wrapper element. |
+| `zIndex` | `number` | `0` | Render order within the WebGL portal.|
+| `autoReflow` | `boolean` | `false` | Re-measures the DOM rect every frame. |
+| `pixelRatio` | `number` | `2` | Canvas backing resolution, capped at device DPR. |
 
 ### Pointer
 

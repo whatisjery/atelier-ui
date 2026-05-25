@@ -19,9 +19,15 @@ export type Pointer = {
 type WebglImageProps = {
     src: string
     alt: string
-    segments?: number
     material?: (map: Texture, pointer: Pointer) => React.ReactNode
     webglEnabled?: boolean
+    segments?: number
+    zIndex?: number
+    /**
+     * Re-measures the DOM rect every frame so the plane follows animated parents (motion, parallax).
+     * Costs one layout read per frame, so only enable it when needed.
+     */
+    autoReflow?: boolean
 } & Omit<React.ComponentPropsWithoutRef<"img">, "children" | "src" | "alt">
 
 type PlaneProps = {
@@ -30,9 +36,11 @@ type PlaneProps = {
     segments: number
     material?: (map: Texture, pointer: Pointer) => React.ReactNode
     pointer: Pointer
+    zIndex: number
+    autoReflow: boolean
 }
 
-function Plane({ el, src, segments, material, pointer }: PlaneProps) {
+function Plane({ el, src, segments, material, pointer, zIndex, autoReflow }: PlaneProps) {
     const mesh = useRef<Mesh>(null)
     const texture = useTexture(src)
     const size = useThree((s) => s.size)
@@ -112,9 +120,20 @@ function Plane({ el, src, segments, material, pointer }: PlaneProps) {
     useFrame(() => {
         const m = mesh.current
         if (!m) return
-        const { x, y, width, height } = bounds.current
         const pxToWorld = viewport.height / size.height
 
+        // autoReflow re-reads the rect each frame so the mesh follows parent
+        // CSS transforms (e.g. parallax). One layout read per frame.
+        if (autoReflow && el.current) {
+            const rect = el.current.getBoundingClientRect()
+            m.position.x = (rect.left + rect.width / 2 - size.width / 2) * pxToWorld
+            m.position.y = -(rect.top + rect.height / 2 - size.height / 2) * pxToWorld
+            m.scale.x = rect.width * pxToWorld * fitScale.current.x
+            m.scale.y = rect.height * pxToWorld * fitScale.current.y
+            return
+        }
+
+        const { x, y, width, height } = bounds.current
         m.position.x = (x + width / 2 - window.scrollX - size.width / 2) * pxToWorld
         m.position.y = -(y + height / 2 - window.scrollY - size.height / 2) * pxToWorld
         m.scale.x = width * pxToWorld * fitScale.current.x
@@ -122,7 +141,7 @@ function Plane({ el, src, segments, material, pointer }: PlaneProps) {
     })
 
     return (
-        <mesh ref={mesh}>
+        <mesh ref={mesh} renderOrder={zIndex}>
             <planeGeometry args={[1, 1, segments, segments]} />
             {material ? (
                 material(texture, pointer)
@@ -141,6 +160,8 @@ export function WebglImage({
     material,
     webglEnabled = true,
     segments = 1,
+    zIndex = 0,
+    autoReflow = false,
     ...rest
 }: WebglImageProps) {
     const el = useRef<ComponentRef<"img">>(null)
@@ -156,7 +177,8 @@ export function WebglImage({
         const target = el.current
         if (!target) return
 
-        // Track the pointer on the dom element directly and passed to the material
+        // Pointer events still fire on the DOM element through opacity:0,
+        // so the browser tells us when the cursor is over it.
         const onMove = (e: PointerEvent) => {
             const { width, left, top, height } = target.getBoundingClientRect()
             const x = (e.clientX - left) / width
@@ -196,6 +218,8 @@ export function WebglImage({
                         segments={segments}
                         material={material}
                         pointer={pointer}
+                        zIndex={zIndex}
+                        autoReflow={autoReflow}
                     />
                 </webglTeleport.In>
             )}

@@ -81,6 +81,8 @@ Set `webglEnabled={false}` to skip the canvas pass and fall back to the plain DO
 | `material` | `(map: Texture, pointer: Pointer) => ReactNode` | — | Custom R3F material. Receives the loaded texture and a live pointer. |
 | `segments` | `number` | `1` | Plane geometry subdivisions. Increase for vertex-displacing shaders. |
 | `webglEnabled` | `boolean` | `true` | Toggle the WebGL plane. When `false`, only the DOM image is rendered. |
+| `zIndex` | `number` | `0` | Render order within the WebGL portal.|
+| `autoReflow` | `boolean` | `false` | Re-measures the DOM rect every frame. |
 
 Standard `<img>` attributes (`className`, `style`, `width`, `height`, ...) are accepted and forwarded to the DOM element.
 
