@@ -185,7 +185,9 @@ export function getNavCategories(locale: string): DocTree[] {
 
 export function getSectionCategories(locale: string, slug: string): DocTree[] {
     const folder = getSection(locale, slug)
-    return folder?.children.filter((item) => item.type === "folder") ?? []
+    if (!folder) return []
+    const categories = folder.children.filter((item) => item.type === "folder")
+    return categories.length > 0 ? categories : [folder]
 }
 
 export const getComponentSnippets = cache(function getComponentSnippets(): Record<

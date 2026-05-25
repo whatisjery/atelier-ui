@@ -138,13 +138,15 @@ export default function Catalog({ catalogItems, title }: CatalogProps) {
 
                     return (
                         <div className="mb-15 border-t pt-10 border-dashed" key={item.title}>
-                            <h3 className="not-prose font-semibold w-full gap-2 pb-2 flex items-center">
-                                <Icon
-                                    strokeWidth={1.5}
-                                    className="size-6 p-1 rounded-md text-accent-1 bg-accent-4"
-                                />
-                                <span className="text-xl font-medium">{item.category}</span>
-                            </h3>
+                            {item.category && (
+                                <h3 className="not-prose font-semibold w-full gap-2 pb-2 flex items-center">
+                                    <Icon
+                                        strokeWidth={1.5}
+                                        className="size-6 p-1 rounded-md text-accent-1 bg-accent-4"
+                                    />
+                                    <span className="text-xl font-medium">{item.category}</span>
+                                </h3>
+                            )}
 
                             <div className="grid md:grid-cols-2 2xl:grid-cols-3 gap-3">
                                 {item.children.map((child) => (
