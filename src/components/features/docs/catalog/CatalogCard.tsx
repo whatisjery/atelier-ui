@@ -37,7 +37,7 @@ export default function CatalogCard({ catalogItem }: CatalogCardProps) {
                         {truncateText(catalogItem.description ?? "", 100)}
                     </p>
 
-                    <div className="flex items-center gap-x-1">
+                    <div className="flex items-center gap-x-1 flex-wrap gap-1">
                         {catalogItem.tags?.map((tag) => (
                             <Badge title={tag} variant="neutral" key={tag} />
                         ))}
