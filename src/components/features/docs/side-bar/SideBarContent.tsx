@@ -124,16 +124,19 @@ export default function SideBarContent({ className, sections, topBarSlot }: Side
                             ) : (
                                 <h2 className="sr-only">{section.title}</h2>
                             )}
+
                             <ul>
-                                <ListItem
-                                    sideLine={false}
-                                    activeItem={pathname === "/docs/components"}
-                                    linkItem={{
-                                        href: "/docs",
-                                        label: tSidebar("browse-catalog"),
-                                        icon: <BookOpen strokeWidth={1.5} className="size-5" />,
-                                    }}
-                                />
+                                {isFirst && (
+                                    <ListItem
+                                        sideLine={false}
+                                        activeItem={pathname === "/docs/components"}
+                                        linkItem={{
+                                            href: "/docs",
+                                            label: tSidebar("browse-catalog"),
+                                            icon: <BookOpen strokeWidth={1.5} className="size-5" />,
+                                        }}
+                                    />
+                                )}
                                 {section?.children.map(({ url, title, icon }) => {
                                     const Icon = getLucideIcon(icon)
                                     return (
