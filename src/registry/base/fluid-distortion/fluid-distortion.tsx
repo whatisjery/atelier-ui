@@ -309,7 +309,6 @@ class FluidEffect extends Effect {
         const uBackgroundColor = new THREE.Uniform(new THREE.Color())
 
         super("FluidEffect", compositeFrag, {
-            attributes: EffectAttribute.CONVOLUTION,
             uniforms: new Map<string, THREE.Uniform>([
                 ["tFluid", uTFluid],
                 ["uDistort", uDistort],
