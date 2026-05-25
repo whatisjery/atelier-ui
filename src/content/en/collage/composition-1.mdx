@@ -1,0 +1,31 @@
+---
+title: "Composition 1"
+description: "Fluid post-processing over WebGL primitives plus infinite parallax, and text roll."
+icon: "Blocks"
+tags: ["React Three Fiber", "Postprocessing", "Motion", "Lenis", "Tailwind CSS"]
+---
+
+import Alert from '@/components/ui/Alert'
+import { Blocks } from 'lucide-react'
+
+<DemoPreview name="composition-1" />
+
+<Alert icon={<Blocks strokeWidth={1.5} className="size-6" />} title="What's a Collage?">
+Collages are just showcases. They demonstrate how components fit together when assembled. Each component can be installed individually from its docs page.
+</Alert>
+
+---
+
+## Components used
+
+- [WebGL Image](/docs/components/primitive/webgl-image): lets post-processing apply to `<img>` content.
+- [WebGL Text](/docs/components/primitive/webgl-text): lets post-processing apply to text.
+- [Fluid Distortion](/docs/components/cursor/fluid-distortion)
+- [Text Roll](/docs/components/text/text-roll)
+- [Infinite Parallax](/docs/components/scroll/infinite-parallax)
+
+---
+
+## Source
+
+<SourceCode name="composition-1" />

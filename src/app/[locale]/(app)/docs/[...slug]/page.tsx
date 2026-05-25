@@ -82,7 +82,10 @@ export default async function Page({ params }: PageProps) {
 
     const { headings, rawMarkdown } = getDocBySlug(locale, slug)
     const navigation = getDocNavigation(locale, slug)
-    const demoCode = getCodesBlock("src/registry/demos")
+    const demoCode = {
+        ...getCodesBlock("src/registry/demos"),
+        ...getCodesBlock("src/registry/collage"),
+    }
     const snippets = getComponentSnippets()
     const content = await import(`@/content/${locale}/${slug.join("/")}.mdx`)
     const isPro = components.some(({ name, pro }) => name === slug[slug.length - 1] && pro)
@@ -137,6 +140,16 @@ export default async function Page({ params }: PageProps) {
                                 />
                             )
                         },
+
+                        SourceCode: (props: { name: string }) => (
+                            <DocCodeBlock
+                                mode="expand"
+                                showLineNumbers
+                                title={demoCode[props.name][0].path}
+                                code={demoCode[props.name][0].content}
+                                lang={demoCode[props.name][0].extension}
+                            />
+                        ),
 
                         ProGate: ({ children }: { children: React.ReactNode }) => (
                             <ProPaywall>{children}</ProPaywall>
