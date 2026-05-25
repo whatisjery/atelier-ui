@@ -20,5 +20,4 @@ export const demos: Record<string, React.LazyExoticComponent<React.ComponentType
     "dither-flow": lazy(() => import("./dither-flow/dither-flow")),
     "curve-image": lazy(() => import("./curve-image/curve-image")),
     "text-fluid": lazy(() => import("./text-fluid/text-fluid")),
-    "composition-1": lazy(() => import("../collage/composition-1/composition-1")),
 }

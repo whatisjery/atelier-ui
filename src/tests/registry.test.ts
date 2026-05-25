@@ -1,11 +1,13 @@
 import fs from "node:fs"
 import path from "node:path"
 import { describe, expect, it } from "vitest"
+import { collages } from "@/registry/collage/index"
 import { demos } from "@/registry/demos/index"
 import { components } from "@/registry/index"
 
 const BASE_DIR = path.join(process.cwd(), "src/registry/base")
 const DEMOS_DIR = path.join(process.cwd(), "src/registry/demos")
+const COLLAGE_DIR = path.join(process.cwd(), "src/registry/collage")
 const REGISTRY_OUTPUT = path.join(process.cwd(), "public/registry")
 
 /**
@@ -57,6 +59,26 @@ describe("Demo exports", () => {
 
         for (const folder of folders) {
             expect(demos).toHaveProperty(folder)
+        }
+    })
+})
+
+describe("Collage exports", () => {
+    it("every collage key maps to a folder on disk", () => {
+        for (const key of Object.keys(collages)) {
+            const collageDir = path.join(COLLAGE_DIR, key)
+            expect(fs.existsSync(collageDir)).toBe(true)
+        }
+    })
+
+    it("no orphan collage folders (every collage folder is exported)", () => {
+        const folders = fs
+            .readdirSync(COLLAGE_DIR, { withFileTypes: true })
+            .filter((d) => d.isDirectory())
+            .map((d) => d.name)
+
+        for (const folder of folders) {
+            expect(collages).toHaveProperty(folder)
         }
     })
 })

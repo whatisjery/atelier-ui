@@ -2,15 +2,18 @@
 
 import { useParams } from "next/navigation"
 import { Suspense, useEffect, useState } from "react"
+import { collages } from "@/registry/collage"
 import { demos } from "@/registry/demos"
 import type { ControlValue } from "@/types/controls"
+
+const registry = { ...demos, ...collages }
 
 type Values = Record<string, ControlValue>
 
 export default function PreviewPage() {
     const { name } = useParams<{ name: string }>()
     const [values, setValues] = useState<Values>({})
-    const Demo = demos[name]
+    const Demo = registry[name]
 
     useEffect(() => {
         function handleMessage(event: MessageEvent) {
