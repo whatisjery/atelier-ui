@@ -1,5 +1,5 @@
 import { motion, useAnimationFrame, useMotionValue, useScroll, useVelocity } from "motion/react"
-import { type ComponentRef, useRef } from "react"
+import { type ComponentRef, useEffect, useRef, useState } from "react"
 
 export type InfiniteParallaxProps = {
     reversed?: boolean
@@ -18,15 +18,40 @@ export function InfiniteParallax({
     children,
 }: InfiniteParallaxProps) {
     const offsetRef = useRef(0)
+    const contentHRef = useRef(0)
+    const directionRef = useRef<1 | -1>(-1)
+    const containerRef = useRef<ComponentRef<"div">>(null)
     const measureRef = useRef<ComponentRef<"div">>(null)
+    const [clones, setClones] = useState(1)
+
     const y = useMotionValue(0)
     const { scrollY } = useScroll()
     const scrollVelocity = useVelocity(scrollY)
-    const directionRef = useRef<1 | -1>(-1)
+
+    useEffect(() => {
+        const measure = measureRef.current
+        const container = containerRef.current
+        if (!measure || !container) return
+
+        const calcClones = () => {
+            const contentH = measure.getBoundingClientRect().height
+            const containerH = container.getBoundingClientRect().height
+            if (contentH === 0) return
+            contentHRef.current = contentH
+            setClones(Math.ceil(containerH / contentH))
+        }
+
+        calcClones()
+        const ro = new ResizeObserver(calcClones)
+        ro.observe(measure)
+        ro.observe(container)
+
+        return () => ro.disconnect()
+    }, [])
 
     useAnimationFrame((_, delta) => {
-        if (!measureRef.current) return
-        const height = measureRef.current.offsetHeight
+        if (!contentHRef.current) return
+        const height = contentHRef.current
         const velocity = scrollVelocity.get()
 
         if (Math.abs(velocity) > REVERT_THRESHOLD) {
@@ -45,9 +70,15 @@ export function InfiniteParallax({
     })
 
     return (
-        <motion.div style={{ y }} className="h-full w-full">
-            <div ref={measureRef}>{children}</div>
-            <div aria-hidden>{children}</div>
-        </motion.div>
+        <div ref={containerRef} className="h-full w-full overflow-hidden">
+            <motion.div style={{ y }}>
+                <div ref={measureRef}>{children}</div>
+                {Array.from({ length: clones }, (_, i) => (
+                    <div key={i} aria-hidden>
+                        {children}
+                    </div>
+                ))}
+            </motion.div>
+        </div>
     )
 }
