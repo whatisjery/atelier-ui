@@ -5,12 +5,8 @@ import AnimatedArrow from "@/components/ui/AnimatedArrow"
 import Badge from "@/components/ui/Badge"
 import Card from "@/components/ui/Card"
 import { cn, truncateText } from "@/lib/utils"
-import type { DocComponentStatus, DocTree } from "@/types/docs"
-
-const badgeMap: Record<DocComponentStatus, React.ReactNode> = {
-    new: <Badge title="new" variant="neutral" />,
-    update: <Badge title="updated" variant="neutral" />,
-}
+import type { DocTree } from "@/types/docs"
+import DocStatusBadge from "../DocStatusBadge"
 
 type CatalogCardProps = {
     catalogItem: DocTree
@@ -47,7 +43,7 @@ export default function CatalogCard({ catalogItem }: CatalogCardProps) {
                 <div className="flex h-14 pattern-line relative px-5 border-t w-full items-center justify-between">
                     <div className="flex items-center justify-between w-full gap-x-1">
                         <span className="flex items-center gap-x-1 relative z-2">
-                            {catalogItem.status && badgeMap[catalogItem.status]}
+                            <DocStatusBadge createdAt={catalogItem.createdAt} />
                         </span>
                         <AnimatedArrow className="size-4" />
                     </div>

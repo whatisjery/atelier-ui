@@ -1,5 +1,3 @@
-export type DocComponentStatus = "new" | "update"
-
 export type DirMeta = {
     title?: string
     category?: string
@@ -26,7 +24,8 @@ export type DocTree = {
     category?: string
     icon?: string
     tags?: string[]
-    status?: DocComponentStatus
+    createdAt?: string
+    updatedAt?: string
     pro?: boolean
     nav?: boolean
 }

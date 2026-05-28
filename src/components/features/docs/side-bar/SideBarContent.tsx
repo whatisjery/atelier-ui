@@ -10,6 +10,7 @@ import { BRAND, VERSION } from "@/lib/constants"
 import { useGlobalStore } from "@/lib/store"
 import { cn, getLucideIcon, padStartFormat } from "@/lib/utils"
 import type { DocTree } from "@/types/docs"
+import DocStatusBadge from "../DocStatusBadge"
 
 type SideBarContentProps = {
     className?: string
@@ -27,8 +28,7 @@ type NodeProps = {
 
 function getBadge(node: DocTree, hasCustomer: boolean) {
     if (node.pro && !hasCustomer) return <Badge title="pro" variant="neutral" />
-    if (node.status === "new") return <Badge title="new" variant="neutral" />
-    return null
+    return <DocStatusBadge createdAt={node.createdAt} />
 }
 
 function SectionNode({ node, pathname, hasCustomer, closedKeys, toggle }: NodeProps) {

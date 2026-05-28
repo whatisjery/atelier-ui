@@ -7,14 +7,12 @@ import { visit } from "unist-util-visit"
 import { routing } from "@/i18n/routing"
 import { components } from "@/registry"
 import type { CodeFile } from "@/types/code"
-import type { DirMeta, DocComponentStatus, DocNavigation, DocTree } from "@/types/docs"
+import type { DirMeta, DocNavigation, DocTree } from "@/types/docs"
 import type { TOCItem } from "@/types/toc"
-import { GIT_DAYS_THRESHOLD } from "./constants"
 import { getFileGitDates } from "./git"
 import { slugify } from "./utils"
 
 const DOCS_DIR = path.join(process.cwd(), "src/content")
-const MS_PER_DAY = 24 * 60 * 60 * 1000
 const HEADING_REGEX = /^(#{2,3})\s+(.+)$/gm
 const TEXT_EXTENSIONS = ["ts", "tsx", "js", "jsx", "css", "json"]
 const REGISTRY_DIR = path.join(process.cwd(), "src/registry")
@@ -23,21 +21,6 @@ export const getDocsTree = cache(function getDocsTree(locale: string): DocTree[]
     const docDir = path.join(DOCS_DIR, locale)
     return buildDocTree(docDir, "/docs")
 })
-
-export function getComponentStatus(filePath: string): DocComponentStatus | undefined {
-    const { createdAt, updatedAt } = getFileGitDates(filePath)
-    if (!createdAt) return undefined
-
-    const now = Date.now()
-    const daysSinceCreated = (now - createdAt.getTime()) / MS_PER_DAY
-    const daysSinceUpdated = updatedAt ? (now - updatedAt.getTime()) / MS_PER_DAY : Infinity
-
-    if (daysSinceCreated < GIT_DAYS_THRESHOLD) return "new"
-    if (daysSinceUpdated < GIT_DAYS_THRESHOLD && createdAt.getTime() !== updatedAt?.getTime())
-        return "update"
-
-    return undefined
-}
 
 export function getDocNavigation(locale: string, currentSlug: string[]): DocNavigation {
     const flatDocs: { title: string; url: string; description: string }[] = []
@@ -142,6 +125,7 @@ function buildFileNode(fullPath: string, urlPath: string, item: string): DocTree
     const fileContents = fs.readFileSync(fullPath, "utf-8")
     const { data } = matter(fileContents)
     const isPro = components.some((component) => component.name === slug && component.pro)
+    const { createdAt, updatedAt } = getFileGitDates(fullPath)
 
     return {
         type: "file",
@@ -152,7 +136,8 @@ function buildFileNode(fullPath: string, urlPath: string, item: string): DocTree
         icon: data.icon,
         order: data.order ?? Number.MAX_SAFE_INTEGER,
         tags: data.tags,
-        status: getComponentStatus(fullPath),
+        createdAt: createdAt ?? undefined,
+        updatedAt: updatedAt ?? undefined,
         pro: isPro,
     }
 }
