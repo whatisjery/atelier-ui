@@ -2,9 +2,30 @@
 
 Source: https://atelier-ui.com/docs
 
-Generated: 2026-05-25T10:57:38.564Z
+Generated: 2026-05-28T16:30:01.600Z
 
 ---
+
+
+============================================================
+## Composition 1
+> Fluid post-processing over WebGL primitives plus infinite parallax, and text roll.
+
+Source file: collage/composition-1.mdx
+
+***
+
+## Components used
+
+* [WebGL Image](/docs/components/primitive/webgl-image): lets post-processing apply to `<img>` content.
+* [WebGL Text](/docs/components/primitive/webgl-text): lets post-processing apply to text.
+* [Fluid Distortion](/docs/components/cursor/fluid-distortion)
+* [Text Roll](/docs/components/text/text-roll)
+* [Infinite Parallax](/docs/components/scroll/infinite-parallax)
+
+***
+
+## Source
 
 
 ============================================================
@@ -408,6 +429,8 @@ Set `webglEnabled={false}` to skip the canvas pass and fall back to the plain DO
 | `material`     | `(map: Texture, pointer: Pointer) => ReactNode` | —       | Custom R3F material. Receives the loaded texture and a live pointer.  |
 | `segments`     | `number`                                        | `1`     | Plane geometry subdivisions. Increase for vertex-displacing shaders.  |
 | `webglEnabled` | `boolean`                                       | `true`  | Toggle the WebGL plane. When `false`, only the DOM image is rendered. |
+| `zIndex`       | `number`                                        | `0`     | Render order within the WebGL portal.                                 |
+| `autoReflow`   | `boolean`                                       | `false` | Re-measures the DOM rect every frame.                                 |
 
 Standard `<img>` attributes (`className`, `style`, `width`, `height`, ...) are accepted and forwarded to the DOM element.
 
@@ -488,6 +511,9 @@ Set `webglEnabled={false}` to skip the canvas pass and fall back to the plain DO
 | `segments`     | `number`                                        | `1`        | Plane geometry subdivisions. Increase for vertex-displacing shaders.     |
 | `webglEnabled` | `boolean`                                       | `true`     | Toggle the WebGL plane. When `false`, only the DOM span is rendered.     |
 | `render`       | `ReactElement \| function`                      | `<span />` | Override the wrapper element.                                            |
+| `zIndex`       | `number`                                        | `0`        | Render order within the WebGL portal.                                    |
+| `autoReflow`   | `boolean`                                       | `false`    | Re-measures the DOM rect every frame.                                    |
+| `pixelRatio`   | `number`                                        | `2`        | Canvas backing resolution, capped at device DPR.                         |
 
 ### Pointer
 
@@ -815,6 +841,57 @@ Original text scramble effect
 
 [use-scramble](https://www.use-scramble.dev/)\
 A react hook for text scrambling by [tolis](https://tol.is/)
+
+
+============================================================
+## Clipped Reveal
+Source file: components/transition/clip-reveal.mdx
+
+***
+
+## Install
+
+***
+
+## API
+
+| Name         | Type                               | Default             | Description                                 |
+| ------------ | ---------------------------------- | ------------------- | ------------------------------------------- |
+| `children`   | `ReactNode`                        | —                   | Content to reveal. Required.                |
+| `duration`   | `number`                           | `2`                 | Duration of both animations in seconds.     |
+| `ease`       | `[number, number, number, number]` | `[0.85, 0, 0.2, 1]` | Cubic bezier easing for both animations.    |
+| `depth`      | `number`                           | `2`                 | Initial scale of the content before reveal. |
+| `top`        | `number`                           | `70`                | Starting inset from the top in percent.     |
+| `left`       | `number`                           | `40`                | Starting inset from the left in percent.    |
+| `bottom`     | `number`                           | `40`                | Starting inset from the bottom in percent.  |
+| `right`      | `number`                           | `40`                | Starting inset from the right in percent.   |
+| `trigger`    | `boolean`                          | `true`              | Starts the animation when set to true.      |
+| `onComplete` | `() => void`                       | —                   | Called when the animation finishes.         |
+
+
+============================================================
+## Sweep Exit
+Source file: components/transition/sweep-exit.mdx
+
+***
+
+## Install
+
+***
+
+## API
+
+| Name             | Type                               | Default             | Description                                            |
+| ---------------- | ---------------------------------- | ------------------- | ------------------------------------------------------ |
+| `children`       | `ReactNode`                        | —                   | Content rendered on top of the overlay layer.          |
+| `backgroundSlot` | `ReactNode`                        | —                   | Content rendered in the background overlay. Required.  |
+| `duration`       | `number`                           | `1`                 | Time-scale multiplier applied to every sub-step.       |
+| `ease`           | `[number, number, number, number]` | `[0.85, 0, 0.2, 1]` | Cubic bezier easing used across the sequence.          |
+| `insetX`         | `number`                           | `12`                | Horizontal inset at peak contraction in percent.       |
+| `insetY`         | `number`                           | `15`                | Vertical inset at peak contraction in percent.         |
+| `highlightColor` | `string`                           | —                   | Background color applied to the foreground clip layer. |
+| `trigger`        | `boolean`                          | `true`              | Starts the animation when set to true.                 |
+| `onComplete`     | `() => void`                       | —                   | Called when the animation finishes.                    |
 
 
 ============================================================
