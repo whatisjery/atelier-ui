@@ -2,7 +2,7 @@
 
 Source: https://atelier-ui.com/docs
 
-Generated: 2026-05-28T16:30:01.600Z
+Generated: 2026-05-28T19:10:04.157Z
 
 ---
 
@@ -844,7 +844,9 @@ A react hook for text scrambling by [tolis](https://tol.is/)
 
 
 ============================================================
-## Clipped Reveal
+## Clip Reveal
+> A clip-path reveal that scales the content from a starting inset to fullscreen.
+
 Source file: components/transition/clip-reveal.mdx
 
 ***
@@ -858,19 +860,29 @@ Source file: components/transition/clip-reveal.mdx
 | Name         | Type                               | Default             | Description                                 |
 | ------------ | ---------------------------------- | ------------------- | ------------------------------------------- |
 | `children`   | `ReactNode`                        | —                   | Content to reveal. Required.                |
+| `className`  | `string`                           | —                   | Extra classes applied to the wrapper.       |
 | `duration`   | `number`                           | `2`                 | Duration of both animations in seconds.     |
 | `ease`       | `[number, number, number, number]` | `[0.85, 0, 0.2, 1]` | Cubic bezier easing for both animations.    |
 | `depth`      | `number`                           | `2`                 | Initial scale of the content before reveal. |
 | `top`        | `number`                           | `70`                | Starting inset from the top in percent.     |
-| `left`       | `number`                           | `40`                | Starting inset from the left in percent.    |
+| `left`       | `number`                           | `25`                | Starting inset from the left in percent.    |
 | `bottom`     | `number`                           | `40`                | Starting inset from the bottom in percent.  |
-| `right`      | `number`                           | `40`                | Starting inset from the right in percent.   |
+| `right`      | `number`                           | `25`                | Starting inset from the right in percent.   |
 | `trigger`    | `boolean`                          | `true`              | Starts the animation when set to true.      |
 | `onComplete` | `() => void`                       | —                   | Called when the animation finishes.         |
+
+***
+
+## Credits
+
+[Zajno](https://zajno.com/)\
+Page transition that inspired this effect.
 
 
 ============================================================
 ## Sweep Exit
+> A staggered clip-path sweep that reveals the page beneath an overlay.
+
 Source file: components/transition/sweep-exit.mdx
 
 ***
@@ -881,17 +893,23 @@ Source file: components/transition/sweep-exit.mdx
 
 ## API
 
-| Name             | Type                               | Default             | Description                                            |
-| ---------------- | ---------------------------------- | ------------------- | ------------------------------------------------------ |
-| `children`       | `ReactNode`                        | —                   | Content rendered on top of the overlay layer.          |
-| `backgroundSlot` | `ReactNode`                        | —                   | Content rendered in the background overlay. Required.  |
-| `duration`       | `number`                           | `1`                 | Time-scale multiplier applied to every sub-step.       |
-| `ease`           | `[number, number, number, number]` | `[0.85, 0, 0.2, 1]` | Cubic bezier easing used across the sequence.          |
-| `insetX`         | `number`                           | `12`                | Horizontal inset at peak contraction in percent.       |
-| `insetY`         | `number`                           | `15`                | Vertical inset at peak contraction in percent.         |
-| `highlightColor` | `string`                           | —                   | Background color applied to the foreground clip layer. |
-| `trigger`        | `boolean`                          | `true`              | Starts the animation when set to true.                 |
-| `onComplete`     | `() => void`                       | —                   | Called when the animation finishes.                    |
+| Name             | Type                               | Default             | Description                                           |
+| ---------------- | ---------------------------------- | ------------------- | ----------------------------------------------------- |
+| `children`       | `ReactNode`                        | —                   | Content rendered on top of the overlay layer.         |
+| `backgroundSlot` | `ReactNode`                        | —                   | Content rendered in the background overlay. Required. |
+| `duration`       | `number`                           | `1`                 | Time-scale multiplier applied to every sub-step.      |
+| `ease`           | `[number, number, number, number]` | `[0.85, 0, 0.2, 1]` | Cubic bezier easing used across the sequence.         |
+| `insetX`         | `number`                           | `20`                | Horizontal inset at peak contraction in percent.      |
+| `insetY`         | `number`                           | `10`                | Vertical inset at peak contraction in percent.        |
+| `trigger`        | `boolean`                          | `true`              | Starts the animation when set to true.                |
+| `onComplete`     | `() => void`                       | —                   | Called when the animation finishes.                   |
+
+***
+
+## Credits
+
+[Zajno](https://zajno.com/)\
+Page transition that inspired this effect.
 
 
 ============================================================
