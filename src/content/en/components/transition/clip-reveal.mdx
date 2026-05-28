@@ -1,0 +1,45 @@
+---
+title: "Clip Reveal"
+description: "A clip-path reveal that scales the content from a starting inset to fullscreen."
+tags: ["Motion"]
+---
+
+<DemoPreview name="clip-reveal" controls={{
+    duration: { type: "slider", value: 2, min: 0.3, max: 5, step: 0.1 },
+    depth: { type: "slider", value: 2, min: 1, max: 5, step: 0.1 },
+    top: { type: "slider", value: 70, min: 0, max: 100, step: 1 },
+    left: { type: "slider", value: 25, min: 0, max: 50, step: 1 },
+    bottom: { type: "slider", value: 40, min: 0, max: 50, step: 1 },
+    right: { type: "slider", value: 25, min: 0, max: 50, step: 1 },
+}} />
+
+---
+
+## Install
+
+<InstallTabs name="clip-reveal" />
+
+---
+
+## API
+
+| Name | Type | Default | Description |
+| --- | --- | --- | --- |
+| `children` | `ReactNode` | — | Content to reveal. Required. |
+| `className` | `string` | — | Extra classes applied to the wrapper. |
+| `duration` | `number` | `2` | Duration of both animations in seconds. |
+| `ease` | `[number, number, number, number]` | `[0.85, 0, 0.2, 1]` | Cubic bezier easing for both animations. |
+| `depth` | `number` | `2` | Initial scale of the content before reveal. |
+| `top` | `number` | `70` | Starting inset from the top in percent. |
+| `left` | `number` | `25` | Starting inset from the left in percent. |
+| `bottom` | `number` | `40` | Starting inset from the bottom in percent. |
+| `right` | `number` | `25` | Starting inset from the right in percent. |
+| `trigger` | `boolean` | `true` | Starts the animation when set to true. |
+| `onComplete` | `() => void` | — | Called when the animation finishes. |
+
+---
+
+## Credits
+
+[Zajno](https://zajno.com/)  
+Page transition that inspired this effect.

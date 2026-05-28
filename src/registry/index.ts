@@ -203,4 +203,20 @@ export const components: TRegistryComponent[] = [
         dependencies: ["three", "@react-three/fiber", "@react-three/drei"],
         registryDependencies: ["webgl-text"],
     },
+    {
+        name: "clip-reveal",
+        files: ["clip-reveal.tsx"],
+        description: "Clip-path reveal that scales content from a starting inset to fullscreen on trigger.",
+        shared: [],
+        dependencies: ["motion"],
+        registryDependencies: [],
+    },
+    {
+        name: "sweep-exit",
+        files: ["sweep-exit.tsx"],
+        description: "Full-screen overlay preloader with extreme zoom-out burst and upward clip reveal.",
+        shared: [],
+        dependencies: ["motion"],
+        registryDependencies: [],
+    },
 ]
