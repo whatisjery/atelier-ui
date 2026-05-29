@@ -26,6 +26,9 @@ public/registry/*
 # search index
 public/search-index/*
 
+# feed
+src/feed
+
 # misc
 .DS_Store
 *.pem
