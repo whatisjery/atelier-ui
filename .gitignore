@@ -20,9 +20,6 @@
 # production
 /build
 
-# timestamps
-src/lib/timestamps.json
-
 # registry
 public/registry/*
 
