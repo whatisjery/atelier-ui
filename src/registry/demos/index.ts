@@ -22,4 +22,5 @@ export const demos: Record<string, React.LazyExoticComponent<React.ComponentType
     "text-fluid": lazy(() => import("./text-fluid/text-fluid")),
     "clip-reveal": lazy(() => import("./clip-reveal/clip-reveal")),
     "sweep-exit": lazy(() => import("./sweep-exit/sweep-exit")),
+    "stripe-wipe": lazy(() => import("./stripe-wipe/stripe-wipe")),
 }

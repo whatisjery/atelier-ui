@@ -1,0 +1,34 @@
+---
+title: "Stripe Wipe"
+description: "A staggered stripe wipe that reveals the page beneath an overlay."
+tags: ["Motion"]
+---
+
+<DemoPreview name="stripe-wipe" controls={{
+    stripes: { type: "slider", value: 8, min: 1, max: 15, step: 1 },
+    segments: { type: "slider", value: 5, min: 1, max: 12, step: 1 },
+    stagger: { type: "slider", value: 0.04, min: 0, max: 0.1, step: 0.005 },
+    duration: { type: "slider", value: 1.2, min: 0.3, max: 3, step: 0.1 },
+    reverse: { type: "boolean", value: false },
+}} />
+
+---
+
+## Install
+
+<InstallTabs name="stripe-wipe" />
+
+---
+
+## API
+
+| Name | Type | Default | Description |
+| --- | --- | --- | --- |
+| `stripes` | `number` | `8` | Number of vertical columns the overlay is split into. |
+| `segments` | `number` | `5` | Number of segments each column is divided into. |
+| `reverse` | `boolean` | `false` | Reverses the direction the staggered wipe travels. |
+| `stagger` | `number` | `0.04` | Delay in seconds added per column and per segment. |
+| `duration` | `number` | `1.2` | Duration in seconds of each segment's wipe. |
+| `ease` | `Easing` | `[0.85, 0, 0.2, 1]` | Motion easing: bezier array, named string, or easing function. |
+| `trigger` | `boolean` | `true` | Starts the wipe when set to true. |
+| `className` | `string` | — | Extra classes applied to the wrapper (e.g. sizing). |

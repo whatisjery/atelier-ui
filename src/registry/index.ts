@@ -219,4 +219,12 @@ export const components: TRegistryComponent[] = [
         dependencies: ["motion"],
         registryDependencies: [],
     },
+    {
+        name: "stripe-wipe",
+        files: ["stripe-wipe.tsx"],
+        description: "Overlay that breaks into subdivided stripes and wipes away in a staggered cascade.",
+        shared: [],
+        dependencies: ["motion"],
+        registryDependencies: [],
+    },
 ]
