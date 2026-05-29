@@ -28,7 +28,7 @@ tags: ["Motion"]
 | `children` | `ReactNode` | — | Content to reveal. Required. |
 | `className` | `string` | — | Extra classes applied to the wrapper. |
 | `duration` | `number` | `2` | Duration of both animations in seconds. |
-| `ease` | `[number, number, number, number]` | `[0.85, 0, 0.2, 1]` | Cubic bezier easing for both animations. |
+| `ease` | `Easing` | `[0.85, 0, 0.2, 1]` | Motion easing: bezier array, named string, or easing function. |
 | `depth` | `number` | `2` | Initial scale of the content before reveal. |
 | `top` | `number` | `70` | Starting inset from the top in percent. |
 | `left` | `number` | `25` | Starting inset from the left in percent. |
