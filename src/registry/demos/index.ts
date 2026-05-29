@@ -23,4 +23,6 @@ export const demos: Record<string, React.LazyExoticComponent<React.ComponentType
     "clip-reveal": lazy(() => import("./clip-reveal/clip-reveal")),
     "sweep-exit": lazy(() => import("./sweep-exit/sweep-exit")),
     "stripe-wipe": lazy(() => import("./stripe-wipe/stripe-wipe")),
+    "lens-image": lazy(() => import("./lens-image/lens-image")),
+    "pixel-image": lazy(() => import("./pixel-image/pixel-image")),
 }

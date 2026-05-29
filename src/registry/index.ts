@@ -196,6 +196,14 @@ export const components: TRegistryComponent[] = [
         registryDependencies: ["webgl-image"],
     },
     {
+        name: "lens-image",
+        files: ["lens-image.tsx"],
+        description: "WebGL image with a cursor-following circular lens and chromatic aberration.",
+        shared: [],
+        dependencies: ["three", "@react-three/fiber", "@react-three/drei"],
+        registryDependencies: ["webgl-image"],
+    },
+    {
         name: "text-fluid",
         files: ["text-fluid.tsx"],
         description: "SEO-friendly text with an animated WebGL shimmer and distortion effect.",
@@ -226,5 +234,14 @@ export const components: TRegistryComponent[] = [
         shared: [],
         dependencies: ["motion"],
         registryDependencies: [],
+    },
+    {
+        name: "pixel-image",
+        files: ["pixel-image.tsx"],
+        description:
+            "WebGL image that breaks into pixel blocks under the cursor, then falls back when you stop.",
+        shared: [],
+        dependencies: ["three", "@react-three/fiber", "@react-three/drei"],
+        registryDependencies: ["webgl-image"],
     },
 ]

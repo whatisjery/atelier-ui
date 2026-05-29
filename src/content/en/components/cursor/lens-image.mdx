@@ -1,0 +1,52 @@
+---
+title: "Lens Image"
+description: "An SEO-friendly WebGL image with a cursor-following circular lens and chromatic aberration"
+tags: ["React Three Fiber", "Drei"]
+---
+
+<DemoPreview
+  name="lens-image"
+  controls={{
+    size: { type: "slider", value: 0.23, min: 0, max: 0.5, step: 0.01 },
+    softness: { type: "slider", value: 0.38, min: 0, max: 0.5, step: 0.01 },
+    aberration: { type: "slider", value: 0.17, min: 0, max: 0.2, step: 0.005 },
+    dispersion: { type: "slider", value: 50, min: 2, max: 64, step: 1 },
+    refraction: { type: "slider", value: 0.39, min: 0, max: 0.5, step: 0.01 },
+    smoothing: { type: "slider", value: 10, min: 1, max: 30, step: 1 },
+    webglEnabled: { type: "boolean", value: true },
+  }}
+/>
+
+---
+
+## Install
+
+<InstallTabs name="lens-image" />
+
+---
+
+## API
+
+| Name         | Type      | Default | Description                  |
+| ------------ | --------- | ------- | ---------------------------- |
+| src          | `string`  | —       | Image source.                |
+| alt          | `string`  | —       | Image alt text.              |
+| size         | `number`  | `0.23`  | Lens radius.                 |
+| softness     | `number`  | `0.38`  | Lens edge falloff.           |
+| aberration   | `number`  | `0.17`  | Color spread width.          |
+| dispersion   | `number`  | `50`    | Color sample count.          |
+| refraction   | `number`  | `0.39`  | Inward pull strength.        |
+| smoothing    | `number`  | `10`    | Cursor damping speed.        |
+| segments     | `number`  | `1`     | Plane geometry subdivisions. |
+| webglEnabled | `boolean` | `true`  | Toggle WebGL effect on/off.  |
+| ...props     | `ImgHTMLAttributes` | — | Other `<img>` attributes forwarded to the underlying element. |
+
+---
+
+## Credits
+
+[React Three Fiber](https://r3f.docs.pmnd.rs/)  
+React renderer for Three.js.
+
+[Drei](https://drei.docs.pmnd.rs/)  
+React Three Fiber utilities.

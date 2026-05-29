@@ -1,0 +1,50 @@
+---
+title: "Pixel Image"
+description: "A WebGL image that breaks into pixel blocks under the cursor, then falls back when you stop"
+tags: ["React Three Fiber", "Drei"]
+---
+
+<DemoPreview
+  name="pixel-image"
+  controls={{
+    gridSize: { type: "slider", value: 22, min: 8, max: 80, step: 1 },
+    interactionRadius: { type: "slider", value: 4, min: 1, max: 20, step: 1 },
+    strength: { type: "slider", value: 1.65, min: 0, max: 2, step: 0.05 },
+    aberration: { type: "slider", value: 0.25, min: 0, max: 2, step: 0.05 },
+    trail: { type: "slider", value: 0.93, min: 0.8, max: 0.99, step: 0.01 },
+    webglEnabled: { type: "boolean", value: true },
+  }}
+/>
+
+---
+
+## Install
+
+<InstallTabs name="pixel-image" />
+
+---
+
+## API
+
+| Name         | Type      | Default | Description                  |
+| ------------ | --------- | ------- | ---------------------------- |
+| src          | `string`  | —       | Image source.                |
+| alt          | `string`  | —       | Image alt text.              |
+| gridSize     | `number`  | `22`    | Pixel blocks per axis.       |
+| interactionRadius | `number` | `4`   | Cursor push radius.          |
+| strength     | `number`  | `1.65`  | Drag strength.               |
+| aberration   | `number`  | `0.25`  | RGB channel split.           |
+| trail        | `number`  | `0.93`  | Trail persistence.           |
+| segments     | `number`  | `1`     | Plane geometry subdivisions. |
+| webglEnabled | `boolean` | `true`  | Toggle WebGL effect on/off.  |
+| ...props     | `ImgHTMLAttributes` | — | Other `<img>` attributes forwarded to the underlying element. |
+
+---
+
+## Credits
+
+[React Three Fiber](https://r3f.docs.pmnd.rs/)  
+React renderer for Three.js.
+
+[Drei](https://drei.docs.pmnd.rs/)  
+React Three Fiber utilities.
