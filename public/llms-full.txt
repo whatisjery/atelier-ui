@@ -2,7 +2,7 @@
 
 Source: https://atelier-ui.com/docs
 
-Generated: 2026-05-28T19:10:04.157Z
+Generated: 2026-05-29T17:05:34.229Z
 
 ---
 
@@ -857,19 +857,19 @@ Source file: components/transition/clip-reveal.mdx
 
 ## API
 
-| Name         | Type                               | Default             | Description                                 |
-| ------------ | ---------------------------------- | ------------------- | ------------------------------------------- |
-| `children`   | `ReactNode`                        | —                   | Content to reveal. Required.                |
-| `className`  | `string`                           | —                   | Extra classes applied to the wrapper.       |
-| `duration`   | `number`                           | `2`                 | Duration of both animations in seconds.     |
-| `ease`       | `[number, number, number, number]` | `[0.85, 0, 0.2, 1]` | Cubic bezier easing for both animations.    |
-| `depth`      | `number`                           | `2`                 | Initial scale of the content before reveal. |
-| `top`        | `number`                           | `70`                | Starting inset from the top in percent.     |
-| `left`       | `number`                           | `25`                | Starting inset from the left in percent.    |
-| `bottom`     | `number`                           | `40`                | Starting inset from the bottom in percent.  |
-| `right`      | `number`                           | `25`                | Starting inset from the right in percent.   |
-| `trigger`    | `boolean`                          | `true`              | Starts the animation when set to true.      |
-| `onComplete` | `() => void`                       | —                   | Called when the animation finishes.         |
+| Name         | Type         | Default             | Description                                                    |
+| ------------ | ------------ | ------------------- | -------------------------------------------------------------- |
+| `children`   | `ReactNode`  | —                   | Content to reveal. Required.                                   |
+| `className`  | `string`     | —                   | Extra classes applied to the wrapper.                          |
+| `duration`   | `number`     | `2`                 | Duration of both animations in seconds.                        |
+| `ease`       | `Easing`     | `[0.85, 0, 0.2, 1]` | Motion easing: bezier array, named string, or easing function. |
+| `depth`      | `number`     | `2`                 | Initial scale of the content before reveal.                    |
+| `top`        | `number`     | `70`                | Starting inset from the top in percent.                        |
+| `left`       | `number`     | `25`                | Starting inset from the left in percent.                       |
+| `bottom`     | `number`     | `40`                | Starting inset from the bottom in percent.                     |
+| `right`      | `number`     | `25`                | Starting inset from the right in percent.                      |
+| `trigger`    | `boolean`    | `true`              | Starts the animation when set to true.                         |
+| `onComplete` | `() => void` | —                   | Called when the animation finishes.                            |
 
 ***
 
@@ -877,6 +877,32 @@ Source file: components/transition/clip-reveal.mdx
 
 [Zajno](https://zajno.com/)\
 Page transition that inspired this effect.
+
+
+============================================================
+## Stripe Wipe
+> A staggered stripe wipe that reveals the page beneath an overlay.
+
+Source file: components/transition/stripe-wipe.mdx
+
+***
+
+## Install
+
+***
+
+## API
+
+| Name        | Type      | Default             | Description                                                    |
+| ----------- | --------- | ------------------- | -------------------------------------------------------------- |
+| `stripes`   | `number`  | `8`                 | Number of vertical columns the overlay is split into.          |
+| `segments`  | `number`  | `5`                 | Number of segments each column is divided into.                |
+| `reverse`   | `boolean` | `false`             | Reverses the direction the staggered wipe travels.             |
+| `stagger`   | `number`  | `0.04`              | Delay in seconds added per column and per segment.             |
+| `duration`  | `number`  | `1.2`               | Duration in seconds of each segment's wipe.                    |
+| `ease`      | `Easing`  | `[0.85, 0, 0.2, 1]` | Motion easing: bezier array, named string, or easing function. |
+| `trigger`   | `boolean` | `true`              | Starts the wipe when set to true.                              |
+| `className` | `string`  | —                   | Extra classes applied to the wrapper (e.g. sizing).            |
 
 
 ============================================================
@@ -893,16 +919,16 @@ Source file: components/transition/sweep-exit.mdx
 
 ## API
 
-| Name             | Type                               | Default             | Description                                           |
-| ---------------- | ---------------------------------- | ------------------- | ----------------------------------------------------- |
-| `children`       | `ReactNode`                        | —                   | Content rendered on top of the overlay layer.         |
-| `backgroundSlot` | `ReactNode`                        | —                   | Content rendered in the background overlay. Required. |
-| `duration`       | `number`                           | `1`                 | Time-scale multiplier applied to every sub-step.      |
-| `ease`           | `[number, number, number, number]` | `[0.85, 0, 0.2, 1]` | Cubic bezier easing used across the sequence.         |
-| `insetX`         | `number`                           | `20`                | Horizontal inset at peak contraction in percent.      |
-| `insetY`         | `number`                           | `10`                | Vertical inset at peak contraction in percent.        |
-| `trigger`        | `boolean`                          | `true`              | Starts the animation when set to true.                |
-| `onComplete`     | `() => void`                       | —                   | Called when the animation finishes.                   |
+| Name             | Type         | Default             | Description                                                    |
+| ---------------- | ------------ | ------------------- | -------------------------------------------------------------- |
+| `children`       | `ReactNode`  | —                   | Content rendered on top of the overlay layer.                  |
+| `backgroundSlot` | `ReactNode`  | —                   | Content rendered in the background overlay. Required.          |
+| `duration`       | `number`     | `1`                 | Time-scale multiplier applied to every sub-step.               |
+| `ease`           | `Easing`     | `[0.85, 0, 0.2, 1]` | Motion easing: bezier array, named string, or easing function. |
+| `insetX`         | `number`     | `20`                | Horizontal inset at peak contraction in percent.               |
+| `insetY`         | `number`     | `10`                | Vertical inset at peak contraction in percent.                 |
+| `trigger`        | `boolean`    | `true`              | Starts the animation when set to true.                         |
+| `onComplete`     | `() => void` | —                   | Called when the animation finishes.                            |
 
 ***
 
