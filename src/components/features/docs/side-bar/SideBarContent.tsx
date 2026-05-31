@@ -47,7 +47,7 @@ function SectionNode({ node, pathname, hasCustomer, closedKeys, toggle }: NodePr
     const FolderIcon = isOpen ? FolderOpen : Folder
 
     return (
-        <section>
+        <section className={cn({ "mb-3": isOpen })}>
             <button
                 type="button"
                 onClick={() => toggle(node.url)}
