@@ -2,3 +2,4 @@ title: Getting started
 icon: "Rocket"
 order: 0
 nav: false
+display: flat

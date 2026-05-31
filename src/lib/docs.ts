@@ -117,6 +117,7 @@ function buildFolderNode(fullPath: string, urlPath: string, item: string): DocTr
         category: dirMeta.category,
         icon: dirMeta.icon,
         nav: dirMeta.nav,
+        display: dirMeta.display,
     }
 }
 

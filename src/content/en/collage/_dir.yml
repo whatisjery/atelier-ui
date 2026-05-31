@@ -1,4 +1,6 @@
 title: Collage
-icon: "Layers2"
-order: 2
+category: Collage
+icon: "Blocks"
+order: 1
 nav: true
+display: folder

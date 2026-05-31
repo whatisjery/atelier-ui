@@ -1,9 +1,12 @@
+export type SectionDisplay = "flat" | "group" | "folder"
+
 export type DirMeta = {
     title?: string
     category?: string
     icon?: string
     order?: number
     nav?: boolean
+    display?: SectionDisplay
 }
 
 export type DocMeta = {
@@ -28,6 +31,7 @@ export type DocTree = {
     updatedAt?: string
     pro?: boolean
     nav?: boolean
+    display?: SectionDisplay
 }
 
 export type DocHeading = {

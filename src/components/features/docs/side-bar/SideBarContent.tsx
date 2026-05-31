@@ -47,7 +47,7 @@ function SectionNode({ node, pathname, hasCustomer, closedKeys, toggle }: NodePr
     const FolderIcon = isOpen ? FolderOpen : Folder
 
     return (
-        <section className={cn({ "mb-5": isOpen })}>
+        <section>
             <button
                 type="button"
                 onClick={() => toggle(node.url)}
@@ -58,6 +58,7 @@ function SectionNode({ node, pathname, hasCustomer, closedKeys, toggle }: NodePr
                     <FolderIcon strokeWidth={1.5} className="size-5" />
                     {node.category}
                 </span>
+
                 <ChevronDown
                     className={cn(
                         "size-5 transition-transform origin-center duration-100 ease-expo-out",
@@ -95,15 +96,7 @@ export default function SideBarContent({ className, sections, topBarSlot }: Side
         })
     }
 
-    const flatSection = sections
-        .filter(({ children }) => {
-            return !children.some(({ type }) => type === "folder")
-        })
-        .sort((a, b) => a.order - b.order)
-
-    const nestedSections = sections.filter(({ children }) => {
-        return children.some(({ type }) => type === "folder")
-    })
+    const orderedSections = [...sections].sort((a, b) => a.order - b.order)
 
     return (
         <aside
@@ -115,29 +108,60 @@ export default function SideBarContent({ className, sections, topBarSlot }: Side
             {topBarSlot}
 
             <nav className="px-5 py-5 overflow-y-auto flex-1 overscroll-none">
-                {flatSection.map((section) => {
-                    const isFirst = flatSection.indexOf(section) === 0
+                {orderedSections.map((section) => {
+                    const display = section.display ?? "flat"
+
+                    if (display === "folder") {
+                        return (
+                            <SectionNode
+                                key={section.url}
+                                node={section}
+                                pathname={pathname}
+                                hasCustomer={hasCustomer}
+                                closedKeys={closedKeys}
+                                toggle={toggle}
+                            />
+                        )
+                    }
+
+                    if (display === "group") {
+                        const subFolders = section.children.filter(({ type }) => type === "folder")
+                        const childCount = subFolders.flatMap(({ children }) => children).length
+
+                        return (
+                            <React.Fragment key={section.url}>
+                                <h2 className="font-medium mb-4 text-accent-1 mt-6">
+                                    {section.title} ({padStartFormat(childCount)})
+                                </h2>
+                                {subFolders.map((folder) => (
+                                    <SectionNode
+                                        key={folder.url}
+                                        node={folder}
+                                        pathname={pathname}
+                                        hasCustomer={hasCustomer}
+                                        closedKeys={closedKeys}
+                                        toggle={toggle}
+                                    />
+                                ))}
+                            </React.Fragment>
+                        )
+                    }
+
                     return (
-                        <section className="mb-6" key={section.title}>
-                            {!isFirst ? (
-                                <h2 className="font-medium mb-4 text-accent-1">{section.title}</h2>
-                            ) : (
-                                <h2 className="sr-only">{section.title}</h2>
-                            )}
+                        <section className="mb-6" key={section.url}>
+                            <h2 className="sr-only">{section.title}</h2>
 
                             <ul>
-                                {isFirst && (
-                                    <ListItem
-                                        sideLine={false}
-                                        activeItem={pathname === "/docs/components"}
-                                        linkItem={{
-                                            href: "/docs",
-                                            label: tSidebar("browse-catalog"),
-                                            icon: <BookOpen strokeWidth={1.5} className="size-5" />,
-                                        }}
-                                    />
-                                )}
-                                {section?.children.map(({ url, title, icon }) => {
+                                <ListItem
+                                    sideLine={false}
+                                    activeItem={pathname === "/docs/components"}
+                                    linkItem={{
+                                        href: "/docs",
+                                        label: tSidebar("browse-catalog"),
+                                        icon: <BookOpen strokeWidth={1.5} className="size-5" />,
+                                    }}
+                                />
+                                {section.children.map(({ url, title, icon }) => {
                                     const Icon = getLucideIcon(icon)
                                     return (
                                         <ListItem
@@ -154,29 +178,6 @@ export default function SideBarContent({ className, sections, topBarSlot }: Side
                                 })}
                             </ul>
                         </section>
-                    )
-                })}
-
-                {nestedSections.map((section) => {
-                    const subFolders = section.children.filter(({ type }) => type === "folder")
-                    const childCount = subFolders.flatMap(({ children }) => children).length
-
-                    return (
-                        <React.Fragment key={section.url}>
-                            <h2 className="font-medium mb-4 text-accent-1">
-                                {section.title} ({padStartFormat(childCount)})
-                            </h2>
-                            {subFolders.map((folder) => (
-                                <SectionNode
-                                    key={folder.url}
-                                    node={folder}
-                                    pathname={pathname}
-                                    hasCustomer={hasCustomer}
-                                    closedKeys={closedKeys}
-                                    toggle={toggle}
-                                />
-                            ))}
-                        </React.Fragment>
                     )
                 })}
             </nav>
