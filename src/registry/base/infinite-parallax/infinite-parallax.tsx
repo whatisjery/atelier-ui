@@ -66,7 +66,7 @@ export function InfiniteParallax({
         else if (next >= 0) next = -height + 1
 
         offsetRef.current = next
-        y.set(reversed ? -next - height : next)
+        y.set(reversed ? next : -next - height)
     })
 
     return (

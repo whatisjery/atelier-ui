@@ -5,11 +5,11 @@ export default function PixelTrailDemo(controls: Partial<PixelTrailProps>) {
     const { resolvedTheme } = useTheme()
 
     return (
-        <>
+        <div className="w-full h-screen flex items-center justify-center px-2">
             <img
                 src="/images/demo/shared/1.webp"
                 alt="Pixel Trail Demo"
-                className="object-cover size-80 max-w-[80%] max-h-[80%] absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+                className="w-sm h-auto"
                 width={100}
                 height={100}
             />
@@ -26,6 +26,6 @@ export default function PixelTrailDemo(controls: Partial<PixelTrailProps>) {
                 lifetime={1}
                 {...controls}
             />
-        </>
+        </div>
     )
 }

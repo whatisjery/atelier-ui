@@ -16,7 +16,7 @@ export default function ClipRevealDemo(controls: Partial<ClipRevealProps>) {
                 trigger={loaded}
             >
                 <img
-                    src="/images/demo/shared/3.webp"
+                    src="/images/demo/shared/1.webp"
                     alt="Hero"
                     className="absolute inset-0 h-full w-full object-cover"
                 />

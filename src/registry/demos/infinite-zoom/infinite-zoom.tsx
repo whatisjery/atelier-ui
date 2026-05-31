@@ -21,9 +21,6 @@ export default function InfiniteParallaxDemo(controls: Partial<InfiniteZoomProps
                             className="object-cover w-full h-full select-none pointer-events-none"
                             draggable={false}
                         />
-                        <span className="absolute font-serif text-5xl text-center top-32 left-1/2 whitespace-nowrap text-[#000000] -translate-x-1/2 z-3">
-                            Scroll down or up
-                        </span>
                     </div>
                 )
             })}

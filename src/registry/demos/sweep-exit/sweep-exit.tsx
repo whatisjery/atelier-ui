@@ -9,7 +9,7 @@ export default function SweepExitDemo(controls: Partial<SweepExitProps>) {
     return (
         <div className="w-screen h-screen">
             <img
-                src="/images/demo/shared/3.webp"
+                src="/images/demo/shared/1.webp"
                 alt="Hero"
                 className="absolute inset-0 h-full w-full object-cover"
             />
@@ -24,7 +24,7 @@ export default function SweepExitDemo(controls: Partial<SweepExitProps>) {
                 trigger={loaded}
                 backgroundSlot={
                     <img
-                        src="/images/demo/shared/1.webp"
+                        src="/images/demo/shared/2.webp"
                         alt="overlay"
                         className="absolute inset-0 h-full w-full object-cover"
                     />

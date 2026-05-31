@@ -5,10 +5,10 @@ import {
 } from "@/registry/base/infinite-gallery/infinite-gallery"
 
 const ITEMS = [
-    { src: "/images/demo/shared/1.webp", height: 200 },
-    { src: "/images/demo/shared/2.webp", height: 280 },
-    { src: "/images/demo/shared/3.webp", height: 200 },
-    { src: "/images/demo/shared/4.webp", height: 250 },
+    { src: "/images/demo/shared/1.webp" },
+    { src: "/images/demo/shared/2.webp" },
+    { src: "/images/demo/shared/3.webp" },
+    { src: "/images/demo/shared/4.webp" },
 ]
 
 export default function InfiniteGalleryDemo(controls: Partial<InfiniteGalleryProps<string>>) {

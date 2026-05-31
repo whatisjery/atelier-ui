@@ -10,7 +10,7 @@ export default function StripeWipeDemo(controls: Partial<StripeWipeProps>) {
     return (
         <div className="w-screen h-screen">
             <img
-                src="/images/demo/shared/3.webp"
+                src="/images/demo/shared/1.webp"
                 alt="Hero"
                 className="absolute inset-0 h-full w-full object-cover"
             />

@@ -13,7 +13,11 @@ import { WebglImage } from "@/registry/base/webgl-image/webgl-image"
 import { WebglPortal } from "@/registry/base/webgl-portal/webgl-portal"
 import { WebglText } from "@/registry/base/webgl-text/webgl-text"
 
-const IMAGE_URLS = ["/images/demo/shared/1.webp", "/images/demo/shared/2.webp"]
+const IMAGE_URLS = [
+    "/images/demo/shared/1.webp",
+    "/images/demo/shared/2.webp",
+    "/images/demo/shared/3.webp",
+]
 
 const DEMO_TEXT =
     "Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci velit, sed quia non numquam eius modi tempora incidunt "
@@ -97,15 +101,15 @@ export default function FluidScene() {
                     </span>
                 </header>
 
-                <section className="h-[90vh] relative flex items-end w-full text-[#ffffff] px-5">
+                <section className="h-screen relative flex items-end w-full text-[#ffffff] px-5">
                     <WebglImage
                         alt="runner"
                         src="/images/demo/shared/1.webp"
-                        className="object-cover h-[90vh] absolute inset-0 w-full"
+                        className="object-cover h-full absolute inset-0 w-full"
                     />
 
                     <div className="flex flex-col items-center w-full">
-                        <h1 className="flex w-full justify-between text-[17vw]/[1.3]">
+                        <h1 className="flex w-full justify-center text-[17vw]/[1.3]">
                             <WebglText zIndex={1} render={<p className="tracking-[-0.05em]"></p>}>
                                 Atelier
                             </WebglText>
@@ -169,16 +173,16 @@ export default function FluidScene() {
                 <footer ref={footerRef} className="overflow-hidden">
                     <motion.div
                         style={{ y: yFooter }}
-                        className="h-[90vh] relative flex items-end w-full text-[#ffffff]"
+                        className="h-screen relative flex items-end w-full text-[#ffffff]"
                     >
                         <WebglImage
                             // parent is animated, so the plane must follow it each frame
                             autoReflow
                             alt="skateboarder"
-                            src="/images/demo/shared/1.webp"
-                            className="object-cover absolute h-[90vh] inset-0 w-full"
+                            src="/images/demo/shared/2.webp"
+                            className="object-cover absolute h-full inset-0 w-full"
                         />
-                        <div className="flex flex-col items-center justify-start w-full relative z-2 h-full">
+                        <div className="flex flex-col items-center w-full relative z-2 h-full">
                             <WebglImage
                                 src="/images/demo/shared/barcode.png"
                                 alt="barcode"
@@ -190,27 +194,25 @@ export default function FluidScene() {
                                 {DEMO_TEXT}
                             </p>
 
-                            <div className="flex flex-col items-center w-full relative z-2 mb-10">
-                                <span className="flex w-full justify-between text-[17vw]/[1.3]">
-                                    <WebglText
-                                        autoReflow
-                                        zIndex={1}
-                                        render={<p className="tracking-[-0.05em]"></p>}
-                                    >
-                                        Atelier
-                                    </WebglText>
+                            <span className="flex justify-center w-full text-[17vw]/[1.3] mb-10 text-center">
+                                <WebglText
+                                    autoReflow
+                                    zIndex={1}
+                                    render={<p className="tracking-[-0.05em]"></p>}
+                                >
+                                    Atelier
+                                </WebglText>
 
-                                    <WebglText
-                                        autoReflow
-                                        zIndex={1}
-                                        render={
-                                            <p className="font-serif italic tracking-[-0.03em]"></p>
-                                        }
-                                    >
-                                        (Collage)
-                                    </WebglText>
-                                </span>
-                            </div>
+                                <WebglText
+                                    autoReflow
+                                    zIndex={1}
+                                    render={
+                                        <p className="font-serif italic tracking-[-0.03em]"></p>
+                                    }
+                                >
+                                    (Collage)
+                                </WebglText>
+                            </span>
                         </div>
                     </motion.div>
                 </footer>
