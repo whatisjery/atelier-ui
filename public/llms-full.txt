@@ -2,7 +2,7 @@
 
 Source: https://atelier-ui.com/docs
 
-Generated: 2026-05-31T17:54:23.430Z
+Generated: 2026-05-31T19:35:56.116Z
 
 ---
 
@@ -11,7 +11,7 @@ Generated: 2026-05-31T17:54:23.430Z
 ## Fluid Scene
 > Fluid post-processing over WebGL primitives plus infinite parallax, and text roll.
 
-Source file: collage/webgl/fluid-scene.mdx
+Source file: collage/fluid-scene.mdx
 
 ***
 
@@ -22,6 +22,7 @@ Source file: collage/webgl/fluid-scene.mdx
 * [Fluid Distortion](/docs/components/cursor/fluid-distortion)
 * [Text Roll](/docs/components/text/text-roll)
 * [Infinite Parallax](/docs/components/scroll/infinite-parallax)
+* [Sweep Exit](/docs/components/transition/sweep-exit)
 
 ***
 
@@ -435,7 +436,7 @@ Use `splitBy="words"` to split on spaces instead:
 
 Source file: components/primitive/webgl-image.mdx
 
-A structural building block for composing your own WebGL image effects, like [Curve Image](/docs/components/scroll/curve-image).
+A structural building block for composing your own WebGL image effects, like [Curve Media](/docs/components/scroll/curve-media).
 
 The image is rendered twice: as a real `<img>` for SEO and screen readers (hidden when WebGL is on), and as a `Texture` on a plane that tracks the element's bounding box. The two stay pixel-aligned, so the shader feels like it runs on the DOM.
 
@@ -692,10 +693,10 @@ Standard `<video>` attributes (`className`, `style`, `poster`, `controls`, ...) 
 
 
 ============================================================
-## Curve Image
-> An SEO-friendly WebGL image with scroll-velocity driven bend and chromatic aberration.
+## Curve Media
+> An SEO-friendly WebGL image or video with scroll-velocity driven bend and chromatic aberration.
 
-Source file: components/scroll/curve-image.mdx
+Source file: components/scroll/curve-media.mdx
 
 ***
 
@@ -705,16 +706,17 @@ Source file: components/scroll/curve-image.mdx
 
 ## API
 
-| Name         | Type                | Default | Description                                                                     |
-| ------------ | ------------------- | ------- | ------------------------------------------------------------------------------- |
-| src          | `string`            | —       | Image URL bound to the GPU plane.                                               |
-| alt          | `string`            | —       | Alt text for the underlying `<img>`.                                            |
-| amplitude    | `number`            | `0.03`  | Maximum bend intensity, applied to the smoothed scroll velocity.                |
-| aberration   | `number`            | `0.003` | RGB channel split along the scroll axis, scaled by velocity.                    |
-| smoothing    | `number`            | `6`     | Exponential smoothing for the velocity (higher = snappier, lower = floatier).   |
-| segments     | `number`            | `32`    | Plane subdivision count. Higher = smoother curve, more vertices.                |
-| webglEnabled | `boolean`           | `true`  | When false, the WebGL plane is skipped and the plain `<img>` is rendered as-is. |
-| ...props     | `ImgHTMLAttributes` | —       | Other `<img>` attributes forwarded to the underlying element.                   |
+| Name         | Type                                       | Default   | Description                                                                     |
+| ------------ | ------------------------------------------ | --------- | ------------------------------------------------------------------------------- |
+| type         | `"image" \| "video"`                       | `"image"` | Render the bend on a still image or a video.                                    |
+| src          | `string`                                   | —         | Media source.                                                                   |
+| alt          | `string`                                   | —         | Image alt text. Required (and only used) when `type` is `"image"`.              |
+| amplitude    | `number`                                   | `0.03`    | Maximum bend intensity, applied to the smoothed scroll velocity.                |
+| aberration   | `number`                                   | `0.003`   | RGB channel split along the scroll axis, scaled by velocity.                    |
+| smoothing    | `number`                                   | `6`       | Exponential smoothing for the velocity (higher = snappier, lower = floatier).   |
+| segments     | `number`                                   | `32`      | Plane subdivision count. Higher = smoother curve, more vertices.                |
+| webglEnabled | `boolean`                                  | `true`    | When false, the WebGL plane is skipped and the plain element is rendered as-is. |
+| ...props     | `ImgHTMLAttributes \| VideoHTMLAttributes` | —         | Other `<img>` or `<video>` attributes forwarded to the underlying element.      |
 
 ***
 

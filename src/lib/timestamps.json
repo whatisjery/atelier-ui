@@ -1,4 +1,8 @@
 {
+  "src/content/en/collage/fluid-scene.mdx": {
+    "createdAt": null,
+    "updatedAt": null
+  },
   "src/content/en/getting-started/code-of-conduct.mdx": {
     "createdAt": "2026-05-07T21:23:51+02:00",
     "updatedAt": "2026-05-07T21:23:51+02:00"
@@ -10,10 +14,6 @@
   "src/content/en/getting-started/installation.mdx": {
     "createdAt": "2026-05-07T21:23:51+02:00",
     "updatedAt": "2026-05-16T21:31:27+02:00"
-  },
-  "src/content/en/collage/webgl/fluid-scene.mdx": {
-    "createdAt": "2026-05-29T23:55:16+02:00",
-    "updatedAt": "2026-05-29T23:55:16+02:00"
   },
   "src/content/en/components/background/dither-flow.mdx": {
     "createdAt": null,
@@ -36,20 +36,20 @@
     "updatedAt": "2026-05-24T22:43:07+02:00"
   },
   "src/content/en/components/cursor/lens-media.mdx": {
-    "createdAt": null,
-    "updatedAt": null
+    "createdAt": "2026-05-31T20:27:18+02:00",
+    "updatedAt": "2026-05-31T20:27:18+02:00"
   },
   "src/content/en/components/cursor/liquid-media.mdx": {
-    "createdAt": null,
-    "updatedAt": null
+    "createdAt": "2026-05-31T20:27:18+02:00",
+    "updatedAt": "2026-05-31T20:27:18+02:00"
   },
   "src/content/en/components/cursor/magnetic-dot-grid.mdx": {
     "createdAt": "2026-05-07T21:23:51+02:00",
     "updatedAt": "2026-05-24T22:43:07+02:00"
   },
   "src/content/en/components/cursor/pixel-media.mdx": {
-    "createdAt": null,
-    "updatedAt": null
+    "createdAt": "2026-05-31T20:27:18+02:00",
+    "updatedAt": "2026-05-31T20:27:18+02:00"
   },
   "src/content/en/components/cursor/pixel-trail.mdx": {
     "createdAt": "2026-05-07T21:23:51+02:00",
@@ -68,12 +68,12 @@
     "updatedAt": "2026-05-25T19:38:40+02:00"
   },
   "src/content/en/components/primitive/webgl-video.mdx": {
+    "createdAt": "2026-05-31T20:27:18+02:00",
+    "updatedAt": "2026-05-31T20:27:18+02:00"
+  },
+  "src/content/en/components/scroll/curve-media.mdx": {
     "createdAt": null,
     "updatedAt": null
-  },
-  "src/content/en/components/scroll/curve-image.mdx": {
-    "createdAt": "2026-05-14T23:55:14+02:00",
-    "updatedAt": "2026-05-24T22:43:07+02:00"
   },
   "src/content/en/components/scroll/elastic-stick.mdx": {
     "createdAt": null,
