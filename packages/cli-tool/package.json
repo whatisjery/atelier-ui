@@ -29,9 +29,6 @@
         "dev:test": "cross-env ATELIER_REGISTRY=http://localhost:3000/api/registry vitest run"
     },
     "dependencies": {
-        "@react-three/drei": "^10.7.7",
-        "@react-three/fiber": "^9.5.0",
-        "@react-three/postprocessing": "^3.0.4",
         "commander": "^12.0.0",
         "dotenv": "^17.2.3",
         "fs-extra": "^11.0.0",
