@@ -1,13 +1,12 @@
-"use client"
-
-import { useProgress } from "@react-three/drei"
 import { Canvas } from "@react-three/fiber"
 import { EffectComposer } from "@react-three/postprocessing"
 import ReactLenis from "lenis/react"
-import { AnimatePresence, motion, useScroll, useTransform } from "motion/react"
-import { type ComponentRef, useEffect, useRef, useState } from "react"
+import { motion, useScroll, useTransform } from "motion/react"
+import { type ComponentRef, useRef, useState } from "react"
+import { useDreiLoader } from "@/hooks/use-drei-loader"
 import { FluidDistortion } from "@/registry/base/fluid-distortion/fluid-distortion"
 import { InfiniteParallax } from "@/registry/base/infinite-parallax/infinite-parallax"
+import { SweepExit } from "@/registry/base/sweep-exit/sweep-exit"
 import { TextRoll } from "@/registry/base/text-roll/text-roll"
 import { WebglImage } from "@/registry/base/webgl-image/webgl-image"
 import { WebglPortal } from "@/registry/base/webgl-portal/webgl-portal"
@@ -31,17 +30,7 @@ const PARALLAX_CFG = [
 export default function FluidScene() {
     const footerRef = useRef<ComponentRef<"footer">>(null)
     const [preloader, setShowPreloader] = useState(true)
-    const progress = useProgress((s) => s.progress)
-
-    useEffect(() => {
-        if (progress < 100) return
-
-        const timeout = setTimeout(() => {
-            setShowPreloader(false)
-        }, 600)
-
-        return () => clearTimeout(timeout)
-    }, [progress])
+    const { loaded, messageRef } = useDreiLoader()
 
     const { scrollYProgress } = useScroll({
         target: footerRef,
@@ -51,23 +40,23 @@ export default function FluidScene() {
 
     return (
         <>
-            <AnimatePresence>
-                {preloader && (
-                    <motion.div
-                        exit={{ opacity: 0 }}
-                        transition={{ duration: 0.2, ease: "easeOut" }}
-                        className="fixed inset-0 z-50 bg-[#000000] flex items-center justify-center"
-                    >
-                        <div className="w-15 h-px bg-[#2c2c2c] overflow-hidden">
-                            <motion.div
-                                className="h-full w-full bg-[#ffffff] origin-left"
-                                initial={{ scaleX: 0 }}
-                                animate={{ scaleX: progress / 100 }}
-                            />
-                        </div>
-                    </motion.div>
-                )}
-            </AnimatePresence>
+            {preloader && (
+                <SweepExit
+                    trigger={loaded}
+                    onComplete={() => setShowPreloader(false)}
+                    backgroundSlot={
+                        <img
+                            src="/images/demo/shared/3.webp"
+                            alt="loader"
+                            className="absolute inset-0 h-full w-full object-cover"
+                        />
+                    }
+                >
+                    <div className="w-full h-full bg-[#000000] flex items-center justify-center font-serif text-[#ffffff]">
+                        <span ref={messageRef} className="text-2xl tabular-nums" />
+                    </div>
+                </SweepExit>
+            )}
 
             <Canvas
                 dpr={[1, 1.5]}
@@ -129,7 +118,7 @@ export default function FluidScene() {
                 </section>
 
                 <section className="h-[180vh] bg-[black] flex overflow-hidden relative">
-                    <div className="absolute inset-0 z-5 bg-[#000000c8] pointer-events-none" />
+                    <div className="absolute inset-0 z-5 bg-[#0000009d] pointer-events-none" />
 
                     <div className="absolute inset-0 flex items-center justify-end z-20 py-50 flex-col">
                         <TextRoll
