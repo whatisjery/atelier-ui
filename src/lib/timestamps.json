@@ -12,8 +12,8 @@
     "updatedAt": "2026-05-16T21:31:27+02:00"
   },
   "src/content/en/collage/webgl/fluid-scene.mdx": {
-    "createdAt": "2026-05-29T23:51:55+02:00",
-    "updatedAt": "2026-05-29T23:51:55+02:00"
+    "createdAt": "2026-05-29T23:55:16+02:00",
+    "updatedAt": "2026-05-29T23:55:16+02:00"
   },
   "src/content/en/components/background/dither-flow.mdx": {
     "createdAt": null,
@@ -35,21 +35,21 @@
     "createdAt": "2026-05-07T21:23:51+02:00",
     "updatedAt": "2026-05-24T22:43:07+02:00"
   },
-  "src/content/en/components/cursor/lens-image.mdx": {
-    "createdAt": "2026-05-29T23:51:47+02:00",
-    "updatedAt": "2026-05-29T23:51:47+02:00"
+  "src/content/en/components/cursor/lens-media.mdx": {
+    "createdAt": null,
+    "updatedAt": null
   },
-  "src/content/en/components/cursor/liquid-image.mdx": {
-    "createdAt": "2026-05-16T21:29:03+02:00",
-    "updatedAt": "2026-05-24T22:43:07+02:00"
+  "src/content/en/components/cursor/liquid-media.mdx": {
+    "createdAt": null,
+    "updatedAt": null
   },
   "src/content/en/components/cursor/magnetic-dot-grid.mdx": {
     "createdAt": "2026-05-07T21:23:51+02:00",
     "updatedAt": "2026-05-24T22:43:07+02:00"
   },
-  "src/content/en/components/cursor/pixel-image.mdx": {
-    "createdAt": "2026-05-29T23:51:47+02:00",
-    "updatedAt": "2026-05-29T23:51:47+02:00"
+  "src/content/en/components/cursor/pixel-media.mdx": {
+    "createdAt": null,
+    "updatedAt": null
   },
   "src/content/en/components/cursor/pixel-trail.mdx": {
     "createdAt": "2026-05-07T21:23:51+02:00",
@@ -66,6 +66,10 @@
   "src/content/en/components/primitive/webgl-text.mdx": {
     "createdAt": "2026-05-24T19:32:15+02:00",
     "updatedAt": "2026-05-25T19:38:40+02:00"
+  },
+  "src/content/en/components/primitive/webgl-video.mdx": {
+    "createdAt": null,
+    "updatedAt": null
   },
   "src/content/en/components/scroll/curve-image.mdx": {
     "createdAt": "2026-05-14T23:55:14+02:00",
@@ -113,14 +117,14 @@
   },
   "src/content/en/components/transition/clip-reveal.mdx": {
     "createdAt": "2026-05-28T21:03:53+02:00",
-    "updatedAt": "2026-05-29T23:52:00+02:00"
+    "updatedAt": "2026-05-29T23:59:58+02:00"
   },
   "src/content/en/components/transition/stripe-wipe.mdx": {
     "createdAt": "2026-05-29T19:15:54+02:00",
-    "updatedAt": "2026-05-29T23:52:00+02:00"
+    "updatedAt": "2026-05-29T23:59:58+02:00"
   },
   "src/content/en/components/transition/sweep-exit.mdx": {
     "createdAt": "2026-05-28T21:03:53+02:00",
-    "updatedAt": "2026-05-29T23:52:00+02:00"
+    "updatedAt": "2026-05-29T23:59:58+02:00"
   }
 }

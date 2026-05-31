@@ -2,7 +2,7 @@
 
 Source: https://atelier-ui.com/docs
 
-Generated: 2026-05-29T21:52:53.010Z
+Generated: 2026-05-31T17:54:23.430Z
 
 ---
 
@@ -169,10 +169,10 @@ React animation library.
 
 
 ============================================================
-## Lens Image
-> An SEO-friendly WebGL image with a cursor-following circular lens and chromatic aberration
+## Lens Media
+> An SEO-friendly WebGL image or video with a cursor-following circular lens and chromatic aberration
 
-Source file: components/cursor/lens-image.mdx
+Source file: components/cursor/lens-media.mdx
 
 ***
 
@@ -182,19 +182,20 @@ Source file: components/cursor/lens-image.mdx
 
 ## API
 
-| Name         | Type                | Default | Description                                                   |
-| ------------ | ------------------- | ------- | ------------------------------------------------------------- |
-| src          | `string`            | —       | Image source.                                                 |
-| alt          | `string`            | —       | Image alt text.                                               |
-| size         | `number`            | `0.23`  | Lens radius.                                                  |
-| softness     | `number`            | `0.38`  | Lens edge falloff.                                            |
-| aberration   | `number`            | `0.17`  | Color spread width.                                           |
-| dispersion   | `number`            | `50`    | Color sample count.                                           |
-| refraction   | `number`            | `0.39`  | Inward pull strength.                                         |
-| smoothing    | `number`            | `10`    | Cursor damping speed.                                         |
-| segments     | `number`            | `1`     | Plane geometry subdivisions.                                  |
-| webglEnabled | `boolean`           | `true`  | Toggle WebGL effect on/off.                                   |
-| ...props     | `ImgHTMLAttributes` | —       | Other `<img>` attributes forwarded to the underlying element. |
+| Name         | Type                                       | Default   | Description                                                                |
+| ------------ | ------------------------------------------ | --------- | -------------------------------------------------------------------------- |
+| type         | `"image" \| "video"`                       | `"image"` | Render the lens on a still image or a video.                               |
+| src          | `string`                                   | —         | Media source.                                                              |
+| alt          | `string`                                   | —         | Image alt text. Required (and only used) when `type` is `"image"`.         |
+| size         | `number`                                   | `0.23`    | Lens radius.                                                               |
+| softness     | `number`                                   | `0.38`    | Lens edge falloff.                                                         |
+| aberration   | `number`                                   | `0.17`    | Color spread width.                                                        |
+| dispersion   | `number`                                   | `50`      | Color sample count.                                                        |
+| refraction   | `number`                                   | `0.39`    | Inward pull strength.                                                      |
+| smoothing    | `number`                                   | `10`      | Cursor damping speed.                                                      |
+| segments     | `number`                                   | `1`       | Plane geometry subdivisions.                                               |
+| webglEnabled | `boolean`                                  | `true`    | Toggle WebGL effect on/off.                                                |
+| ...props     | `ImgHTMLAttributes \| VideoHTMLAttributes` | —         | Other `<img>` or `<video>` attributes forwarded to the underlying element. |
 
 ***
 
@@ -208,10 +209,10 @@ React Three Fiber utilities.
 
 
 ============================================================
-## Liquid Image
-> An SEO-friendly WebGL image with a cursor-driven liquid ripple effect
+## Liquid Media
+> An SEO-friendly WebGL image or video with a cursor-driven liquid ripple effect
 
-Source file: components/cursor/liquid-image.mdx
+Source file: components/cursor/liquid-media.mdx
 
 ***
 
@@ -221,18 +222,20 @@ Source file: components/cursor/liquid-image.mdx
 
 ## API
 
-| Name         | Type      | Default      | Description                  |
-| ------------ | --------- | ------------ | ---------------------------- |
-| src          | `string`  | —            | Image source.                |
-| alt          | `string`  | —            | Image alt text.              |
-| rippleMap    | `Texture` | `ripple.png` | Custom ripple texture.       |
-| intensity    | `number`  | `0.14`       | Displacement strength.       |
-| radius       | `number`  | `3`          | Initial ripple size.         |
-| expandRate   | `number`  | `7`          | How fast ripples grow.       |
-| decayRate    | `number`  | `3`          | How fast ripples fade out.   |
-| maxRipples   | `number`  | `50`         | Max simultaneous ripples.    |
-| segments     | `number`  | `1`          | Plane geometry subdivisions. |
-| webglEnabled | `boolean` | `true`       | Toggle WebGL effect on/off.  |
+| Name         | Type                                       | Default      | Description                                                                |
+| ------------ | ------------------------------------------ | ------------ | -------------------------------------------------------------------------- |
+| type         | `"image" \| "video"`                       | `"image"`    | Render the ripple on a still image or a video.                             |
+| src          | `string`                                   | —            | Media source.                                                              |
+| alt          | `string`                                   | —            | Image alt text. Required (and only used) when `type` is `"image"`.         |
+| rippleMap    | `Texture`                                  | `ripple.png` | Custom ripple texture.                                                     |
+| intensity    | `number`                                   | `0.14`       | Displacement strength.                                                     |
+| radius       | `number`                                   | `3`          | Initial ripple size.                                                       |
+| expandRate   | `number`                                   | `7`          | How fast ripples grow.                                                     |
+| decayRate    | `number`                                   | `3`          | How fast ripples fade out.                                                 |
+| maxRipples   | `number`                                   | `50`         | Max simultaneous ripples.                                                  |
+| segments     | `number`                                   | `1`          | Plane geometry subdivisions.                                               |
+| webglEnabled | `boolean`                                  | `true`       | Toggle WebGL effect on/off.                                                |
+| ...props     | `ImgHTMLAttributes \| VideoHTMLAttributes` | —            | Other `<img>` or `<video>` attributes forwarded to the underlying element. |
 
 ***
 
@@ -292,10 +295,10 @@ Re-creation of the canvas hero effect (as of March 22, 2026). Enable dark mode t
 
 
 ============================================================
-## Pixel Image
-> A WebGL image that breaks into pixel blocks under the cursor, then falls back when you stop
+## Pixel Media
+> A WebGL image or video that breaks into pixel blocks under the cursor, then falls back when you stop
 
-Source file: components/cursor/pixel-image.mdx
+Source file: components/cursor/pixel-media.mdx
 
 ***
 
@@ -305,18 +308,19 @@ Source file: components/cursor/pixel-image.mdx
 
 ## API
 
-| Name              | Type                | Default | Description                                                   |
-| ----------------- | ------------------- | ------- | ------------------------------------------------------------- |
-| src               | `string`            | —       | Image source.                                                 |
-| alt               | `string`            | —       | Image alt text.                                               |
-| gridSize          | `number`            | `22`    | Pixel blocks per axis.                                        |
-| interactionRadius | `number`            | `4`     | Cursor push radius.                                           |
-| strength          | `number`            | `1.65`  | Drag strength.                                                |
-| aberration        | `number`            | `0.25`  | RGB channel split.                                            |
-| trail             | `number`            | `0.93`  | Trail persistence.                                            |
-| segments          | `number`            | `1`     | Plane geometry subdivisions.                                  |
-| webglEnabled      | `boolean`           | `true`  | Toggle WebGL effect on/off.                                   |
-| ...props          | `ImgHTMLAttributes` | —       | Other `<img>` attributes forwarded to the underlying element. |
+| Name              | Type                                       | Default   | Description                                                                |
+| ----------------- | ------------------------------------------ | --------- | -------------------------------------------------------------------------- |
+| type              | `"image" \| "video"`                       | `"image"` | Render the effect on a still image or a video.                             |
+| src               | `string`                                   | —         | Media source.                                                              |
+| alt               | `string`                                   | —         | Image alt text. Required (and only used) when `type` is `"image"`.         |
+| gridSize          | `number`                                   | `22`      | Pixel blocks per axis.                                                     |
+| interactionRadius | `number`                                   | `4`       | Cursor push radius.                                                        |
+| strength          | `number`                                   | `1.65`    | Drag strength.                                                             |
+| aberration        | `number`                                   | `0.25`    | RGB channel split.                                                         |
+| trail             | `number`                                   | `0.93`    | Trail persistence.                                                         |
+| segments          | `number`                                   | `1`       | Plane geometry subdivisions.                                               |
+| webglEnabled      | `boolean`                                  | `true`    | Toggle WebGL effect on/off.                                                |
+| ...props          | `ImgHTMLAttributes \| VideoHTMLAttributes` | —         | Other `<img>` or `<video>` attributes forwarded to the underlying element. |
 
 ***
 
@@ -591,6 +595,93 @@ Set `webglEnabled={false}` to skip the canvas pass and fall back to the plain DO
 | `zIndex`       | `number`                                        | `0`        | Render order within the WebGL portal.                                    |
 | `autoReflow`   | `boolean`                                       | `false`    | Re-measures the DOM rect every frame.                                    |
 | `pixelRatio`   | `number`                                        | `2`        | Canvas backing resolution, capped at device DPR.                         |
+
+### Pointer
+
+| Name    | Type      | Description                                                                                     |
+| ------- | --------- | ----------------------------------------------------------------------------------------------- |
+| `uv`    | `Vector2` | Normalized pointer position inside the element. `(0, 0)` is bottom-left, `(1, 1)` is top-right. |
+| `hover` | `number`  | `1` while the pointer is over the element, `0` otherwise.                                       |
+
+
+============================================================
+## WebGL Video
+> A primitive that mirrors a video onto a WebGL plane while preserving the DOM element.
+
+Source file: components/primitive/webgl-video.mdx
+
+A structural building block for composing your own WebGL video effects. It is the video counterpart of [WebGL Image](/docs/components/primitive/webgl-image), so any `material` you write for one works on the other.
+
+The video is rendered twice: as a real `<video>` element (hidden when WebGL is on), and as a `VideoTexture` on a plane that tracks the element's bounding box. The texture pulls each new frame from the same element, so only one video decodes.
+
+Requires a `<Canvas>` with `<WebglPortal />` at the root of your app, see [Installation](/docs/getting-started/installation).
+
+***
+
+## Install
+
+***
+
+## Basic usage
+
+With no `material`, the plane uses a `meshBasicMaterial` and looks identical to a plain `<video>`. The video autoplays muted and looped by default, so it plays without a user gesture:
+
+```tsx title="Default material"
+<WebglVideo src="/clip.mp4" className="w-full h-auto" />
+```
+
+## Object-fit
+
+`object-fit: cover` and `object-fit: contain` are replicated on the plane. Set it the way you would on a normal `<video>`:
+
+```tsx title="Cover and contain"
+<WebglVideo src="/clip.mp4" className="w-full h-64 object-cover" />
+```
+
+## With material
+
+`material` lets you provide your own R3F material. It receives the `VideoTexture` and a live `pointer` (UV + hover). Reuse the exact shader you wrote for a still image, for example to run the [CRT Image](/docs/components/background/crt-image) effect on footage:
+
+```tsx title="Custom shader material"
+<WebglVideo
+  src="/clip.mp4"
+  material={(map, pointer) => (
+    <myShaderMaterial
+      uMap={map}
+      uPointer={pointer.uv}
+      uHover={pointer.hover}
+      transparent
+    />
+  )}
+/>
+```
+
+The `pointer` object is mutated in place, so reading it inside a `useFrame` gives current values without re-renders.
+
+Use `segments` to subdivide the plane when your shader displaces vertices. `1` is enough for fragment-only effects.
+
+## Toggling WebGL off
+
+Set `webglEnabled={false}` to skip the canvas pass and fall back to the plain DOM `<video>`:
+
+```tsx title="Graceful fallback"
+<WebglVideo src="/clip.mp4" webglEnabled={!prefersReducedMotion} />
+```
+
+***
+
+## API
+
+| Name           | Type                                            | Default | Description                                                           |
+| -------------- | ----------------------------------------------- | ------- | --------------------------------------------------------------------- |
+| `src`          | `string`                                        | —       | Video source. Required.                                               |
+| `material`     | `(map: Texture, pointer: Pointer) => ReactNode` | —       | Custom R3F material. Receives the video texture and a live pointer.   |
+| `segments`     | `number`                                        | `1`     | Plane geometry subdivisions. Increase for vertex-displacing shaders.  |
+| `webglEnabled` | `boolean`                                       | `true`  | Toggle the WebGL plane. When `false`, only the DOM video is rendered. |
+| `zIndex`       | `number`                                        | `0`     | Render order within the WebGL portal.                                 |
+| `autoReflow`   | `boolean`                                       | `false` | Re-measures the DOM rect every frame.                                 |
+
+Standard `<video>` attributes (`className`, `style`, `poster`, `controls`, ...) are accepted and forwarded to the DOM element. `autoPlay`, `muted`, `loop` and `playsInline` default to `true` and can be overridden.
 
 ### Pointer
 
@@ -955,6 +1046,9 @@ Source file: components/transition/clip-reveal.mdx
 [Zajno](https://zajno.com/)\
 Page transition that inspired this effect.
 
+[Motion](https://motion.dev)\
+React animation library.
+
 
 ============================================================
 ## Stripe Wipe
@@ -980,6 +1074,13 @@ Source file: components/transition/stripe-wipe.mdx
 | `ease`      | `Easing`  | `[0.85, 0, 0.2, 1]` | Motion easing: bezier array, named string, or easing function. |
 | `trigger`   | `boolean` | `true`              | Starts the wipe when set to true.                              |
 | `className` | `string`  | —                   | Extra classes applied to the wrapper (e.g. sizing).            |
+
+***
+
+## Credits
+
+[Motion](https://motion.dev)\
+React animation library.
 
 
 ============================================================
@@ -1013,6 +1114,9 @@ Source file: components/transition/sweep-exit.mdx
 
 [Zajno](https://zajno.com/)\
 Page transition that inspired this effect.
+
+[Motion](https://motion.dev)\
+React animation library.
 
 
 ============================================================
