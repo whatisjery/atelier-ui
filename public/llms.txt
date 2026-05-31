@@ -12,7 +12,7 @@ Some components (canvas-based and pure CSS ones) have **zero npm dependencies** 
 
 The library is built on Tailwind CSS v4, React Three Fiber (R3F), GLSL shaders, the Motion animation library, and the native Canvas 2D API.
 
-WebGL-based components share a single `<WebglPortal />` placed once at the app root. It bridges the DOM React tree with the R3F Canvas via a `useSyncExternalStore`-based teleport — components like `CurveImage` or `LiquidMedia` can live anywhere in the DOM tree and push their Three.js meshes into the Canvas without being nested inside it.
+WebGL-based components share a single `<WebglPortal />` placed once at the app root. It bridges the DOM React tree with the R3F Canvas via a `useSyncExternalStore`-based teleport — components like `CurveMedia` or `LiquidMedia` can live anywhere in the DOM tree and push their Three.js meshes into the Canvas without being nested inside it.
 
 **Two tiers:** Free components are fully open. Pro components require a license key (`ATELIER_PRO_KEY` in `.env.local`). Both tiers use the same CLI and installation flow.
 
@@ -28,7 +28,7 @@ WebGL-based components share a single `<WebglPortal />` placed once at the app r
 These are internal utilities required by WebGL components. Install `webgl-portal` first for any WebGL effect.
 
 - [WebglPortal](https://atelier-ui.com/docs/components/webgl-portal): The required root component. Place it inside a fullscreen fixed `<Canvas>` at the app root. All WebGL components teleport their R3F meshes here from anywhere in the DOM tree. Dependencies: `three`, `@react-three/fiber`
-- [WebglImage](https://atelier-ui.com/docs/components/webgl-image): DOM-aligned WebGL plane that mirrors a standard `<img>` element. Accepts a `material` render prop to inject custom shaders. Used as the base for `CurveImage` and `LiquidMedia`. Dependencies: `three`, `@react-three/fiber`, `@react-three/drei`
+- [WebglImage](https://atelier-ui.com/docs/components/webgl-image): DOM-aligned WebGL plane that mirrors a standard `<img>` element. Accepts a `material` render prop to inject custom shaders. Used as the base for `CurveMedia` and `LiquidMedia`. Dependencies: `three`, `@react-three/fiber`, `@react-three/drei`
 - [WebglText](https://atelier-ui.com/docs/components/webgl-text): DOM-aligned WebGL plane that rasterizes text onto a canvas texture, then renders it as a WebGL mesh. Dependencies: `three`, `@react-three/fiber`, `@react-three/drei`
 
 ## Components — Cursor
@@ -41,7 +41,7 @@ These are internal utilities required by WebGL components. Install `webgl-portal
 
 ## Components — Scroll
 
-- [CurveImage](https://atelier-ui.com/docs/components/scroll/curve-image): SEO-friendly `<img>` that bends with scroll velocity using sine-based vertex displacement and adds chromatic aberration on the scroll axis. Renders a DOM `<img>` for SEO. WebGL plane uses a custom GLSL vertex shader driven by Lenis scroll velocity. Key props: `src`, `alt`, `amplitude` (max bend, default 0.03), `aberration` (RGB split, default 0.003), `smoothing` (velocity smoothing, 1–20), `segments` (geometry subdivisions, 4–64), `webglEnabled`. Requires `webgl-portal` and `webgl-image`. Dependencies: `three`, `@react-three/fiber`, `@react-three/drei`
+- [CurveMedia](https://atelier-ui.com/docs/components/scroll/curve-media): SEO-friendly `<img>` or `<video>` that bends with scroll velocity using sine-based vertex displacement and adds chromatic aberration on the scroll axis. Renders a DOM element for SEO plus a GPU-aligned plane with a custom GLSL vertex shader driven by Lenis scroll velocity. Key props: `type` (`"image"` or `"video"`), `src`, `alt` (image only), `amplitude` (max bend, default 0.03), `aberration` (RGB split, default 0.003), `smoothing` (velocity smoothing, 1–20), `segments` (geometry subdivisions, 4–64), `webglEnabled`. Requires `webgl-portal`, `webgl-image` and `webgl-video`. Dependencies: `three`, `@react-three/fiber`, `@react-three/drei`
 - [InfiniteGallery](https://atelier-ui.com/docs/components/scroll/infinite-gallery): Zero-dependency infinite horizontal gallery with drag and wheel input, momentum, and two transform modes. Generic via `data` + `renderItem`. Modes: `"flip"` (3D tilt on edges) or `"shrink"` (scale compression). Key props: `data`, `renderItem`, `mode`, `perView`, `speed`, `inertia`, `gap`. Zero dependencies (pure JS animation via `requestAnimationFrame`).
 - [InfiniteParallax](https://atelier-ui.com/docs/components/scroll/infinite-parallax): Vertically infinite parallax column with auto-scroll and looping content. Wraps any `children`. Key props: `speed` (parallax intensity, negative reverses), `autoScroll` (continuous scroll speed, 0 to disable), `className`. Dependencies: `motion`, `lenis`
 - [InfiniteZoom](https://atelier-ui.com/docs/components/scroll/infinite-zoom): Mouse-wheel infinite zoom illusion using stacked, cycling layers. Key props: `children` (zoom layers), `zoomAmount` (scale factor between layers), `lerpValue` (wheel smoothing), `backgroundSpeed` (last-item deceleration), `className`. Dependencies: `motion`

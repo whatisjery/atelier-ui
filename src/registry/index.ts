@@ -196,12 +196,12 @@ export const components: TRegistryComponent[] = [
         registryDependencies: ["webgl-portal"],
     },
     {
-        name: "curve-image",
-        files: ["curve-image.tsx"],
-        description: "Scroll-reactive WebGL image with sine-based vertex displacement.",
+        name: "curve-media",
+        files: ["curve-media.tsx"],
+        description: "Scroll-reactive WebGL image or video with sine-based vertex displacement.",
         shared: [],
-        dependencies: ["three", "@react-three/fiber"],
-        registryDependencies: ["webgl-image"],
+        dependencies: ["three", "@react-three/fiber", "@react-three/drei"],
+        registryDependencies: ["webgl-image", "webgl-video"],
     },
     {
         name: "lens-media",

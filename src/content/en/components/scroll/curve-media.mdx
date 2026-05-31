@@ -1,0 +1,55 @@
+---
+title: "Curve Media"
+description: "An SEO-friendly WebGL image or video with scroll-velocity driven bend and chromatic aberration."
+tags: ["React Three Fiber", "Drei", "Lenis"]
+---
+
+<DemoPreview
+  name="curve-media"
+  controls={{
+    type: { type: "select", value: "image", options: ["image", "video"] },
+    amplitude: { type: "slider", value: 0.03, min: 0, max: 0.15, step: 0.01 },
+    aberration: {
+      type: "slider",
+      value: 0.003,
+      min: 0,
+      max: 0.02,
+      step: 0.001,
+    },
+    smoothing: { type: "slider", value: 6, min: 1, max: 20, step: 0.5 },
+    segments: { type: "slider", value: 32, min: 4, max: 64, step: 4 },
+    webglEnabled: { type: "boolean", value: true },
+  }}
+/>
+
+---
+
+## Install
+
+<InstallTabs name="curve-media" />
+
+---
+
+## API
+
+| Name         | Type                 | Default   | Description                                                                     |
+| ------------ | -------------------- | --------- | ------------------------------------------------------------------------------- |
+| type         | `"image" \| "video"` | `"image"` | Render the bend on a still image or a video.                                    |
+| src          | `string`             | —         | Media source.                                                                   |
+| alt          | `string`             | —         | Image alt text. Required (and only used) when `type` is `"image"`.              |
+| amplitude    | `number`             | `0.03`    | Maximum bend intensity, applied to the smoothed scroll velocity.                |
+| aberration   | `number`             | `0.003`   | RGB channel split along the scroll axis, scaled by velocity.                    |
+| smoothing    | `number`             | `6`       | Exponential smoothing for the velocity (higher = snappier, lower = floatier).   |
+| segments     | `number`             | `32`      | Plane subdivision count. Higher = smoother curve, more vertices.                |
+| webglEnabled | `boolean`            | `true`    | When false, the WebGL plane is skipped and the plain element is rendered as-is. |
+| ...props     | `ImgHTMLAttributes \| VideoHTMLAttributes` | — | Other `<img>` or `<video>` attributes forwarded to the underlying element. |
+
+---
+
+## Credits
+
+[React Three Fiber](https://r3f.docs.pmnd.rs/)  
+React renderer for Three.js used for the WebGL plane.
+
+[Lenis](https://www.lenis.dev/)  
+Smooth scroll library used in the demo.

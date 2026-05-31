@@ -3,10 +3,11 @@ import { extend, type ThreeElement, useFrame } from "@react-three/fiber"
 import { useEffect, useRef } from "react"
 import { MathUtils, Texture } from "three"
 import { WebglImage } from "../webgl-image/webgl-image"
+import { WebglVideo } from "../webgl-video/webgl-video"
 
 declare module "@react-three/fiber" {
     interface ThreeElements {
-        curveImageMat: ThreeElement<typeof CurveImageMat>
+        curveMediaMat: ThreeElement<typeof CurveMediaMat>
     }
 }
 
@@ -49,7 +50,7 @@ const fragmentShader = /* glsl */ `
     }
 `
 
-const CurveImageMat = shaderMaterial(
+const CurveMediaMat = shaderMaterial(
     {
         uMap: new Texture(),
         uVelocity: 0,
@@ -60,27 +61,39 @@ const CurveImageMat = shaderMaterial(
     fragmentShader,
 )
 
-extend({ CurveImageMat })
+extend({ CurveMediaMat })
 
-type CurveImageMaterialProps = {
+type CurveMediaMaterialProps = {
     map: Texture
     amplitude: number
     aberration: number
     smoothing: number
 }
 
-export type CurveImageProps = {
-    src: string
-    alt: string
+// Effect props shared by both the image and video variants.
+export type CurveEffectProps = {
     amplitude?: number
     aberration?: number
     smoothing?: number
     segments?: number
     webglEnabled?: boolean
+}
+
+type CurveMediaImageProps = CurveEffectProps & {
+    type?: "image"
+    src: string
+    alt: string
 } & Omit<React.ComponentPropsWithoutRef<"img">, "src" | "alt">
 
-function CurveImageMaterial({ map, amplitude, aberration, smoothing }: CurveImageMaterialProps) {
-    const ref = useRef<InstanceType<typeof CurveImageMat>>(null)
+type CurveMediaVideoProps = CurveEffectProps & {
+    type: "video"
+    src: string
+} & Omit<React.ComponentPropsWithoutRef<"video">, "src">
+
+export type CurveMediaProps = CurveMediaImageProps | CurveMediaVideoProps
+
+function CurveMediaMaterial({ map, amplitude, aberration, smoothing }: CurveMediaMaterialProps) {
+    const ref = useRef<InstanceType<typeof CurveMediaMat>>(null)
     const lastScrollY = useRef(0)
     const velocity = useRef(0)
 
@@ -89,8 +102,8 @@ function CurveImageMaterial({ map, amplitude, aberration, smoothing }: CurveImag
     }, [])
 
     useFrame((_, delta) => {
-        const mat = ref.current
-        if (!mat) return
+        const material = ref.current
+        if (!material) return
         const current = window.scrollY
         const instantDelta = current - lastScrollY.current
         lastScrollY.current = current
@@ -98,13 +111,13 @@ function CurveImageMaterial({ map, amplitude, aberration, smoothing }: CurveImag
         if (delta === 0) return
         const target = instantDelta / delta / window.innerHeight
         velocity.current = MathUtils.damp(velocity.current, target, smoothing, delta)
-        mat.uVelocity = velocity.current
+        material.uVelocity = velocity.current
     })
 
     return (
-        <curveImageMat
+        <curveMediaMat
             ref={ref}
-            key={CurveImageMat.key}
+            key={CurveMediaMat.key}
             uMap={map}
             uAmplitude={amplitude}
             uAberration={aberration}
@@ -113,31 +126,46 @@ function CurveImageMaterial({ map, amplitude, aberration, smoothing }: CurveImag
     )
 }
 
-export function CurveImage({
-    src,
-    alt,
-    amplitude = 0.03,
-    aberration = 0.003,
-    smoothing = 6,
-    segments = 32,
-    webglEnabled = true,
-    ...rest
-}: CurveImageProps) {
+export function CurveMedia(props: CurveMediaProps) {
+    const {
+        amplitude = 0.03,
+        aberration = 0.003,
+        smoothing = 6,
+        segments = 32,
+        webglEnabled = true,
+        ...rest
+    } = props
+
+    // Scroll-velocity is read from the window each frame, so the same material
+    // runs on both the image and video primitives (they share the WebGL plane contract).
+    const material = (map: Texture) => (
+        <CurveMediaMaterial
+            map={map}
+            amplitude={amplitude}
+            aberration={aberration}
+            smoothing={smoothing}
+        />
+    )
+
+    if (rest.type === "video") {
+        const { type: _type, ...videoProps } = rest
+        return (
+            <WebglVideo
+                segments={segments}
+                webglEnabled={webglEnabled}
+                material={material}
+                {...videoProps}
+            />
+        )
+    }
+
+    const { type: _type, ...imageProps } = rest
     return (
         <WebglImage
-            src={src}
-            alt={alt}
             segments={segments}
             webglEnabled={webglEnabled}
-            material={(map) => (
-                <CurveImageMaterial
-                    map={map}
-                    amplitude={amplitude}
-                    aberration={aberration}
-                    smoothing={smoothing}
-                />
-            )}
-            {...rest}
+            material={material}
+            {...imageProps}
         />
     )
 }

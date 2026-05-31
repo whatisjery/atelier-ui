@@ -18,7 +18,7 @@ export const demos: Record<string, React.LazyExoticComponent<React.ComponentType
     "text-roll": lazy(() => import("./text-roll/text-roll")),
     "text-bounce": lazy(() => import("./text-bounce/text-bounce")),
     "dither-flow": lazy(() => import("./dither-flow/dither-flow")),
-    "curve-image": lazy(() => import("./curve-image/curve-image")),
+    "curve-media": lazy(() => import("./curve-media/curve-media")),
     "text-fluid": lazy(() => import("./text-fluid/text-fluid")),
     "clip-reveal": lazy(() => import("./clip-reveal/clip-reveal")),
     "sweep-exit": lazy(() => import("./sweep-exit/sweep-exit")),
