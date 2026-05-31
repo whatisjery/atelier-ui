@@ -12,19 +12,45 @@
   </picture>
 </a>
 
----
+## About Atelier UI
 
 Atelier means **workshop** in French.
 
-I built Atelier UI because I wanted a place to publish the effects and animations I might work on in the future, and share them with other developers. Components are built with React and are yours to copy, paste and use however you want.
+It's a growing collection of React animations and interactive effects, built with React, TypeScript, [Tailwind](https://tailwindcss.com), [Motion](https://motion.dev), and [React Three Fiber](https://r3f.docs.pmnd.rs). Copy the source into your project and own it.
 
-Feel free to [contribute](https://atelier-ui.com/docs/getting-started/contribution) if you want to get involved!
+Some are built with WebGL. Two things about those:
 
----
+- they all render through a single shared canvas, reusing one WebGL context and render loop instead of each effect creating its own
+- they build on a primitive that keeps text, images, and video in the DOM, so the page stays accessible and indexable
 
-## Documentation
+Feel free to [contribute](https://atelier-ui.com/docs/getting-started/contribution) if you want to get involved.
 
-Visit [https://atelier-ui.com/docs](https://atelier-ui.com/docs) to view the documentation.
+## What's inside
+
+Effects grouped by what they do, with more added over time:
+
+- **Cursor**: react to the pointer
+- **Scroll**: driven by scroll position
+- **Text**: animated text that stays readable
+- **Transitions**: page and section reveals
+- **Backgrounds**: full-screen animated surfaces
+- **Primitives**: the building blocks the rest are made from
+
+[Browse them all](https://atelier-ui.com/docs), or start with [Fluid Distortion](https://atelier-ui.com/docs/components/cursor/fluid-distortion).
+
+## CLI
+
+```bash
+npx atelier-ui add [component]
+```
+
+| Option | Default | Description |
+| --- | --- | --- |
+| `--path` | `src/components` | Component destination |
+| `--shared-path` | `src` | Shared files destination |
+| `--registry` | `https://www.atelier-ui.com/api/registry` | Registry URL |
+| `--force` | `false` | Overwrite existing files |
+| `--no-install` | — | Skip dependency installation |
 
 ## License
 
