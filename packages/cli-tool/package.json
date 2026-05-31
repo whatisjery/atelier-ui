@@ -30,12 +30,11 @@
     },
     "dependencies": {
         "@react-three/drei": "^10.7.7",
-        "@react-three/fiber": "^9.6.1",
+        "@react-three/fiber": "^9.5.0",
         "@react-three/postprocessing": "^3.0.4",
         "commander": "^12.0.0",
         "dotenv": "^17.2.3",
         "fs-extra": "^11.0.0",
-        "postprocessing": "^6.39.1",
         "three": "^0.182.0"
     },
     "devDependencies": {
