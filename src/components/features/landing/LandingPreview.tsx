@@ -112,6 +112,7 @@ export default function LandingPreview({ onWebGLReady }: LandingPreviewProps) {
                 </p>
 
                 <Canvas
+                    dpr={[1, 1.5]}
                     onCreated={async ({ gl, scene, camera }) => {
                         await gl.compileAsync(scene, camera)
                         onWebGLReady()
