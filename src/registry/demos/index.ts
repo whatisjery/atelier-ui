@@ -9,7 +9,7 @@ export const demos: Record<string, React.LazyExoticComponent<React.ComponentType
     "image-trail": lazy(() => import("./image-trail/image-trail")),
     "infinite-gallery": lazy(() => import("./infinite-gallery/infinite-gallery")),
     "text-scramble": lazy(() => import("./text-scramble/text-scramble")),
-    "liquid-image": lazy(() => import("./liquid-image/liquid-image")),
+    "liquid-media": lazy(() => import("./liquid-media/liquid-media")),
     "infinite-parallax": lazy(() => import("./infinite-parallax/infinite-parallax")),
     "elastic-stick": lazy(() => import("./elastic-stick/elastic-stick")),
     "glowing-fog": lazy(() => import("./glowing-fog/glowing-fog")),
@@ -23,6 +23,6 @@ export const demos: Record<string, React.LazyExoticComponent<React.ComponentType
     "clip-reveal": lazy(() => import("./clip-reveal/clip-reveal")),
     "sweep-exit": lazy(() => import("./sweep-exit/sweep-exit")),
     "stripe-wipe": lazy(() => import("./stripe-wipe/stripe-wipe")),
-    "lens-image": lazy(() => import("./lens-image/lens-image")),
-    "pixel-image": lazy(() => import("./pixel-image/pixel-image")),
+    "lens-media": lazy(() => import("./lens-media/lens-media")),
+    "pixel-media": lazy(() => import("./pixel-media/pixel-media")),
 }

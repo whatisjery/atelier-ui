@@ -3,10 +3,11 @@ import { extend, type ThreeElement, useFrame } from "@react-three/fiber"
 import { useMemo, useRef } from "react"
 import { DataTexture, FloatType, NearestFilter, RGBAFormat, Texture, Vector2 } from "three"
 import { type Pointer, WebglImage } from "../webgl-image/webgl-image"
+import { WebglVideo } from "../webgl-video/webgl-video"
 
 declare module "@react-three/fiber" {
     interface ThreeElements {
-        pixelImageMat: ThreeElement<typeof PixelImageMat>
+        pixelMediaMat: ThreeElement<typeof PixelMediaMat>
     }
 }
 
@@ -43,7 +44,7 @@ const fragmentShader = /* glsl */ `
     }
 `
 
-const PixelImageMat = shaderMaterial(
+const PixelMediaMat = shaderMaterial(
     {
         uMap: new Texture(),
         uGrid: new Texture(),
@@ -54,11 +55,11 @@ const PixelImageMat = shaderMaterial(
     fragmentShader,
 )
 
-extend({ PixelImageMat })
+extend({ PixelMediaMat })
 
 const REFERENCE_FPS = 60
 
-type PixelImageMaterialProps = {
+type PixelMediaMaterialProps = {
     map: Texture
     pointer: Pointer
     gridSize: number
@@ -68,9 +69,8 @@ type PixelImageMaterialProps = {
     trail: number
 }
 
-export type PixelImageProps = {
-    src: string
-    alt: string
+// Effect props shared by both the image and video variants.
+export type PixelEffectProps = {
     gridSize?: number
     interactionRadius?: number
     strength?: number
@@ -78,9 +78,22 @@ export type PixelImageProps = {
     trail?: number
     segments?: number
     webglEnabled?: boolean
+}
+
+type PixelMediaImageProps = PixelEffectProps & {
+    type?: "image"
+    src: string
+    alt: string
 } & Omit<React.ComponentPropsWithoutRef<"img">, "src" | "alt">
 
-function PixelImageMaterial({
+type PixelMediaVideoProps = PixelEffectProps & {
+    type: "video"
+    src: string
+} & Omit<React.ComponentPropsWithoutRef<"video">, "src">
+
+export type PixelMediaProps = PixelMediaImageProps | PixelMediaVideoProps
+
+function PixelMediaMaterial({
     map,
     pointer,
     gridSize,
@@ -88,8 +101,8 @@ function PixelImageMaterial({
     strength,
     aberration,
     trail,
-}: PixelImageMaterialProps) {
-    const ref = useRef<InstanceType<typeof PixelImageMat>>(null)
+}: PixelMediaMaterialProps) {
+    const ref = useRef<InstanceType<typeof PixelMediaMat>>(null)
     const previous = useMemo(() => new Vector2(0.5, 0.5), [])
 
     const grid = useMemo(() => {
@@ -132,9 +145,9 @@ function PixelImageMaterial({
     })
 
     return (
-        <pixelImageMat
+        <pixelMediaMat
             ref={ref}
-            key={PixelImageMat.key}
+            key={PixelMediaMat.key}
             uMap={map}
             uGrid={grid.texture}
             transparent
@@ -142,36 +155,51 @@ function PixelImageMaterial({
     )
 }
 
-export function PixelImage({
-    src,
-    alt,
-    gridSize = 22,
-    interactionRadius = 4,
-    strength = 1.65,
-    aberration = 0.25,
-    trail = 0.93,
-    segments = 1,
-    webglEnabled = true,
-    ...rest
-}: PixelImageProps) {
+export function PixelMedia(props: PixelMediaProps) {
+    const {
+        gridSize = 22,
+        interactionRadius = 4,
+        strength = 1.65,
+        aberration = 0.25,
+        trail = 0.93,
+        segments = 1,
+        webglEnabled = true,
+        ...rest
+    } = props
+
+    // The pixel displacement is a fragment-only shader, so the same material
+    // runs on both the image and video primitives (they share the WebGL plane).
+    const material = (map: Texture, pointer: Pointer) => (
+        <PixelMediaMaterial
+            map={map}
+            pointer={pointer}
+            gridSize={gridSize}
+            interactionRadius={interactionRadius}
+            strength={strength}
+            aberration={aberration}
+            trail={trail}
+        />
+    )
+
+    if (rest.type === "video") {
+        const { type: _type, ...videoProps } = rest
+        return (
+            <WebglVideo
+                segments={segments}
+                webglEnabled={webglEnabled}
+                material={material}
+                {...videoProps}
+            />
+        )
+    }
+
+    const { type: _type, ...imageProps } = rest
     return (
         <WebglImage
-            src={src}
-            alt={alt}
             segments={segments}
             webglEnabled={webglEnabled}
-            material={(map, pointer) => (
-                <PixelImageMaterial
-                    map={map}
-                    pointer={pointer}
-                    gridSize={gridSize}
-                    interactionRadius={interactionRadius}
-                    strength={strength}
-                    aberration={aberration}
-                    trail={trail}
-                />
-            )}
-            {...rest}
+            material={material}
+            {...imageProps}
         />
     )
 }

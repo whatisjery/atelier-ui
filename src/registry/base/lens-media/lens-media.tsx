@@ -3,10 +3,11 @@ import { extend, type ThreeElement, useFrame } from "@react-three/fiber"
 import { useRef } from "react"
 import { type Group, MathUtils, Texture, Vector2 } from "three"
 import { type Pointer, WebglImage } from "../webgl-image/webgl-image"
+import { WebglVideo } from "../webgl-video/webgl-video"
 
 declare module "@react-three/fiber" {
     interface ThreeElements {
-        lensImageMat: ThreeElement<typeof LensImageMat>
+        lensMediaMat: ThreeElement<typeof LensMediaMat>
     }
 }
 
@@ -60,7 +61,7 @@ const fragmentShader = /* glsl */ `
     }
 `
 
-const LensImageMat = shaderMaterial(
+const LensMediaMat = shaderMaterial(
     {
         uMap: new Texture(),
         uMouse: new Vector2(0.5, 0.5),
@@ -76,9 +77,9 @@ const LensImageMat = shaderMaterial(
     fragmentShader,
 )
 
-extend({ LensImageMat })
+extend({ LensMediaMat })
 
-type LensImageMaterialProps = {
+type LensMediaMaterialProps = {
     map: Texture
     pointer: Pointer
     size: number
@@ -89,9 +90,8 @@ type LensImageMaterialProps = {
     smoothing: number
 }
 
-export type LensImageProps = {
-    src: string
-    alt: string
+// Effect props shared by both the image and video variants.
+export type LensEffectProps = {
     size?: number
     softness?: number
     aberration?: number
@@ -100,9 +100,22 @@ export type LensImageProps = {
     smoothing?: number
     segments?: number
     webglEnabled?: boolean
+}
+
+type LensMediaImageProps = LensEffectProps & {
+    type?: "image"
+    src: string
+    alt: string
 } & Omit<React.ComponentPropsWithoutRef<"img">, "src" | "alt">
 
-function LensImageMaterial({
+type LensMediaVideoProps = LensEffectProps & {
+    type: "video"
+    src: string
+} & Omit<React.ComponentPropsWithoutRef<"video">, "src">
+
+export type LensMediaProps = LensMediaImageProps | LensMediaVideoProps
+
+function LensMediaMaterial({
     map,
     pointer,
     size,
@@ -111,8 +124,8 @@ function LensImageMaterial({
     refraction,
     dispersion,
     smoothing,
-}: LensImageMaterialProps) {
-    const ref = useRef<InstanceType<typeof LensImageMat>>(null)
+}: LensMediaMaterialProps) {
+    const ref = useRef<InstanceType<typeof LensMediaMat>>(null)
     const anchorRef = useRef<Group>(null)
 
     useFrame((_, delta) => {
@@ -132,9 +145,9 @@ function LensImageMaterial({
         <>
             <group ref={anchorRef} />
 
-            <lensImageMat
+            <lensMediaMat
                 ref={ref}
-                key={LensImageMat.key}
+                key={LensMediaMat.key}
                 uMap={map}
                 uSize={size}
                 uSoftness={softness}
@@ -147,38 +160,53 @@ function LensImageMaterial({
     )
 }
 
-export function LensImage({
-    src,
-    alt,
-    size = 0.23,
-    softness = 0.38,
-    aberration = 0.17,
-    refraction = 0.39,
-    dispersion = 50,
-    smoothing = 10,
-    segments = 1,
-    webglEnabled = true,
-    ...rest
-}: LensImageProps) {
+export function LensMedia(props: LensMediaProps) {
+    const {
+        size = 0.23,
+        softness = 0.38,
+        aberration = 0.17,
+        refraction = 0.39,
+        dispersion = 50,
+        smoothing = 10,
+        segments = 1,
+        webglEnabled = true,
+        ...rest
+    } = props
+
+    // The lens is a fragment-only shader, so the same material runs on both
+    // the image and video primitives (they share the WebGL plane contract).
+    const material = (map: Texture, pointer: Pointer) => (
+        <LensMediaMaterial
+            map={map}
+            pointer={pointer}
+            size={size}
+            softness={softness}
+            aberration={aberration}
+            refraction={refraction}
+            dispersion={dispersion}
+            smoothing={smoothing}
+        />
+    )
+
+    if (rest.type === "video") {
+        const { type: _type, ...videoProps } = rest
+        return (
+            <WebglVideo
+                segments={segments}
+                webglEnabled={webglEnabled}
+                material={material}
+                {...videoProps}
+            />
+        )
+    }
+
+    const { type: _type, ...imageProps } = rest
     return (
         <WebglImage
-            src={src}
-            alt={alt}
             segments={segments}
             webglEnabled={webglEnabled}
-            material={(map, pointer) => (
-                <LensImageMaterial
-                    map={map}
-                    pointer={pointer}
-                    size={size}
-                    softness={softness}
-                    aberration={aberration}
-                    refraction={refraction}
-                    dispersion={dispersion}
-                    smoothing={smoothing}
-                />
-            )}
-            {...rest}
+            material={material}
+            {...imageProps}
         />
     )
 }

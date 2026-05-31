@@ -72,12 +72,12 @@ export const components: TRegistryComponent[] = [
         registryDependencies: [],
     },
     {
-        name: "liquid-image",
-        files: ["liquid-image.tsx"],
-        description: "WebGL image with ripple distortion on pointer movement.",
+        name: "liquid-media",
+        files: ["liquid-media.tsx"],
+        description: "WebGL image or video with ripple distortion on pointer movement.",
         shared: ["assets/ripple.png"],
         dependencies: ["three", "@react-three/fiber", "@react-three/drei"],
-        registryDependencies: ["webgl-image"],
+        registryDependencies: ["webgl-image", "webgl-video"],
     },
     {
         name: "infinite-parallax",
@@ -180,6 +180,14 @@ export const components: TRegistryComponent[] = [
         registryDependencies: ["webgl-portal"],
     },
     {
+        name: "webgl-video",
+        files: ["webgl-video.tsx"],
+        description: "DOM-aligned WebGL plane that mirrors a <video> via the WebglPortal.",
+        shared: [],
+        dependencies: ["three", "@react-three/fiber"],
+        registryDependencies: ["webgl-portal"],
+    },
+    {
         name: "webgl-text",
         files: ["webgl-text.tsx"],
         description: "DOM-aligned WebGL plane that rasterizes text via the WebglPortal.",
@@ -196,12 +204,13 @@ export const components: TRegistryComponent[] = [
         registryDependencies: ["webgl-image"],
     },
     {
-        name: "lens-image",
-        files: ["lens-image.tsx"],
-        description: "WebGL image with a cursor-following circular lens and chromatic aberration.",
+        name: "lens-media",
+        files: ["lens-media.tsx"],
+        description:
+            "WebGL image or video with a cursor-following circular lens and chromatic aberration.",
         shared: [],
         dependencies: ["three", "@react-three/fiber", "@react-three/drei"],
-        registryDependencies: ["webgl-image"],
+        registryDependencies: ["webgl-image", "webgl-video"],
     },
     {
         name: "text-fluid",
@@ -236,12 +245,12 @@ export const components: TRegistryComponent[] = [
         registryDependencies: [],
     },
     {
-        name: "pixel-image",
-        files: ["pixel-image.tsx"],
+        name: "pixel-media",
+        files: ["pixel-media.tsx"],
         description:
-            "WebGL image that breaks into pixel blocks under the cursor, then falls back when you stop.",
+            "WebGL image or video that breaks into pixel blocks under the cursor, then falls back when you stop.",
         shared: [],
         dependencies: ["three", "@react-three/fiber", "@react-three/drei"],
-        registryDependencies: ["webgl-image"],
+        registryDependencies: ["webgl-image", "webgl-video"],
     },
 ]

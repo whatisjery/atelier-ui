@@ -1,0 +1,87 @@
+---
+title: "WebGL Video"
+description: "A primitive that mirrors a video onto a WebGL plane while preserving the DOM element."
+tags: ["Primitive", "React Three Fiber"]
+---
+
+A structural building block for composing your own WebGL video effects. It is the video counterpart of [WebGL Image](/docs/components/primitive/webgl-image), so any `material` you write for one works on the other.
+
+The video is rendered twice: as a real `<video>` element (hidden when WebGL is on), and as a `VideoTexture` on a plane that tracks the element's bounding box. The texture pulls each new frame from the same element, so only one video decodes.
+
+Requires a `<Canvas>` with `<WebglPortal />` at the root of your app, see [Installation](/docs/getting-started/installation).
+
+---
+
+## Install
+
+<InstallTabs name="webgl-video" />
+
+---
+
+## Basic usage
+
+With no `material`, the plane uses a `meshBasicMaterial` and looks identical to a plain `<video>`. The video autoplays muted and looped by default, so it plays without a user gesture:
+
+```tsx title="Default material"
+<WebglVideo src="/clip.mp4" className="w-full h-auto" />
+```
+
+## Object-fit
+
+`object-fit: cover` and `object-fit: contain` are replicated on the plane. Set it the way you would on a normal `<video>`:
+
+```tsx title="Cover and contain"
+<WebglVideo src="/clip.mp4" className="w-full h-64 object-cover" />
+```
+
+## With material
+
+`material` lets you provide your own R3F material. It receives the `VideoTexture` and a live `pointer` (UV + hover). Reuse the exact shader you wrote for a still image, for example to run the [CRT Image](/docs/components/background/crt-image) effect on footage:
+
+```tsx title="Custom shader material"
+<WebglVideo
+  src="/clip.mp4"
+  material={(map, pointer) => (
+    <myShaderMaterial
+      uMap={map}
+      uPointer={pointer.uv}
+      uHover={pointer.hover}
+      transparent
+    />
+  )}
+/>
+```
+
+The `pointer` object is mutated in place, so reading it inside a `useFrame` gives current values without re-renders.
+
+Use `segments` to subdivide the plane when your shader displaces vertices. `1` is enough for fragment-only effects.
+
+## Toggling WebGL off
+
+Set `webglEnabled={false}` to skip the canvas pass and fall back to the plain DOM `<video>`:
+
+```tsx title="Graceful fallback"
+<WebglVideo src="/clip.mp4" webglEnabled={!prefersReducedMotion} />
+```
+
+---
+
+## API
+
+| Name           | Type                                            | Default | Description                                                           |
+| -------------- | ----------------------------------------------- | ------- | --------------------------------------------------------------------- |
+| `src`          | `string`                                        | —       | Video source. Required.                                               |
+| `material`     | `(map: Texture, pointer: Pointer) => ReactNode` | —       | Custom R3F material. Receives the video texture and a live pointer.   |
+| `segments`     | `number`                                        | `1`     | Plane geometry subdivisions. Increase for vertex-displacing shaders.  |
+| `webglEnabled` | `boolean`                                       | `true`  | Toggle the WebGL plane. When `false`, only the DOM video is rendered. |
+| `zIndex`       | `number`                                        | `0`     | Render order within the WebGL portal.                                 |
+| `autoReflow`   | `boolean`                                       | `false` | Re-measures the DOM rect every frame.                                 |
+
+Standard `<video>` attributes (`className`, `style`, `poster`, `controls`, ...) are accepted and forwarded to the DOM element. `autoPlay`, `muted`, `loop` and `playsInline` default to `true` and can be overridden.
+
+### Pointer
+
+| Name    | Type      | Description                                                                                     |
+| ------- | --------- | ----------------------------------------------------------------------------------------------- |
+| `uv`    | `Vector2` | Normalized pointer position inside the element. `(0, 0)` is bottom-left, `(1, 1)` is top-right. |
+| `hover` | `number`  | `1` while the pointer is over the element, `0` otherwise.                                       |

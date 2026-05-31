@@ -13,6 +13,7 @@ import {
 } from "three"
 import ripple from "../../assets/ripple.png"
 import { type Pointer, WebglImage } from "../webgl-image/webgl-image"
+import { WebglVideo } from "../webgl-video/webgl-video"
 
 const ROTATION_SPEED = 0.1 as const
 const INITIAL_OPACITY = 0.22 as const
@@ -50,7 +51,7 @@ void main() {
     gl_FragColor = color;
 }`
 
-type LiquidImageMaterialProps = {
+type LiquidMediaMaterialProps = {
     map: Texture
     pointer: Pointer
     rippleMap?: Texture
@@ -67,9 +68,8 @@ type Uniforms = {
     uDisplacementIntensity: { value: number }
 }
 
-export type LiquidImageProps = {
-    src: string
-    alt: string
+// Effect props shared by both the image and video variants.
+export type LiquidEffectProps = {
     rippleMap?: Texture
     intensity?: number
     radius?: number
@@ -78,9 +78,22 @@ export type LiquidImageProps = {
     maxRipples?: number
     segments?: number
     webglEnabled?: boolean
+}
+
+type LiquidMediaImageProps = LiquidEffectProps & {
+    type?: "image"
+    src: string
+    alt: string
 } & Omit<React.ComponentPropsWithoutRef<"img">, "src" | "alt">
 
-function LiquidImageMaterial({
+type LiquidMediaVideoProps = LiquidEffectProps & {
+    type: "video"
+    src: string
+} & Omit<React.ComponentPropsWithoutRef<"video">, "src">
+
+export type LiquidMediaProps = LiquidMediaImageProps | LiquidMediaVideoProps
+
+function LiquidMediaMaterial({
     map,
     pointer,
     rippleMap,
@@ -89,7 +102,7 @@ function LiquidImageMaterial({
     expandRate = 7,
     decayRate = 3,
     maxRipples = 50,
-}: LiquidImageMaterialProps) {
+}: LiquidMediaMaterialProps) {
     const { viewport, size, gl } = useThree()
 
     const defaultBrush = useTexture(typeof ripple === "string" ? ripple : ripple.src)
@@ -246,38 +259,53 @@ function LiquidImageMaterial({
     )
 }
 
-export function LiquidImage({
-    src,
-    alt,
-    rippleMap,
-    intensity,
-    radius,
-    expandRate,
-    decayRate,
-    maxRipples,
-    segments,
-    webglEnabled,
-    ...rest
-}: LiquidImageProps) {
+export function LiquidMedia(props: LiquidMediaProps) {
+    const {
+        rippleMap,
+        intensity,
+        radius,
+        expandRate,
+        decayRate,
+        maxRipples,
+        segments,
+        webglEnabled,
+        ...rest
+    } = props
+
+    // The ripple displacement is a fragment-only shader, so the same material
+    // runs on both the image and video primitives (they share the WebGL plane).
+    const material = (map: Texture, pointer: Pointer) => (
+        <LiquidMediaMaterial
+            map={map}
+            pointer={pointer}
+            rippleMap={rippleMap}
+            intensity={intensity}
+            radius={radius}
+            expandRate={expandRate}
+            decayRate={decayRate}
+            maxRipples={maxRipples}
+        />
+    )
+
+    if (rest.type === "video") {
+        const { type: _type, ...videoProps } = rest
+        return (
+            <WebglVideo
+                segments={segments}
+                webglEnabled={webglEnabled}
+                material={material}
+                {...videoProps}
+            />
+        )
+    }
+
+    const { type: _type, ...imageProps } = rest
     return (
         <WebglImage
-            src={src}
-            alt={alt}
             segments={segments}
             webglEnabled={webglEnabled}
-            material={(map, pointer) => (
-                <LiquidImageMaterial
-                    map={map}
-                    pointer={pointer}
-                    rippleMap={rippleMap}
-                    intensity={intensity}
-                    radius={radius}
-                    expandRate={expandRate}
-                    decayRate={decayRate}
-                    maxRipples={maxRipples}
-                />
-            )}
-            {...rest}
+            material={material}
+            {...imageProps}
         />
     )
 }
