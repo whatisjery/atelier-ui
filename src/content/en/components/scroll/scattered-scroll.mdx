@@ -14,6 +14,26 @@ tags: ["Motion", "Tailwind CSS", "Lenis"]
 
 ---
 
+## Usage
+
+Point `scrollTargetRef` to a scroll container with a sticky inner wrapper and the items will animate as that container scrolls through the viewport, the higher the container, the longer the animation.
+
+```tsx
+const scrollTargetRef = useRef<HTMLDivElement>(null)
+
+<div ref={scrollTargetRef} className="relative h-[300vh]">
+  <div className="sticky top-0 flex h-screen items-center justify-center gap-2">
+    <ScatteredScroll scrollTargetRef={scrollTargetRef}>
+      {images.map((src) => (
+        <img key={src} src={src} alt="" className="aspect-[5/7] w-[30vw] object-cover" />
+      ))}
+    </ScatteredScroll>
+  </div>
+</div>
+```
+
+---
+
 ## API
 
 | Prop | Type | Default | Description |

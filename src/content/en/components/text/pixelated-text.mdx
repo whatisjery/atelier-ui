@@ -19,6 +19,22 @@ tags: ["Canvas", "Tailwind CSS"]
 
 ---
 
+## Usage
+
+By default the text renders inside a `<span>`.
+
+```tsx title="Default"
+<PixelatedText>Pixelate me</PixelatedText>
+```
+
+Pass `render` to swap the wrapper for any DOM element. Your props are merged with the component's, so it stays the right semantic tag (heading, paragraph, link) while keeping the animation.
+
+```tsx title="Custom element"
+<PixelatedText render={<h1 className="text-4xl font-bold" />}>Pixelate me</PixelatedText>
+```
+
+---
+
 ## API
 
 | Name | Type | Default | Description |

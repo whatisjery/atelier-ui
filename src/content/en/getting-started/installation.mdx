@@ -20,24 +20,23 @@ This library is built on Tailwind CSS v4. If your project doesn't already use it
 
 <DocStep step={2}>
 
-## Set up React Three Fiber
+## Add the WebGL provider
 
-You only need one `<Canvas>` for the whole app. Place it at your app's root with `<WebglPortal />` inside. It connects components like [CurveMedia](/docs/components/scroll/curve-media) to the Canvas so they can render their effects from anywhere in your React tree.
+If you are using WebGL components, install the provider and wrap your app root:
 
-<InstalGuideCLI name="webgl-portal" />
+<InstalGuideCLI name="webgl-provider" />
 
 ```tsx title="Root layout"
-import { Canvas } from "@react-three/fiber";
-import { WebglPortal } from "./webgl-portal";
+import { WebglProvider } from "@/components/webgl-provider";
 
-// The canvas must cover the full viewport
-<Canvas style={{ position: "fixed", inset: 0, pointerEvents: "none" }}>
-  {/* required for components used elsewhere in your tree */}
-  <WebglPortal />
-
-  {/* components that live inside the Canvas go here */}
-</Canvas>;
+export default function RootLayout({ children }) {
+  return <WebglProvider>{children}</WebglProvider>;
+}
 ```
+
+The provider runs one WebGL canvas for the whole page. Effects share it because separate WebGL contexts can't share resources or post-processing, so several effects duplicate GPU work and can't compose.
+
+You still write each component in your markup like a normal element. The library reads where this element is and its size, then renders WebGL into that same space on the shared canvas, keeping it aligned as the page scrolls and resizes.
 
 </DocStep>
 

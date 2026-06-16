@@ -9,13 +9,13 @@ A structural building block for composing your own WebGL text effects, like [Tex
 
 The text is rendered twice: as a real `<span>` for SEO and screen readers (hidden when WebGL is on), and as a `CanvasTexture` painted onto a plane that tracks its bounding box. The two stay pixel-aligned, so the shader feels like it runs on the DOM.
 
-Requires a `<Canvas>` with `<WebglPortal />` at the root of your app, see [Installation](/docs/getting-started/installation).
-
 ---
 
 ## Install
 
 <InstallTabs name="webgl-text" />
+
+WebGL Text must be rendered inside a `WebglProvider`. Follow the [installation guide](/docs/getting-started/installation) to add it to your app root.
 
 ---
 

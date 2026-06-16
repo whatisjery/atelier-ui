@@ -17,6 +17,27 @@ tags: ["Motion", "Lenis", "Tailwind CSS"]
 
 ---
 
+## Usage
+
+Each column is composable: stack as many as you want, you can change `autoScrollSpeed` and `parallaxAmount` per column, and change the direction to `reversed` to alternate their direction to obtain the desired effect.
+
+```tsx
+<div className="flex h-screen gap-2 overflow-hidden">
+  <InfiniteParallax>
+    {images.map((src) => (
+      <img key={src} src={src} alt="" className="mb-2 w-full" />
+    ))}
+  </InfiniteParallax>
+  <InfiniteParallax reversed>
+    {images.map((src) => (
+      <img key={src} src={src} alt="" className="mb-2 w-full" />
+    ))}
+  </InfiniteParallax>
+</div>
+```
+
+---
+
 ## API
 
 | Name         | Type                              | Default     | Description |

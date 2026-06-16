@@ -18,6 +18,22 @@ tags: ["Motion", "Tailwind CSS"]
 
 ---
 
+## Usage
+
+`backgroundSlot` is required: it holds the overlay shown before the sweep reveals the children beneath.
+
+```tsx
+<SweepExit
+  backgroundSlot={
+    <img src="/overlay.jpg" alt="" className="absolute inset-0 h-full w-full object-cover" />
+  }
+>
+  <YourPage />
+</SweepExit>
+```
+
+---
+
 ## API
 
 | Name | Type | Default | Description |

@@ -8,13 +8,13 @@ A structural building block for composing your own WebGL video effects. It is th
 
 The video is rendered twice: as a real `<video>` element (hidden when WebGL is on), and as a `VideoTexture` on a plane that tracks the element's bounding box. The texture pulls each new frame from the same element, so only one video decodes.
 
-Requires a `<Canvas>` with `<WebglPortal />` at the root of your app, see [Installation](/docs/getting-started/installation).
-
 ---
 
 ## Install
 
 <InstallTabs name="webgl-video" />
+
+WebGL Video must be rendered inside a `WebglProvider`. Follow the [installation guide](/docs/getting-started/installation) to add it to your app root.
 
 ---
 

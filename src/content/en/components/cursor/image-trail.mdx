@@ -21,6 +21,17 @@ tags: ["Motion", "Tailwind CSS"]
 
 ---
 
+## Usage
+
+```tsx
+<ImageTrail
+  data={["/1.jpg", "/2.jpg", "/3.jpg"]}
+  renderItem={(src) => <img src={src} alt="" className="w-32" />}
+/>
+```
+
+---
+
 ## API
 
 | Name            | Type                        | Default | Description    |

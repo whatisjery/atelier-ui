@@ -8,13 +8,13 @@ A structural building block for composing your own WebGL image effects, like [Cu
 
 The image is rendered twice: as a real `<img>` for SEO and screen readers (hidden when WebGL is on), and as a `Texture` on a plane that tracks the element's bounding box. The two stay pixel-aligned, so the shader feels like it runs on the DOM.
 
-Requires a `<Canvas>` with `<WebglPortal />` at the root of your app, see [Installation](/docs/getting-started/installation).
-
 ---
 
 ## Install
 
 <InstallTabs name="webgl-image" />
+
+WebGL Image must be rendered inside a `WebglProvider`. Follow the [installation guide](/docs/getting-started/installation) to add it to your app root.
 
 ---
 

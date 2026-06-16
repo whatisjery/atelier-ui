@@ -28,12 +28,26 @@ import { Sticker } from 'lucide-react'
 
 ---
 
+## Usage
 
-<Alert icon={<Sticker strokeWidth={1.5} className="size-6" />} title="Notes">
-Each letter is wrapped in an `overflow-clip` span. Some descenders and ascenders (g, p, t, f) can get clipped. Increase `line-height` / `leading` on the parent if needed.
-</Alert>
+By default the text renders inside a `<span>`.
+
+```tsx title="Default"
+<TextRoll>Roll me</TextRoll>
+```
+
+Pass `render` to swap the wrapper for any DOM element. Your props are merged with the component's, so it stays the right semantic tag (heading, paragraph, link) while keeping the animation.
+
+```tsx title="Custom element"
+<TextRoll render={<h1 className="text-4xl font-bold" />}>Roll me</TextRoll>
+```
 
 ---
+
+## Notes
+
+Each letter is wrapped in an `overflow-clip` span. Some descenders and ascenders (g, p, t, f) can get clipped. Increase `line-height` / `leading` on the parent if needed.
+
 
 ## API
 

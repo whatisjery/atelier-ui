@@ -8,50 +8,60 @@
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="./public/images/og_img_dark.jpg" />
     <source media="(prefers-color-scheme: light)" srcset="./public/images/og_img_light.jpg" />
-    <img style="max-width: 100%;" src="./public/images/og_img_light.jpg" alt="Logo" />
+    <img style="max-width: 100%;" src="./public/images/og_img_light.jpg" alt="Atelier UI" />
   </picture>
 </a>
 
-## About Atelier UI
 
-Atelier means **workshop** in French.
+## What is Atelier UI?
 
-It's a growing collection of React animations and interactive effects, built with React, TypeScript, [Tailwind](https://tailwindcss.com), [Motion](https://motion.dev), and [React Three Fiber](https://r3f.docs.pmnd.rs). Copy the source into your project and own it.
+Atelier (French for workshop) is a growing library of fully customizable React animated components
+and tooling that help developers create polished, interactive user experiences with ease.
 
-Some are built with WebGL. Two things about those:
+## Features
 
-- they all render through a single shared canvas, reusing one WebGL context and render loop instead of each effect creating its own
-- they build on a primitive that keeps text, images, and video in the DOM, so the page stays accessible and indexable
+- **It's your code.** Components are copied into your project, not installed as a
+  package, so they remain fully customizable.
+- **Ready-made effects.** Text animations, cursor interactions, scroll effects,
+  page transitions, and animated backgrounds.
+- **A real WebGL system.** Components share a single canvas and stay aligned to
+  the DOM.
+- **Built for React 19 + Tailwind v4.** Works with Next.js, Vite, or any React
+  setup.
 
-Feel free to [contribute](https://atelier-ui.com/docs/getting-started/contribution) if you want to get involved.
+## Install
 
-## What's inside
-
-Effects grouped by what they do, with more added over time:
-
-- **Cursor**: react to the pointer
-- **Scroll**: driven by scroll position
-- **Text**: animated text that stays readable
-- **Transitions**: page and section reveals
-- **Backgrounds**: full-screen animated surfaces
-- **Primitives**: the building blocks the rest are made from
-
-[Browse them all](https://atelier-ui.com/docs), or start with [Fluid Distortion](https://atelier-ui.com/docs/components/cursor/fluid-distortion).
-
-## CLI
+Add any component by name:
 
 ```bash
-npx atelier-ui add [component]
+npx atelier-ui add fluid-distortion
 ```
 
-| Option | Default | Description |
-| --- | --- | --- |
-| `--path` | `src/components` | Component destination |
-| `--shared-path` | `src` | Shared files destination |
-| `--registry` | `https://www.atelier-ui.com/api/registry` | Registry URL |
-| `--force` | `false` | Overwrite existing files |
-| `--no-install` | — | Skip dependency installation |
+This copies the source into your project, pulls in anything shared, and installs
+the dependencies it needs.
+
+## How it works
+
+Most components are self-contained: copy the file, use it, customize it.
+
+WebGL components work differently. They share one canvas (wrap your app in the
+provider once), then you write them as normal elements and the library keeps
+each one aligned to its spot on the page as it scrolls and resizes:
+
+- **Primitives** wrap a real DOM element (image, video, text), so the page stays
+  accessible.
+- **Scenes** own a camera and render into a tracked area, like the sphere
+  gallery.
+
+## Docs
+
+Browse every component with live previews at
+[atelier-ui.com/docs](https://atelier-ui.com/docs).
+
+## Contributing
+
+See the [contribution guide](https://atelier-ui.com/docs/getting-started/contribution).
 
 ## License
 
-Licensed under the [MIT License](LICENSE.md).
+[MIT](LICENSE.md).
