@@ -23,7 +23,7 @@ export default function SwitchControl({ label, value, onChange }: SwitchControlP
                 style={{ backgroundColor: value ? "var(--theme-bg)" : "var(--accent-4)" }}
             >
                 <Switch.Thumb
-                    className="block size-5 rounded-full bg-bg shadow-md transition-transform"
+                    className="block size-5 rounded-full dark:bg-accent-1 bg-bg shadow-md transition-transform"
                     style={{ transform: value ? "translateX(22px)" : "translateX(2px)" }}
                 />
             </Switch.Root>

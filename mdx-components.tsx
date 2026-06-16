@@ -87,7 +87,7 @@ const components: MDXComponents = {
 
     code: ({ children }) => {
         return (
-            <code className="inline-block text-sm not-prose bg-accent-5 border rounded-md px-1.25 py-0.5 font-mono">
+            <code className="inline-block text-xs not-prose bg-accent-5 border rounded-md px-1.25 py-0.5 font-mono">
                 {children}
             </code>
         )
