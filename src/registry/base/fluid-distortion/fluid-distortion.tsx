@@ -1,9 +1,10 @@
 import type { FboProps } from "@react-three/drei"
 import { useFBO } from "@react-three/drei"
 import { createPortal, extend, type ThreeElement, useFrame, useThree } from "@react-three/fiber"
-import { BlendFunction, Effect, EffectAttribute } from "postprocessing"
+import { BlendFunction, Effect } from "postprocessing"
 import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import * as THREE from "three"
+import { effectTeleport, webglTeleport } from "../webgl-portal/webgl-portal"
 
 const baseVertex = /* glsl */ `
 #ifdef USE_V_UV
@@ -387,7 +388,7 @@ function useDoubleFBO(width: number, height: number, options: FboProps) {
     return fbo
 }
 
-export const FluidDistortion = ({
+const FluidSimulation = ({
     blend = 5,
     force = 1.1,
     radius = 0.65,
@@ -744,17 +745,27 @@ export const FluidDistortion = ({
                 </mesh>,
                 bufferScene,
             )}
-            <fluidEffect
-                blend={blend}
-                intensity={intensity}
-                distortion={distortion}
-                rainbow={rainbow}
-                fluidColor={fluidColor}
-                backgroundColor={backgroundColor}
-                showBackground={showBackground}
-                blendFunction={blendFunction}
-                tFluid={densityFBO.read.texture}
-            />
+            <effectTeleport.In>
+                <fluidEffect
+                    blend={blend}
+                    intensity={intensity}
+                    distortion={distortion}
+                    rainbow={rainbow}
+                    fluidColor={fluidColor}
+                    backgroundColor={backgroundColor}
+                    showBackground={showBackground}
+                    blendFunction={blendFunction}
+                    tFluid={densityFBO.read.texture}
+                />
+            </effectTeleport.In>
         </>
+    )
+}
+
+export const FluidDistortion = (props: FluidDistortionProps) => {
+    return (
+        <webglTeleport.In>
+            <FluidSimulation {...props} />
+        </webglTeleport.In>
     )
 }

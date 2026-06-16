@@ -1,7 +1,9 @@
 "use client"
 
+import { useProgress } from "@react-three/drei"
 import { useParams } from "next/navigation"
-import { Suspense, useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
+import { WebglProvider } from "@/registry/base/webgl-provider/webgl-provider"
 import { collages } from "@/registry/collage"
 import { demos } from "@/registry/demos"
 import type { ControlValue } from "@/types/controls"
@@ -12,8 +14,19 @@ type Values = Record<string, ControlValue>
 
 export default function PreviewPage() {
     const { name } = useParams<{ name: string }>()
+    const { active } = useProgress()
     const [values, setValues] = useState<Values>({})
+    const hasSentReady = useRef(false)
+
     const Demo = registry[name]
+
+    useEffect(() => {
+        if (hasSentReady.current || window.parent === window) return
+        if (active) return
+
+        hasSentReady.current = true
+        window.parent.postMessage({ type: "atelier:ready" }, window.location.origin)
+    }, [active])
 
     useEffect(() => {
         function handleMessage(event: MessageEvent) {
@@ -23,10 +36,6 @@ export default function PreviewPage() {
         }
 
         window.addEventListener("message", handleMessage)
-
-        if (window.parent !== window) {
-            window.parent.postMessage({ type: "atelier:ready" }, window.location.origin)
-        }
 
         return () => window.removeEventListener("message", handleMessage)
     }, [])
@@ -40,9 +49,9 @@ export default function PreviewPage() {
                 className="pointer-events-none user-select-none -z-1 fixed inset-0 w-full h-full pattern-line opacity-60"
             />
 
-            <Suspense fallback={null}>
+            <WebglProvider>
                 <Demo {...values} />
-            </Suspense>
+            </WebglProvider>
         </>
     )
 }

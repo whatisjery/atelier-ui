@@ -236,7 +236,6 @@ export default function DemoPreview({
                         src={initialSrc}
                         title={name}
                         className="w-full h-full"
-                        onLoad={() => setIframeLoaded(true)}
                     />
 
                     <AnimatePresence>

@@ -23,13 +23,17 @@ function WebglTeleport() {
         }
     }
 
-    const subscribe = (l: () => void) => {
-        listeners.add(l)
+    const subscribe = (listener: () => void) => {
+        listeners.add(listener)
         return () => {
-            listeners.delete(l)
+            listeners.delete(listener)
         }
     }
     const getSnapshot = () => snapshot
+
+    function useItems() {
+        return useSyncExternalStore(subscribe, getSnapshot, getSnapshot)
+    }
 
     return {
         In({ children }: { children: ReactNode }) {
@@ -45,8 +49,9 @@ function WebglTeleport() {
             }, [id, children])
             return null
         },
+        useItems,
         Out() {
-            const list = useSyncExternalStore(subscribe, getSnapshot, getSnapshot)
+            const list = useItems()
             return (
                 <>
                     {list.map(([id, node]) => (
@@ -61,9 +66,10 @@ function WebglTeleport() {
 }
 
 const webglTeleport = WebglTeleport()
+const effectTeleport = WebglTeleport()
 
 export function WebglPortal() {
     return <webglTeleport.Out />
 }
 
-export { webglTeleport }
+export { effectTeleport, webglTeleport }

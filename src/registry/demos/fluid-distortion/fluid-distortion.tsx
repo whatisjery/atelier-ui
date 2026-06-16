@@ -1,14 +1,13 @@
 import { Environment } from "@react-three/drei"
-import { Canvas, useFrame } from "@react-three/fiber"
-import { EffectComposer } from "@react-three/postprocessing"
-import { Suspense, useRef } from "react"
+import { useFrame } from "@react-three/fiber"
+import { useRef } from "react"
 import { suspend } from "suspend-react"
 import type { Mesh } from "three"
-import Docr3fDemoLoader from "@/components/features/docs/Docr3fDemoLoader"
 import {
     FluidDistortion,
     type FluidDistortionProps,
 } from "@/registry/base/fluid-distortion/fluid-distortion"
+import { webglTeleport } from "@/registry/base/webgl-portal/webgl-portal"
 
 const warehouse = import("@pmndrs/assets/hdri/warehouse.exr").then((m) => m.default)
 
@@ -36,14 +35,13 @@ function RotatingCube() {
 
 export default function FluidCursorDemo(controls: Partial<FluidDistortionProps>) {
     return (
-        <Suspense fallback={<Docr3fDemoLoader />}>
-            <Canvas style={{ position: "fixed", inset: 0, pointerEvents: "none" }}>
+        <>
+            <webglTeleport.In>
                 <Environment files={suspend(warehouse) as string} />
                 <RotatingCube />
-                <EffectComposer>
-                    <FluidDistortion {...controls} />
-                </EffectComposer>
-            </Canvas>
-        </Suspense>
+            </webglTeleport.In>
+
+            <FluidDistortion {...controls} />
+        </>
     )
 }

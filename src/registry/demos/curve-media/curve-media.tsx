@@ -1,8 +1,7 @@
-import { addEffect, Canvas } from "@react-three/fiber"
+import { addEffect } from "@react-three/fiber"
 import { type LenisRef, ReactLenis } from "lenis/react"
 import { useEffect, useRef } from "react"
 import { type CurveEffectProps, CurveMedia } from "@/registry/base/curve-media/curve-media"
-import { WebglPortal } from "@/registry/base/webgl-portal/webgl-portal"
 
 // The controls only tweak the shared curve knobs; `type` picks the media.
 type CurveMediaControls = Partial<CurveEffectProps> & { type?: "image" | "video" }
@@ -18,10 +17,6 @@ export default function CurveMediaDemo({ type = "image", ...controls }: CurveMed
 
     return (
         <ReactLenis root ref={lenisRef} options={{ autoRaf: false, syncTouch: true }}>
-            <Canvas style={{ position: "fixed", inset: 0, pointerEvents: "none" }}>
-                <WebglPortal />
-            </Canvas>
-
             <div className="h-screen flex items-center justify-center font-serif text-5xl">
                 Scroll down
             </div>

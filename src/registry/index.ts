@@ -14,14 +14,8 @@ export const components: TRegistryComponent[] = [
         files: ["fluid-distortion.tsx"],
         description: "WebGL fluid distortion cursor effect",
         shared: [],
-        dependencies: [
-            "three",
-            "@react-three/fiber",
-            "@react-three/drei",
-            "@react-three/postprocessing",
-            "postprocessing",
-        ],
-        registryDependencies: [],
+        dependencies: ["three", "@react-three/fiber", "@react-three/drei", "postprocessing"],
+        registryDependencies: ["webgl-portal", "webgl-provider"],
     },
     {
         name: "pixel-trail",
@@ -77,7 +71,7 @@ export const components: TRegistryComponent[] = [
         description: "WebGL image or video with ripple distortion on pointer movement.",
         shared: ["assets/ripple.png"],
         dependencies: ["three", "@react-three/fiber", "@react-three/drei"],
-        registryDependencies: ["webgl-image", "webgl-video"],
+        registryDependencies: ["webgl-image", "webgl-video", "webgl-provider"],
     },
     {
         name: "infinite-parallax",
@@ -108,7 +102,7 @@ export const components: TRegistryComponent[] = [
         files: ["text-roll.tsx"],
         description: "Text roll effect",
         shared: ["hooks/use-render.ts"],
-        dependencies: [],
+        dependencies: ["motion"],
         registryDependencies: ["text-split"],
     },
     {
@@ -125,7 +119,7 @@ export const components: TRegistryComponent[] = [
         description: "Half tone glow effect",
         shared: [],
         dependencies: ["three", "@react-three/fiber", "@react-three/drei"],
-        registryDependencies: [],
+        registryDependencies: ["webgl-portal", "webgl-provider"],
         pro: true,
     },
     {
@@ -143,7 +137,7 @@ export const components: TRegistryComponent[] = [
         description: "Glowing fog effect",
         shared: [],
         dependencies: ["three", "@react-three/fiber", "@react-three/drei"],
-        registryDependencies: [],
+        registryDependencies: ["webgl-portal", "webgl-provider"],
         pro: true,
     },
     {
@@ -160,7 +154,7 @@ export const components: TRegistryComponent[] = [
         description: "TODO",
         shared: [],
         dependencies: ["three", "@react-three/fiber", "@react-three/drei"],
-        registryDependencies: [],
+        registryDependencies: ["webgl-portal", "webgl-provider"],
         pro: true,
     },
     {
@@ -168,8 +162,21 @@ export const components: TRegistryComponent[] = [
         files: ["webgl-portal.tsx"],
         description: "Shared R3F portal: DOM↔Canvas teleport for WebGL primitives.",
         shared: [],
-        dependencies: ["three", "@react-three/fiber"],
+        dependencies: [],
         registryDependencies: [],
+    },
+    {
+        name: "webgl-provider",
+        files: ["webgl-provider.tsx"],
+        description: "Single shared Canvas + eventSource. Wrap your app root once.",
+        shared: [],
+        dependencies: [
+            "three",
+            "@react-three/fiber",
+            "@react-three/postprocessing",
+            "postprocessing",
+        ],
+        registryDependencies: ["webgl-portal"],
     },
     {
         name: "webgl-image",
@@ -177,7 +184,7 @@ export const components: TRegistryComponent[] = [
         description: "DOM-aligned WebGL plane that mirrors an <img> via the WebglPortal.",
         shared: [],
         dependencies: ["three", "@react-three/fiber", "@react-three/drei"],
-        registryDependencies: ["webgl-portal"],
+        registryDependencies: ["webgl-portal", "webgl-provider"],
     },
     {
         name: "webgl-video",
@@ -185,7 +192,7 @@ export const components: TRegistryComponent[] = [
         description: "DOM-aligned WebGL plane that mirrors a <video> via the WebglPortal.",
         shared: [],
         dependencies: ["three", "@react-three/fiber"],
-        registryDependencies: ["webgl-portal"],
+        registryDependencies: ["webgl-portal", "webgl-provider"],
     },
     {
         name: "webgl-text",
@@ -193,7 +200,7 @@ export const components: TRegistryComponent[] = [
         description: "DOM-aligned WebGL plane that rasterizes text via the WebglPortal.",
         shared: ["hooks/use-render.ts"],
         dependencies: ["three", "@react-three/fiber"],
-        registryDependencies: ["webgl-portal"],
+        registryDependencies: ["webgl-portal", "webgl-provider"],
     },
     {
         name: "curve-media",
@@ -223,7 +230,8 @@ export const components: TRegistryComponent[] = [
     {
         name: "clip-reveal",
         files: ["clip-reveal.tsx"],
-        description: "Clip-path reveal that scales content from a starting inset to fullscreen on trigger.",
+        description:
+            "Clip-path reveal that scales content from a starting inset to fullscreen on trigger.",
         shared: [],
         dependencies: ["motion"],
         registryDependencies: [],
@@ -231,7 +239,8 @@ export const components: TRegistryComponent[] = [
     {
         name: "sweep-exit",
         files: ["sweep-exit.tsx"],
-        description: "Full-screen overlay preloader with extreme zoom-out burst and upward clip reveal.",
+        description:
+            "Full-screen overlay preloader with extreme zoom-out burst and upward clip reveal.",
         shared: [],
         dependencies: ["motion"],
         registryDependencies: [],
@@ -239,7 +248,8 @@ export const components: TRegistryComponent[] = [
     {
         name: "stripe-wipe",
         files: ["stripe-wipe.tsx"],
-        description: "Overlay that breaks into subdivided stripes and wipes away in a staggered cascade.",
+        description:
+            "Overlay that breaks into subdivided stripes and wipes away in a staggered cascade.",
         shared: [],
         dependencies: ["motion"],
         registryDependencies: [],

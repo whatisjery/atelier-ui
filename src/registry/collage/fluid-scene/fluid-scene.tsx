@@ -1,5 +1,3 @@
-import { Canvas } from "@react-three/fiber"
-import { EffectComposer } from "@react-three/postprocessing"
 import ReactLenis from "lenis/react"
 import { motion, useScroll, useTransform } from "motion/react"
 import { type ComponentRef, useRef, useState } from "react"
@@ -9,7 +7,6 @@ import { InfiniteParallax } from "@/registry/base/infinite-parallax/infinite-par
 import { SweepExit } from "@/registry/base/sweep-exit/sweep-exit"
 import { TextRoll } from "@/registry/base/text-roll/text-roll"
 import { WebglImage } from "@/registry/base/webgl-image/webgl-image"
-import { WebglPortal } from "@/registry/base/webgl-portal/webgl-portal"
 import { WebglText } from "@/registry/base/webgl-text/webgl-text"
 
 const IMAGE_URLS = [
@@ -58,16 +55,7 @@ export default function FluidScene() {
                 </SweepExit>
             )}
 
-            <Canvas
-                dpr={[1, 1.5]}
-                style={{ position: "fixed", inset: 0, pointerEvents: "none", zIndex: 0 }}
-            >
-                <WebglPortal />
-
-                <EffectComposer>
-                    <FluidDistortion />
-                </EffectComposer>
-            </Canvas>
+            <FluidDistortion />
 
             <ReactLenis root>
                 <header className="inset-0 text-xs sm:text-[1.3vw] flex fixed flex-col justify-between z-20 p-4 text-[#ffffff] pointer-events-none">
