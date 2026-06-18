@@ -51,7 +51,8 @@ Lens Media must be rendered inside a `WebglProvider`. Follow the [installation g
 | smoothing    | `number`             | `10`      | Cursor damping speed.                                    |
 | segments     | `number`             | `1`       | Plane geometry subdivisions.                             |
 | webglEnabled | `boolean`            | `true`    | Toggle WebGL effect on/off.                              |
-| ...props     | `ImgHTMLAttributes \| VideoHTMLAttributes` | — | Other `<img>` or `<video>` attributes forwarded to the underlying element. |
+
+It also forwards `<img>` attributes to [WebGL Image](/docs/components/primitive/webgl-image) and `<video>` attributes to [WebGL Video](/docs/components/primitive/webgl-video) depending on `type`.
 
 ---
 

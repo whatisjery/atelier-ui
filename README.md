@@ -13,12 +13,12 @@
 </a>
 
 
-## What is Atelier UI?
+## 🎨 What is Atelier UI?
 
 Atelier (French for workshop) is a growing library of fully customizable React animated components
 and tooling that help developers create polished, interactive user experiences with ease.
 
-## Features
+## ✨ Features
 
 - **It's your code.** Components are copied into your project, not installed as a
   package, so they remain fully customizable.
@@ -29,7 +29,7 @@ and tooling that help developers create polished, interactive user experiences w
 - **Built for React 19 + Tailwind v4.** Works with Next.js, Vite, or any React
   setup.
 
-## Install
+## ⚙️ Install
 
 Add any component by name:
 
@@ -40,7 +40,7 @@ npx atelier-ui add fluid-distortion
 This copies the source into your project, pulls in anything shared, and installs
 the dependencies it needs.
 
-## How it works
+## 🔍 How it works
 
 Most components are self-contained: copy the file, use it, customize it.
 
