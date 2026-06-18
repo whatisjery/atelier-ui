@@ -11,7 +11,7 @@ const ITEMS = [
     { src: "/images/demo/shared/4.webp" },
 ]
 
-export default function InfiniteGalleryDemo(controls: Partial<InfiniteGalleryProps<string>>) {
+export default function InfiniteGalleryDemo(controls: Partial<InfiniteGalleryProps>) {
     const isMobile = useIsMobile()
 
     return (
@@ -20,9 +20,10 @@ export default function InfiniteGalleryDemo(controls: Partial<InfiniteGalleryPro
                 className="w-full items-center"
                 perView={isMobile ? 2 : ITEMS.length - 1}
                 {...controls}
-                data={ITEMS}
-                renderItem={(item) => (
+            >
+                {ITEMS.map((item) => (
                     <img
+                        key={item.src}
                         src={item.src}
                         alt="image"
                         width={600}
@@ -30,8 +31,8 @@ export default function InfiniteGalleryDemo(controls: Partial<InfiniteGalleryPro
                         className="object-cover select-none pointer-events-none"
                         draggable={false}
                     />
-                )}
-            />
+                ))}
+            </InfiniteGallery>
         </div>
     )
 }
