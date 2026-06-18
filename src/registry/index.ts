@@ -263,4 +263,22 @@ export const components: TRegistryComponent[] = [
         dependencies: ["three", "@react-three/fiber", "@react-three/drei"],
         registryDependencies: ["webgl-image", "webgl-video"],
     },
+    {
+        name: "webgl-scene",
+        files: ["webgl-scene.tsx"],
+        description:
+            "Path-B viewport primitive: owns its own scene + camera and renders as a separate scissored pass on the shared canvas.",
+        shared: [],
+        dependencies: ["three", "@react-three/fiber"],
+        registryDependencies: ["webgl-portal", "webgl-provider"],
+    },
+    {
+        name: "sphere-gallery",
+        files: ["sphere-gallery.tsx"],
+        description:
+            "Immersive WebGL gallery with images mapped onto a sphere; orbit to look around, scroll to zoom, click an image to bring it to the center.",
+        shared: [],
+        dependencies: ["three", "@react-three/fiber", "@react-three/drei", "motion"],
+        registryDependencies: ["webgl-scene", "webgl-provider"],
+    },
 ]

@@ -1,0 +1,143 @@
+---
+title: "Sphere Gallery"
+description: "A WebGL gallery that maps images onto a sphere. Drag to look around, click an image to zoom in."
+tags: ["React Three Fiber", "Drei", "Tailwind CSS"]
+---
+
+<DemoPreview
+  name="sphere-gallery"
+  controls={{
+    rows: { type: "slider", value: 7, min: 2, max: 10, step: 1 },
+    columns: { type: "slider", value: 12, min: 4, max: 30, step: 1 },
+    latitudeRange: { type: "slider", value: 85, min: 10, max: 90, step: 5 },
+    gap: { type: "slider", value: 0.01, min: 0, max: 0.3, step: 0.01 },
+    padding: { type: "slider", value: 0.03, min: 0, max: 0.5, step: 0.01 },
+    cornerRadius: { type: "slider", value: 0.02, min: 0, max: 0.6, step: 0.01 },
+    tileColor: { type: "color", value: "#F8F8F8" },
+    sphereColor: { type: "color", value: "#ffffff" },
+    showTileColor: { type: "boolean", value: true },
+    lensBlur: { type: "slider", value: 0.4, min: 0, max: 0.5, step: 0.01 },
+    fov: { type: "slider", value: 70, min: 25, max: 100, step: 1 },
+    revealDuration: { type: "slider", value: 2, min: 0, max: 4, step: 0.1 },
+    focusDuration: { type: "slider", value: 1, min: 0, max: 4, step: 0.1 },
+    focusScale: { type: "slider", value: 1.7, min: 1, max: 3, step: 0.1 },
+    mouseParallax: { type: "slider", value: 0.2, min: 0, max: 1, step: 0.05 },
+  }}
+/>
+
+---
+
+## Install
+
+<InstallTabs name="sphere-gallery" />
+
+Sphere Gallery must be rendered inside a `WebglProvider`. Follow the [installation guide](/docs/getting-started/installation) to add it to your app root.
+
+---
+
+## Usage
+
+Pass your images as an `items` array; they tile across the sphere to fill the grid. Each item is just a `src` and `alt`.
+
+```tsx title="Basic"
+const ITEMS = [
+  { src: "/a.jpg", alt: "Project A" },
+  { src: "/b.jpg", alt: "Project B" },
+  { src: "/c.jpg", alt: "Project C" },
+]
+
+<SphereGallery items={ITEMS} className="fixed inset-0" />
+```
+
+### Sizing
+
+The size come from the element you render it into. Use `className` to decide of it's size.
+
+```tsx title="Sizing"
+{/* Fills the viewport */}
+<SphereGallery items={ITEMS} className="fixed inset-0 w-screen h-screen" />
+
+{/* Sits in a sized container */}
+<SphereGallery items={ITEMS} className="h-[500px] w-[500px]" />
+```
+
+### Overlays
+
+The gallery owns no DOM overlay. Use `onActiveChange` to get the focused index (already resolved, no modulo) and render your own content from your own data: a caption, a link, a title, anything.
+
+```tsx title="Overlay"
+const [active, setActive] = useState<number | null>(null)
+
+<>
+  {active !== null && (
+    <a className="fixed bottom-8 left-1/2 -translate-x-1/2 text-white" href={ITEMS[active].href}>
+      {ITEMS[active].title}
+    </a>
+  )}
+
+  <SphereGallery items={ITEMS} onActiveChange={setActive} className="fixed inset-0" />
+</>
+```
+
+### Deferred reveal
+
+`reveal` defaults to `true` so the sphere animates in on mount. Hold it `false` to delay the reveal, for example until an intro finishes.
+
+```tsx title="Deferred reveal"
+const [reveal, setReveal] = useState(false)
+
+<>
+  <Intro onDone={() => setReveal(true)} />
+  <SphereGallery items={ITEMS} reveal={reveal} className="fixed inset-0" />
+</>
+```
+
+### Post-processing
+
+Sphere Gallery renders through a [WebGL Scene](/docs/components/primitive/webgl-scene). By default that scene draws above other content. Set `mode="texture"` to render it into post-processing instead, so effects like `FluidDistortion` apply to the sphere.
+
+```tsx title="Post-processing"
+<FluidDistortion />
+
+<SphereGallery items={ITEMS} mode="texture" className="fixed inset-0" />
+```
+
+---
+
+## API
+
+| Name          | Type        | Default     | Description                                                                                |
+| ------------- | ----------- | ----------- | ----------------------------------------------------------------------------------------- |
+| items         | `SphereGalleryItem[]` | — | The images to map onto the sphere, as `{ src, alt }`. They tile to fill the grid. |
+| reveal        | `boolean`   | `true`      | When `false`, holds the reveal animation; flip to `true` to play it (e.g. after an intro). |
+| revealDuration | `number`   | `2`         | Duration of the reveal animation, in seconds. |
+| focusDuration | `number`    | `1`         | Duration of the click-to-focus zoom, in seconds. |
+| focusScale    | `number`    | `1.7`       | How much a tile scales up when focused. |
+| mouseParallax | `number`    | `0.2`       | Strength of the mouse-driven parallax tilt. `0` disables it. |
+| onActiveChange | `(index: number \| null) => void` | — | Fires with the focused image index when one opens, or `null` when none is. Use it to render your own overlay from your own data. |
+| rows          | `number`    | `7`         | Horizontal tile rings stacked from bottom to top. Tile height follows from this.           |
+| columns       | `number`    | `12`        | Sets the width of every tile. Higher values make tiles narrower and pack more around each ring. |
+| latitudeRange | `number`    | `85`        | Vertical spread of the rings in degrees.                      |
+| gap           | `number`    | `0.01`      | Seam between neighboring tiles, in world units. `0` makes them touch.                      |
+| padding       | `number`    | `0.03`      | Even border between the tile edge and the contained image, in world units.                 |
+| cornerRadius  | `number`    | `0.02`      | Tile corner rounding in world units. `0` is square.                                         |
+| tileColor     | `string \| null` | `"#F8F8F8"` | Background color of the tile behind each image, shown in the padding and around images. Set to `null` to hide it so only the image shows. |
+| sphereColor   | `string`    | `"#ffffff"` | Color of the sphere behind the tiles. |
+| lensBlur      | `number`    | `0.4`       | Strength of the edge lens blur. `0` disables it; higher values blur more toward the edges.   |
+| fov           | `number`    | `70`        | Camera field of view in degrees. Narrows on click to zoom into an image.                    |
+| className     | `string`    | —           | Classes for the full-screen interaction surface.                                          |
+
+It also forwards [WebGL Scene](/docs/components/primitive/webgl-scene) props: `mode`, `priority`, `zIndex`, and `transparent`.
+
+---
+
+## Credits
+
+[React Three Fiber](https://r3f.docs.pmnd.rs/)  
+React renderer for Three.js used for the WebGL scene.
+
+[Drei](https://github.com/pmndrs/drei)  
+Helper used to load the image textures.
+
+[Cosmos](https://www.cosmos.so/)   
+Demo images sourced from the website. If you don't want your image shown in this demo, [send me an email](mailto:jeremienallet@gmail.com) and I'll remove it.

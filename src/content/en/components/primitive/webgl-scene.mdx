@@ -1,0 +1,50 @@
+---
+title: "WebGL Scene"
+description: "A primitive that owns its own Three.js scene and camera, rendering it into a tracked DOM rect on the shared canvas."
+tags: ["Primitive", "React Three Fiber"]
+---
+
+A structural building block for effects that need camera motion (dolly, FOV zoom, orbit) and so can't share the fixed global camera used by plane primitives like [WebGL Image](/docs/components/primitive/webgl-image).
+
+`WebglScene` tracks a DOM element's bounding rect and renders its children into that rectangle on the **same** WebGL context. No extra `<Canvas>` is created. Its camera is independent of the global one, so children are free to move it.
+
+---
+
+## Install
+
+<InstallTabs name="webgl-scene" />
+
+WebGL Scene must be rendered inside a `WebglProvider`. Follow the [installation guide](/docs/getting-started/installation) to add it to your app root.
+
+---
+
+## Basic usage
+
+Pass a `ref` to the DOM element that defines the viewport, and place any R3F content as children. `WebglScene` teleports the children onto the shared canvas for you:
+
+```tsx
+const surface = useRef<HTMLDivElement>(null)
+
+<div ref={surface} className="w-full h-96">
+  <WebglScene track={surface}>
+    <mesh>
+      <boxGeometry />
+      <meshNormalMaterial />
+    </mesh>
+  </WebglScene>
+</div>
+```
+
+---
+
+## API
+
+| Name | Type | Default | Description |
+| --- | --- | --- | --- |
+| `track` | `RefObject<HTMLElement \| null>` | — | Ref to the DOM element whose bounding rect defines the viewport. Required. |
+| `children` | `ReactNode` | — | R3F content, rendered into the tracked rect with the own camera. |
+| `mode` | `"texture" \| "scissor"` | `"scissor"` | `scissor` renders the scene above other content, outside of global post-processing. `texture` includes it in post-processing, so effects like bloom or distortion apply to the scene. |
+| `camera` | `PerspectiveCamera` | — | Pre-configured camera. Defaults to a `PerspectiveCamera` at FOV 75, z=5. |
+| `zIndex` | `number` | `0` | Texture mode only. Render order of the display plane. |
+| `transparent` | `boolean` | `true` | Texture mode only. Set `false` for an opaque scene with its own background. |
+| `priority` | `number` | — | `useFrame` render priority. |

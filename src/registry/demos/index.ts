@@ -25,4 +25,5 @@ export const demos: Record<string, React.LazyExoticComponent<React.ComponentType
     "stripe-wipe": lazy(() => import("./stripe-wipe/stripe-wipe")),
     "lens-media": lazy(() => import("./lens-media/lens-media")),
     "pixel-media": lazy(() => import("./pixel-media/pixel-media")),
+    "sphere-gallery": lazy(() => import("./sphere-gallery/sphere-gallery")),
 }
