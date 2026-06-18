@@ -2,7 +2,7 @@
 
 import { Canvas } from "@react-three/fiber"
 import { EffectComposer } from "@react-three/postprocessing"
-import { type ReactNode, type RefObject, useRef } from "react"
+import { type ComponentRef, type ReactNode, type RefObject, useRef } from "react"
 import { effectTeleport, WebglPortal } from "../webgl-portal/webgl-portal"
 
 type WebglProviderProps = {
@@ -21,7 +21,7 @@ function Effects() {
 }
 
 export function WebglProvider({ children }: WebglProviderProps) {
-    const eventSource = useRef<HTMLDivElement>(null)
+    const eventSource = useRef<ComponentRef<"div">>(null)
 
     return (
         <div ref={eventSource} style={{ display: "contents" }}>

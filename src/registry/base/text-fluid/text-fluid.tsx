@@ -99,15 +99,6 @@ extend({ TextFluidMat })
 export type DynamicNumber = number | (() => number)
 const read = (v: DynamicNumber) => (typeof v === "function" ? v() : v)
 
-type TextFluidMaterialProps = {
-    uTexture: Texture
-    speed: number
-    ripple: DynamicNumber
-    frequency: DynamicNumber
-    amplitude: DynamicNumber
-    opacity: DynamicNumber
-}
-
 export type TextFluidProps = {
     children: string
     speed?: number
@@ -119,6 +110,10 @@ export type TextFluidProps = {
     webglEnabled?: boolean
     render?: RenderProp
 }
+
+type TextFluidMaterialProps = {
+    uTexture: Texture
+} & Required<Pick<TextFluidProps, "speed" | "ripple" | "frequency" | "amplitude" | "opacity">>
 
 function TextFluidMaterial({
     uTexture,

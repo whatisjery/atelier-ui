@@ -171,22 +171,25 @@ export function PixelTrail({
 
             for (let offsetX = -trailRadius; offsetX <= trailRadius; offsetX++) {
                 for (let offsetY = -trailRadius; offsetY <= trailRadius; offsetY++) {
-                    if (offsetX * offsetX + offsetY * offsetY > trailRadius * trailRadius) continue
-                    if (trailRadius > 0 && Math.random() < 0.75) continue
+                    const isOutsideCircle =
+                        offsetX * offsetX + offsetY * offsetY > trailRadius * trailRadius
+                    const isSkipped = trailRadius > 0 && Math.random() < 0.75
 
-                    const posX = (gridX + offsetX) * pixelSize
-                    const posY = (gridY + offsetY) * pixelSize
+                    if (!isOutsideCircle && !isSkipped) {
+                        const posX = (gridX + offsetX) * pixelSize
+                        const posY = (gridY + offsetY) * pixelSize
 
-                    pixelsRef.current.push({
-                        posX,
-                        posY,
-                        lifetime: lifetime * (0.2 + Math.random() ** 2 * 0.8),
-                        fade: 0,
-                        color: getColorAt(
-                            posX + rect.left + pixelSize * 0.5,
-                            posY + rect.top + pixelSize * 0.5,
-                        ),
-                    })
+                        pixelsRef.current.push({
+                            posX,
+                            posY,
+                            lifetime: lifetime * (0.2 + Math.random() ** 2 * 0.8),
+                            fade: 0,
+                            color: getColorAt(
+                                posX + rect.left + pixelSize * 0.5,
+                                posY + rect.top + pixelSize * 0.5,
+                            ),
+                        })
+                    }
                 }
             }
         }

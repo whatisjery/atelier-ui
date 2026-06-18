@@ -3,7 +3,7 @@
 import ReactLenis from "lenis/react"
 import { motion, useScroll, useTransform } from "motion/react"
 import { useTranslations } from "next-intl"
-import { useEffect, useRef, useState } from "react"
+import { type ComponentRef, useEffect, useRef, useState } from "react"
 import Footer from "@/components/common/Footer"
 import MainNav from "@/components/common/MainNav"
 import { IconMotion } from "@/components/icons/IconMotion"
@@ -72,8 +72,8 @@ export default function PageLanding({ showcaseComponents }: PageLadingProps) {
     const tMetadata = useTranslations("metadata")
     const [isSceneReady, setIsSceneReady] = useState(false)
     const [showLoader, setShowLoader] = useState(true)
-    const bottomCardRef = useRef<HTMLDivElement>(null)
-    const heroSectionRef = useRef<HTMLDivElement>(null)
+    const bottomCardRef = useRef<ComponentRef<"div">>(null)
+    const heroSectionRef = useRef<ComponentRef<"div">>(null)
 
     const isMobile = useIsMobile(640)
 

@@ -1,12 +1,13 @@
 import { type Easing, motion, type Variants } from "motion/react"
 
+const EASE: Easing = [0.85, 0, 0.2, 1]
+
 export interface StripeWipeProps {
     stripes?: number
     segments?: number
     reverse?: boolean
     stagger?: number
     duration?: number
-    ease?: Easing
     trigger?: boolean
     className?: string
 }
@@ -17,7 +18,6 @@ export function StripeWipe({
     reverse = false,
     stagger = 0.04,
     duration = 1.2,
-    ease = [0.85, 0, 0.2, 1],
     trigger = true,
     className,
 }: StripeWipeProps) {
@@ -35,7 +35,7 @@ export function StripeWipe({
         initial: { x: 0 },
         animate: {
             x: "-101%",
-            transition: { duration, ease },
+            transition: { duration, ease: EASE },
         },
     }
 

@@ -3,7 +3,7 @@
 import { Lock, Maximize, Minimize, RotateCcw } from "lucide-react"
 import { AnimatePresence, motion } from "motion/react"
 import { useLocale, useTranslations } from "next-intl"
-import { useEffect, useEffectEvent, useMemo, useRef, useState } from "react"
+import { type ComponentRef, useEffect, useEffectEvent, useMemo, useRef, useState } from "react"
 import Logo from "@/components/common/Logo"
 import ThemeSwitcher from "@/components/common/ThemeSwitcher"
 import ControlsPanel from "@/components/features/docs/controls/ControlPanel"
@@ -41,7 +41,7 @@ export default function DemoPreview({
         ? Object.fromEntries(Object.entries(controls).map(([key, { value }]) => [key, value]))
         : {}
 
-    const iframeRef = useRef<HTMLIFrameElement | null>(null)
+    const iframeRef = useRef<ComponentRef<"iframe"> | null>(null)
     const locale = useLocale()
     const customer = useGlobalStore((s) => s.customer)
     const isTouchScreen = useIsTouch()
@@ -276,7 +276,7 @@ export default function DemoPreview({
                         className={cn(
                             "absolute h-full opacity-100 w-full bottom-0 inset-0 flex items-center justify-center z-10 bg-accent-5 pointer-events-none",
                             {
-                                "opacity-0 transition-opacity duration-200 delay-100":
+                                "opacity-0 transition-opacity duration-200":
                                     iframeLoaded && animationDone,
                             },
                         )}

@@ -54,13 +54,10 @@ void main() {
 type LiquidMediaMaterialProps = {
     map: Texture
     pointer: Pointer
-    rippleMap?: Texture
-    intensity?: number
-    radius?: number
-    expandRate?: number
-    decayRate?: number
-    maxRipples?: number
-}
+} & Pick<
+    LiquidEffectProps,
+    "rippleMap" | "intensity" | "radius" | "expandRate" | "decayRate" | "maxRipples"
+>
 
 type Uniforms = {
     uTexture: { value: Texture | null }
@@ -210,9 +207,9 @@ function LiquidMediaMaterial({
         mat.uniforms.uDisplacementIntensity.value = displacementSmoothed.current
     })
 
-    const setSprite = useCallback((el: Mesh | null, i: number) => {
-        if (!el) return
-        spriteRefs.current[i] = el
+    const setSprite = useCallback((mesh: Mesh | null, spriteIndex: number) => {
+        if (!mesh) return
+        spriteRefs.current[spriteIndex] = mesh
     }, [])
 
     const portal = useMemo(
@@ -222,7 +219,7 @@ function LiquidMediaMaterial({
                     {Array.from({ length: maxRipples }, (_, i) => (
                         <mesh
                             key={i}
-                            ref={(el) => setSprite(el, i)}
+                            ref={(mesh) => setSprite(mesh, i)}
                             visible={false}
                             rotation-z={Math.random() * Math.PI * 2}
                         >

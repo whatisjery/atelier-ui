@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef } from "react"
+import { type ComponentRef, useCallback, useEffect, useRef } from "react"
 import { useFrameLoop } from "../../hooks/use-frame-loop"
 import { type RenderProp, useRender } from "../../hooks/use-render"
 
@@ -21,7 +21,7 @@ export function TextScramble({
 }: TextScrambleProps) {
     const text = children
 
-    const ref = useRef<HTMLElement>(null)
+    const ref = useRef<ComponentRef<"span">>(null)
     const startTime = useRef(0)
     const isAnimating = useRef(false)
 
