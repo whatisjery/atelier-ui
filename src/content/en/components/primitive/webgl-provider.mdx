@@ -48,9 +48,9 @@ By default, the canvas covers the viewport. Set `contained` to keep it inside th
 </WebglProvider>
 ```
 
-### Wait for the scene to compile
+### Track scene readiness
 
-`useWebglReady` precompiles the scene's shaders and returns `false` until they are ready, then `true`. Without it, shaders compile on first render, which can drop frames.
+`useWebglReady` returns `false` until the scene's shaders have compiled. This can help prevent visible shader-compilation stutter when an effect first appears.
 
 ```tsx
 import { useWebglReady } from "@/components/webgl-provider"
