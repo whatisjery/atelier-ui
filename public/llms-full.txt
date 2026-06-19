@@ -2,7 +2,7 @@
 
 Source: https://atelier-ui.com/docs
 
-Generated: 2026-05-31T20:04:20.567Z
+Generated: 2026-06-19T17:24:04.745Z
 
 ---
 
@@ -35,6 +35,14 @@ Source file: collage/fluid-scene.mdx
 
 Source file: components/background/dither-flow.mdx
 
+## Usage
+
+```tsx
+<DitherFlow />
+```
+
+***
+
 ## API
 
 | Name           | Type                | Default     | Description                                                 |
@@ -53,6 +61,14 @@ Source file: components/background/dither-flow.mdx
 > Dynamic fog and light beam cursor follow effect.
 
 Source file: components/background/glowing-fog.mdx
+
+## Usage
+
+```tsx
+<GlowingFog />
+```
+
+***
 
 ## API
 
@@ -77,6 +93,14 @@ Source file: components/background/glowing-fog.mdx
 
 Source file: components/background/halftone-glow.mdx
 
+## Usage
+
+```tsx
+<HalftoneGlow />
+```
+
+***
+
 ## API
 
 | Name           | Type                | Default     | Description                               |
@@ -92,6 +116,115 @@ Source file: components/background/halftone-glow.mdx
 
 
 ============================================================
+## Sphere Gallery
+> A WebGL gallery that maps images onto a sphere. Drag to look around, click an image to zoom in.
+
+Source file: components/background/sphere-gallery.mdx
+
+***
+
+## Install
+
+Sphere Gallery must be rendered inside a `WebglProvider`. Follow the [installation guide](/docs/getting-started/installation) to add it to your app root.
+
+***
+
+## Usage
+
+Pass your images as an `items` array; they tile across the sphere to fill the grid. Each item is just a `src` and `alt`.
+
+```tsx title="Basic"
+const ITEMS = [
+  { src: "/a.jpg", alt: "Project A" },
+  { src: "/b.jpg", alt: "Project B" },
+  { src: "/c.jpg", alt: "Project C" },
+]
+
+<SphereGallery items={ITEMS} className="fixed inset-0" />
+```
+
+### Sizing
+
+The size come from the element you render it into. Use `className` to decide of it's size.
+
+```tsx title="Sizing"
+{/* Fills the viewport */}
+<SphereGallery items={ITEMS} className="fixed inset-0 w-screen h-screen" />
+
+{/* Sits in a sized container */}
+<SphereGallery items={ITEMS} className="h-[500px] w-[500px]" />
+```
+
+### Overlays
+
+`onActiveChange` gives you the index of the opened image (and `null` when it closes). Use it to look up that item in your own data and render a caption, link, or anything else as regular HTML.
+
+```tsx title="Overlay"
+const [active, setActive] = useState<number | null>(null)
+
+<>
+  {active !== null && (
+    <a className="fixed bottom-8 left-1/2 -translate-x-1/2 text-white" href={ITEMS[active].href}>
+      {ITEMS[active].title}
+    </a>
+  )}
+
+  <SphereGallery items={ITEMS} onActiveChange={setActive} className="fixed inset-0" />
+</>
+```
+
+### Post-processing
+
+Sphere Gallery renders through a [WebGL Scene](/docs/components/primitive/webgl-scene). By default that scene draws above other content. Set `mode="texture"` to render it into post-processing instead, so effects like `FluidDistortion` apply to the sphere.
+
+```tsx title="Post-processing"
+<FluidDistortion />
+
+<SphereGallery items={ITEMS} mode="texture" className="fixed inset-0" />
+```
+
+***
+
+## API
+
+| Name           | Type                              | Default     | Description                                                                                                                               |
+| -------------- | --------------------------------- | ----------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| items          | `SphereGalleryItem[]`             | —           | The images to map onto the sphere, as `{ src, alt }`. They tile to fill the grid.                                                         |
+| reveal         | `boolean`                         | `true`      | When `false`, holds the reveal animation; flip to `true` to play it (e.g. after an intro).                                                |
+| revealDuration | `number`                          | `2`         | Duration of the reveal animation, in seconds.                                                                                             |
+| focusDuration  | `number`                          | `1`         | Duration of the click-to-focus zoom, in seconds.                                                                                          |
+| focusScale     | `number`                          | `1.7`       | How much a tile scales up when focused.                                                                                                   |
+| mouseParallax  | `number`                          | `0.2`       | Strength of the mouse-driven parallax tilt. `0` disables it.                                                                              |
+| onActiveChange | `(index: number \| null) => void` | —           | Fires with the focused image index when one opens, or `null` when none is. Use it to render your own overlay from your own data.          |
+| rows           | `number`                          | `7`         | Horizontal tile rings stacked from bottom to top. Tile height follows from this.                                                          |
+| columns        | `number`                          | `12`        | Sets the width of every tile. Higher values make tiles narrower and pack more around each ring.                                           |
+| latitudeRange  | `number`                          | `85`        | Vertical spread of the rings in degrees.                                                                                                  |
+| gap            | `number`                          | `0.01`      | Seam between neighboring tiles, in world units. `0` makes them touch.                                                                     |
+| padding        | `number`                          | `0.03`      | Even border between the tile edge and the contained image, in world units.                                                                |
+| cornerRadius   | `number`                          | `0.02`      | Tile corner rounding in world units. `0` is square.                                                                                       |
+| tileColor      | `string \| null`                  | `"#F8F8F8"` | Background color of the tile behind each image, shown in the padding and around images. Set to `null` to hide it so only the image shows. |
+| sphereColor    | `string`                          | `"#ffffff"` | Color of the sphere behind the tiles.                                                                                                     |
+| lensBlur       | `number`                          | `0.4`       | Strength of the edge lens blur. `0` disables it; higher values blur more toward the edges.                                                |
+| fov            | `number`                          | `70`        | Camera field of view in degrees. Narrows on click to zoom into an image.                                                                  |
+| className      | `string`                          | —           | Classes for the full-screen interaction surface.                                                                                          |
+
+It also forwards [WebGL Scene](/docs/components/primitive/webgl-scene) props: `mode`, `priority`, `zIndex`, and `transparent`.
+
+***
+
+## Credits
+
+[React Three Fiber](https://r3f.docs.pmnd.rs/)\
+React renderer for Three.js used for the WebGL scene.
+
+[Drei](https://github.com/pmndrs/drei)\
+Helper used to load the image textures.
+
+[Cosmos](https://www.cosmos.so/)\
+Demo images sourced from the website. If you don't want your image shown in this demo, [send me an email](mailto:jeremienallet@gmail.com) and I'll remove it.
+
+
+============================================================
 ## Fluid Distortion
 > A GPU-accelerated fluid distortion effect that reacts to cursor movement
 
@@ -100,6 +233,16 @@ Source file: components/cursor/fluid-distortion.mdx
 ***
 
 ## Install
+
+Fluid Distortion must be rendered inside a `WebglProvider`. Follow the [installation guide](/docs/getting-started/installation) to add it to your app root.
+
+***
+
+## Usage
+
+```tsx
+<FluidDistortion />
+```
 
 ***
 
@@ -151,6 +294,17 @@ Source file: components/cursor/image-trail.mdx
 
 ***
 
+## Usage
+
+```tsx
+<ImageTrail
+  data={["/1.jpg", "/2.jpg", "/3.jpg"]}
+  renderItem={(src) => <img src={src} alt="" className="w-32" />}
+/>
+```
+
+***
+
 ## API
 
 | Name          | Type                     | Default | Description                                          |
@@ -178,6 +332,16 @@ Source file: components/cursor/lens-media.mdx
 ***
 
 ## Install
+
+Lens Media must be rendered inside a `WebglProvider`. Follow the [installation guide](/docs/getting-started/installation) to add it to your app root.
+
+***
+
+## Usage
+
+```tsx
+<LensMedia type="image" src="/photo.jpg" alt="A photo" className="w-full h-auto" />
+```
 
 ***
 
@@ -218,6 +382,16 @@ Source file: components/cursor/liquid-media.mdx
 ***
 
 ## Install
+
+Liquid Media must be rendered inside a `WebglProvider`. Follow the [installation guide](/docs/getting-started/installation) to add it to your app root.
+
+***
+
+## Usage
+
+```tsx
+<LiquidMedia type="image" src="/photo.jpg" alt="A photo" className="w-full h-auto" />
+```
 
 ***
 
@@ -270,6 +444,14 @@ Source file: components/cursor/magnetic-dot-grid.mdx
 
 ***
 
+## Usage
+
+```tsx
+<MagneticDotGrid />
+```
+
+***
+
 ## API
 
 | Name              | Type       | Default                                       | Description                                        |
@@ -304,6 +486,16 @@ Source file: components/cursor/pixel-media.mdx
 ***
 
 ## Install
+
+Pixel Media must be rendered inside a `WebglProvider`. Follow the [installation guide](/docs/getting-started/installation) to add it to your app root.
+
+***
+
+## Usage
+
+```tsx
+<PixelMedia type="image" src="/photo.jpg" alt="A photo" className="w-full h-auto" />
+```
 
 ***
 
@@ -346,6 +538,14 @@ Source file: components/cursor/pixel-trail.mdx
 
 ***
 
+## Usage
+
+```tsx
+<PixelTrail />
+```
+
+***
+
 ## API
 
 | Name          | Type                  | Default                      | Description                                       |
@@ -373,7 +573,7 @@ Pixel trail effect inspired by his portfolio, reimplemented using a 2D canvas.
 
 ============================================================
 ## Text Split
-> A primitive that splits a string into letters or words.
+> A foundation block that splits a string into letters or words.
 
 Source file: components/primitive/text-split.mdx
 
@@ -387,7 +587,7 @@ By default, each item is wrapped in an `overflow-clip` span (disable with `showM
 
 ***
 
-## Basic usage
+## Usage
 
 By default, the string is split into individual letters:
 
@@ -401,7 +601,7 @@ Use `splitBy="words"` to split on spaces instead:
 <TextSplit splitBy="words">Hello world</TextSplit>
 ```
 
-## With renderItems
+### With renderItems
 
 `renderItems` lets you render each piece yourself. Here, every letter lifts on hover:
 
@@ -432,23 +632,23 @@ Use `splitBy="words"` to split on spaces instead:
 
 ============================================================
 ## WebGL Image
-> A primitive that mirrors an image onto a WebGL plane while preserving accessibility.
+> A foundation block that mirrors an image onto a WebGL plane while preserving accessibility.
 
 Source file: components/primitive/webgl-image.mdx
 
 A structural building block for composing your own WebGL image effects, like [Curve Media](/docs/components/scroll/curve-media).
 
-The image is rendered twice: as a real `<img>` for SEO and screen readers (hidden when WebGL is on), and as a `Texture` on a plane that tracks the element's bounding box. The two stay pixel-aligned, so the shader feels like it runs on the DOM.
-
-Requires a `<Canvas>` with `<WebglPortal />` at the root of your app, see [Installation](/docs/getting-started/installation).
+The image is rendered twice: as a real `<img>` for SEO and screen readers (hidden when WebGL is on), and as a `Texture` on a plane that tracks the element's bounding box. The two stay pixel-aligned, so the WebGL plane sits exactly over the DOM element.
 
 ***
 
 ## Install
 
+WebGL Image must be rendered inside a `WebglProvider`. Follow the [installation guide](/docs/getting-started/installation) to add it to your app root.
+
 ***
 
-## Basic usage
+## Usage
 
 With no `material`, the plane uses a `meshBasicMaterial` and looks identical to a plain `<img>`:
 
@@ -456,7 +656,7 @@ With no `material`, the plane uses a `meshBasicMaterial` and looks identical to 
 <WebglImage src="/photo.jpg" alt="A photo" className="w-full h-auto" />
 ```
 
-## Object-fit
+### Object-fit
 
 `object-fit: cover` and `object-fit: contain` are replicated on the plane. Set it the way you would on a normal `<img>`:
 
@@ -464,7 +664,7 @@ With no `material`, the plane uses a `meshBasicMaterial` and looks identical to 
 <WebglImage src="/photo.jpg" alt="A photo" className="w-full h-64 object-cover" />
 ```
 
-## With material
+### With material
 
 `material` lets you provide your own R3F material. It receives the loaded `Texture` and a live `pointer` (UV + hover):
 
@@ -487,18 +687,6 @@ With no `material`, the plane uses a `meshBasicMaterial` and looks identical to 
 The `pointer` object is mutated in place, so reading it inside a `useFrame` gives current values without re-renders.
 
 Use `segments` to subdivide the plane when your shader displaces vertices. `1` is enough for fragment-only effects.
-
-## Toggling WebGL off
-
-Set `webglEnabled={false}` to skip the canvas pass and fall back to the plain DOM `<img>`:
-
-```tsx title="Graceful fallback"
-<WebglImage
-    src="/photo.jpg"
-    alt="A photo"
-    webglEnabled={!prefersReducedMotion}
-/>
-```
 
 ***
 
@@ -525,16 +713,14 @@ Standard `<img>` attributes (`className`, `style`, `width`, `height`, ...) are a
 
 
 ============================================================
-## WebGL Text
-> A primitive that mirrors an text element onto a WebGL plane while preserving accessibility.
+## WebGL Provider
+> The root that runs one shared WebGL canvas for the whole page.
 
-Source file: components/primitive/webgl-text.mdx
+Source file: components/primitive/webgl-provider.mdx
 
-A structural building block for composing your own WebGL text effects, like [Text Fluid](/docs/components/text/text-fluid).
+WebGL Provider mounts a single `<Canvas>` for the whole page and renders your application inside it. Every other WebGL component draws onto this canvas, so the application holds one WebGL context instead of one per effect.
 
-The text is rendered twice: as a real `<span>` for SEO and screen readers (hidden when WebGL is on), and as a `CanvasTexture` painted onto a plane that tracks its bounding box. The two stay pixel-aligned, so the shader feels like it runs on the DOM.
-
-Requires a `<Canvas>` with `<WebglPortal />` at the root of your app, see [Installation](/docs/getting-started/installation).
+Add the provider once, at your application root. For installation steps, see the [installation guide](/docs/getting-started/installation).
 
 ***
 
@@ -542,7 +728,146 @@ Requires a `<Canvas>` with `<WebglPortal />` at the root of your app, see [Insta
 
 ***
 
-## Basic usage
+## Usage
+
+Wrap your root layout with the provider. The canvas renders fixed and full screen behind the page, with your content on top:
+
+```tsx title="Root layout"
+import { WebglProvider } from "@/components/webgl-provider"
+
+export default function RootLayout({ children }) {
+    return <WebglProvider>{children}</WebglProvider>
+}
+```
+
+### Pass Canvas options
+
+Any [React Three Fiber Canvas prop](https://r3f.docs.pmnd.rs/api/canvas) passes through the provider, so you can set props such as `gl`, `camera`, and `dpr`. The provider defaults to `eventPrefix="client"` and `dpr={[1, 1.5]}`, which your props override:
+
+```tsx title="Custom Canvas options"
+<WebglProvider dpr={[1, 2]} gl={{ antialias: false }}>
+    {children}
+</WebglProvider>
+```
+
+### Scope the canvas to its container
+
+By default, the canvas covers the viewport. Set `contained` to keep it inside the provider's own element, which must have its own size. The component previews use this to render an effect inside a card rather than across the screen:
+
+```tsx title="Contained canvas"
+<WebglProvider contained className="relative h-96 w-full">
+    <Demo />
+</WebglProvider>
+```
+
+### Wait for the scene to compile
+
+`useWebglReady` precompiles the scene's shaders and returns `false` until they are ready, then `true`. Without it, shaders compile on first render, which can drop frames.
+
+```tsx
+import { useWebglReady } from "@/components/webgl-provider"
+
+function Effect() {
+    const ready = useWebglReady()
+
+    return <mesh visible={ready}>{/* ... */}</mesh>
+}
+```
+
+***
+
+## API
+
+| Name        | Type            | Default | Description                                                                    |
+| ----------- | --------------- | ------- | ------------------------------------------------------------------------------ |
+| `children`  | `ReactNode`     | —       | Your app or page content. Rendered as normal DOM next to the canvas. Required. |
+| `contained` | `boolean`       | `false` | Scope the canvas to the provider's element instead of the viewport.            |
+| `className` | `string`        | —       | Class on the wrapper element.                                                  |
+| `style`     | `CSSProperties` | —       | Merged into the canvas style.                                                  |
+
+All other [React Three Fiber Canvas props](https://r3f.docs.pmnd.rs/api/canvas) are forwarded, except `children` and `eventSource`.
+
+### useWebglReady
+
+| Name      | Type         | Default        | Description                                                 |
+| --------- | ------------ | -------------- | ----------------------------------------------------------- |
+| `scene`   | `Scene`      | current scene  | Scene to compile.                                           |
+| `camera`  | `Camera`     | current camera | Camera to compile against.                                  |
+| `enabled` | `boolean`    | `true`         | Run the compile step. Set `false` to skip it.               |
+| `onReady` | `() => void` | —              | Called once the scene is compiled and one frame has passed. |
+
+Returns a `boolean` that is `false` until the scene is ready, then `true`.
+
+
+============================================================
+## WebGL Scene
+> A foundation block with its own Three.js scene and camera, rendered into a tracked DOM rect on the shared canvas.
+
+Source file: components/primitive/webgl-scene.mdx
+
+A structural building block for effects that need camera motion (dolly, FOV zoom, orbit) and so can't share the fixed global camera used by plane blocks like [WebGL Image](/docs/components/primitive/webgl-image).
+
+`WebglScene` tracks a DOM element's bounding rect and renders its children into that rectangle on the **same** WebGL context. No extra `<Canvas>` is created. Its camera is independent of the global one, so children are free to move it.
+
+***
+
+## Install
+
+WebGL Scene must be rendered inside a `WebglProvider`. Follow the [installation guide](/docs/getting-started/installation) to add it to your app root.
+
+***
+
+## Usage
+
+Pass a `ref` to the DOM element that defines the viewport, and place any R3F content as children. `WebglScene` teleports the children onto the shared canvas for you:
+
+```tsx
+const surface = useRef<HTMLDivElement>(null)
+
+<div ref={surface} className="w-full h-96">
+  <WebglScene track={surface}>
+    <mesh>
+      <boxGeometry />
+      <meshNormalMaterial />
+    </mesh>
+  </WebglScene>
+</div>
+```
+
+***
+
+## API
+
+| Name          | Type                             | Default     | Description                                                                                                                                                                           |
+| ------------- | -------------------------------- | ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `track`       | `RefObject<HTMLElement \| null>` | —           | Ref to the DOM element whose bounding rect defines the viewport. Required.                                                                                                            |
+| `children`    | `ReactNode`                      | —           | R3F content, rendered into the tracked rect with the own camera.                                                                                                                      |
+| `mode`        | `"texture" \| "scissor"`         | `"scissor"` | `scissor` renders the scene above other content, outside of global post-processing. `texture` includes it in post-processing, so effects like bloom or distortion apply to the scene. |
+| `camera`      | `PerspectiveCamera`              | —           | Pre-configured camera. Defaults to a `PerspectiveCamera` at FOV 75, z=5.                                                                                                              |
+| `zIndex`      | `number`                         | `0`         | Texture mode only. Render order of the display plane.                                                                                                                                 |
+| `transparent` | `boolean`                        | `true`      | Texture mode only. Set `false` for an opaque scene with its own background.                                                                                                           |
+| `priority`    | `number`                         | —           | `useFrame` render priority.                                                                                                                                                           |
+
+
+============================================================
+## WebGL Text
+> A foundation block that mirrors a text element onto a WebGL plane while preserving accessibility.
+
+Source file: components/primitive/webgl-text.mdx
+
+A structural building block for composing your own WebGL text effects, like [Text Fluid](/docs/components/text/text-fluid).
+
+The text is rendered twice: as a real `<span>` for SEO and screen readers (hidden when WebGL is on), and as a `CanvasTexture` painted onto a plane that tracks its bounding box. The two stay pixel-aligned, so the WebGL plane sits exactly over the DOM element.
+
+***
+
+## Install
+
+WebGL Text must be rendered inside a `WebglProvider`. Follow the [installation guide](/docs/getting-started/installation) to add it to your app root.
+
+***
+
+## Usage
 
 With no `material`, the plane uses a `meshBasicMaterial` and looks identical to a plain `<span>`:
 
@@ -550,7 +875,7 @@ With no `material`, the plane uses a `meshBasicMaterial` and looks identical to 
 <WebglText>Hello world</WebglText>
 ```
 
-## With material
+### With material
 
 `material` lets you provide your own R3F material. It receives the rasterized `Texture` and a live `pointer` (UV + hover):
 
@@ -573,14 +898,6 @@ With no `material`, the plane uses a `meshBasicMaterial` and looks identical to 
 The `pointer` object is mutated in place, so reading it inside a `useFrame` gives current values without re-renders.
 
 Use `segments` to subdivide the plane when your shader displaces vertices. `1` is enough for fragment-only effects.
-
-## Toggling WebGL off
-
-Set `webglEnabled={false}` to skip the canvas pass and fall back to the plain DOM `<span>`:
-
-```tsx title="Graceful fallback"
-<WebglText webglEnabled={!prefersReducedMotion}>Hello world</WebglText>
-```
 
 ***
 
@@ -607,7 +924,7 @@ Set `webglEnabled={false}` to skip the canvas pass and fall back to the plain DO
 
 ============================================================
 ## WebGL Video
-> A primitive that mirrors a video onto a WebGL plane while preserving the DOM element.
+> A foundation block that mirrors a video onto a WebGL plane while preserving the DOM element.
 
 Source file: components/primitive/webgl-video.mdx
 
@@ -615,15 +932,15 @@ A structural building block for composing your own WebGL video effects. It is th
 
 The video is rendered twice: as a real `<video>` element (hidden when WebGL is on), and as a `VideoTexture` on a plane that tracks the element's bounding box. The texture pulls each new frame from the same element, so only one video decodes.
 
-Requires a `<Canvas>` with `<WebglPortal />` at the root of your app, see [Installation](/docs/getting-started/installation).
-
 ***
 
 ## Install
 
+WebGL Video must be rendered inside a `WebglProvider`. Follow the [installation guide](/docs/getting-started/installation) to add it to your app root.
+
 ***
 
-## Basic usage
+## Usage
 
 With no `material`, the plane uses a `meshBasicMaterial` and looks identical to a plain `<video>`. The video autoplays muted and looped by default, so it plays without a user gesture:
 
@@ -631,7 +948,7 @@ With no `material`, the plane uses a `meshBasicMaterial` and looks identical to 
 <WebglVideo src="/clip.mp4" className="w-full h-auto" />
 ```
 
-## Object-fit
+### Object-fit
 
 `object-fit: cover` and `object-fit: contain` are replicated on the plane. Set it the way you would on a normal `<video>`:
 
@@ -639,9 +956,9 @@ With no `material`, the plane uses a `meshBasicMaterial` and looks identical to 
 <WebglVideo src="/clip.mp4" className="w-full h-64 object-cover" />
 ```
 
-## With material
+### With material
 
-`material` lets you provide your own R3F material. It receives the `VideoTexture` and a live `pointer` (UV + hover). Reuse the exact shader you wrote for a still image, for example to run the [CRT Image](/docs/components/background/crt-image) effect on footage:
+`material` lets you provide your own R3F material. It receives the `VideoTexture` and a live `pointer` (UV + hover). Reuse the exact shader you wrote for a still image:
 
 ```tsx title="Custom shader material"
 <WebglVideo
@@ -660,14 +977,6 @@ With no `material`, the plane uses a `meshBasicMaterial` and looks identical to 
 The `pointer` object is mutated in place, so reading it inside a `useFrame` gives current values without re-renders.
 
 Use `segments` to subdivide the plane when your shader displaces vertices. `1` is enough for fragment-only effects.
-
-## Toggling WebGL off
-
-Set `webglEnabled={false}` to skip the canvas pass and fall back to the plain DOM `<video>`:
-
-```tsx title="Graceful fallback"
-<WebglVideo src="/clip.mp4" webglEnabled={!prefersReducedMotion} />
-```
 
 ***
 
@@ -702,6 +1011,16 @@ Source file: components/scroll/curve-media.mdx
 
 ## Install
 
+Curve Media must be rendered inside a `WebglProvider`. Follow the [installation guide](/docs/getting-started/installation) to add it to your app root.
+
+***
+
+## Usage
+
+```tsx
+<CurveMedia type="image" src="/photo.jpg" alt="A photo" className="w-full h-auto" />
+```
+
 ***
 
 ## API
@@ -735,6 +1054,26 @@ Smooth scroll library used in the demo.
 
 Source file: components/scroll/elastic-stick.mdx
 
+## Usage
+
+Point `scrollTargetRef` at a tall scroll container with a sticky inner wrapper; the items bounce and stick to the center as that container scrolls through the viewport.
+
+```tsx
+const scrollTargetRef = useRef<HTMLDivElement>(null)
+
+<div ref={scrollTargetRef} className="relative h-[300vh]">
+  <div className="sticky top-0 flex h-screen items-center justify-center gap-2">
+    <ElasticStick scrollTargetRef={scrollTargetRef}>
+      {images.map((src) => (
+        <img key={src} src={src} alt="" className="aspect-[5/7] w-[30vw] object-cover" />
+      ))}
+    </ElasticStick>
+  </div>
+</div>
+```
+
+***
+
 ## API
 
 | Prop              | Type                             | Default     | Description                                       |
@@ -753,6 +1092,17 @@ Source file: components/scroll/infinite-gallery.mdx
 ***
 
 ## Install
+
+***
+
+## Usage
+
+```tsx
+<InfiniteGallery
+  data={["/1.jpg", "/2.jpg", "/3.jpg"]}
+  renderItem={(src) => <img src={src} alt="" />}
+/>
+```
 
 ***
 
@@ -787,6 +1137,27 @@ Source file: components/scroll/infinite-parallax.mdx
 ***
 
 ## Install
+
+***
+
+## Usage
+
+Each column is composable: stack as many as you want, you can change `autoScrollSpeed` and `parallaxAmount` per column, and change the direction to `reversed` to alternate their direction to obtain the desired effect.
+
+```tsx
+<div className="flex h-screen gap-2 overflow-hidden">
+  <InfiniteParallax>
+    {images.map((src) => (
+      <img key={src} src={src} alt="" className="mb-2 w-full" />
+    ))}
+  </InfiniteParallax>
+  <InfiniteParallax reversed>
+    {images.map((src) => (
+      <img key={src} src={src} alt="" className="mb-2 w-full" />
+    ))}
+  </InfiniteParallax>
+</div>
+```
 
 ***
 
@@ -825,6 +1196,20 @@ Source file: components/scroll/infinite-zoom.mdx
 
 ***
 
+## Usage
+
+Pass the items as children and scroll the wheel to zoom through them.
+
+```tsx
+<InfiniteZoom>
+  <img src="/1.jpg" alt="" />
+  <img src="/2.jpg" alt="" />
+  <img src="/3.jpg" alt="" />
+</InfiniteZoom>
+```
+
+***
+
 ## API
 
 | Name            | Type        | Default                                    | Description                                                |
@@ -845,6 +1230,26 @@ Source file: components/scroll/scattered-scroll.mdx
 ***
 
 ## Install
+
+***
+
+## Usage
+
+Point `scrollTargetRef` to a scroll container with a sticky inner wrapper and the items will animate as that container scrolls through the viewport, the higher the container, the longer the animation.
+
+```tsx
+const scrollTargetRef = useRef<HTMLDivElement>(null)
+
+<div ref={scrollTargetRef} className="relative h-[300vh]">
+  <div className="sticky top-0 flex h-screen items-center justify-center gap-2">
+    <ScatteredScroll scrollTargetRef={scrollTargetRef}>
+      {images.map((src) => (
+        <img key={src} src={src} alt="" className="aspect-[5/7] w-[30vw] object-cover" />
+      ))}
+    </ScatteredScroll>
+  </div>
+</div>
+```
 
 ***
 
@@ -881,6 +1286,22 @@ Source file: components/text/pixelated-text.mdx
 
 ***
 
+## Usage
+
+By default the text renders inside a `<span>`.
+
+```tsx title="Default"
+<PixelatedText>Pixelate me</PixelatedText>
+```
+
+Pass `render` to swap the wrapper for any DOM element. Your props are merged with the component's, so it stays the right semantic tag (heading, paragraph, link) while keeping the animation.
+
+```tsx title="Custom element"
+<PixelatedText render={<h1 className="text-4xl font-bold" />}>Pixelate me</PixelatedText>
+```
+
+***
+
 ## API
 
 | Name        | Type                       | Default     | Description                                                     |
@@ -903,6 +1324,22 @@ Source file: components/text/text-bounce.mdx
 ***
 
 ## Install
+
+***
+
+## Usage
+
+By default the text renders inside a `<span>`.
+
+```tsx title="Default"
+<TextBounce>Hover over me</TextBounce>
+```
+
+Pass `render` to swap the wrapper for any DOM element. Your props are merged with the component's, so it stays the right semantic tag (heading, paragraph, link) while keeping the animation.
+
+```tsx title="Custom element"
+<TextBounce render={<h1 className="text-4xl font-bold" />}>Hover over me</TextBounce>
+```
 
 ***
 
@@ -929,6 +1366,16 @@ Source file: components/text/text-fluid.mdx
 ***
 
 ## Install
+
+Text Fluid must be rendered inside a `WebglProvider`. Follow the [installation guide](/docs/getting-started/installation) to add it to your app root.
+
+***
+
+## Usage
+
+```tsx
+<TextFluid>Liquid type</TextFluid>
+```
 
 ***
 
@@ -959,7 +1406,25 @@ Source file: components/text/text-roll.mdx
 
 ***
 
+## Usage
+
+By default the text renders inside a `<span>`.
+
+```tsx title="Default"
+<TextRoll>Roll me</TextRoll>
+```
+
+Pass `render` to swap the wrapper for any DOM element. Your props are merged with the component's, so it stays the right semantic tag (heading, paragraph, link) while keeping the animation.
+
+```tsx title="Custom element"
+<TextRoll render={<h1 className="text-4xl font-bold" />}>Roll me</TextRoll>
+```
+
 ***
+
+## Notes
+
+Each letter is wrapped in an `overflow-clip` span. Some descenders and ascenders (g, p, t, f) can get clipped. Increase `line-height` / `leading` on the parent if needed.
 
 ## API
 
@@ -988,6 +1453,22 @@ Source file: components/text/text-scramble.mdx
 ***
 
 ## Install
+
+***
+
+## Usage
+
+By default the text renders inside a `<span>`.
+
+```tsx title="Default"
+<TextScramble>Scramble me</TextScramble>
+```
+
+Pass `render` to swap the wrapper for any DOM element. Your props are merged with the component's, so it stays the right semantic tag (heading, paragraph, link) while keeping the animation.
+
+```tsx title="Custom element"
+<TextScramble render={<h1 className="text-4xl font-bold" />}>Scramble me</TextScramble>
+```
 
 ***
 
@@ -1022,6 +1503,16 @@ Source file: components/transition/clip-reveal.mdx
 ***
 
 ## Install
+
+***
+
+## Usage
+
+```tsx
+<ClipReveal className="h-full w-full">
+  <img src="/photo.jpg" alt="" className="absolute inset-0 h-full w-full object-cover" />
+</ClipReveal>
+```
 
 ***
 
@@ -1064,6 +1555,16 @@ Source file: components/transition/stripe-wipe.mdx
 
 ***
 
+## Usage
+
+Render it as a fixed overlay; the stripes wipe away to reveal the page beneath.
+
+```tsx
+<StripeWipe className="fixed inset-0" />
+```
+
+***
+
 ## API
 
 | Name        | Type      | Default             | Description                                                    |
@@ -1094,6 +1595,22 @@ Source file: components/transition/sweep-exit.mdx
 ***
 
 ## Install
+
+***
+
+## Usage
+
+`backgroundSlot` is required: it holds the overlay shown before the sweep reveals the children beneath.
+
+```tsx
+<SweepExit
+  backgroundSlot={
+    <img src="/overlay.jpg" alt="" className="absolute inset-0 h-full w-full object-cover" />
+  }
+>
+  <YourPage />
+</SweepExit>
+```
 
 ***
 
@@ -1415,7 +1932,7 @@ Used for animation utilities within this component.
 
 ============================================================
 ## Installation
-> How to start using Atelier UI, not much.
+> How to install and use Atelier UI components.
 
 Source file: getting-started/installation.mdx
 
