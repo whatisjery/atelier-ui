@@ -62,7 +62,6 @@ const techIconData = [
 ]
 
 const MotionCard = motion.create(Card)
-const MotionHammer = motion.create(IconPxHammer)
 
 type PageLadingProps = {
     showcaseComponents: DocTree[]
@@ -115,16 +114,9 @@ export default function PageLanding({ showcaseComponents }: PageLadingProps) {
                                 <span className="flex items-center sm:flex-row flex-col-reverse">
                                     <span className="tracking-[-0.03em]">Premium</span>
 
-                                    <MotionHammer
-                                        animate={{ rotate: [0, 15, 0, 15, 0] }}
-                                        transition={{
-                                            duration: 0.8,
-                                            repeat: Infinity,
-                                            ease: "anticipate",
-                                            repeatDelay: 1,
-                                        }}
+                                    <IconPxHammer
                                         aria-hidden="true"
-                                        className="size-15 mx-4 flex origin-bottom-left"
+                                        className="size-15 mx-4 flex origin-bottom-left a-hammer-tap"
                                     />
                                 </span>
                                 <span className="font-serif italic">handcrafted</span>
