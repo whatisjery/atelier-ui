@@ -1,4 +1,12 @@
-import { type ComponentRef, useCallback, useEffect, useRef } from "react"
+import {
+    Children,
+    type ComponentRef,
+    isValidElement,
+    type ReactNode,
+    useCallback,
+    useEffect,
+    useRef,
+} from "react"
 import { useFrameLoop } from "../../hooks/use-frame-loop"
 
 const DEFAULT_SCROLL_STATE = {
@@ -10,16 +18,15 @@ const DEFAULT_SCROLL_STATE = {
 
 export type InfiniteGalleryMode = "shrink" | "flip"
 
-export type InfiniteGalleryProps<T> = {
+export type InfiniteGalleryProps = {
+    children: ReactNode
     mode?: InfiniteGalleryMode
-    data: T[]
     perView?: number
     gap?: number
     speed?: number
     inertia?: number
     dragMultiplier?: number
     className?: string
-    renderItem: (item: T) => React.ReactNode
 }
 
 function lerp(start: number, end: number, factor: number) {
@@ -30,17 +37,17 @@ function clamp(min: number, max: number, value: number) {
     return Math.min(max, Math.max(min, value))
 }
 
-export function InfiniteGallery<T>({
+export function InfiniteGallery({
+    children,
     mode = "flip",
-    renderItem,
     perView = 4,
     gap = 5,
-    data,
     className,
     speed = 6,
     inertia = 0.6,
     dragMultiplier = 3,
-}: InfiniteGalleryProps<T>) {
+}: InfiniteGalleryProps) {
+    const items = Children.toArray(children).filter(isValidElement)
     const containerRef = useRef<ComponentRef<"div">>(null)
     const measureRef = useRef({ containerWidth: 0, itemWidth: 0, offsetWidth: 0 })
     const scrollRef = useRef({ ...DEFAULT_SCROLL_STATE }).current
@@ -52,34 +59,34 @@ export function InfiniteGallery<T>({
 
             if (!container) return
 
-            const totalWidth = data.length * itemWidth
+            const totalWidth = items.length * itemWidth
 
-            for (let i = 0; i < data.length; i++) {
-                const containerEl = container.children[i] as HTMLElement
-                if (!containerEl) return
+            for (let i = 0; i < items.length; i++) {
+                const itemElement = container.children[i] as HTMLElement
+                if (!itemElement) return
 
                 const totalOffset = i * itemWidth + scrollOffset
 
-                let x = ((totalOffset % totalWidth) + totalWidth) % totalWidth
+                let xPos = ((totalOffset % totalWidth) + totalWidth) % totalWidth
 
-                if (x > totalWidth - itemWidth) x -= totalWidth
+                if (xPos > totalWidth - itemWidth) xPos -= totalWidth
 
-                const itemInView = x > -itemWidth && x < containerWidth
+                const itemInView = xPos > -itemWidth && xPos < containerWidth
 
                 if (itemInView) {
-                    let transform = `translate3d(${x - i * itemWidth}px, 0, 0)`
+                    let transform = `translate3d(${xPos - i * itemWidth}px, 0, 0)`
 
                     if (mode === "shrink") {
-                        if (x < 0) {
-                            const scaleX = (x + offsetWidth) / offsetWidth
-                            containerEl.style.transformOrigin = "right"
+                        if (xPos < 0) {
+                            const scaleX = (xPos + offsetWidth) / offsetWidth
+                            itemElement.style.transformOrigin = "right"
                             transform += ` scaleX(${clamp(0, 1, scaleX)})`
-                        } else if (x + itemWidth > containerWidth) {
-                            const scaleX = (containerWidth - x) / offsetWidth
-                            containerEl.style.transformOrigin = "left"
+                        } else if (xPos + itemWidth > containerWidth) {
+                            const scaleX = (containerWidth - xPos) / offsetWidth
+                            itemElement.style.transformOrigin = "left"
                             transform += ` scaleX(${clamp(0, 1, scaleX)})`
                         } else {
-                            containerEl.style.transformOrigin = "center"
+                            itemElement.style.transformOrigin = "center"
                         }
                     } else if (mode === "flip") {
                         const maxDeg = 85
@@ -87,14 +94,14 @@ export function InfiniteGallery<T>({
                         transform += ` perspective(800px) rotateY(${rotate}deg)`
                     }
 
-                    containerEl.style.transform = transform
-                    containerEl.style.visibility = "visible"
+                    itemElement.style.transform = transform
+                    itemElement.style.visibility = "visible"
                 } else {
-                    containerEl.style.visibility = "hidden"
+                    itemElement.style.visibility = "hidden"
                 }
             }
         },
-        [data, mode],
+        [items, mode],
     )
 
     const measure = useCallback(() => {
@@ -195,17 +202,15 @@ export function InfiniteGallery<T>({
             style={{ gap: `${gap}px` }}
             className={`overflow-hidden touch-pan-y user-select-none flex ${className}`}
         >
-            {data.map((item, index) => {
-                return (
-                    <div
-                        key={index}
-                        className="shrink-0 will-change-transform"
-                        style={{ width: `calc(${100 / perView}%)` }}
-                    >
-                        {renderItem(item)}
-                    </div>
-                )
-            })}
+            {items.map((item, index) => (
+                <div
+                    key={index}
+                    className="shrink-0 will-change-transform"
+                    style={{ width: `calc(${100 / perView}%)` }}
+                >
+                    {item}
+                </div>
+            ))}
         </div>
     )
 }

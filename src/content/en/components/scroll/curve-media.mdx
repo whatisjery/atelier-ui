@@ -52,7 +52,8 @@ Curve Media must be rendered inside a `WebglProvider`. Follow the [installation 
 | smoothing    | `number`             | `6`       | Exponential smoothing for the velocity (higher = snappier, lower = floatier).   |
 | segments     | `number`             | `32`      | Plane subdivision count. Higher = smoother curve, more vertices.                |
 | webglEnabled | `boolean`            | `true`    | When false, the WebGL plane is skipped and the plain element is rendered as-is. |
-| ...props     | `ImgHTMLAttributes \| VideoHTMLAttributes` | — | Other `<img>` or `<video>` attributes forwarded to the underlying element. |
+
+It also forwards `<img>` attributes to [WebGL Image](/docs/components/primitive/webgl-image) and `<video>` attributes to [WebGL Video](/docs/components/primitive/webgl-video) depending on `type`.
 
 ---
 

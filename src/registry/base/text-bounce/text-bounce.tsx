@@ -15,15 +15,12 @@ export type TextBounceProps = {
     render?: RenderProp
 }
 
-type LetterProps = {
-    char: string
-    pause: number
-    outDuration: number
-    inDuration: number
-    bounce: number
-    distance: number
-    rotation: number
-}
+type LetterProps = { char: string } & Required<
+    Pick<
+        TextBounceProps,
+        "pause" | "outDuration" | "inDuration" | "bounce" | "distance" | "rotation"
+    >
+>
 
 function Letter({ char, pause, outDuration, inDuration, bounce, distance, rotation }: LetterProps) {
     const ref = useRef<ComponentRef<"span">>(null)

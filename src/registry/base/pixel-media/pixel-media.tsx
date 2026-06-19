@@ -59,16 +59,6 @@ extend({ PixelMediaMat })
 
 const REFERENCE_FPS = 60
 
-type PixelMediaMaterialProps = {
-    map: Texture
-    pointer: Pointer
-    gridSize: number
-    interactionRadius: number
-    strength: number
-    aberration: number
-    trail: number
-}
-
 // Effect props shared by both the image and video variants.
 export type PixelEffectProps = {
     gridSize?: number
@@ -79,6 +69,11 @@ export type PixelEffectProps = {
     segments?: number
     webglEnabled?: boolean
 }
+
+type PixelMediaMaterialProps = {
+    map: Texture
+    pointer: Pointer
+} & Required<Pick<PixelEffectProps, "gridSize" | "interactionRadius" | "strength" | "aberration" | "trail">>
 
 type PixelMediaImageProps = PixelEffectProps & {
     type?: "image"

@@ -1,15 +1,15 @@
 import { motion, useAnimationFrame, useMotionValue, useScroll, useVelocity } from "motion/react"
 import { type ComponentRef, useEffect, useRef, useState } from "react"
 
+const REVERT_THRESHOLD = 50
+const PARALLAX_SCALE = 0.0001
+
 export type InfiniteParallaxProps = {
     reversed?: boolean
     autoScrollSpeed?: number
     parallaxAmount?: number
     children?: React.ReactNode
 }
-
-const REVERT_THRESHOLD = 50
-const PARALLAX_SCALE = 0.0001
 
 export function InfiniteParallax({
     reversed,

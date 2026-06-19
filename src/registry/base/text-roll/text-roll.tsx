@@ -1,4 +1,7 @@
 import { animate, type Easing } from "motion"
+
+const EASE: Easing = [0.84, 0, 0.22, 1]
+
 import { type ComponentRef, useCallback, useEffect, useImperativeHandle, useRef } from "react"
 import { type RenderProp, useRender } from "../../hooks/use-render"
 import { TextSplit } from "../text-split/text-split"
@@ -9,7 +12,6 @@ type AnimationProps = {
     stagger: number
     duration: number
     cycles: number
-    ease: Easing
 }
 
 export type TextRollProps = {
@@ -49,7 +51,6 @@ function DisplaceLetter({
     stagger,
     duration,
     cycles,
-    ease,
     onComplete,
 }: DisplaceLetterProps) {
     const isPlayingRef = useRef(false)
@@ -74,19 +75,19 @@ function DisplaceLetter({
         })
 
         await animate(
-            [currentCharRef.current, ...clonedCharsRef.current.filter((el) => el !== null)],
+            [currentCharRef.current, ...clonedCharsRef.current.filter((span) => span !== null)],
             axis === "y"
                 ? { y: [`${dir * cycles * 100}%`, "0%"] }
                 : { x: [`${dir * cycles * 100}%`, "0%"] },
             {
                 duration,
                 delay: stagger * index,
-                ease,
+                ease: EASE,
             },
         )
         isPlayingRef.current = false
         onComplete?.()
-    }, [axis, direction, stagger, duration, cycles, ease, index, onComplete])
+    }, [axis, direction, stagger, duration, cycles, index, onComplete])
 
     useImperativeHandle(ref, () => ({ play: startPlay }), [startPlay])
 
@@ -99,8 +100,8 @@ function DisplaceLetter({
             {Array.from({ length: cycles }, (_, i) => (
                 <span
                     key={i}
-                    ref={(el) => {
-                        clonedCharsRef.current[i] = el
+                    ref={(clone) => {
+                        clonedCharsRef.current[i] = clone
                     }}
                     aria-hidden={true}
                     className="absolute"
@@ -127,7 +128,6 @@ export function TextRoll({
     stagger = 0,
     duration = 0.8,
     cycles = 2,
-    ease = [0.84, 0, 0.22, 1],
     render,
 }: TextRollProps) {
     const containerRef = useRef<ComponentRef<"span">>(null)
@@ -159,8 +159,8 @@ export function TextRoll({
 
     useEffect(() => {
         if (!playOnScroll) return
-        const el = containerRef.current
-        if (!el) return
+        const container = containerRef.current
+        if (!container) return
         let isFirstRender = true
         const obs = new IntersectionObserver(([entry]) => {
             if (isFirstRender) {
@@ -169,7 +169,7 @@ export function TextRoll({
             }
             if (entry.isIntersecting) triggerPlay()
         })
-        obs.observe(el)
+        obs.observe(container)
         return () => obs.disconnect()
     }, [playOnScroll, triggerPlay])
 
@@ -185,8 +185,8 @@ export function TextRoll({
                     splitBy="letters"
                     renderItems={(char, index) => (
                         <DisplaceLetter
-                            ref={(el) => {
-                                letterRefs.current[index] = el
+                            ref={(letter) => {
+                                letterRefs.current[index] = letter
                             }}
                             char={char}
                             index={index}
@@ -196,7 +196,6 @@ export function TextRoll({
                             stagger={stagger}
                             duration={duration}
                             cycles={cycles}
-                            ease={ease}
                             onComplete={handleLetterComplete}
                         />
                     )}

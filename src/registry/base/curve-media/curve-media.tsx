@@ -63,14 +63,6 @@ const CurveMediaMat = shaderMaterial(
 
 extend({ CurveMediaMat })
 
-type CurveMediaMaterialProps = {
-    map: Texture
-    amplitude: number
-    aberration: number
-    smoothing: number
-}
-
-// Effect props shared by both the image and video variants.
 export type CurveEffectProps = {
     amplitude?: number
     aberration?: number
@@ -78,6 +70,10 @@ export type CurveEffectProps = {
     segments?: number
     webglEnabled?: boolean
 }
+
+type CurveMediaMaterialProps = {
+    map: Texture
+} & Required<Pick<CurveEffectProps, "amplitude" | "aberration" | "smoothing">>
 
 type CurveMediaImageProps = CurveEffectProps & {
     type?: "image"

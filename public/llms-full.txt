@@ -2,7 +2,7 @@
 
 Source: https://atelier-ui.com/docs
 
-Generated: 2026-06-19T17:24:04.745Z
+Generated: 2026-06-19T18:15:09.437Z
 
 ---
 
@@ -297,23 +297,23 @@ Source file: components/cursor/image-trail.mdx
 ## Usage
 
 ```tsx
-<ImageTrail
-  data={["/1.jpg", "/2.jpg", "/3.jpg"]}
-  renderItem={(src) => <img src={src} alt="" className="w-32" />}
-/>
+<ImageTrail>
+  <img src="/1.jpg" alt="" className="w-32" />
+  <img src="/2.jpg" alt="" className="w-32" />
+  <img src="/3.jpg" alt="" className="w-32" />
+</ImageTrail>
 ```
 
 ***
 
 ## API
 
-| Name          | Type                     | Default | Description                                          |
-| ------------- | ------------------------ | ------- | ---------------------------------------------------- |
-| data          | `T[]`                    | —       | Array of items.                                      |
-| renderItem    | `(item: T) => ReactNode` | —       | Render function called for each items.               |
-| spawnDistance | `number`                 | `76`    | Distance in pixels before spawning an item.          |
-| driftAmount   | `number`                 | `36`    | How far each item drifts from its spawn point in px. |
-| removeDelay   | `number`                 | `1.0`   | Seconds before a spawned item is removed.            |
+| Name          | Type        | Default | Description                                          |
+| ------------- | ----------- | ------- | ---------------------------------------------------- |
+| children      | `ReactNode` | —       | Items to cycle through as the cursor moves.          |
+| spawnDistance | `number`    | `76`    | Distance in pixels before spawning an item.          |
+| driftAmount   | `number`    | `36`    | How far each item drifts from its spawn point in px. |
+| removeDelay   | `number`    | `1.0`   | Seconds before a spawned item is removed.            |
 
 ***
 
@@ -347,20 +347,21 @@ Lens Media must be rendered inside a `WebglProvider`. Follow the [installation g
 
 ## API
 
-| Name         | Type                                       | Default   | Description                                                                |
-| ------------ | ------------------------------------------ | --------- | -------------------------------------------------------------------------- |
-| type         | `"image" \| "video"`                       | `"image"` | Render the lens on a still image or a video.                               |
-| src          | `string`                                   | —         | Media source.                                                              |
-| alt          | `string`                                   | —         | Image alt text. Required (and only used) when `type` is `"image"`.         |
-| size         | `number`                                   | `0.23`    | Lens radius.                                                               |
-| softness     | `number`                                   | `0.38`    | Lens edge falloff.                                                         |
-| aberration   | `number`                                   | `0.17`    | Color spread width.                                                        |
-| dispersion   | `number`                                   | `50`      | Color sample count.                                                        |
-| refraction   | `number`                                   | `0.39`    | Inward pull strength.                                                      |
-| smoothing    | `number`                                   | `10`      | Cursor damping speed.                                                      |
-| segments     | `number`                                   | `1`       | Plane geometry subdivisions.                                               |
-| webglEnabled | `boolean`                                  | `true`    | Toggle WebGL effect on/off.                                                |
-| ...props     | `ImgHTMLAttributes \| VideoHTMLAttributes` | —         | Other `<img>` or `<video>` attributes forwarded to the underlying element. |
+| Name         | Type                 | Default   | Description                                                        |
+| ------------ | -------------------- | --------- | ------------------------------------------------------------------ |
+| type         | `"image" \| "video"` | `"image"` | Render the lens on a still image or a video.                       |
+| src          | `string`             | —         | Media source.                                                      |
+| alt          | `string`             | —         | Image alt text. Required (and only used) when `type` is `"image"`. |
+| size         | `number`             | `0.23`    | Lens radius.                                                       |
+| softness     | `number`             | `0.38`    | Lens edge falloff.                                                 |
+| aberration   | `number`             | `0.17`    | Color spread width.                                                |
+| dispersion   | `number`             | `50`      | Color sample count.                                                |
+| refraction   | `number`             | `0.39`    | Inward pull strength.                                              |
+| smoothing    | `number`             | `10`      | Cursor damping speed.                                              |
+| segments     | `number`             | `1`       | Plane geometry subdivisions.                                       |
+| webglEnabled | `boolean`            | `true`    | Toggle WebGL effect on/off.                                        |
+
+It also forwards `<img>` attributes to [WebGL Image](/docs/components/primitive/webgl-image) and `<video>` attributes to [WebGL Video](/docs/components/primitive/webgl-video) depending on `type`.
 
 ***
 
@@ -397,20 +398,21 @@ Liquid Media must be rendered inside a `WebglProvider`. Follow the [installation
 
 ## API
 
-| Name         | Type                                       | Default      | Description                                                                |
-| ------------ | ------------------------------------------ | ------------ | -------------------------------------------------------------------------- |
-| type         | `"image" \| "video"`                       | `"image"`    | Render the ripple on a still image or a video.                             |
-| src          | `string`                                   | —            | Media source.                                                              |
-| alt          | `string`                                   | —            | Image alt text. Required (and only used) when `type` is `"image"`.         |
-| rippleMap    | `Texture`                                  | `ripple.png` | Custom ripple texture.                                                     |
-| intensity    | `number`                                   | `0.14`       | Displacement strength.                                                     |
-| radius       | `number`                                   | `3`          | Initial ripple size.                                                       |
-| expandRate   | `number`                                   | `7`          | How fast ripples grow.                                                     |
-| decayRate    | `number`                                   | `3`          | How fast ripples fade out.                                                 |
-| maxRipples   | `number`                                   | `50`         | Max simultaneous ripples.                                                  |
-| segments     | `number`                                   | `1`          | Plane geometry subdivisions.                                               |
-| webglEnabled | `boolean`                                  | `true`       | Toggle WebGL effect on/off.                                                |
-| ...props     | `ImgHTMLAttributes \| VideoHTMLAttributes` | —            | Other `<img>` or `<video>` attributes forwarded to the underlying element. |
+| Name         | Type                 | Default      | Description                                                        |
+| ------------ | -------------------- | ------------ | ------------------------------------------------------------------ |
+| type         | `"image" \| "video"` | `"image"`    | Render the ripple on a still image or a video.                     |
+| src          | `string`             | —            | Media source.                                                      |
+| alt          | `string`             | —            | Image alt text. Required (and only used) when `type` is `"image"`. |
+| rippleMap    | `Texture`            | `ripple.png` | Custom ripple texture.                                             |
+| intensity    | `number`             | `0.14`       | Displacement strength.                                             |
+| radius       | `number`             | `3`          | Initial ripple size.                                               |
+| expandRate   | `number`             | `7`          | How fast ripples grow.                                             |
+| decayRate    | `number`             | `3`          | How fast ripples fade out.                                         |
+| maxRipples   | `number`             | `50`         | Max simultaneous ripples.                                          |
+| segments     | `number`             | `1`          | Plane geometry subdivisions.                                       |
+| webglEnabled | `boolean`            | `true`       | Toggle WebGL effect on/off.                                        |
+
+It also forwards `<img>` attributes to [WebGL Image](/docs/components/primitive/webgl-image) and `<video>` attributes to [WebGL Video](/docs/components/primitive/webgl-video) depending on `type`.
 
 ***
 
@@ -501,19 +503,20 @@ Pixel Media must be rendered inside a `WebglProvider`. Follow the [installation 
 
 ## API
 
-| Name              | Type                                       | Default   | Description                                                                |
-| ----------------- | ------------------------------------------ | --------- | -------------------------------------------------------------------------- |
-| type              | `"image" \| "video"`                       | `"image"` | Render the effect on a still image or a video.                             |
-| src               | `string`                                   | —         | Media source.                                                              |
-| alt               | `string`                                   | —         | Image alt text. Required (and only used) when `type` is `"image"`.         |
-| gridSize          | `number`                                   | `22`      | Pixel blocks per axis.                                                     |
-| interactionRadius | `number`                                   | `4`       | Cursor push radius.                                                        |
-| strength          | `number`                                   | `1.65`    | Drag strength.                                                             |
-| aberration        | `number`                                   | `0.25`    | RGB channel split.                                                         |
-| trail             | `number`                                   | `0.93`    | Trail persistence.                                                         |
-| segments          | `number`                                   | `1`       | Plane geometry subdivisions.                                               |
-| webglEnabled      | `boolean`                                  | `true`    | Toggle WebGL effect on/off.                                                |
-| ...props          | `ImgHTMLAttributes \| VideoHTMLAttributes` | —         | Other `<img>` or `<video>` attributes forwarded to the underlying element. |
+| Name              | Type                 | Default   | Description                                                        |
+| ----------------- | -------------------- | --------- | ------------------------------------------------------------------ |
+| type              | `"image" \| "video"` | `"image"` | Render the effect on a still image or a video.                     |
+| src               | `string`             | —         | Media source.                                                      |
+| alt               | `string`             | —         | Image alt text. Required (and only used) when `type` is `"image"`. |
+| gridSize          | `number`             | `22`      | Pixel blocks per axis.                                             |
+| interactionRadius | `number`             | `4`       | Cursor push radius.                                                |
+| strength          | `number`             | `1.65`    | Drag strength.                                                     |
+| aberration        | `number`             | `0.25`    | RGB channel split.                                                 |
+| trail             | `number`             | `0.93`    | Trail persistence.                                                 |
+| segments          | `number`             | `1`       | Plane geometry subdivisions.                                       |
+| webglEnabled      | `boolean`            | `true`    | Toggle WebGL effect on/off.                                        |
+
+It also forwards `<img>` attributes to [WebGL Image](/docs/components/primitive/webgl-image) and `<video>` attributes to [WebGL Video](/docs/components/primitive/webgl-video) depending on `type`.
 
 ***
 
@@ -760,9 +763,9 @@ By default, the canvas covers the viewport. Set `contained` to keep it inside th
 </WebglProvider>
 ```
 
-### Wait for the scene to compile
+### Track scene readiness
 
-`useWebglReady` precompiles the scene's shaders and returns `false` until they are ready, then `true`. Without it, shaders compile on first render, which can drop frames.
+`useWebglReady` returns `false` until the scene's shaders have compiled. This can help prevent visible shader-compilation stutter when an effect first appears.
 
 ```tsx
 import { useWebglReady } from "@/components/webgl-provider"
@@ -1025,17 +1028,18 @@ Curve Media must be rendered inside a `WebglProvider`. Follow the [installation 
 
 ## API
 
-| Name         | Type                                       | Default   | Description                                                                     |
-| ------------ | ------------------------------------------ | --------- | ------------------------------------------------------------------------------- |
-| type         | `"image" \| "video"`                       | `"image"` | Render the bend on a still image or a video.                                    |
-| src          | `string`                                   | —         | Media source.                                                                   |
-| alt          | `string`                                   | —         | Image alt text. Required (and only used) when `type` is `"image"`.              |
-| amplitude    | `number`                                   | `0.03`    | Maximum bend intensity, applied to the smoothed scroll velocity.                |
-| aberration   | `number`                                   | `0.003`   | RGB channel split along the scroll axis, scaled by velocity.                    |
-| smoothing    | `number`                                   | `6`       | Exponential smoothing for the velocity (higher = snappier, lower = floatier).   |
-| segments     | `number`                                   | `32`      | Plane subdivision count. Higher = smoother curve, more vertices.                |
-| webglEnabled | `boolean`                                  | `true`    | When false, the WebGL plane is skipped and the plain element is rendered as-is. |
-| ...props     | `ImgHTMLAttributes \| VideoHTMLAttributes` | —         | Other `<img>` or `<video>` attributes forwarded to the underlying element.      |
+| Name         | Type                 | Default   | Description                                                                     |
+| ------------ | -------------------- | --------- | ------------------------------------------------------------------------------- |
+| type         | `"image" \| "video"` | `"image"` | Render the bend on a still image or a video.                                    |
+| src          | `string`             | —         | Media source.                                                                   |
+| alt          | `string`             | —         | Image alt text. Required (and only used) when `type` is `"image"`.              |
+| amplitude    | `number`             | `0.03`    | Maximum bend intensity, applied to the smoothed scroll velocity.                |
+| aberration   | `number`             | `0.003`   | RGB channel split along the scroll axis, scaled by velocity.                    |
+| smoothing    | `number`             | `6`       | Exponential smoothing for the velocity (higher = snappier, lower = floatier).   |
+| segments     | `number`             | `32`      | Plane subdivision count. Higher = smoother curve, more vertices.                |
+| webglEnabled | `boolean`            | `true`    | When false, the WebGL plane is skipped and the plain element is rendered as-is. |
+
+It also forwards `<img>` attributes to [WebGL Image](/docs/components/primitive/webgl-image) and `<video>` attributes to [WebGL Video](/docs/components/primitive/webgl-video) depending on `type`.
 
 ***
 
@@ -1098,27 +1102,27 @@ Source file: components/scroll/infinite-gallery.mdx
 ## Usage
 
 ```tsx
-<InfiniteGallery
-  data={["/1.jpg", "/2.jpg", "/3.jpg"]}
-  renderItem={(src) => <img src={src} alt="" />}
-/>
+<InfiniteGallery>
+  <img src="/1.jpg" alt="" />
+  <img src="/2.jpg" alt="" />
+  <img src="/3.jpg" alt="" />
+</InfiniteGallery>
 ```
 
 ***
 
 ## API
 
-| Name           | Type                     | Default     | Description                                          |
-| -------------- | ------------------------ | ----------- | ---------------------------------------------------- |
-| data           | `T[]`                    | —           | Array of items to render.                            |
-| renderItem     | `(item: T) => ReactNode` | —           | Render function called for each item.                |
-| mode           | `"shrink" \| "flip"`     | `"flip"`    | `flip` tilts items in 3D. `shrink` compresses edges. |
-| perView        | `number`                 | `4`         | Number of items visible at once.                     |
-| speed          | `number`                 | `6`         | Speed of the scroll.                                 |
-| inertia        | `number`                 | `0.6`       | Inertia of the scroll.                               |
-| dragMultiplier | `number`                 | `3`         | Multiplier applied to drag distance.                 |
-| gap            | `number`                 | `5`         | Gap between items.                                   |
-| className      | `string`                 | `undefined` | Class for the container element.                     |
+| Name           | Type                 | Default     | Description                                          |
+| -------------- | -------------------- | ----------- | ---------------------------------------------------- |
+| children       | `ReactNode`          | —           | Items to render in the gallery.                      |
+| mode           | `"shrink" \| "flip"` | `"flip"`    | `flip` tilts items in 3D. `shrink` compresses edges. |
+| perView        | `number`             | `4`         | Number of items visible at once.                     |
+| speed          | `number`             | `6`         | Speed of the scroll.                                 |
+| inertia        | `number`             | `0.6`       | Inertia of the scroll.                               |
+| dragMultiplier | `number`             | `3`         | Multiplier applied to drag distance.                 |
+| gap            | `number`             | `5`         | Gap between items.                                   |
+| className      | `string`             | `undefined` | Class for the container element.                     |
 
 ***
 
@@ -1428,20 +1432,19 @@ Each letter is wrapped in an `overflow-clip` span. Some descenders and ascenders
 
 ## API
 
-| Name           | Type                                  | Default              | Description                                                              |
-| -------------- | ------------------------------------- | -------------------- | ------------------------------------------------------------------------ |
-| `children`     | `string`                              | —                    | The text content to animate.                                             |
-| `axis`         | `"x" \| "y"`                          | `"y"`                | Axis along which letters roll.                                           |
-| `mode`         | `"letters" \| "group"`                | `"letters"`          | Animate each letter independently on hover, or the entire group at once. |
-| `direction`    | `"forward" \| "backward" \| "random"` | `"forward"`          | Roll direction.                                                          |
-| `playOnScroll` | `boolean`                             | `true`               | Trigger the animation when the element enters the viewport.              |
-| `playOnMount`  | `boolean`                             | `true`               | Trigger the animation on mount.                                          |
-| `playOnHover`  | `boolean`                             | `true`               | Trigger the animation on hover.                                          |
-| `stagger`      | `number`                              | `0.01`               | Delay in seconds between each letter's animation start.                  |
-| `duration`     | `number`                              | `0.8`                | Duration of each letter's roll animation in seconds.                     |
-| `cycles`       | `number`                              | `1`                  | Number of times the letter rolls before settling.                        |
-| `ease`         | `Easing`                              | `[0.84, 0, 0.22, 1]` | Motion easing: bezier array, named string, or easing function.           |
-| `render`       | `ReactElement \| function`            | `<span/>`            | Override the wrapper element.                                            |
+| Name           | Type                                  | Default     | Description                                                              |
+| -------------- | ------------------------------------- | ----------- | ------------------------------------------------------------------------ |
+| `children`     | `string`                              | —           | The text content to animate.                                             |
+| `axis`         | `"x" \| "y"`                          | `"y"`       | Axis along which letters roll.                                           |
+| `mode`         | `"letters" \| "group"`                | `"letters"` | Animate each letter independently on hover, or the entire group at once. |
+| `direction`    | `"forward" \| "backward" \| "random"` | `"forward"` | Roll direction.                                                          |
+| `playOnScroll` | `boolean`                             | `true`      | Trigger the animation when the element enters the viewport.              |
+| `playOnMount`  | `boolean`                             | `true`      | Trigger the animation on mount.                                          |
+| `playOnHover`  | `boolean`                             | `true`      | Trigger the animation on hover.                                          |
+| `stagger`      | `number`                              | `0.01`      | Delay in seconds between each letter's animation start.                  |
+| `duration`     | `number`                              | `0.8`       | Duration of each letter's roll animation in seconds.                     |
+| `cycles`       | `number`                              | `1`         | Number of times the letter rolls before settling.                        |
+| `render`       | `ReactElement \| function`            | `<span/>`   | Override the wrapper element.                                            |
 
 
 ============================================================
@@ -1518,19 +1521,18 @@ Source file: components/transition/clip-reveal.mdx
 
 ## API
 
-| Name         | Type         | Default             | Description                                                    |
-| ------------ | ------------ | ------------------- | -------------------------------------------------------------- |
-| `children`   | `ReactNode`  | —                   | Content to reveal. Required.                                   |
-| `className`  | `string`     | —                   | Extra classes applied to the wrapper.                          |
-| `duration`   | `number`     | `2`                 | Duration of both animations in seconds.                        |
-| `ease`       | `Easing`     | `[0.85, 0, 0.2, 1]` | Motion easing: bezier array, named string, or easing function. |
-| `depth`      | `number`     | `2`                 | Initial scale of the content before reveal.                    |
-| `top`        | `number`     | `70`                | Starting inset from the top in percent.                        |
-| `left`       | `number`     | `25`                | Starting inset from the left in percent.                       |
-| `bottom`     | `number`     | `40`                | Starting inset from the bottom in percent.                     |
-| `right`      | `number`     | `25`                | Starting inset from the right in percent.                      |
-| `trigger`    | `boolean`    | `true`              | Starts the animation when set to true.                         |
-| `onComplete` | `() => void` | —                   | Called when the animation finishes.                            |
+| Name         | Type         | Default | Description                                 |
+| ------------ | ------------ | ------- | ------------------------------------------- |
+| `children`   | `ReactNode`  | —       | Content to reveal. Required.                |
+| `className`  | `string`     | —       | Extra classes applied to the wrapper.       |
+| `duration`   | `number`     | `2`     | Duration of both animations in seconds.     |
+| `depth`      | `number`     | `2`     | Initial scale of the content before reveal. |
+| `top`        | `number`     | `70`    | Starting inset from the top in percent.     |
+| `left`       | `number`     | `25`    | Starting inset from the left in percent.    |
+| `bottom`     | `number`     | `40`    | Starting inset from the bottom in percent.  |
+| `right`      | `number`     | `25`    | Starting inset from the right in percent.   |
+| `trigger`    | `boolean`    | `true`  | Starts the animation when set to true.      |
+| `onComplete` | `() => void` | —       | Called when the animation finishes.         |
 
 ***
 
@@ -1567,16 +1569,15 @@ Render it as a fixed overlay; the stripes wipe away to reveal the page beneath.
 
 ## API
 
-| Name        | Type      | Default             | Description                                                    |
-| ----------- | --------- | ------------------- | -------------------------------------------------------------- |
-| `stripes`   | `number`  | `8`                 | Number of vertical columns the overlay is split into.          |
-| `segments`  | `number`  | `5`                 | Number of segments each column is divided into.                |
-| `reverse`   | `boolean` | `false`             | Reverses the direction the staggered wipe travels.             |
-| `stagger`   | `number`  | `0.04`              | Delay in seconds added per column and per segment.             |
-| `duration`  | `number`  | `1.2`               | Duration in seconds of each segment's wipe.                    |
-| `ease`      | `Easing`  | `[0.85, 0, 0.2, 1]` | Motion easing: bezier array, named string, or easing function. |
-| `trigger`   | `boolean` | `true`              | Starts the wipe when set to true.                              |
-| `className` | `string`  | —                   | Extra classes applied to the wrapper (e.g. sizing).            |
+| Name        | Type      | Default | Description                                           |
+| ----------- | --------- | ------- | ----------------------------------------------------- |
+| `stripes`   | `number`  | `8`     | Number of vertical columns the overlay is split into. |
+| `segments`  | `number`  | `5`     | Number of segments each column is divided into.       |
+| `reverse`   | `boolean` | `false` | Reverses the direction the staggered wipe travels.    |
+| `stagger`   | `number`  | `0.04`  | Delay in seconds added per column and per segment.    |
+| `duration`  | `number`  | `1.2`   | Duration in seconds of each segment's wipe.           |
+| `trigger`   | `boolean` | `true`  | Starts the wipe when set to true.                     |
+| `className` | `string`  | —       | Extra classes applied to the wrapper (e.g. sizing).   |
 
 ***
 
@@ -1616,16 +1617,15 @@ Source file: components/transition/sweep-exit.mdx
 
 ## API
 
-| Name             | Type         | Default             | Description                                                    |
-| ---------------- | ------------ | ------------------- | -------------------------------------------------------------- |
-| `children`       | `ReactNode`  | —                   | Content rendered on top of the overlay layer.                  |
-| `backgroundSlot` | `ReactNode`  | —                   | Content rendered in the background overlay. Required.          |
-| `duration`       | `number`     | `1`                 | Time-scale multiplier applied to every sub-step.               |
-| `ease`           | `Easing`     | `[0.85, 0, 0.2, 1]` | Motion easing: bezier array, named string, or easing function. |
-| `insetX`         | `number`     | `20`                | Horizontal inset at peak contraction in percent.               |
-| `insetY`         | `number`     | `10`                | Vertical inset at peak contraction in percent.                 |
-| `trigger`        | `boolean`    | `true`              | Starts the animation when set to true.                         |
-| `onComplete`     | `() => void` | —                   | Called when the animation finishes.                            |
+| Name             | Type         | Default | Description                                           |
+| ---------------- | ------------ | ------- | ----------------------------------------------------- |
+| `children`       | `ReactNode`  | —       | Content rendered on top of the overlay layer.         |
+| `backgroundSlot` | `ReactNode`  | —       | Content rendered in the background overlay. Required. |
+| `duration`       | `number`     | `1`     | Time-scale multiplier applied to every sub-step.      |
+| `insetX`         | `number`     | `20`    | Horizontal inset at peak contraction in percent.      |
+| `insetY`         | `number`     | `10`    | Vertical inset at peak contraction in percent.        |
+| `trigger`        | `boolean`    | `true`  | Starts the animation when set to true.                |
+| `onComplete`     | `() => void` | —       | Called when the animation finishes.                   |
 
 ***
 

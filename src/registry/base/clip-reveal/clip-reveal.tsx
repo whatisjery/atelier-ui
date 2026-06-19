@@ -1,16 +1,10 @@
-"use client"
-
 import { motion } from "motion/react"
-import type { Easing } from "motion"
 import type { ReactNode } from "react"
-
-const DEFAULT_EASE: Easing = [0.85, 0, 0.2, 1]
 
 export type ClipRevealProps = {
     children: ReactNode
     className?: string
     duration?: number
-    ease?: Easing
     depth?: number
     top?: number
     left?: number
@@ -25,7 +19,6 @@ export function ClipReveal({
     className,
     duration = 2,
     depth = 2,
-    ease = DEFAULT_EASE,
     top = 70,
     left = 25,
     bottom = 40,
@@ -41,14 +34,14 @@ export function ClipReveal({
                 className="absolute inset-0"
                 initial={{ clipPath: insets }}
                 animate={{ clipPath: trigger ? "inset(0% 0% 0% 0%)" : insets }}
-                transition={{ duration, ease }}
+                transition={{ duration, ease: [0.85, 0, 0.2, 1] }}
                 onAnimationComplete={() => trigger && onComplete?.()}
             >
                 <motion.div
                     className="w-full h-full"
                     initial={{ scale: depth }}
                     animate={{ scale: trigger ? 1 : depth }}
-                    transition={{ duration, ease }}
+                    transition={{ duration, ease: [0.85, 0, 0.2, 1] }}
                 >
                     {children}
                 </motion.div>

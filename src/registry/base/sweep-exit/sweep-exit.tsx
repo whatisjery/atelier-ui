@@ -4,11 +4,12 @@ import type { Easing } from "motion"
 import { stagger, useAnimate } from "motion/react"
 import { type ReactNode, useEffect, useRef } from "react"
 
+const EASE: Easing = [0.85, 0, 0.2, 1]
+
 export type SweepExitProps = {
     children?: ReactNode
     backgroundSlot: ReactNode
     duration?: number
-    ease?: Easing
     insetX?: number
     insetY?: number
     trigger?: boolean
@@ -19,15 +20,14 @@ export function SweepExit({
     children,
     backgroundSlot,
     duration = 1,
-    ease = [0.85, 0, 0.2, 1],
     insetX = 20,
     insetY = 10,
     trigger = true,
     onComplete,
 }: SweepExitProps) {
     const [scope, animate] = useAnimate()
-    const configRef = useRef({ duration, ease, onComplete })
-    configRef.current = { duration, ease, onComplete }
+    const configRef = useRef({ duration, onComplete })
+    configRef.current = { duration, onComplete }
 
     useEffect(() => {
         if (!trigger) return
@@ -36,7 +36,7 @@ export function SweepExit({
         let controls: ReturnType<typeof animate> | undefined
 
         async function run() {
-            const { duration, ease } = configRef.current
+            const { duration } = configRef.current
             controls = animate([
                 [
                     ".aui-clip, .aui-clip > :not(.aui-clip-bg)",
@@ -46,28 +46,28 @@ export function SweepExit({
                             `inset(${insetY}% ${insetX}% ${insetY}% ${insetX}%)`,
                         ],
                     },
-                    { duration: 1.3 * duration, ease },
+                    { duration: 1.3 * duration, ease: EASE },
                 ],
                 [
                     ".aui-clip",
                     {
                         scale: [1, 0.9],
                     },
-                    { duration: 1.3 * duration, ease, at: 0 },
+                    { duration: 1.3 * duration, ease: EASE, at: 0 },
                 ],
                 [
                     ".aui-bg-overlay",
                     {
                         scale: [2, 1],
                     },
-                    { duration: 1.8 * duration, ease, at: 0 },
+                    { duration: 1.8 * duration, ease: EASE, at: 0 },
                 ],
                 [
                     ".aui-clip, .aui-clip > :not(.aui-clip-bg)",
                     { clipPath: `inset(${insetY}% ${insetX}% ${100 - insetY}% ${insetX}%)` },
                     {
                         duration: 1 * duration,
-                        ease,
+                        ease: EASE,
                         at: 1.3 * duration,
                         delay: stagger(0.05 * duration, { from: "last" }),
                     },
@@ -77,7 +77,7 @@ export function SweepExit({
                     {
                         clipPath: `inset(0% 0% 100% 0%)`,
                     },
-                    { duration: 3 * duration, ease, at: 0 },
+                    { duration: 3 * duration, ease: EASE, at: 0 },
                 ],
             ])
 

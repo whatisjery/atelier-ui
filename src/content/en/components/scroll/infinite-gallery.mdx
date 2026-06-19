@@ -22,10 +22,11 @@ tags: ["JS Animation", "Tailwind CSS"]
 ## Usage
 
 ```tsx
-<InfiniteGallery
-  data={["/1.jpg", "/2.jpg", "/3.jpg"]}
-  renderItem={(src) => <img src={src} alt="" />}
-/>
+<InfiniteGallery>
+  <img src="/1.jpg" alt="" />
+  <img src="/2.jpg" alt="" />
+  <img src="/3.jpg" alt="" />
+</InfiniteGallery>
 ```
 
 ---
@@ -34,8 +35,7 @@ tags: ["JS Animation", "Tailwind CSS"]
 
 | Name            | Type                              | Default             | Description |
 | --------------- | --------------------------------- | ------------------- | ------------------------|
-| data          | `T[]`                             | —                   | Array of items to render.|
-| renderItem    | `(item: T) => ReactNode`          | —                   | Render function called for each item.|
+| children      | `ReactNode`                       | —                   | Items to render in the gallery.|
 | mode          | `"shrink" \| "flip"`              | `"flip"`            | `flip` tilts items in 3D. `shrink` compresses edges.|
 | perView      | `number`                          | `4`                 | Number of items visible at once.|
 | speed         | `number`                          | `6`                 | Speed of the scroll.|

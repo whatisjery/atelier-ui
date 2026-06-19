@@ -1,6 +1,7 @@
 import { type MotionValue, motion, useScroll, useTransform } from "motion/react"
 import {
     Children,
+    isValidElement,
     type ReactNode,
     type RefObject,
     useLayoutEffect,
@@ -73,8 +74,8 @@ const Item = ({
 }
 
 export default function ScatteredScroll({ children, scrollTargetRef }: ScatteredScrollProps) {
-    const childrenArray = Children.toArray(children)
-    const firstItemRef = useRef<HTMLDivElement>(null)
+    const childrenArray = Children.toArray(children).filter(isValidElement)
+    const firstItemRef = useRef<ComponentRef<"div">>(null)
     const [xValue, setXValue] = useState(0)
 
     useLayoutEffect(() => {

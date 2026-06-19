@@ -12,7 +12,7 @@ Some components (canvas-based and pure CSS ones) have **zero npm dependencies** 
 
 The library is built on Tailwind CSS v4, React Three Fiber (R3F), GLSL shaders, the Motion animation library, and the native Canvas 2D API.
 
-WebGL-based components share a single `<WebglPortal />` placed once at the app root. It bridges the DOM React tree with the R3F Canvas via a `useSyncExternalStore`-based teleport — components like `CurveMedia` or `LiquidMedia` can live anywhere in the DOM tree and push their Three.js meshes into the Canvas without being nested inside it.
+WebGL-based components share a single `<WebglProvider>` placed once at the app root. It owns one fullscreen Canvas, the global camera, the pointer event source, and a single post-processing composer. Components like `CurveMedia` or `LiquidMedia` can live anywhere in the DOM tree and teleport their Three.js meshes (and any post-processing effects) into the shared Canvas via a `useSyncExternalStore`-based portal, without being nested inside it.
 
 **Two tiers:** Free components are fully open. Pro components require a license key (`ATELIER_PRO_KEY` in `.env.local`). Both tiers use the same CLI and installation flow.
 
@@ -20,14 +20,14 @@ WebGL-based components share a single `<WebglPortal />` placed once at the app r
 
 ## Getting Started
 
-- [Installation](https://atelier-ui.com/docs/getting-started/installation): Set up Tailwind CSS v4, the R3F Canvas with `<WebglPortal />`, add a Pro license key if needed, then install components via CLI or manual copy
+- [Installation](https://atelier-ui.com/docs/getting-started/installation): Set up Tailwind CSS v4, wrap your app root in `<WebglProvider>`, add a Pro license key if needed, then install components via CLI or manual copy
 - [Contribution](https://atelier-ui.com/docs/getting-started/contribution): Project structure, how to scaffold a new component (`pnpm scafold-new`), how to write docs, demo controls format, and testing conventions
 
 ## WebGL Architecture (shared primitives)
 
-These are internal utilities required by WebGL components. Install `webgl-portal` first for any WebGL effect.
+These are the shared building blocks for WebGL components. Install `webgl-provider` first for any WebGL effect; it pulls in the internal `webgl-portal` teleport automatically.
 
-- [WebglPortal](https://atelier-ui.com/docs/components/webgl-portal): The required root component. Place it inside a fullscreen fixed `<Canvas>` at the app root. All WebGL components teleport their R3F meshes here from anywhere in the DOM tree. Dependencies: `three`, `@react-three/fiber`
+- [WebglProvider](https://atelier-ui.com/docs/getting-started/installation): The required root component. Wrap your app root in it once. It owns a single fullscreen fixed `<Canvas>`, the global camera, the pointer event source, and one post-processing composer (mounted only when an effect registers). All WebGL components teleport their R3F meshes and effects into it from anywhere in the DOM tree. The underlying `webgl-portal` teleport is an internal dependency, not placed by hand. Dependencies: `three`, `@react-three/fiber`, `@react-three/postprocessing`, `postprocessing`
 - [WebglImage](https://atelier-ui.com/docs/components/webgl-image): DOM-aligned WebGL plane that mirrors a standard `<img>` element. Accepts a `material` render prop to inject custom shaders. Used as the base for `CurveMedia` and `LiquidMedia`. Dependencies: `three`, `@react-three/fiber`, `@react-three/drei`
 - [WebglText](https://atelier-ui.com/docs/components/webgl-text): DOM-aligned WebGL plane that rasterizes text onto a canvas texture, then renders it as a WebGL mesh. Dependencies: `three`, `@react-three/fiber`, `@react-three/drei`
 

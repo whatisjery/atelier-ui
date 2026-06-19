@@ -6,34 +6,33 @@ import {
     useMotionValueEvent,
     useTransform,
 } from "motion/react"
-import { useEffect, useRef, useState } from "react"
+import { Children, isValidElement, type ReactNode, useEffect, useRef, useState } from "react"
 
-type Items<T> = {
+type TrailItem = {
     id: number
     x: number
     y: number
     driftX: number
     driftY: number
     rotate: number
-    data: T
+    node: ReactNode
 }
 
-export type PropsMouseTrail<T> = {
-    data: T[]
-    renderItems: (item: T) => React.ReactNode
+export type ImageTrailProps = {
+    children: ReactNode
     removeDelay?: number
     driftAmount?: number
     spawnDistance?: number
 }
 
-export function ImageTrail<T>({
-    data,
-    renderItems,
+export function ImageTrail({
+    children,
     removeDelay = 1.0,
     driftAmount = 36,
     spawnDistance = 76,
-}: PropsMouseTrail<T>) {
-    const [items, setItems] = useState<Items<T>[]>([])
+}: ImageTrailProps) {
+    const childrenArray = Children.toArray(children).filter(isValidElement)
+    const [items, setItems] = useState<TrailItem[]>([])
     const sum = useRef(0)
     const itemIndex = useRef(0)
     const idCounter = useRef(0)
@@ -66,19 +65,19 @@ export function ImageTrail<T>({
             const nx = dx / dist
             const ny = dy / dist
             const angle = Math.atan2(ny, nx) * (180 / Math.PI)
-            const item = {
+            const item: TrailItem = {
                 id: idCounter.current++,
                 x: mouseX,
                 y: mouseY,
                 driftX: nx * driftAmount + (Math.random() - 0.5) * driftAmount * 0.5,
                 driftY: ny * driftAmount + (Math.random() - 0.5) * driftAmount * 0.5,
                 rotate: angle * 0.15,
-                data: data[itemIndex.current],
+                node: childrenArray[itemIndex.current],
             }
 
             setItems((prev) => [...prev, item])
 
-            itemIndex.current = wrap(0, data.length, itemIndex.current + 1)
+            itemIndex.current = wrap(0, childrenArray.length, itemIndex.current + 1)
 
             delay(() => {
                 setItems((prev) => prev.filter((i) => i.id !== item.id))
@@ -90,9 +89,8 @@ export function ImageTrail<T>({
 
     useEffect(() => {
         const handlePointerMove = (event: PointerEvent) => {
-            const e = event as PointerEvent
-            pointerX.set(e.clientX)
-            pointerY.set(e.clientY)
+            pointerX.set(event.clientX)
+            pointerY.set(event.clientY)
         }
 
         window.addEventListener("pointermove", handlePointerMove)
@@ -126,7 +124,7 @@ export function ImageTrail<T>({
                         rotate: { type: "spring", stiffness: 60, damping: 18, mass: 0.8 },
                     }}
                 >
-                    {renderItems(item.data)}
+                    {item.node}
                 </motion.div>
             ))}
         </AnimatePresence>

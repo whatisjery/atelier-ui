@@ -32,11 +32,9 @@ type ItemsProps = {
     children: ReactElement
     index: number
     itemsCount: number
-    zoomAmount: number
     progress: MotionValue<number>
     isClone: boolean
-    deceleration: number
-}
+} & Required<Pick<InfiniteZoomProps, "zoomAmount" | "backgroundSpeed">>
 
 function Items({
     children,
@@ -45,7 +43,7 @@ function Items({
     zoomAmount,
     progress,
     isClone,
-    deceleration,
+    backgroundSpeed,
 }: ItemsProps) {
     const offset = index / itemsCount
     const minScale = zoomAmount ** -(itemsCount - 1)
@@ -60,7 +58,7 @@ function Items({
          * decelerate the scaling.
          */
         const overflow = Math.max(0, scaleValue - 1)
-        return scaleValue - overflow * (1 - deceleration)
+        return scaleValue - overflow * (1 - backgroundSpeed)
     })
 
     const zIndex = useTransform(() => {
@@ -90,7 +88,7 @@ export default function InfiniteZoom({
     const itemsCount = items.length * 2
     const progress = useMotionValue(0)
     const smoothProgress = useMotionValue(0)
-    const containerRef = useRef<HTMLDivElement>(null)
+    const containerRef = useRef<ComponentRef<"div">>(null)
 
     useAnimationFrame(() => {
         smoothProgress.set(lerp(smoothProgress.get(), progress.get(), lerpValue))
@@ -126,7 +124,7 @@ export default function InfiniteZoom({
                     zoomAmount={zoomAmount}
                     progress={smoothProgress}
                     isClone={index >= items.length}
-                    deceleration={backgroundSpeed}
+                    backgroundSpeed={backgroundSpeed}
                 >
                     {items[index % items.length]}
                 </Items>
