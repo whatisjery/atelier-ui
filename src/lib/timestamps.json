@@ -13,7 +13,7 @@
   },
   "src/content/en/getting-started/installation.mdx": {
     "createdAt": "2026-05-07T21:23:51+02:00",
-    "updatedAt": "2026-06-16T21:00:10+02:00"
+    "updatedAt": "2026-06-19T18:18:09+02:00"
   },
   "src/content/en/components/background/dither-flow.mdx": {
     "createdAt": null,
@@ -29,7 +29,7 @@
   },
   "src/content/en/components/background/sphere-gallery.mdx": {
     "createdAt": "2026-06-18T15:22:55+02:00",
-    "updatedAt": "2026-06-18T15:22:55+02:00"
+    "updatedAt": "2026-06-19T18:18:09+02:00"
   },
   "src/content/en/components/cursor/fluid-distortion.mdx": {
     "createdAt": "2026-05-07T21:23:51+02:00",
@@ -61,23 +61,27 @@
   },
   "src/content/en/components/primitive/text-split.mdx": {
     "createdAt": "2026-05-24T18:46:16+02:00",
-    "updatedAt": "2026-05-24T22:43:07+02:00"
+    "updatedAt": "2026-06-19T18:18:09+02:00"
   },
   "src/content/en/components/primitive/webgl-image.mdx": {
     "createdAt": "2026-05-24T20:08:58+02:00",
-    "updatedAt": "2026-06-16T21:00:10+02:00"
+    "updatedAt": "2026-06-19T18:18:09+02:00"
+  },
+  "src/content/en/components/primitive/webgl-provider.mdx": {
+    "createdAt": "2026-06-19T18:18:09+02:00",
+    "updatedAt": "2026-06-19T18:18:09+02:00"
   },
   "src/content/en/components/primitive/webgl-scene.mdx": {
     "createdAt": "2026-06-18T15:22:55+02:00",
-    "updatedAt": "2026-06-18T15:22:55+02:00"
+    "updatedAt": "2026-06-19T18:18:09+02:00"
   },
   "src/content/en/components/primitive/webgl-text.mdx": {
     "createdAt": "2026-05-24T19:32:15+02:00",
-    "updatedAt": "2026-06-16T21:00:10+02:00"
+    "updatedAt": "2026-06-19T18:18:09+02:00"
   },
   "src/content/en/components/primitive/webgl-video.mdx": {
     "createdAt": "2026-05-31T20:27:18+02:00",
-    "updatedAt": "2026-06-16T21:00:10+02:00"
+    "updatedAt": "2026-06-19T18:18:09+02:00"
   },
   "src/content/en/components/scroll/curve-media.mdx": {
     "createdAt": "2026-05-31T21:37:00+02:00",

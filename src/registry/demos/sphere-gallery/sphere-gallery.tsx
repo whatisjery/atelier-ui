@@ -58,7 +58,7 @@ export default function SphereGalleryDemo({
                     animate={{ opacity: activeIndex === null ? 1 : 0, filter: "blur(0px)" }}
                     exit={{ opacity: 0, filter: "blur(3px)" }}
                     transition={{
-                        duration: 1,
+                        duration: 0.8,
                         ease: [0.2, 0.03, 0.26, 0.99],
                     }}
                     className="-translate-x-1/2 -translate-y-1/2 font-serif pointer-events-none fixed top-1/2 left-1/2 z-10 text-3xl text-white mix-blend-difference"
@@ -80,7 +80,7 @@ export default function SphereGalleryDemo({
                             duration: 0.4,
                             ease: [0.7, 0.03, 0.26, 0.99],
                         }}
-                        className="-translate-x-1/2 -translate-y-1/2 fixed bottom-8 left-1/2 z-10 text-xs"
+                        className="-translate-x-1/2 -translate-y-1/2 fixed bottom-2 text-accent-2 hover:text-accent-1 left-1/2 z-10 text-xs"
                     >
                         {ITEMS[activeIndex].credit}
                     </motion.a>

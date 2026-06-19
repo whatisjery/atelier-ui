@@ -13,23 +13,21 @@
 </a>
 
 
-## What is Atelier UI?
+## 🎨 What is Atelier UI?
 
 Atelier (French for workshop) is a growing library of fully customizable React animated components
-and tooling that help developers create polished, interactive user experiences with ease.
+and tooling that help developers create interactive user experiences with ease.
 
-## Features
+## ✨ Features
 
-- **It's your code.** Components are copied into your project, not installed as a
-  package, so they remain fully customizable.
-- **Ready-made effects.** Text animations, cursor interactions, scroll effects,
-  page transitions, and animated backgrounds.
+- **It's your code.** Components are copied into your project and remain fully customizable.
+- **Ready-made effects.** Text animations, cursor interactions, scroll effects, transitions, and more.
 - **A real WebGL system.** Components share a single canvas and stay aligned to
   the DOM.
 - **Built for React 19 + Tailwind v4.** Works with Next.js, Vite, or any React
   setup.
 
-## Install
+## 📦 Install
 
 Add any component by name:
 
@@ -40,28 +38,28 @@ npx atelier-ui add fluid-distortion
 This copies the source into your project, pulls in anything shared, and installs
 the dependencies it needs.
 
-## How it works
+## ⚙️ How it works
 
-Most components are self-contained: copy the file, use it, customize it.
+Most components are a single file you copy and edit.
 
-WebGL components work differently. They share one canvas (wrap your app in the
-provider once), then you write them as normal elements and the library keeps
-each one aligned to its spot on the page as it scrolls and resizes:
+WebGL components share one canvas. A provider wraps the app root once, and each
+component renders as a normal element while staying aligned to the DOM as the
+page scrolls and resizes.
 
-- **Primitives** wrap a real DOM element (image, video, text), so the page stays
-  accessible.
-- **Scenes** own a camera and render into a tracked area, like the sphere
-  gallery.
+- **WebGL Image, Video, and Text** mirror a real DOM element onto a tracked
+  plane, so the page stays accessible.
+- **WebGL Scene** has its own camera and renders into a tracked area, for
+  effects that need camera motion.
 
-## Docs
+## 📖 Docs
 
 Browse every component with live previews at
 [atelier-ui.com/docs](https://atelier-ui.com/docs).
 
-## Contributing
+## 🤝 Contributing
 
 See the [contribution guide](https://atelier-ui.com/docs/getting-started/contribution).
 
-## License
+## 📄 License
 
 [MIT](LICENSE.md).

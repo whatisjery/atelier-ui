@@ -498,7 +498,7 @@ function Tile({
         }
 
         return tileFocusAnimation()
-    }, [cornerRadius, dissolving, focused, gap, padding, tileColor, focusDuration, focusScale])
+    }, [cornerRadius, dissolving, focused, gap, padding, focusDuration, focusScale])
 
     useEffect(() => {
         if (!reveal || !ready) return
@@ -508,7 +508,7 @@ function Tile({
             const controls = animate(
                 material,
                 { uReveal: 1, uDissolve: [0.5, 0] },
-                { duration: revealDuration, ease: REVEAL_EASING },
+                { duration: revealDuration * 1.2, ease: REVEAL_EASING },
             )
             return () => controls.stop()
         }
@@ -715,6 +715,7 @@ function SphereScene({
     const pointerOnTile = useRef(false)
     const animating = useRef(false)
     const groupRef = useRef<THREE.Group>(null)
+    const sphereMaterialRef = useRef<THREE.MeshBasicMaterial>(null)
     const textures = useTexture(sources)
     const camera = useThree((state) => state.camera)
     const size = useThree((state) => state.size)
@@ -908,11 +909,19 @@ function SphereScene({
 
             if (!group) return
 
+            const sphereMaterial = sphereMaterialRef.current
+            if (!sphereMaterial) return
+
             const controls = animate([
                 [
                     group.scale,
                     { x: 1, y: 1, z: 1 },
                     { duration: revealDuration, ease: REVEAL_EASING },
+                ],
+                [
+                    sphereMaterial,
+                    { opacity: 0.5 },
+                    { duration: revealDuration, ease: REVEAL_EASING, at: 0 },
                 ],
                 [
                     group.rotation,
@@ -1051,7 +1060,12 @@ function SphereScene({
             <mesh>
                 <sphereGeometry args={[0.99, 64, 64]} />
 
-                <meshBasicMaterial transparent={true} opacity={0.5} color={sphereColor} />
+                <meshBasicMaterial
+                    ref={sphereMaterialRef}
+                    transparent={true}
+                    opacity={0}
+                    color={sphereColor}
+                />
             </mesh>
 
             {tileLayout.map((tile, i) => (
