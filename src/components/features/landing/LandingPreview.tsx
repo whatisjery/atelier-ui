@@ -1,5 +1,4 @@
-import { Canvas, useFrame } from "@react-three/fiber"
-import { EffectComposer } from "@react-three/postprocessing"
+import { useFrame } from "@react-three/fiber"
 import { ExpandIcon, Lock, RotateCcw } from "lucide-react"
 import { motion } from "motion/react"
 import { useTheme } from "next-themes"
@@ -11,6 +10,8 @@ import Card from "@/components/ui/Card"
 import { env } from "@/env"
 import { Link } from "@/i18n/navigation"
 import { FluidDistortion } from "@/registry/base/fluid-distortion/fluid-distortion"
+import { webglTeleport } from "@/registry/base/webgl-portal/webgl-portal"
+import { WebglProvider } from "@/registry/base/webgl-provider/webgl-provider"
 
 const MotionCard = motion.create(Card)
 
@@ -27,7 +28,7 @@ function RotatingCube() {
     })
 
     return (
-        <mesh scale={2} ref={ref}>
+        <mesh renderOrder={5} scale={2} ref={ref}>
             <sphereGeometry args={[1, 10, 10]} />
             <meshBasicMaterial
                 color={resolvedTheme === "dark" ? "#DFDFDF" : "#0E0E0E"}
@@ -37,14 +38,10 @@ function RotatingCube() {
     )
 }
 
-type LandingPreviewProps = {
-    onWebGLReady: () => void
-}
-
-export default function LandingPreview({ onWebGLReady }: LandingPreviewProps) {
+export default function LandingPreview() {
     return (
         <MotionCard
-            className="max-w-5xl w-full mx-auto mt-12"
+            className="max-w-5xl bg-transparent w-full mx-auto mt-12"
             headerSlot={
                 <>
                     <div className="flex items-center gap-x-3 min-w-0 flex-1">
@@ -101,37 +98,25 @@ export default function LandingPreview({ onWebGLReady }: LandingPreviewProps) {
                 </>
             }
         >
-            <div
-                aria-label="Live preview of the Fluid Distortion shader effect"
-                role="img"
-                className="flex relative flex-col items-center justify-center pattern-line h-150"
-            >
-                <p className="sr-only">
-                    Interactive live preview of the Fluid Distortion shader, an Atelier UI component
-                    built with React Three Fiber.
-                </p>
-
-                <Canvas
-                    dpr={[1, 1.5]}
-                    onCreated={async ({ gl, scene, camera }) => {
-                        await gl.compileAsync(scene, camera)
-                        onWebGLReady()
-                    }}
-                    style={{
-                        width: "100%",
-                        height: "100%",
-                        position: "absolute",
-                        top: 0,
-                        left: 0,
-                    }}
+            <WebglProvider contained>
+                <div
+                    aria-label="Live preview of the Fluid Distortion shader effect"
+                    role="img"
+                    className="flex relative flex-col items-center justify-center h-150"
                 >
-                    <RotatingCube />
+                    <div className="absolute bg-bg inset-0 z-[-1] pattern-line"></div>
 
-                    <EffectComposer>
-                        <FluidDistortion />
-                    </EffectComposer>
-                </Canvas>
-            </div>
+                    <p className="sr-only">
+                        Interactive live preview of the Fluid Distortion shader, an Atelier UI
+                        component built with React Three Fiber.
+                    </p>
+
+                    <FluidDistortion />
+                    <webglTeleport.In>
+                        <RotatingCube />
+                    </webglTeleport.In>
+                </div>
+            </WebglProvider>
         </MotionCard>
     )
 }

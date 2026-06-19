@@ -17,6 +17,7 @@ import {
 } from "react"
 import * as THREE from "three"
 import { MathUtils } from "three"
+import { useWebglReady } from "../webgl-provider/webgl-provider"
 import { WebglScene, type WebglSceneProps } from "../webgl-scene/webgl-scene"
 
 const TAU = Math.PI * 2
@@ -61,9 +62,20 @@ type TileProps = {
     tile: LayoutTile
     index: number
     activeTile: number | null
+    ready: boolean
     setPointer: (on: boolean) => void
     onSelect: () => void
-} & Pick<typeof DEFAULT_PROPS, "gap" | "padding" | "cornerRadius" | "tileColor" | "reveal" | "revealDuration" | "focusDuration" | "focusScale">
+} & Pick<
+    typeof DEFAULT_PROPS,
+    | "gap"
+    | "padding"
+    | "cornerRadius"
+    | "tileColor"
+    | "reveal"
+    | "revealDuration"
+    | "focusDuration"
+    | "focusScale"
+>
 
 type PeekSlot = {
     index: number
@@ -88,6 +100,7 @@ type SphereSceneProps = {
     onSelect: (index: number) => void
     onNavigate: (index: number) => void
     onDismiss: () => void
+    onReady?: () => void
 } & Omit<typeof DEFAULT_PROPS, "lensBlur">
 
 export type SphereGalleryItem = {
@@ -99,6 +112,7 @@ export type SphereGalleryProps = {
     items: SphereGalleryItem[]
     className?: string
     onActiveChange?: (index: number | null) => void
+    onReady?: () => void
 } & Partial<typeof DEFAULT_PROPS> &
     Pick<WebglSceneProps, "mode" | "priority" | "zIndex" | "transparent">
 
@@ -421,6 +435,7 @@ function Tile({
     tileColor,
     index,
     activeTile,
+    ready,
     setPointer,
     onSelect,
     reveal,
@@ -486,7 +501,7 @@ function Tile({
     }, [cornerRadius, dissolving, focused, gap, padding, tileColor, focusDuration, focusScale])
 
     useEffect(() => {
-        if (!reveal) return
+        if (!reveal || !ready) return
         function tileRevealAnimation() {
             const material = meshRef.current?.material
             if (!material) return
@@ -498,7 +513,7 @@ function Tile({
             return () => controls.stop()
         }
         return tileRevealAnimation()
-    }, [reveal, revealDuration])
+    }, [reveal, ready, revealDuration])
 
     useEffect(() => {
         function tileHoverAnimation() {
@@ -670,6 +685,7 @@ function SphereScene({
     onSelect,
     onNavigate,
     onDismiss,
+    onReady,
     rows,
     columns,
     latitudeRange,
@@ -702,6 +718,7 @@ function SphereScene({
     const textures = useTexture(sources)
     const camera = useThree((state) => state.camera)
     const size = useThree((state) => state.size)
+    const ready = useWebglReady({ onReady })
 
     const setPointer = useCallback(
         (on: boolean) => {
@@ -878,7 +895,7 @@ function SphereScene({
     }, [surface, activeTile, orientation])
 
     useEffect(() => {
-        if (!reveal) return
+        if (!reveal || !ready) return
 
         function revealSequenceAnimation() {
             camera.position.z = INITIAL_DISTANCE
@@ -929,7 +946,7 @@ function SphereScene({
         }
 
         return revealSequenceAnimation()
-    }, [camera, fov, reveal, revealDuration])
+    }, [camera, fov, reveal, ready, revealDuration])
 
     useEffect(() => {
         function focusOnTileSequence() {
@@ -1048,6 +1065,7 @@ function SphereScene({
                     tileColor={tileColor}
                     index={i}
                     activeTile={activeTile}
+                    ready={ready}
                     setPointer={setPointer}
                     onSelect={() => select(i)}
                     reveal={reveal}
@@ -1081,6 +1099,7 @@ export function SphereGallery({
     items,
     className,
     onActiveChange,
+    onReady,
     mode,
     priority,
     zIndex,
@@ -1153,6 +1172,7 @@ export function SphereGallery({
                             onSelect={select}
                             onNavigate={setActiveTile}
                             onDismiss={dismiss}
+                            onReady={onReady}
                         />
                     </PostProcessing>
                 </WebglScene>

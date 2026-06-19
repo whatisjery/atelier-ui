@@ -63,7 +63,7 @@ The size come from the element you render it into. Use `className` to decide of 
 
 ### Overlays
 
-The gallery owns no DOM overlay. Use `onActiveChange` to get the focused index (already resolved, no modulo) and render your own content from your own data: a caption, a link, a title, anything.
+`onActiveChange` gives you the index of the opened image (and `null` when it closes). Use it to look up that item in your own data and render a caption, link, or anything else as regular HTML.
 
 ```tsx title="Overlay"
 const [active, setActive] = useState<number | null>(null)
@@ -76,19 +76,6 @@ const [active, setActive] = useState<number | null>(null)
   )}
 
   <SphereGallery items={ITEMS} onActiveChange={setActive} className="fixed inset-0" />
-</>
-```
-
-### Deferred reveal
-
-`reveal` defaults to `true` so the sphere animates in on mount. Hold it `false` to delay the reveal, for example until an intro finishes.
-
-```tsx title="Deferred reveal"
-const [reveal, setReveal] = useState(false)
-
-<>
-  <Intro onDone={() => setReveal(true)} />
-  <SphereGallery items={ITEMS} reveal={reveal} className="fixed inset-0" />
 </>
 ```
 

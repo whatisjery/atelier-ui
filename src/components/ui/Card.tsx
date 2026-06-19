@@ -11,7 +11,7 @@ export default function Card({ headerSlot, children, className, bottomSlot, ...p
     return (
         <div className={cn("border rounded-md bg-bg", className)} {...props}>
             {headerSlot && (
-                <header className="h-12 border-b flex items-center justify-between px-3">
+                <header className="h-12 border-b bg-bg flex items-center justify-between px-3">
                     {headerSlot}
                 </header>
             )}

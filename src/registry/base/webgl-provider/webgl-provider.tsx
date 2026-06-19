@@ -1,12 +1,54 @@
 "use client"
 
-import { Canvas } from "@react-three/fiber"
+import { Canvas, type CanvasProps, useThree } from "@react-three/fiber"
 import { EffectComposer } from "@react-three/postprocessing"
-import { type ReactNode, type RefObject, useRef } from "react"
+import { type ComponentRef, type ReactNode, useEffect, useRef, useState } from "react"
+import type { Camera, Scene } from "three"
 import { effectTeleport, WebglPortal } from "../webgl-portal/webgl-portal"
 
-type WebglProviderProps = {
+type WebglProviderProps = Omit<CanvasProps, "children" | "eventSource"> & {
     children: ReactNode
+    className?: string
+    contained?: boolean
+}
+
+type WebglReadyOptions = {
+    scene?: Scene
+    camera?: Camera
+    enabled?: boolean
+    onReady?: () => void
+}
+
+export function useWebglReady({ scene, camera, enabled = true, onReady }: WebglReadyOptions = {}) {
+    const [ready, setReady] = useState(false)
+    const gl = useThree((state) => state.gl)
+    const defaultScene = useThree((state) => state.scene)
+    const defaultCamera = useThree((state) => state.camera)
+    const onReadyRef = useRef(onReady)
+    onReadyRef.current = onReady
+
+    const targetScene = scene ?? defaultScene
+    const targetCamera = camera ?? defaultCamera
+
+    useEffect(() => {
+        if (!enabled) return
+        let active = true
+
+        gl.compileAsync(targetScene, targetCamera).then(() => {
+            if (!active) return
+            requestAnimationFrame(() => {
+                if (!active) return
+                setReady(true)
+                onReadyRef.current?.()
+            })
+        })
+
+        return () => {
+            active = false
+        }
+    }, [gl, targetScene, targetCamera, enabled])
+
+    return ready
 }
 
 function Effects() {
@@ -20,16 +62,32 @@ function Effects() {
     )
 }
 
-export function WebglProvider({ children }: WebglProviderProps) {
-    const eventSource = useRef<HTMLDivElement>(null)
+export function WebglProvider({
+    children,
+    className,
+    style,
+    contained = false,
+    ...canvasProps
+}: WebglProviderProps) {
+    const [eventSource, setEventSource] = useState<ComponentRef<"div"> | null>(null)
 
     return (
-        <div ref={eventSource} style={{ display: "contents" }}>
+        <div
+            ref={setEventSource}
+            className={className}
+            style={contained ? { position: "relative" } : { display: "contents" }}
+        >
             <Canvas
-                eventSource={eventSource as RefObject<HTMLElement>}
                 eventPrefix="client"
                 dpr={[1, 1.5]}
-                style={{ position: "fixed", inset: 0, pointerEvents: "none" }}
+                {...canvasProps}
+                eventSource={eventSource ?? undefined}
+                style={{
+                    position: contained ? "absolute" : "fixed",
+                    inset: 0,
+                    pointerEvents: "none",
+                    ...style,
+                }}
             >
                 <WebglPortal />
                 <Effects />

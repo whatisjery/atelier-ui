@@ -1,12 +1,12 @@
 ---
 title: "WebGL Image"
-description: "A primitive that mirrors an image onto a WebGL plane while preserving accessibility."
-tags: ["Primitive", "React Three Fiber"]
+description: "A foundation block that mirrors an image onto a WebGL plane while preserving accessibility."
+tags: ["Foundation Block", "React Three Fiber"]
 ---
 
 A structural building block for composing your own WebGL image effects, like [Curve Media](/docs/components/scroll/curve-media).
 
-The image is rendered twice: as a real `<img>` for SEO and screen readers (hidden when WebGL is on), and as a `Texture` on a plane that tracks the element's bounding box. The two stay pixel-aligned, so the shader feels like it runs on the DOM.
+The image is rendered twice: as a real `<img>` for SEO and screen readers (hidden when WebGL is on), and as a `Texture` on a plane that tracks the element's bounding box. The two stay pixel-aligned, so the WebGL plane sits exactly over the DOM element.
 
 ---
 
@@ -18,7 +18,7 @@ WebGL Image must be rendered inside a `WebglProvider`. Follow the [installation 
 
 ---
 
-## Basic usage
+## Usage
 
 With no `material`, the plane uses a `meshBasicMaterial` and looks identical to a plain `<img>`:
 
@@ -26,7 +26,7 @@ With no `material`, the plane uses a `meshBasicMaterial` and looks identical to 
 <WebglImage src="/photo.jpg" alt="A photo" className="w-full h-auto" />
 ```
 
-## Object-fit
+### Object-fit
 
 `object-fit: cover` and `object-fit: contain` are replicated on the plane. Set it the way you would on a normal `<img>`:
 
@@ -34,7 +34,7 @@ With no `material`, the plane uses a `meshBasicMaterial` and looks identical to 
 <WebglImage src="/photo.jpg" alt="A photo" className="w-full h-64 object-cover" />
 ```
 
-## With material
+### With material
 
 `material` lets you provide your own R3F material. It receives the loaded `Texture` and a live `pointer` (UV + hover):
 
@@ -57,18 +57,6 @@ With no `material`, the plane uses a `meshBasicMaterial` and looks identical to 
 The `pointer` object is mutated in place, so reading it inside a `useFrame` gives current values without re-renders.
 
 Use `segments` to subdivide the plane when your shader displaces vertices. `1` is enough for fragment-only effects.
-
-## Toggling WebGL off
-
-Set `webglEnabled={false}` to skip the canvas pass and fall back to the plain DOM `<img>`:
-
-```tsx title="Graceful fallback"
-<WebglImage
-    src="/photo.jpg"
-    alt="A photo"
-    webglEnabled={!prefersReducedMotion}
-/>
-```
 
 ---
 

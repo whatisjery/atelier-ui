@@ -1,6 +1,6 @@
 ---
 title: Installation
-description: How to start using Atelier UI, not much.
+description: How to install and use Atelier UI components.
 icon: "FolderDown"
 order: 1
 tags: ["Tailwind CSS", "Copy & paste", "Ready in minutes"]
@@ -14,7 +14,7 @@ import DocStep from "@/components/features/docs/DocStep";
 
 ## Set up Tailwind CSS
 
-This library is built on Tailwind CSS v4. If your project doesn't already use it, follow the Tailwind CSS [installation guide](https://tailwindcss.com/docs/installation) before continuing.
+Atelier UI is built on Tailwind CSS v4. If your project doesn't use it yet, follow the Tailwind CSS [installation guide](https://tailwindcss.com/docs/installation) first.
 
 </DocStep>
 
@@ -22,7 +22,7 @@ This library is built on Tailwind CSS v4. If your project doesn't already use it
 
 ## Add the WebGL provider
 
-If you are using WebGL components, install the provider and wrap your app root:
+WebGL components render through one shared canvas. Install the provider and wrap your app root before using them:
 
 <InstalGuideCLI name="webgl-provider" />
 
@@ -34,9 +34,9 @@ export default function RootLayout({ children }) {
 }
 ```
 
-The provider runs one WebGL canvas for the whole page. Effects share it because separate WebGL contexts can't share resources or post-processing, so several effects duplicate GPU work and can't compose.
+Separate WebGL contexts can't share resources or post-processing, so one shared canvas avoids duplicated GPU work across effects.
 
-You still write each component in your markup like a normal element. The library reads where this element is and its size, then renders WebGL into that same space on the shared canvas, keeping it aligned as the page scrolls and resizes.
+For more information about configuring the canvas, see the [WebGL Provider](/docs/components/primitive/webgl-provider) reference.
 
 </DocStep>
 

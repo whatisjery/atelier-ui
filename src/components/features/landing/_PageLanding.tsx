@@ -70,7 +70,6 @@ type PageLadingProps = {
 
 export default function PageLanding({ showcaseComponents }: PageLadingProps) {
     const tMetadata = useTranslations("metadata")
-    const [isSceneReady, setIsSceneReady] = useState(false)
     const [showLoader, setShowLoader] = useState(true)
     const bottomCardRef = useRef<HTMLDivElement>(null)
     const heroSectionRef = useRef<HTMLDivElement>(null)
@@ -90,10 +89,9 @@ export default function PageLanding({ showcaseComponents }: PageLadingProps) {
     const heroY = useTransform(heroProgress, [0, 1], [0, 700])
 
     useEffect(() => {
-        if (!isSceneReady) return
         const t = setTimeout(() => setShowLoader(false), 800)
         return () => clearTimeout(t)
-    }, [isSceneReady])
+    }, [])
 
     return (
         <ReactLenis root options={{ lerp: 0.11, smoothWheel: !isMobile }}>
@@ -178,7 +176,7 @@ export default function PageLanding({ showcaseComponents }: PageLadingProps) {
                             </Button>
                         </div>
 
-                        <LandingPreview onWebGLReady={() => setIsSceneReady(true)} />
+                        <LandingPreview />
                     </motion.div>
 
                     <div className="relative py-6 bg-bg border-r border-l h-20">

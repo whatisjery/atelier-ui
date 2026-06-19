@@ -40,8 +40,11 @@ export default function SphereGalleryDemo({
     ...controls
 }: Partial<SphereGalleryProps> & { showTileColor?: boolean }) {
     const { resolvedTheme } = useTheme()
-
     const [activeIndex, setActiveIndex] = useState<number | null>(null)
+
+    // Wait for the shaders to compile and textures to upload so the motion animation doesn't "stutter" when the sphere is revealed.
+    const [webGlReady, setWebGlReady] = useState(false)
+
     const _tileColor = resolvedTheme === "dark" ? "#4B4B4B" : tileColor
     const _sphereColor = resolvedTheme === "dark" ? "#000000" : sphereColor
 
@@ -49,21 +52,22 @@ export default function SphereGalleryDemo({
         <>
             <div className="fixed inset-0 bg-bg -z-1" />
 
-            <motion.h1
-                initial={{ opacity: 0, filter: "blur(10px)" }}
-                animate={{ opacity: activeIndex === null ? 1 : 0, filter: "blur(0px)" }}
-                exit={{ opacity: 0, filter: "blur(10px)" }}
-                transition={{
-                    duration: 1,
-                    ease: [0.2, 0.03, 0.26, 0.99],
-                }}
-                className="-translate-x-1/2 -translate-y-1/2 font-serif pointer-events-none fixed top-1/2 left-1/2 z-10 text-3xl text-white mix-blend-difference"
-            >
-                Sphere Gallery
-            </motion.h1>
-
+            {webGlReady && (
+                <motion.h1
+                    initial={{ opacity: 0, filter: "blur(3px)" }}
+                    animate={{ opacity: activeIndex === null ? 1 : 0, filter: "blur(0px)" }}
+                    exit={{ opacity: 0, filter: "blur(3px)" }}
+                    transition={{
+                        duration: 1,
+                        ease: [0.2, 0.03, 0.26, 0.99],
+                    }}
+                    className="-translate-x-1/2 -translate-y-1/2 font-serif pointer-events-none fixed top-1/2 left-1/2 z-10 text-3xl text-white mix-blend-difference"
+                >
+                    Sphere Gallery
+                </motion.h1>
+            )}
             <AnimatePresence mode="wait">
-                {activeIndex && (
+                {activeIndex !== null && (
                     <motion.a
                         rel="noopener"
                         target="_blank"
@@ -86,6 +90,7 @@ export default function SphereGalleryDemo({
             <SphereGallery
                 items={ITEMS}
                 onActiveChange={setActiveIndex}
+                onReady={() => setWebGlReady(true)}
                 className="fixed inset-0 w-full h-full"
                 tileColor={showTileColor ? _tileColor : null}
                 sphereColor={_sphereColor}

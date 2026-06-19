@@ -1,10 +1,10 @@
 ---
 title: "WebGL Scene"
-description: "A primitive that owns its own Three.js scene and camera, rendering it into a tracked DOM rect on the shared canvas."
-tags: ["Primitive", "React Three Fiber"]
+description: "A foundation block with its own Three.js scene and camera, rendered into a tracked DOM rect on the shared canvas."
+tags: ["Foundation Block", "React Three Fiber"]
 ---
 
-A structural building block for effects that need camera motion (dolly, FOV zoom, orbit) and so can't share the fixed global camera used by plane primitives like [WebGL Image](/docs/components/primitive/webgl-image).
+A structural building block for effects that need camera motion (dolly, FOV zoom, orbit) and so can't share the fixed global camera used by plane blocks like [WebGL Image](/docs/components/primitive/webgl-image).
 
 `WebglScene` tracks a DOM element's bounding rect and renders its children into that rectangle on the **same** WebGL context. No extra `<Canvas>` is created. Its camera is independent of the global one, so children are free to move it.
 
@@ -18,7 +18,7 @@ WebGL Scene must be rendered inside a `WebglProvider`. Follow the [installation 
 
 ---
 
-## Basic usage
+## Usage
 
 Pass a `ref` to the DOM element that defines the viewport, and place any R3F content as children. `WebglScene` teleports the children onto the shared canvas for you:
 

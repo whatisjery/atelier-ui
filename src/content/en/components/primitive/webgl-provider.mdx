@@ -1,0 +1,87 @@
+---
+title: "WebGL Provider"
+description: "The root that runs one shared WebGL canvas for the whole page."
+tags: ["Foundation Block", "React Three Fiber"]
+---
+
+WebGL Provider mounts a single `<Canvas>` for the whole page and renders your application inside it. Every other WebGL component draws onto this canvas, so the application holds one WebGL context instead of one per effect.
+
+Add the provider once, at your application root. For installation steps, see the [installation guide](/docs/getting-started/installation).
+
+---
+
+## Install
+
+<InstallTabs name="webgl-provider" />
+
+---
+
+## Usage
+
+Wrap your root layout with the provider. The canvas renders fixed and full screen behind the page, with your content on top:
+
+```tsx title="Root layout"
+import { WebglProvider } from "@/components/webgl-provider"
+
+export default function RootLayout({ children }) {
+    return <WebglProvider>{children}</WebglProvider>
+}
+```
+
+### Pass Canvas options
+
+Any [React Three Fiber Canvas prop](https://r3f.docs.pmnd.rs/api/canvas) passes through the provider, so you can set props such as `gl`, `camera`, and `dpr`. The provider defaults to `eventPrefix="client"` and `dpr={[1, 1.5]}`, which your props override:
+
+```tsx title="Custom Canvas options"
+<WebglProvider dpr={[1, 2]} gl={{ antialias: false }}>
+    {children}
+</WebglProvider>
+```
+
+### Scope the canvas to its container
+
+By default, the canvas covers the viewport. Set `contained` to keep it inside the provider's own element, which must have its own size. The component previews use this to render an effect inside a card rather than across the screen:
+
+```tsx title="Contained canvas"
+<WebglProvider contained className="relative h-96 w-full">
+    <Demo />
+</WebglProvider>
+```
+
+### Wait for the scene to compile
+
+`useWebglReady` precompiles the scene's shaders and returns `false` until they are ready, then `true`. Without it, shaders compile on first render, which can drop frames.
+
+```tsx
+import { useWebglReady } from "@/components/webgl-provider"
+
+function Effect() {
+    const ready = useWebglReady()
+
+    return <mesh visible={ready}>{/* ... */}</mesh>
+}
+```
+
+---
+
+## API
+
+| Name | Type | Default | Description |
+| --- | --- | --- | --- |
+| `children` | `ReactNode` | — | Your app or page content. Rendered as normal DOM next to the canvas. Required. |
+| `contained` | `boolean` | `false` | Scope the canvas to the provider's element instead of the viewport. |
+| `className` | `string` | — | Class on the wrapper element. |
+| `style` | `CSSProperties` | — | Merged into the canvas style. |
+
+All other [React Three Fiber Canvas props](https://r3f.docs.pmnd.rs/api/canvas) are forwarded, except `children` and `eventSource`.
+
+### useWebglReady
+
+| Name | Type | Default | Description |
+| --- | --- | --- | --- |
+| `scene` | `Scene` | current scene | Scene to compile. |
+| `camera` | `Camera` | current camera | Camera to compile against. |
+| `enabled` | `boolean` | `true` | Run the compile step. Set `false` to skip it. |
+| `onReady` | `() => void` | — | Called once the scene is compiled and one frame has passed. |
+
+Returns a `boolean` that is `false` until the scene is ready, then `true`.

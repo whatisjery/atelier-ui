@@ -28,11 +28,28 @@ const components: MDXComponents = {
 
     em: ({ children }) => <em className="font-light text-accent-2">{children}</em>,
 
-    a: ({ children, href }) => (
-        <Link className="text-link no-underline hover:underline" target="_blank" href={href}>
-            {children}
-        </Link>
-    ),
+    a: ({ children, href }) => {
+        const isExternal = typeof href === "string" && /^https?:\/\//.test(href)
+
+        if (isExternal) {
+            return (
+                <a
+                    className="text-link no-underline hover:underline"
+                    href={href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    {children}
+                </a>
+            )
+        }
+
+        return (
+            <Link className="text-link no-underline hover:underline" href={href}>
+                {children}
+            </Link>
+        )
+    },
 
     hr: () => <hr className="border-theme-border" />,
 
