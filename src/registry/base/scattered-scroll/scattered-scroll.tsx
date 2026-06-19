@@ -1,6 +1,7 @@
 import { type MotionValue, motion, useScroll, useTransform } from "motion/react"
 import {
     Children,
+    type ComponentRef,
     isValidElement,
     type ReactNode,
     type RefObject,

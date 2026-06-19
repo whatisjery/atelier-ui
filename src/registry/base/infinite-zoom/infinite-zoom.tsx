@@ -9,6 +9,7 @@ import {
 
 import {
     Children,
+    type ComponentRef,
     isValidElement,
     type ReactElement,
     type ReactNode,
