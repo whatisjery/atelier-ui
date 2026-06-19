@@ -23,11 +23,21 @@ tags: ["React Three Fiber", "Drei"]
 
 <InstallTabs name="liquid-media" />
 
-Liquid Media must be rendered inside a `WebglProvider`. Follow the [installation guide](/docs/getting-started/installation) to add it to your app root.
-
 ---
 
 ## Usage
+
+Add the `WebglProvider` once at the root of your app. See the [installation guide](/docs/getting-started/installation) for details.
+
+```tsx title="Root layout"
+import { WebglProvider } from "@/components/webgl-provider";
+
+export default function RootLayout({ children }) {
+  return <WebglProvider>{children}</WebglProvider>;
+}
+```
+
+Then use it anywhere in your app:
 
 ```tsx
 <LiquidMedia type="image" src="/photo.jpg" alt="A photo" className="w-full h-auto" />

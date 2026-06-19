@@ -14,11 +14,19 @@ A structural building block for effects that need camera motion (dolly, FOV zoom
 
 <InstallTabs name="webgl-scene" />
 
-WebGL Scene must be rendered inside a `WebglProvider`. Follow the [installation guide](/docs/getting-started/installation) to add it to your app root.
-
 ---
 
 ## Usage
+
+Add the `WebglProvider` once at the root of your app. See the [installation guide](/docs/getting-started/installation) for details.
+
+```tsx title="Root layout"
+import { WebglProvider } from "@/components/webgl-provider";
+
+export default function RootLayout({ children }) {
+  return <WebglProvider>{children}</WebglProvider>;
+}
+```
 
 Pass a `ref` to the DOM element that defines the viewport, and place any R3F content as children. `WebglScene` teleports the children onto the shared canvas for you:
 
