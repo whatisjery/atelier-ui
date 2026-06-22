@@ -34,7 +34,7 @@ src/feed
 *.pem
 
 # local AI retro log
-RETRO.md
+RETRO_AI.md
 
 # debug
 npm-debug.log*
