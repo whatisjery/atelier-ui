@@ -63,6 +63,7 @@ type TileProps = {
     index: number
     activeTile: number | null
     ready: boolean
+    interactive: boolean
     setPointer: (on: boolean) => void
     onSelect: () => void
 } & Pick<
@@ -436,6 +437,7 @@ function Tile({
     index,
     activeTile,
     ready,
+    interactive,
     setPointer,
     onSelect,
     reveal,
@@ -535,7 +537,11 @@ function Tile({
             ref={meshRef}
             position={tile.position}
             quaternion={tile.quaternion}
-            raycast={focused || activeTile === null ? THREE.Mesh.prototype.raycast : () => null}
+            raycast={
+                interactive && (focused || activeTile === null)
+                    ? THREE.Mesh.prototype.raycast
+                    : () => null
+            }
             onClick={(event) => {
                 event.stopPropagation()
                 onSelect()
@@ -702,6 +708,7 @@ function SphereScene({
     mouseParallax,
 }: SphereSceneProps) {
     const [revealComplete, setRevealComplete] = useState(false)
+    const interactive = !reveal || revealComplete
     const orientation = useRef({
         spin: 0,
         tilt: 0,
@@ -829,7 +836,7 @@ function SphereScene({
 
     useEffect(() => {
         const element = surface.current
-        if (!element) return
+        if (!element || !interactive) return
 
         const drag = { active: false, x: 0, y: 0, spin: 0, tilt: 0 }
         const DRAG_THRESHOLD = 6
@@ -893,7 +900,7 @@ function SphereScene({
             window.removeEventListener("pointerup", endDrag)
             window.removeEventListener("pointercancel", endDrag)
         }
-    }, [surface, activeTile, orientation])
+    }, [surface, activeTile, orientation, interactive])
 
     useEffect(() => {
         if (!reveal || !ready) return
@@ -1080,6 +1087,7 @@ function SphereScene({
                     index={i}
                     activeTile={activeTile}
                     ready={ready}
+                    interactive={interactive}
                     setPointer={setPointer}
                     onSelect={() => select(i)}
                     reveal={reveal}
