@@ -333,13 +333,14 @@ type PostProcessingProps = {
     surface: RefObject<HTMLElement | null>
     children: ReactNode
     strength: number
+    active: boolean
 }
 
 /*
  * Renders the scene into an off-screen buffer.
  * Applies the lens-blur pass and tracks camera motion.
  */
-function PostProcessing({ surface, children, strength }: PostProcessingProps) {
+function PostProcessing({ surface, children, strength, active }: PostProcessingProps) {
     const gl = useThree((state) => state.gl)
     const camera = useThree((state) => state.camera)
     const contentScene = useMemo(() => new THREE.Scene(), [])
@@ -369,6 +370,14 @@ function PostProcessing({ surface, children, strength }: PostProcessingProps) {
         const screen = screenRef.current
         const { width, height } = bounds.current
         if (!screen) return
+
+        screen.material.uStrength = MathUtils.damp(
+            screen.material.uStrength,
+            active ? 0 : strength,
+            5,
+            delta,
+        )
+
         const cameraZ = camera.position.z
         const previousZ = motion.current.previousZ
         motion.current.previousZ = cameraZ
@@ -412,7 +421,6 @@ function PostProcessing({ surface, children, strength }: PostProcessingProps) {
                 <lensBlurMaterial
                     key={LensBlurMaterial.key}
                     uScene={fbo.texture}
-                    uStrength={strength}
                     transparent
                     premultipliedAlpha
                     depthTest={false}
@@ -1185,7 +1193,11 @@ export function SphereGallery({
                     zIndex={zIndex}
                     transparent={transparent}
                 >
-                    <PostProcessing surface={surface} strength={lensBlur}>
+                    <PostProcessing
+                        surface={surface}
+                        strength={lensBlur}
+                        active={activeTile !== null}
+                    >
                         <SphereScene
                             {...sceneProps}
                             sources={items.map((image) => image.src)}
