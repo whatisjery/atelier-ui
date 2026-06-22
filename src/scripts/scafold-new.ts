@@ -83,6 +83,8 @@ const mdxTemplate: Template = ({ name, Title }) => `\
 title: "${Title}"
 description: "lorem ipsum"
 tags: []
+createdAt: "${new Date().toISOString().slice(0, 10)}"
+updatedAt: "${new Date().toISOString().slice(0, 10)}"
 ---
 
 <DemoPreview name="${name}" />

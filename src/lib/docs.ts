@@ -9,7 +9,6 @@ import { components } from "@/registry"
 import type { CodeFile } from "@/types/code"
 import type { DirMeta, DocNavigation, DocTree } from "@/types/docs"
 import type { TOCItem } from "@/types/toc"
-import { getFileGitDates } from "./git"
 import { slugify } from "./utils"
 
 const DOCS_DIR = path.join(process.cwd(), "src/content")
@@ -126,7 +125,7 @@ function buildFileNode(fullPath: string, urlPath: string, item: string): DocTree
     const fileContents = fs.readFileSync(fullPath, "utf-8")
     const { data } = matter(fileContents)
     const isPro = components.some((component) => component.name === slug && component.pro)
-    const { createdAt, updatedAt } = getFileGitDates(fullPath)
+    const { createdAt, updatedAt } = data
 
     return {
         type: "file",
