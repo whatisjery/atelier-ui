@@ -33,6 +33,9 @@ src/feed
 .DS_Store
 *.pem
 
+# local AI retro log
+RETRO.md
+
 # debug
 npm-debug.log*
 yarn-debug.log*
