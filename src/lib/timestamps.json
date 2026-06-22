@@ -1,142 +1,146 @@
 {
-    "src/content/en/collage/fluid-scene.mdx": {
-        "createdAt": "2026-05-31T21:36:53+02:00",
-        "updatedAt": "2026-05-31T21:36:53+02:00"
-    },
-    "src/content/en/getting-started/code-of-conduct.mdx": {
-        "createdAt": "2026-05-07T21:23:51+02:00",
-        "updatedAt": "2026-05-07T21:23:51+02:00"
-    },
-    "src/content/en/getting-started/contribution.mdx": {
-        "createdAt": "2026-05-07T21:23:51+02:00",
-        "updatedAt": "2026-05-09T20:23:04+02:00"
-    },
-    "src/content/en/getting-started/installation.mdx": {
-        "createdAt": "2026-05-07T21:23:51+02:00",
-        "updatedAt": "2026-06-19T18:18:09+02:00"
-    },
-    "src/content/en/components/background/dither-flow.mdx": {
-        "createdAt": null,
-        "updatedAt": null
-    },
-    "src/content/en/components/background/glowing-fog.mdx": {
-        "createdAt": null,
-        "updatedAt": null
-    },
-    "src/content/en/components/background/halftone-glow.mdx": {
-        "createdAt": null,
-        "updatedAt": null
-    },
-    "src/content/en/components/background/sphere-gallery.mdx": {
-        "createdAt": "2026-06-18T15:22:55+02:00",
-        "updatedAt": "2026-06-19T18:18:09+02:00"
-    },
-    "src/content/en/components/cursor/fluid-distortion.mdx": {
-        "createdAt": "2026-05-07T21:23:51+02:00",
-        "updatedAt": "2026-06-16T21:00:10+02:00"
-    },
-    "src/content/en/components/cursor/image-trail.mdx": {
-        "createdAt": "2026-05-07T21:23:51+02:00",
-        "updatedAt": "2026-06-16T21:00:10+02:00"
-    },
-    "src/content/en/components/cursor/lens-media.mdx": {
-        "createdAt": "2026-05-31T20:27:18+02:00",
-        "updatedAt": "2026-06-16T21:00:10+02:00"
-    },
-    "src/content/en/components/cursor/liquid-media.mdx": {
-        "createdAt": "2026-05-31T20:27:18+02:00",
-        "updatedAt": "2026-06-16T21:00:10+02:00"
-    },
-    "src/content/en/components/cursor/magnetic-dot-grid.mdx": {
-        "createdAt": "2026-05-07T21:23:51+02:00",
-        "updatedAt": "2026-06-16T21:00:10+02:00"
-    },
-    "src/content/en/components/cursor/pixel-media.mdx": {
-        "createdAt": "2026-05-31T20:27:18+02:00",
-        "updatedAt": "2026-06-16T21:00:10+02:00"
-    },
-    "src/content/en/components/cursor/pixel-trail.mdx": {
-        "createdAt": "2026-05-07T21:23:51+02:00",
-        "updatedAt": "2026-06-16T21:00:10+02:00"
-    },
-    "src/content/en/components/primitive/text-split.mdx": {
-        "createdAt": "2026-05-24T18:46:16+02:00",
-        "updatedAt": "2026-06-19T18:18:09+02:00"
-    },
-    "src/content/en/components/primitive/webgl-image.mdx": {
-        "createdAt": "2026-05-24T20:08:58+02:00",
-        "updatedAt": "2026-06-19T18:18:09+02:00"
-    },
-    "src/content/en/components/primitive/webgl-provider.mdx": {
-        "createdAt": "2026-06-19T18:18:09+02:00",
-        "updatedAt": "2026-06-19T18:18:09+02:00"
-    },
-    "src/content/en/components/primitive/webgl-scene.mdx": {
-        "createdAt": "2026-06-18T15:22:55+02:00",
-        "updatedAt": "2026-06-19T18:18:09+02:00"
-    },
-    "src/content/en/components/primitive/webgl-text.mdx": {
-        "createdAt": "2026-05-24T19:32:15+02:00",
-        "updatedAt": "2026-06-19T18:18:09+02:00"
-    },
-    "src/content/en/components/primitive/webgl-video.mdx": {
-        "createdAt": "2026-05-31T20:27:18+02:00",
-        "updatedAt": "2026-06-19T18:18:09+02:00"
-    },
-    "src/content/en/components/scroll/curve-media.mdx": {
-        "createdAt": "2026-05-31T21:37:00+02:00",
-        "updatedAt": "2026-06-16T21:00:10+02:00"
-    },
-    "src/content/en/components/scroll/elastic-stick.mdx": {
-        "createdAt": null,
-        "updatedAt": null
-    },
-    "src/content/en/components/scroll/infinite-gallery.mdx": {
-        "createdAt": "2026-05-07T21:23:51+02:00",
-        "updatedAt": "2026-06-16T21:00:10+02:00"
-    },
-    "src/content/en/components/scroll/infinite-parallax.mdx": {
-        "createdAt": "2026-05-07T21:23:51+02:00",
-        "updatedAt": "2026-06-16T21:00:10+02:00"
-    },
-    "src/content/en/components/scroll/infinite-zoom.mdx": {
-        "createdAt": "2026-05-07T21:23:51+02:00",
-        "updatedAt": "2026-06-16T21:00:10+02:00"
-    },
-    "src/content/en/components/scroll/scattered-scroll.mdx": {
-        "createdAt": "2026-05-07T21:23:51+02:00",
-        "updatedAt": "2026-06-16T21:00:10+02:00"
-    },
-    "src/content/en/components/text/pixelated-text.mdx": {
-        "createdAt": "2026-05-07T21:23:51+02:00",
-        "updatedAt": "2026-06-16T21:00:10+02:00"
-    },
-    "src/content/en/components/text/text-bounce.mdx": {
-        "createdAt": "2026-05-10T00:44:56+02:00",
-        "updatedAt": "2026-06-16T21:00:10+02:00"
-    },
-    "src/content/en/components/text/text-fluid.mdx": {
-        "createdAt": "2026-05-24T19:25:09+02:00",
-        "updatedAt": "2026-06-16T21:00:10+02:00"
-    },
-    "src/content/en/components/text/text-roll.mdx": {
-        "createdAt": "2026-05-07T21:23:51+02:00",
-        "updatedAt": "2026-06-16T21:00:10+02:00"
-    },
-    "src/content/en/components/text/text-scramble.mdx": {
-        "createdAt": "2026-05-24T18:15:27+02:00",
-        "updatedAt": "2026-06-16T21:00:10+02:00"
-    },
-    "src/content/en/components/transition/clip-reveal.mdx": {
-        "createdAt": "2026-05-28T21:03:53+02:00",
-        "updatedAt": "2026-06-16T21:00:10+02:00"
-    },
-    "src/content/en/components/transition/stripe-wipe.mdx": {
-        "createdAt": "2026-05-29T19:15:54+02:00",
-        "updatedAt": "2026-06-16T21:00:10+02:00"
-    },
-    "src/content/en/components/transition/sweep-exit.mdx": {
-        "createdAt": "2026-05-28T21:03:53+02:00",
-        "updatedAt": "2026-06-16T21:00:10+02:00"
-    }
+  "src/content/en/collage/fluid-scene.mdx": {
+    "createdAt": "2026-05-31T21:36:53+02:00",
+    "updatedAt": "2026-05-31T21:36:53+02:00"
+  },
+  "src/content/en/getting-started/code-of-conduct.mdx": {
+    "createdAt": "2026-05-07T21:23:51+02:00",
+    "updatedAt": "2026-05-07T21:23:51+02:00"
+  },
+  "src/content/en/getting-started/contribution.mdx": {
+    "createdAt": "2026-05-07T21:23:51+02:00",
+    "updatedAt": "2026-05-09T20:23:04+02:00"
+  },
+  "src/content/en/getting-started/installation.mdx": {
+    "createdAt": "2026-05-07T21:23:51+02:00",
+    "updatedAt": "2026-06-19T18:18:09+02:00"
+  },
+  "src/content/en/components/background/dither-flow.mdx": {
+    "createdAt": null,
+    "updatedAt": null
+  },
+  "src/content/en/components/background/glowing-fog.mdx": {
+    "createdAt": null,
+    "updatedAt": null
+  },
+  "src/content/en/components/background/halftone-glow.mdx": {
+    "createdAt": null,
+    "updatedAt": null
+  },
+  "src/content/en/components/background/sphere-gallery.mdx": {
+    "createdAt": "2026-06-18T15:22:55+02:00",
+    "updatedAt": "2026-06-19T21:06:46+02:00"
+  },
+  "src/content/en/components/cursor/fluid-distortion.mdx": {
+    "createdAt": "2026-05-07T21:23:51+02:00",
+    "updatedAt": "2026-06-19T21:06:46+02:00"
+  },
+  "src/content/en/components/cursor/image-trail.mdx": {
+    "createdAt": "2026-05-07T21:23:51+02:00",
+    "updatedAt": "2026-06-18T15:22:59+02:00"
+  },
+  "src/content/en/components/cursor/lens-media.mdx": {
+    "createdAt": "2026-05-31T20:27:18+02:00",
+    "updatedAt": "2026-06-19T21:06:46+02:00"
+  },
+  "src/content/en/components/cursor/liquid-media.mdx": {
+    "createdAt": "2026-05-31T20:27:18+02:00",
+    "updatedAt": "2026-06-19T21:06:46+02:00"
+  },
+  "src/content/en/components/cursor/magnetic-dot-grid.mdx": {
+    "createdAt": "2026-05-07T21:23:51+02:00",
+    "updatedAt": "2026-06-16T21:00:10+02:00"
+  },
+  "src/content/en/components/cursor/pixel-media.mdx": {
+    "createdAt": "2026-05-31T20:27:18+02:00",
+    "updatedAt": "2026-06-19T21:06:46+02:00"
+  },
+  "src/content/en/components/cursor/pixel-trail.mdx": {
+    "createdAt": "2026-05-07T21:23:51+02:00",
+    "updatedAt": "2026-06-16T21:00:10+02:00"
+  },
+  "src/content/en/components/primitive/text-split.mdx": {
+    "createdAt": "2026-05-24T18:46:16+02:00",
+    "updatedAt": "2026-06-19T18:18:09+02:00"
+  },
+  "src/content/en/components/primitive/webgl-image.mdx": {
+    "createdAt": "2026-05-24T20:08:58+02:00",
+    "updatedAt": "2026-06-19T21:06:46+02:00"
+  },
+  "src/content/en/components/primitive/webgl-provider.mdx": {
+    "createdAt": "2026-06-19T18:18:09+02:00",
+    "updatedAt": "2026-06-19T19:36:37+02:00"
+  },
+  "src/content/en/components/primitive/webgl-scene.mdx": {
+    "createdAt": "2026-06-18T15:22:55+02:00",
+    "updatedAt": "2026-06-19T21:06:46+02:00"
+  },
+  "src/content/en/components/primitive/webgl-text.mdx": {
+    "createdAt": "2026-05-24T19:32:15+02:00",
+    "updatedAt": "2026-06-19T21:06:46+02:00"
+  },
+  "src/content/en/components/primitive/webgl-video.mdx": {
+    "createdAt": "2026-05-31T20:27:18+02:00",
+    "updatedAt": "2026-06-19T21:06:46+02:00"
+  },
+  "src/content/en/components/scroll/curve-media.mdx": {
+    "createdAt": "2026-05-31T21:37:00+02:00",
+    "updatedAt": "2026-06-19T21:06:46+02:00"
+  },
+  "src/content/en/components/scroll/elastic-stick.mdx": {
+    "createdAt": null,
+    "updatedAt": null
+  },
+  "src/content/en/components/scroll/infinite-gallery.mdx": {
+    "createdAt": "2026-05-07T21:23:51+02:00",
+    "updatedAt": "2026-06-18T15:22:59+02:00"
+  },
+  "src/content/en/components/scroll/infinite-parallax.mdx": {
+    "createdAt": "2026-05-07T21:23:51+02:00",
+    "updatedAt": "2026-06-16T21:00:10+02:00"
+  },
+  "src/content/en/components/scroll/infinite-zoom.mdx": {
+    "createdAt": "2026-05-07T21:23:51+02:00",
+    "updatedAt": "2026-06-16T21:00:10+02:00"
+  },
+  "src/content/en/components/scroll/pixel-scroll.mdx": {
+    "createdAt": null,
+    "updatedAt": null
+  },
+  "src/content/en/components/scroll/scattered-scroll.mdx": {
+    "createdAt": "2026-05-07T21:23:51+02:00",
+    "updatedAt": "2026-06-16T21:00:10+02:00"
+  },
+  "src/content/en/components/text/pixelated-text.mdx": {
+    "createdAt": "2026-05-07T21:23:51+02:00",
+    "updatedAt": "2026-06-16T21:00:10+02:00"
+  },
+  "src/content/en/components/text/text-bounce.mdx": {
+    "createdAt": "2026-05-10T00:44:56+02:00",
+    "updatedAt": "2026-06-16T21:00:10+02:00"
+  },
+  "src/content/en/components/text/text-fluid.mdx": {
+    "createdAt": "2026-05-24T19:25:09+02:00",
+    "updatedAt": "2026-06-19T21:06:46+02:00"
+  },
+  "src/content/en/components/text/text-roll.mdx": {
+    "createdAt": "2026-05-07T21:23:51+02:00",
+    "updatedAt": "2026-06-18T15:23:11+02:00"
+  },
+  "src/content/en/components/text/text-scramble.mdx": {
+    "createdAt": "2026-05-24T18:15:27+02:00",
+    "updatedAt": "2026-06-16T21:00:10+02:00"
+  },
+  "src/content/en/components/transition/clip-reveal.mdx": {
+    "createdAt": "2026-05-28T21:03:53+02:00",
+    "updatedAt": "2026-06-18T15:23:11+02:00"
+  },
+  "src/content/en/components/transition/stripe-wipe.mdx": {
+    "createdAt": "2026-05-29T19:15:54+02:00",
+    "updatedAt": "2026-06-18T15:23:11+02:00"
+  },
+  "src/content/en/components/transition/sweep-exit.mdx": {
+    "createdAt": "2026-05-28T21:03:53+02:00",
+    "updatedAt": "2026-06-18T15:23:11+02:00"
+  }
 }

@@ -281,4 +281,12 @@ export const components: TRegistryComponent[] = [
         dependencies: ["three", "@react-three/fiber", "@react-three/drei", "motion"],
         registryDependencies: ["webgl-scene", "webgl-provider"],
     },
+    {
+        name: "pixel-scroll",
+        files: ["pixel-scroll.tsx"],
+        description: "A grid of pixels that fill in or clear out as you scroll, with optional color hints.",
+        shared: [],
+        dependencies: ["motion"],
+        registryDependencies: [],
+    },
 ]

@@ -1,0 +1,96 @@
+---
+title: "Pixel Scroll"
+description: "A grid of pixels that fill in or clear out as you scroll, with optional color hints."
+tags: ["Motion", "Canvas", "Lenis", "Tailwind CSS"]
+---
+
+import Alert from '@/components/ui/Alert'
+import { TriangleAlert } from 'lucide-react'
+
+<DemoPreview
+  name="pixel-scroll"
+  controls={{
+    density: { type: "slider", value: 20, min: 4, max: 200, step: 1 },
+    colorRatio: { type: "slider", value: 0.25, min: 0, max: 1, step: 0.05 },
+    randomness: { type: "slider", value: 0.4, min: 0, max: 1, step: 0.05 },
+  }}
+/>
+
+---
+
+## Install
+
+<InstallTabs name="pixel-scroll" />
+
+---
+
+## Usage
+
+By default the reveal is driven by the component's own scroll position, filling in as it passes through the viewport.
+
+```tsx
+<div className="h-screen" />
+<PixelScroll className="h-screen bg-black text-white" />
+<div className="h-screen" />
+```
+
+### Color
+
+- `text-white` sets the pixel color.
+- `bg-black` sets the background.
+
+```tsx
+<PixelScroll className="size-full bg-white text-black" />
+```
+
+### Direction
+
+- `"cover"` fills the grid in, bottom-to-top, as you scroll.
+- `"clear"` starts filled and clears out, bottom-to-top, as you scroll.
+- `"sweep"` fills in, then clears out, within a single scroll.
+
+```tsx title="direction=cover"
+<PixelScroll direction="cover" className="size-full bg-black text-white" />
+```
+
+```tsx title="direction=clear"
+<PixelScroll direction="clear" className="size-full bg-black text-white" />
+```
+
+```tsx title="direction=sweep"
+<PixelScroll direction="sweep" className="size-full bg-black text-white" />
+```
+
+### Pinned to a scroll section
+
+Pass `scrollTargetRef` with a `sticky` wrapper to pin the canvas while a taller section scrolls past.
+
+In the demo we pin it over a fixed div so the grid looks like it covers the content.
+
+```tsx
+const scrollTargetRef = useRef<HTMLDivElement>(null)
+
+<div ref={scrollTargetRef} className="relative h-[300vh]">
+  <div className="sticky top-0 h-screen">
+    <PixelScroll scrollTargetRef={scrollTargetRef} className="size-full bg-black text-white" />
+  </div>
+</div>
+```
+
+<Alert icon={<TriangleAlert strokeWidth={1.5} className="size-6" />} title="Section height" variant="neutral">
+  When using this pinned scroll technique, the scroll section must be taller than `100vh`, otherwise the grid snaps straight to filled.
+</Alert>
+
+---
+
+## API
+
+| Name | Type | Default | Description |
+| ---- | ---- | ------- | ----------- |
+| `density` | `number` | `20` | Number of pixel columns across the canvas, capped at 200. The row count is derived from the canvas height so pixels stay square. |
+| `colors` | `string[]` | `[]` | CSS colors a pixel can briefly show before it turns the text color. When empty, pixels turn the text color with no color hint. |
+| `colorRatio` | `number` | `0.25` | Fraction of pixels that show a color hint, from 0 to 1. Has no effect when `colors` is empty. |
+| `randomness` | `number` | `0.4` | How far each pixel's fill point deviates from the bottom-to-top gradient, from 0 to 1. At `0` the grid fills as an ordered gradient; at `1` the fill points are fully scattered. |
+| `direction` | `"cover" \| "clear" \| "sweep"` | `"cover"` | How the grid responds to scroll. `"cover"` fills it in, `"clear"` empties it, and `"sweep"` does both in one scroll. |
+| `scrollTargetRef` | `RefObject<HTMLElement \| null>` | — | Element whose scroll position drives the reveal. Defaults to the component's own canvas. |
+| `className` | `string` | — | Classes forwarded to the canvas element. |
