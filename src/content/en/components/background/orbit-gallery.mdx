@@ -1,0 +1,111 @@
+---
+title: "Orbit Gallery"
+description: "A WebGL gallery that places images on rotating rings. Scroll to spin them, click an image to zoom in."
+tags: ["React Three Fiber", "Drei", "Motion", "Tailwind CSS"]
+createdAt: "2026-06-24"
+updatedAt: "2026-07-02"
+---
+
+<DemoPreview
+  name="orbit-gallery"
+  controls={{
+    radius: { type: "slider", value: 2.8, min: 0.5, max: 5, step: 0.1 },
+    rings: { type: "slider", value: 3, min: 1, max: 4, step: 1 },
+    ringGap: { type: "slider", value: 1.6, min: 0.3, max: 2, step: 0.1 },
+    tileHeight: { type: "slider", value: 0.7, min: 0.1, max: 2, step: 0.1 },
+    cornerRadius: { type: "slider", value: 0.08, min: 0, max: 0.3, step: 0.01 },
+    spinSpeed: { type: "slider", value: 1, min: -10, max: 10, step: 0.5 },
+    spinStagger: { type: "slider", value: 0.2, min: 0, max: 2.5, step: 0.1 },
+    wheelMultiplier: { type: "slider", value: 3, min: 0, max: 4, step: 0.1 },
+    revealDuration: { type: "slider", value: 2, min: 0, max: 4, step: 0.1 },
+    focusDuration: { type: "slider", value: 1, min: 0, max: 4, step: 0.1 },
+  }}
+/>
+
+---
+
+## Install
+
+<InstallTabs name="orbit-gallery" />
+
+---
+
+## Usage
+
+Add the `WebglProvider` once at the root of your app. See the [installation guide](/docs/getting-started/installation) for details.
+
+```tsx title="Root layout"
+import { WebglProvider } from "@/components/webgl-provider";
+
+export default function RootLayout({ children }) {
+  return <WebglProvider>{children}</WebglProvider>;
+}
+```
+
+Pass your images as an `items` array. They spread evenly around each ring. Each item is a `src` and `alt`.
+
+```tsx title="Basic"
+const ITEMS = [
+  { src: "/a.jpg", alt: "Project A" },
+  { src: "/b.jpg", alt: "Project B" },
+  { src: "/c.jpg", alt: "Project C" },
+]
+
+<OrbitGallery items={ITEMS} className="fixed inset-0" />
+```
+
+### Sizing
+
+The size comes from the element you render it into. Use `className` to decide its size.
+
+```tsx title="Sizing"
+{/* Fills the viewport */}
+<OrbitGallery items={ITEMS} className="fixed inset-0 w-screen h-screen" />
+
+{/* Sits in a sized container */}
+<OrbitGallery items={ITEMS} className="h-[500px] w-[500px]" />
+```
+
+### Post-processing
+
+Orbit Gallery renders through a [WebGL Scene](/docs/components/primitive/webgl-scene). By default that scene draws above other content. Set `mode="texture"` to render it into post-processing instead, so effects like `FluidDistortion` apply to the ring.
+
+```tsx title="Post-processing"
+<FluidDistortion />
+
+<OrbitGallery items={ITEMS} mode="texture" className="fixed inset-0" />
+```
+
+---
+
+## API
+
+| Name        | Type                  | Default | Description                                                                       |
+| ----------- | --------------------- | ------- | --------------------------------------------------------------------------------- |
+| items       | `OrbitGalleryItem[]`  | -       | The images placed around the rings, as `{ src, alt }`. They repeat to fill each ring. |
+| radius      | `number`              | `2.8`   | Radius of the innermost ring, in world units.                                     |
+| rings       | `number`              | `3`     | Number of rings around the center.                                                |
+| ringGap     | `number`              | `1.6`   | Distance between two neighboring rings, in world units.                           |
+| tileHeight  | `number`              | `0.7`   | Height of each image tile. Width follows from the image aspect ratio.             |
+| cornerRadius| `number`              | `0.08`  | Corner radius of each tile, in world units. `0` keeps square corners.             |
+| spinSpeed   | `number`              | `1`     | Revolutions per minute of the innermost ring. Negative values spin the other way. |
+| spinStagger | `number`              | `0.2`   | Speed ratio between one ring and the next. Below `1` outer rings spin slower, above `1` faster. |
+| wheelMultiplier | `number`           | `3`     | How much the scroll wheel accelerates the spin. `0` disables it.                  |
+| revealDuration | `number`           | `2`     | Duration of the reveal animation, in seconds.                                     |
+| focusDuration | `number`            | `1`     | Duration of the click-to-focus zoom and the ring fade, in seconds.                |
+| className   | `string`              | -       | Classes for the interaction surface the gallery renders into.                     |
+
+It also forwards [WebGL Scene](/docs/components/primitive/webgl-scene) props: `mode`, `priority`, `zIndex`, and `transparent`.
+
+---
+
+## Credits
+
+[React Three Fiber](https://r3f.docs.pmnd.rs/)  
+React renderer for Three.js used for the WebGL scene.
+
+[Drei](https://github.com/pmndrs/drei)  
+Helper used to load the image textures.
+
+[Cosmos](https://www.cosmos.so/)   
+Demo images sourced from the website. If you don't want your image shown in this demo, [send me an email](mailto:jeremienallet@gmail.com) and I'll remove it.

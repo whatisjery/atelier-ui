@@ -289,4 +289,13 @@ export const components: TRegistryComponent[] = [
         dependencies: ["motion"],
         registryDependencies: [],
     },
+    {
+        name: "orbit-gallery",
+        files: ["orbit-gallery.tsx"],
+        description:
+            "WebGL gallery of images placed on rotating rings. Scroll to spin them, click an image to zoom in.",
+        shared: [],
+        dependencies: ["three", "@react-three/fiber", "@react-three/drei", "motion"],
+        registryDependencies: ["webgl-scene", "webgl-provider"],
+    },
 ]
