@@ -2,7 +2,7 @@
 
 Source: https://atelier-ui.com/docs
 
-Generated: 2026-07-02T18:17:34.390Z
+Generated: 2026-07-05T13:15:07.992Z
 
 ---
 
@@ -359,6 +359,42 @@ Helper used to load the image textures.
 
 [Cosmos](https://www.cosmos.so/)\
 Demo images sourced from the website. If you don't want your image shown in this demo, [send me an email](mailto:jeremienallet@gmail.com) and I'll remove it.
+
+
+============================================================
+## Edge Bounce
+> A wrapper that bounces away from the cursor on hover and springs back into place.
+
+Source file: components/cursor/edge-bounce.mdx
+
+***
+
+## Install
+
+***
+
+## Usage
+
+```tsx title="Default"
+<EdgeBounce className="w-64">
+  <img src="/images/photo.webp" alt="Photo" className="rounded-md" />
+</EdgeBounce>
+```
+
+***
+
+## API
+
+| Name          | Type        | Default | Description                                                                             |
+| ------------- | ----------- | ------- | --------------------------------------------------------------------------------------- |
+| `children`    | `ReactNode` | —       | Content to render inside the wrapper. Required.                                         |
+| `className`   | `string`    | —       | Class names applied to the wrapper.                                                     |
+| `pause`       | `number`    | `0`     | Delay in seconds before springing back.                                                 |
+| `outDuration` | `number`    | `0.35`  | Duration in seconds for the wrapper moving away.                                        |
+| `inDuration`  | `number`    | `1`     | Duration in seconds for the spring-back animation.                                      |
+| `bounce`      | `number`    | `0.3`   | Bounciness of the spring-back. `0` = no overshoot, `1` = maximum oscillation.           |
+| `distance`    | `number`    | `35`    | Maximum pixels the wrapper moves from its origin, reached at full pointer speed.        |
+| `rotation`    | `number`    | `25`    | Maximum rotation in degrees, following the pointer's travel direction. `0` disables it. |
 
 
 ============================================================
