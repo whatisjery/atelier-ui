@@ -1,6 +1,5 @@
-import { animate } from "motion"
+import { useAnimate } from "motion/react"
 import type React from "react"
-import { type ComponentRef, useRef } from "react"
 import type { RenderProp } from "../../hooks/use-render"
 import { TextSplit } from "../text-split/text-split"
 
@@ -23,10 +22,10 @@ type LetterProps = { char: string } & Required<
 >
 
 function Letter({ char, pause, outDuration, inDuration, bounce, distance, rotation }: LetterProps) {
-    const ref = useRef<ComponentRef<"span">>(null)
+    const [scope, animate] = useAnimate<HTMLSpanElement>()
 
     const handlePointerEnter = async (event: React.PointerEvent<HTMLSpanElement>) => {
-        const el = ref.current
+        const el = scope.current
         if (!el) return
 
         const rect = el.getBoundingClientRect()
@@ -55,7 +54,7 @@ function Letter({ char, pause, outDuration, inDuration, bounce, distance, rotati
 
     return (
         <span
-            ref={ref}
+            ref={scope}
             className="inline-block will-change-transform whitespace-pre"
             onPointerEnter={handlePointerEnter}
         >
