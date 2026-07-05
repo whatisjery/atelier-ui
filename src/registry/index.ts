@@ -298,4 +298,12 @@ export const components: TRegistryComponent[] = [
         dependencies: ["three", "@react-three/fiber", "@react-three/drei", "motion"],
         registryDependencies: ["webgl-scene", "webgl-provider"],
     },
+    {
+        name: "edge-bounce",
+        files: ["edge-bounce.tsx"],
+        description: "Wrapper that bounces away from the cursor's entry point on hover",
+        shared: [],
+        dependencies: ["motion"],
+        registryDependencies: [],
+    },
 ]
