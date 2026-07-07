@@ -36,6 +36,9 @@ src/feed
 # local AI retro log
 RETRO_AI.md
 
+# local planning notes
+note.md
+
 # debug
 npm-debug.log*
 yarn-debug.log*
