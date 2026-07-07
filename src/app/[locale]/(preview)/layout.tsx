@@ -21,6 +21,10 @@ const serif = Instrument_Serif({
     style: ["normal", "italic"],
 })
 
+export function generateStaticParams() {
+    return routing.locales.map((locale) => ({ locale }))
+}
+
 type PreviewLayoutProps = {
     children: React.ReactNode
     params: Promise<{ locale: string }>
