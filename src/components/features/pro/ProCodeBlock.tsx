@@ -40,7 +40,12 @@ export default function ProCodeBlock({
             setShikiCode(null)
 
             try {
-                const data = await fetchProCode(name, key, controller.signal)
+                const data = await fetchProCode(
+                    name,
+                    key,
+                    controller.signal,
+                    mode === "preview" ? { type: "demo" } : undefined,
+                )
                 const code = data.files[0].content
 
                 const { highlighter } = await getCodeThemeColors()
@@ -61,7 +66,7 @@ export default function ProCodeBlock({
 
         loadProCode()
         return () => controller.abort()
-    }, [name, licenseKey, lang, retryKey])
+    }, [name, licenseKey, lang, mode, retryKey])
 
     if (error)
         return (

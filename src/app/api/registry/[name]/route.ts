@@ -48,6 +48,22 @@ export async function GET(request: NextRequest, { params }: GetRouteParams) {
         return NextResponse.json({ error: "Invalid license key" }, { status: 401 })
     }
 
+    if (request.nextUrl.searchParams.get("type") === "demo") {
+        const demoDir = path.join(REGISTRY_DIR, "demos", name)
+        const files = fs.readdirSync(demoDir).map((filePath) => ({
+            path: filePath,
+            content: fs.readFileSync(path.join(demoDir, filePath), "utf-8"),
+        }))
+
+        return NextResponse.json({
+            name: component.name,
+            description: component.description,
+            dependencies: component.dependencies,
+            shared: [],
+            files,
+        })
+    }
+
     const baseDir = path.join(REGISTRY_DIR, "base", name)
 
     const files = component.files.map((filePath) => ({

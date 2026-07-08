@@ -20,8 +20,14 @@ export async function signIn(email: string) {
     }
 }
 
-export async function fetchProCode(name: string, licenseKey: string | null | undefined, signal?: AbortSignal) {
-    const res = await fetch(`/api/registry/${name}`, {
+export async function fetchProCode(
+    name: string,
+    licenseKey: string | null | undefined,
+    signal?: AbortSignal,
+    options?: { type?: "demo" },
+) {
+    const query = options?.type ? `?type=${options.type}` : ""
+    const res = await fetch(`/api/registry/${name}${query}`, {
         headers: { Authorization: `Bearer ${licenseKey ?? ""}` },
         signal,
     })
