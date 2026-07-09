@@ -7,6 +7,7 @@ import remarkGfm from "remark-gfm"
 import remarkMdx from "remark-mdx"
 import type { Node, Parent } from "unist"
 import { visit } from "unist-util-visit"
+import { overlayRoots } from "@/lib/pro-overlay"
 
 const CONTENT_DIR = path.join(process.cwd(), "src/content/en")
 const OUTPUT_FILE = path.join(process.cwd(), "public/llms-full.txt")
@@ -48,23 +49,23 @@ function collectMdxFiles(dir: string): string[] {
     return files.sort()
 }
 
-function relativePath(file: string): string {
-    return path.relative(CONTENT_DIR, file)
-}
-
 function buildOutput(): string {
-    const files = collectMdxFiles(CONTENT_DIR)
+    // Public content plus the pro submodule overlay, each file tagged with the
+    // root it came from so its docs-relative path stays correct.
+    const files = overlayRoots(CONTENT_DIR).flatMap((root) =>
+        collectMdxFiles(root).map((file) => ({ file, root })),
+    )
     const sections: string[] = [
-        "# Atelier UI — Full Documentation\n",
+        "# Atelier UI - Full Documentation\n",
         "Source: https://atelier-ui.com/docs\n",
         `Generated: ${new Date().toISOString()}\n`,
         "---\n",
     ]
 
-    for (const file of files) {
+    for (const { file, root } of files) {
         const raw = fs.readFileSync(file, "utf-8")
         const { data: frontmatter, content } = matter(raw)
-        const rel = relativePath(file)
+        const rel = path.relative(root, file)
         const title = frontmatter.title ?? rel
         const description = frontmatter.description ?? ""
 

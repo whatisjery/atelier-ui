@@ -1,8 +1,8 @@
-# Atelier UI — Full Documentation
+# Atelier UI - Full Documentation
 
 Source: https://atelier-ui.com/docs
 
-Generated: 2026-07-05T13:15:07.992Z
+Generated: 2026-07-08T22:41:15.907Z
 
 ---
 
@@ -27,128 +27,6 @@ Source file: collage/fluid-scene.mdx
 ***
 
 ## Source
-
-
-============================================================
-## Dither Flow
-> A dithered WebGL flow field background.
-
-Source file: components/background/dither-flow.mdx
-
-## Usage
-
-Add the `WebglProvider` once at the root of your app. See the [installation guide](/docs/getting-started/installation) for details.
-
-```tsx title="Root layout"
-import { WebglProvider } from "@/components/webgl-provider";
-
-export default function RootLayout({ children }) {
-  return <WebglProvider>{children}</WebglProvider>;
-}
-```
-
-Then use it anywhere in your app:
-
-```tsx
-<DitherFlow />
-```
-
-***
-
-## API
-
-| Name           | Type                | Default     | Description                                                 |
-| -------------- | ------------------- | ----------- | ----------------------------------------------------------- |
-| speed          | `number`            | `1.5`       | Animation speed of the flow field.                          |
-| scale          | `number`            | `5`         | Scale of the flow pattern.                                  |
-| ditherSize     | `number`            | `2.5`       | Size of each dither cell in pixels.                         |
-| tones          | `number`            | `3`         | Number of levels. Higher values produce smoother gradients. |
-| colorA         | `string`            | `"#000000"` | Dark tone color.                                            |
-| colorB         | `string`            | `"#ff0000"` | Light tone color.                                           |
-| onTextureReady | `(texture) => void` | `undefined` | Returns the rendered effect as a texture.                   |
-
-
-============================================================
-## Glowing Fog
-> Dynamic fog and light beam cursor follow effect.
-
-Source file: components/background/glowing-fog.mdx
-
-## Usage
-
-Add the `WebglProvider` once at the root of your app. See the [installation guide](/docs/getting-started/installation) for details.
-
-```tsx title="Root layout"
-import { WebglProvider } from "@/components/webgl-provider";
-
-export default function RootLayout({ children }) {
-  return <WebglProvider>{children}</WebglProvider>;
-}
-```
-
-Then use it anywhere in your app:
-
-```tsx
-<GlowingFog />
-```
-
-***
-
-## API
-
-| Name           | Type                | Default     | Description                                          |
-| -------------- | ------------------- | ----------- | ---------------------------------------------------- |
-| speed          | `number`            | `18`        | Animation speed of the effect.                       |
-| beamColor      | `string`            | `"#6031ff"` | Color of the central light beam.                     |
-| beamX          | `number`            | `0.5`       | Horizontal position of the beam.                     |
-| beamY          | `number`            | `0.5`       | Vertical position of the beam.                       |
-| beamScale      | `number`            | `0.5`       | Intensity / size of the beam glow.                   |
-| fogDensity     | `number`            | `1`         | Density of the fog.                                  |
-| grainIntensity | `number`            | `0.1`       | Amount of grain.                                     |
-| mouseFollow    | `number`            | `0.2`       | Strength of mouse-based parallax follow on the beam. |
-| onTextureReady | `(texture) => void` | `undefined` | Returns the rendered result as a texture.            |
-
-***
-
-
-============================================================
-## Halftone Glow
-> A WebGL pulsing glow effect with halftone rendering.
-
-Source file: components/background/halftone-glow.mdx
-
-## Usage
-
-Add the `WebglProvider` once at the root of your app. See the [installation guide](/docs/getting-started/installation) for details.
-
-```tsx title="Root layout"
-import { WebglProvider } from "@/components/webgl-provider";
-
-export default function RootLayout({ children }) {
-  return <WebglProvider>{children}</WebglProvider>;
-}
-```
-
-Then use it anywhere in your app:
-
-```tsx
-<HalftoneGlow />
-```
-
-***
-
-## API
-
-| Name           | Type                | Default     | Description                               |
-| -------------- | ------------------- | ----------- | ----------------------------------------- |
-| speed          | `number`            | `16`        | Pulse speed.                              |
-| blurAmount     | `number`            | `0.2`       | Amount of blur.                           |
-| edgeSize       | `number`            | `10`        | Thickness of the edge glow.               |
-| edgeDistortion | `number`            | `0.02`      | How much noise warps the edge glow.       |
-| ringDistortion | `number`            | `0.1`       | How much noise warps the ring pulse.      |
-| edgeColor      | `string`            | `"#1d334e"` | Color of the edge glow.                   |
-| ringColor      | `string`            | `"#4599ff"` | Color of the ring pulse.                  |
-| onTextureReady | `(texture) => void` | `undefined` | Returns the rendered effect as a texture. |
 
 
 ============================================================
@@ -1308,41 +1186,6 @@ Smooth scroll library used in the demo.
 
 
 ============================================================
-## Elastic Stick
-> Items that bounce and stick to the center while scrolling.
-
-Source file: components/scroll/elastic-stick.mdx
-
-## Usage
-
-Point `scrollTargetRef` at a tall scroll container with a sticky inner wrapper; the items bounce and stick to the center as that container scrolls through the viewport.
-
-```tsx
-const scrollTargetRef = useRef<HTMLDivElement>(null)
-
-<div ref={scrollTargetRef} className="relative h-[300vh]">
-  <div className="sticky top-0 flex h-screen items-center justify-center gap-2">
-    <ElasticStick scrollTargetRef={scrollTargetRef}>
-      {images.map((src) => (
-        <img key={src} src={src} alt="" className="aspect-[5/7] w-[30vw] object-cover" />
-      ))}
-    </ElasticStick>
-  </div>
-</div>
-```
-
-***
-
-## API
-
-| Prop              | Type                             | Default     | Description                                       |
-| ----------------- | -------------------------------- | ----------- | ------------------------------------------------- |
-| `children`        | `ReactNode`                      | —           | The items to animate. Any JSX element allowed.    |
-| `staggerValue`    | `number`                         | `0.03`      | Time offset between each child's animation start. |
-| `scrollTargetRef` | `RefObject<HTMLElement \| null>` | `undefined` | Reference to the scroll target element.           |
-
-
-============================================================
 ## Infinite Gallery
 > Zero-dependency infinite horizontal gallery with drag/wheel input, and transform modes.
 
@@ -1984,67 +1827,6 @@ React animation library.
 
 
 ============================================================
-## Code of conduct
-> Code of conduct for the Atelier UI project
-
-Source file: getting-started/code-of-conduct.mdx
-
-We are committed to making **Atelier UI** a welcoming, inclusive, and harassment-free community for everyone, regardless of age, body size, disability, ethnicity, gender identity and expression, level of experience, nationality, personal appearance, race, religion, or sexual identity and orientation.
-
-***
-
-## Expected Behavior
-
-* Be respectful, empathetic, and kind toward others.
-* Be open to differing opinions, viewpoints, and experiences.
-* Give and gracefully accept constructive feedback.
-* Take responsibility for your mistakes, apologize when needed, and learn from the experience.
-* Focus on what is best for the community, not just for yourself.
-
-***
-
-## Unacceptable Behavior
-
-* Harassment, discrimination, or derogatory comments of any kind.
-* Personal attacks, trolling, or deliberately inflammatory remarks.
-* Publishing others' private information without explicit permission.
-* Sexual language, imagery, or unwanted attention.
-* Any conduct that would be considered inappropriate in a professional setting.
-
-***
-
-## Reporting
-
-If you experience or witness unacceptable behavior, please report it by opening an issue on our [GitHub repository](https://github.com/your-org/atelier-ui/issues). When reporting, include a clear description of the incident, the people involved, and any supporting evidence such as screenshots or links.
-
-All reports will be reviewed promptly and handled confidentially.
-
-***
-
-## Enforcement
-
-Project maintainers are responsible for enforcing this Code of Conduct and will take appropriate action in response to unacceptable behavior. This may include:
-
-* A private warning to the individual.
-* Temporary or permanent ban from the project and its spaces.
-* Removal of contributions that violate this Code of Conduct.
-
-Maintainers have the right to remove, edit, or reject comments, commits, issues, and other contributions that do not align with this Code of Conduct.
-
-***
-
-## Scope
-
-This Code of Conduct applies to all project spaces, including GitHub repositories, issues, pull requests, discussions, and any public space where someone is representing Atelier UI. It also applies when interacting with the community on social media or at events.
-
-***
-
-## Attribution
-
-This Code of Conduct is adapted from the [Contributor Covenant](https://www.contributor-covenant.org/version/2/1/code_of_conduct/), version 2.1.
-
-
-============================================================
 ## How to contribute
 > Contribution guidelines for the project.
 
@@ -2281,3 +2063,112 @@ Used for animation utilities within this component.
 
 Source file: getting-started/installation.mdx
 
+
+
+============================================================
+## Glowing Fog
+> Dynamic fog and light beam cursor follow effect.
+
+Source file: components/background/glowing-fog.mdx
+
+***
+
+## API
+
+| Name           | Type                | Default     | Description                                          |
+| -------------- | ------------------- | ----------- | ---------------------------------------------------- |
+| speed          | `number`            | `18`        | Animation speed of the effect.                       |
+| beamColor      | `string`            | `"#6031ff"` | Color of the central light beam.                     |
+| beamX          | `number`            | `0.5`       | Horizontal position of the beam.                     |
+| beamY          | `number`            | `0.5`       | Vertical position of the beam.                       |
+| beamScale      | `number`            | `0.5`       | Intensity / size of the beam glow.                   |
+| fogDensity     | `number`            | `1`         | Density of the fog.                                  |
+| grainIntensity | `number`            | `0.1`       | Amount of grain.                                     |
+| mouseFollow    | `number`            | `0.9`       | Strength of mouse-based parallax follow on the beam. |
+| onTextureReady | `(texture) => void` | `undefined` | Returns the rendered result as a texture.            |
+
+***
+
+
+============================================================
+## Gradient Flow
+> An animated multi-color gradient WebGL flow field background.
+
+Source file: components/background/gradient-flow.mdx
+
+***
+
+## API
+
+| Name         | Type       | Default                             | Description                                                            |
+| ------------ | ---------- | ----------------------------------- | ---------------------------------------------------------------------- |
+| colors       | `string[]` | `["#2D1499", "#F5C2D8", "#D5B2B2"]` | Palette blended across the flow, interpolated in Oklab. 2 to 8 colors. |
+| speed        | `number`   | `0.1`                               | Animation speed of the flow field.                                     |
+| scale        | `number`   | `0.5`                               | Scale of the flow pattern.                                             |
+| amplitude    | `number`   | `0.5`                               | Strength of the domain warping.                                        |
+| frequency    | `number`   | `0.5`                               | Frequency of the warping detail.                                       |
+| stripes      | `number`   | `4`                                 | Number of banding stripes across the gradient.                         |
+| seed         | `number`   | `0`                                 | Random seed that shifts the pattern.                                   |
+| dither       | `boolean`  | `false`                             | Enables ordered (Bayer) dithering.                                     |
+| ditherAmount | `number`   | `5`                                 | Dither strength. Only applies when `dither` is on.                     |
+| ditherSize   | `number`   | `4`                                 | Size of each dither cell in pixels. Only applies when `dither` is on.  |
+| grain        | `boolean`  | `true`                              | Enables animated film grain.                                           |
+| grainAmount  | `number`   | `0.22`                              | Grain strength. Only applies when `grain` is on.                       |
+
+
+============================================================
+## Halftone Glow
+> A WebGL pulsing glow effect with halftone rendering.
+
+Source file: components/background/halftone-glow.mdx
+
+***
+
+## API
+
+| Name            | Type                | Default     | Description                                 |
+| --------------- | ------------------- | ----------- | ------------------------------------------- |
+| speed           | `number`            | `16`        | Pulse speed.                                |
+| blurAmount      | `number`            | `0.2`       | Amount of blur.                             |
+| edgeSize        | `number`            | `10`        | Thickness of the edge glow.                 |
+| edgeDistortion  | `number`            | `0.02`      | How much noise warps the edge glow.         |
+| ringDistortion  | `number`            | `0.1`       | How much noise warps the ring pulse.        |
+| edgeColor       | `string`            | `"#1d334e"` | Color of the edge glow.                     |
+| ringColor       | `string`            | `"#4599ff"` | Color of the ring pulse.                    |
+| backgroundColor | `string`            | `"#000000"` | Solid backdrop the glow is composited over. |
+| onTextureReady  | `(texture) => void` | `undefined` | Returns the rendered effect as a texture.   |
+
+
+============================================================
+## Elastic Stick
+> Items that bounce and stick to the center while scrolling.
+
+Source file: components/scroll/elastic-stick.mdx
+
+## Usage
+
+Point `scrollTargetRef` at a tall scroll container with a sticky inner wrapper; the items bounce and stick to the center as that container scrolls through the viewport.
+
+```tsx
+const scrollTargetRef = useRef<HTMLDivElement>(null)
+
+<div ref={scrollTargetRef} className="relative h-[300vh]">
+  <div className="sticky top-0 flex h-screen items-center justify-center gap-2">
+    <ElasticStick scrollTargetRef={scrollTargetRef}>
+      {images.map((src) => (
+        <img key={src} src={src} alt="" className="aspect-[5/7] w-[30vw] object-cover" />
+      ))}
+    </ElasticStick>
+  </div>
+</div>
+```
+
+***
+
+## API
+
+| Prop              | Type                             | Default     | Description                                       |
+| ----------------- | -------------------------------- | ----------- | ------------------------------------------------- |
+| `children`        | `ReactNode`                      | —           | The items to animate. Any JSX element allowed.    |
+| `staggerValue`    | `number`                         | `0.03`      | Time offset between each child's animation start. |
+| `scrollTargetRef` | `RefObject<HTMLElement \| null>` | `undefined` | Reference to the scroll target element.           |

@@ -3,6 +3,7 @@ import path from "node:path"
 import { Polar } from "@polar-sh/sdk"
 import { type NextRequest, NextResponse } from "next/server"
 import { env } from "@/env"
+import { proOverlay } from "@/lib/pro-overlay"
 import { components } from "@/registry"
 
 const polar = new Polar({
@@ -11,6 +12,12 @@ const polar = new Polar({
 })
 
 const REGISTRY_DIR = path.join(process.cwd(), "src/registry")
+
+function resolveRegistryPath(relPath: string): string {
+    const publicPath = path.join(REGISTRY_DIR, relPath)
+    const proPath = proOverlay(publicPath)
+    return fs.existsSync(proPath) ? proPath : publicPath
+}
 
 type GetRouteParams = {
     params: Promise<{ name: string }>
@@ -49,7 +56,7 @@ export async function GET(request: NextRequest, { params }: GetRouteParams) {
     }
 
     if (request.nextUrl.searchParams.get("type") === "demo") {
-        const demoDir = path.join(REGISTRY_DIR, "demos", name)
+        const demoDir = resolveRegistryPath(path.join("demos", name))
         const files = fs.readdirSync(demoDir).map((filePath) => ({
             path: filePath,
             content: fs.readFileSync(path.join(demoDir, filePath), "utf-8"),
@@ -64,7 +71,7 @@ export async function GET(request: NextRequest, { params }: GetRouteParams) {
         })
     }
 
-    const baseDir = path.join(REGISTRY_DIR, "base", name)
+    const baseDir = resolveRegistryPath(path.join("base", name))
 
     const files = component.files.map((filePath) => ({
         path: filePath,
@@ -73,7 +80,7 @@ export async function GET(request: NextRequest, { params }: GetRouteParams) {
 
     const shared = component.shared.map((sharedPath) => ({
         path: sharedPath,
-        content: fs.readFileSync(path.join(REGISTRY_DIR, sharedPath), "utf-8"),
+        content: fs.readFileSync(resolveRegistryPath(sharedPath), "utf-8"),
     }))
 
     return NextResponse.json({

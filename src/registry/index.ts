@@ -149,9 +149,9 @@ export const components: TRegistryComponent[] = [
         registryDependencies: ["text-split"],
     },
     {
-        name: "dither-flow",
-        files: ["dither-flow.tsx"],
-        description: "TODO",
+        name: "gradient-flow",
+        files: ["gradient-flow.tsx"],
+        description: "Animated multi-color gradient WebGL flow field background",
         shared: [],
         dependencies: ["three", "@react-three/fiber", "@react-three/drei"],
         registryDependencies: ["webgl-portal", "webgl-provider"],

@@ -16,10 +16,5 @@
     "files.associations": {
         "*.css": "css"
     },
-    "css.lint.unknownAtRules": "ignore",
-    "search.exclude": {
-        "src/pro": true
-    },
-    "files.exclude": { "src/pro": true },
-    "files.watcherExclude": { "**/src/pro/**": true }
+    "css.lint.unknownAtRules": "ignore"
 }

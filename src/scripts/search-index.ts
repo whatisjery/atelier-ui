@@ -8,6 +8,7 @@ import remarkGfm from "remark-gfm"
 import remarkMdx from "remark-mdx"
 import type { Node } from "unist"
 import { SKIP, visit } from "unist-util-visit"
+import { overlayRoots } from "@/lib/pro-overlay"
 import type { SearchEntry } from "@/types/scripts"
 
 function getSectionTitle(dir: string): string {
@@ -88,11 +89,11 @@ function walk(dir: string, entries: SearchEntry[], basePath: string[] = []) {
 }
 
 for (const locale of ["en"]) {
-    const contentDir = path.join(process.cwd(), "src", "content", locale)
-    if (!fs.existsSync(contentDir)) continue
+    const contentDirs = overlayRoots(path.join(process.cwd(), "src", "content", locale))
+    if (contentDirs.length === 0) continue
 
     const entries: SearchEntry[] = []
-    walk(contentDir, entries)
+    for (const contentDir of contentDirs) walk(contentDir, entries)
 
     const outDir = path.join(process.cwd(), "public", "search-index")
 

@@ -1,6 +1,6 @@
 import type { Metadata } from "next"
+import { notFound } from "next/navigation"
 import { setRequestLocale } from "next-intl/server"
-import ButtonSideBar from "@/components/common/ButtonSideBar"
 import RouteBreadCrumb from "@/components/common/RouteBreadCrumb"
 import PageDocLayout from "@/components/features/docs/_PageDocLayout"
 import Catalog from "@/components/features/docs/catalog/Catalog"
@@ -28,6 +28,7 @@ import {
     getSectionCategories,
 } from "@/lib/docs"
 import { components } from "@/registry"
+import type { ControlDef } from "@/types/controls"
 
 type PageProps = {
     params: Promise<{ locale: string; slug: string[] }>
@@ -39,13 +40,33 @@ export async function generateStaticParams() {
 
 type DocMeta = { title: string; description?: string; tags?: string[] }
 
+/**
+ * Imports a doc's compiled MDX module, trying the public content tree first and
+ * falling back to the pro submodule so private docs resolve without any copy.
+ */
+async function importDoc(locale: string, slug: string[]) {
+    try {
+        return await import(`@/content/${locale}/${slug.join("/")}.mdx`)
+    } catch {
+        try {
+            return await import(`@/pro/content/${locale}/${slug.join("/")}.mdx`)
+        } catch {
+            notFound()
+        }
+    }
+}
+
 async function getDocMeta(locale: string, slug: string[]): Promise<DocMeta> {
     if (slug.length === 1) {
         const folder = getSection(locale, slug[0])
-        if (folder) return { title: folder.title, description: folder.description }
+        if (folder)
+            return {
+                title: folder.title,
+                description: folder.description,
+            }
     }
 
-    const content = await import(`@/content/${locale}/${slug.join("/")}.mdx`)
+    const content = await importDoc(locale, slug)
     return content.frontmatter as DocMeta
 }
 
@@ -72,7 +93,6 @@ export default async function Page({ params }: PageProps) {
 
             return (
                 <PageDocLayout
-                    topBarSlot={<ButtonSideBar />}
                     navigationSlot={<CatalogNavigation locale={locale} activeSlug={slug[0]} />}
                     contentSlot={<Catalog title={section.title} catalogItems={catalogItems} />}
                 />
@@ -87,18 +107,13 @@ export default async function Page({ params }: PageProps) {
         ...getCodesBlock("src/registry/collage"),
     }
     const snippets = getComponentSnippets()
-    const content = await import(`@/content/${locale}/${slug.join("/")}.mdx`)
+    const content = await importDoc(locale, slug)
     const isPro = components.some(({ name, pro }) => name === slug[slug.length - 1] && pro)
 
     return (
         <PageDocLayout
             TOCSlot={<DocTableOfContent headings={headings} />}
-            topBarSlot={
-                <div className="flex items-center">
-                    <ButtonSideBar />
-                    <RouteBreadCrumb skip={getCategorySlugs(locale)} />
-                </div>
-            }
+            topBarSlot={<RouteBreadCrumb skip={getCategorySlugs(locale)} />}
             navigationSlot={
                 <>
                     <DocHeaderNavButtons navigation={navigation} />
@@ -114,7 +129,11 @@ export default async function Page({ params }: PageProps) {
             contentSlot={
                 <content.default
                     components={{
-                        DemoPreview: (props: { name: string }) => {
+                        DemoPreview: (props: {
+                            name: string
+                            controls?: Record<string, ControlDef>
+                            studio?: string
+                        }) => {
                             return (
                                 <DemoPreview
                                     {...props}

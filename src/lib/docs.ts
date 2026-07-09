@@ -2,6 +2,7 @@ import fs from "node:fs"
 import path from "node:path"
 import matter from "gray-matter"
 import yaml from "js-yaml"
+import { notFound } from "next/navigation"
 import { cache } from "react"
 import { visit } from "unist-util-visit"
 import { routing } from "@/i18n/routing"
@@ -9,6 +10,7 @@ import { components } from "@/registry"
 import type { CodeFile } from "@/types/code"
 import type { DirMeta, DocNavigation, DocTree } from "@/types/docs"
 import type { TOCItem } from "@/types/toc"
+import { overlayRoots } from "./pro-overlay"
 import { slugify } from "./utils"
 
 const DOCS_DIR = path.join(process.cwd(), "src/content")
@@ -17,9 +19,31 @@ const TEXT_EXTENSIONS = ["ts", "tsx", "js", "jsx", "css", "json"]
 const REGISTRY_DIR = path.join(process.cwd(), "src/registry")
 
 export const getDocsTree = cache(function getDocsTree(locale: string): DocTree[] {
-    const docDir = path.join(DOCS_DIR, locale)
-    return buildDocTree(docDir, "/docs")
+    const trees = overlayRoots(path.join(DOCS_DIR, locale)).map((dir) =>
+        buildDocTree(dir, "/docs"),
+    )
+    return trees.reduce(mergeDocTrees, [])
 })
+
+/**
+ * Overlays one doc tree onto another, matching folders by url and merging their
+ * children so pro files (from the submodule) join the public folders that hold
+ * their free siblings. Public metadata wins; files are appended and re-sorted.
+ */
+function mergeDocTrees(base: DocTree[], overlay: DocTree[]): DocTree[] {
+    const merged = [...base]
+    for (const node of overlay) {
+        const existing = merged.find((item) => item.url === node.url)
+        if (existing && existing.type === "folder" && node.type === "folder") {
+            existing.children = mergeDocTrees(existing.children, node.children).sort(
+                (a, b) => a.order - b.order,
+            )
+        } else if (!existing) {
+            merged.push(node)
+        }
+    }
+    return merged.sort((a, b) => a.order - b.order)
+}
 
 export function getDocNavigation(locale: string, currentSlug: string[]): DocNavigation {
     const flatDocs: { title: string; url: string; description: string }[] = []
@@ -45,13 +69,11 @@ export function getDocNavigation(locale: string, currentSlug: string[]): DocNavi
 }
 
 export function getCodesBlock(strPath: string): Record<string, CodeFile[]> {
-    const dirPath = path.join(process.cwd(), strPath)
     const codes: Record<string, CodeFile[]> = {}
 
-    const entries = fs.readdirSync(dirPath, { withFileTypes: true })
-
-    for (const entry of entries) {
-        if (entry.isDirectory()) {
+    for (const dirPath of overlayRoots(path.join(process.cwd(), strPath))) {
+        for (const entry of fs.readdirSync(dirPath, { withFileTypes: true })) {
+            if (!entry.isDirectory()) continue
             const folderPath = path.join(dirPath, entry.name)
             const files = fs.readdirSync(folderPath)
             codes[entry.name] = files.map((file) => ({
@@ -69,7 +91,11 @@ export function getDocBySlug(
     locale: string,
     slug: string[],
 ): { headings: TOCItem[]; rawMarkdown: string } {
-    const filePath = path.join(DOCS_DIR, locale, `${slug.join("/")}.mdx`)
+    const relPath = path.join(locale, `${slug.join("/")}.mdx`)
+    const filePath = overlayRoots(DOCS_DIR)
+        .map((root) => path.join(root, relPath))
+        .find((candidate) => fs.existsSync(candidate))
+    if (!filePath) notFound()
     const fileContent = fs.readFileSync(filePath, "utf-8")
     const { content: rawMarkdown } = matter(fileContent)
 
