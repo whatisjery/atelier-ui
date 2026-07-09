@@ -1,6 +1,6 @@
 import { type LenisRef, ReactLenis } from "lenis/react"
 import { cancelFrame, type FrameData, frame } from "motion"
-import { type ComponentRef, useEffect, useRef } from "react"
+import { useEffect, useRef } from "react"
 import ScatteredScroll, {
     type ScatteredScrollProps,
 } from "@/registry/base/scattered-scroll/scattered-scroll"
@@ -13,7 +13,6 @@ const IMAGE_URLS = [
 ]
 
 export default function ScatteredScrollDemo(controls: Partial<ScatteredScrollProps>) {
-    const scrollTargetRef = useRef<ComponentRef<"div">>(null)
     const lenisRef = useRef<LenisRef>(null)
 
     useEffect(() => {
@@ -31,25 +30,18 @@ export default function ScatteredScrollDemo(controls: Partial<ScatteredScrollPro
                 Scroll down
             </div>
 
-            <section
-                ref={scrollTargetRef}
-                className="h-[500vh] -mt-[100vh] -mb-[100vh] relative font-serif text-5xl overflow-x-clip"
-            >
-                <div className="sticky top-0 h-screen gap-x-2 flex items-center justify-center">
-                    <ScatteredScroll scrollTargetRef={scrollTargetRef} {...controls}>
-                        {IMAGE_URLS.map((_, i) => (
-                            <img
-                                key={i}
-                                className="w-[30vw] aspect-[5/7] object-cover rounded-md"
-                                src={IMAGE_URLS[i]}
-                                alt="Image"
-                                width={100}
-                                height={100}
-                            />
-                        ))}
-                    </ScatteredScroll>
-                </div>
-            </section>
+            <ScatteredScroll {...controls}>
+                {IMAGE_URLS.map((imageUrl, index) => (
+                    <img
+                        key={imageUrl}
+                        className="w-[30vw] aspect-[5/7] object-cover rounded-md"
+                        src={imageUrl}
+                        alt={`Gallery item ${index + 1}`}
+                        width={100}
+                        height={100}
+                    />
+                ))}
+            </ScatteredScroll>
 
             <div className="h-screen font-serif text-5xl flex w-full items-center justify-center">
                 Scroll up

@@ -15,6 +15,7 @@ export type PixelScrollProps = {
     colorRatio?: number
     randomness?: number
     direction?: "cover" | "clear" | "sweep"
+    scrollDistance?: string
     scrollTargetRef?: RefObject<HTMLElement | null>
     className?: string
 }
@@ -42,16 +43,20 @@ export default function PixelScroll({
     colorRatio = 0.25,
     randomness = 0.4,
     direction = "cover",
+    scrollDistance,
     scrollTargetRef,
     className,
 }: PixelScrollProps) {
     const [size, setSize] = useState({ width: 0, height: 0, rows: 0 })
     const canvasRef = useRef<ComponentRef<"canvas">>(null)
+    const ownTargetRef = useRef<ComponentRef<"section">>(null)
     const cols = Math.min(density, MAX_DENSITY)
 
+    const pinTarget = scrollTargetRef ?? (scrollDistance ? ownTargetRef : null)
+
     const { scrollYProgress } = useScroll({
-        target: scrollTargetRef ?? canvasRef,
-        offset: scrollTargetRef ? ["start start", "end end"] : ["start end", "start start"],
+        target: pinTarget ?? canvasRef,
+        offset: pinTarget ? ["start start", "end end"] : ["start end", "start start"],
     })
 
     useEffect(() => {
@@ -152,8 +157,14 @@ export default function PixelScroll({
         return paintOnScroll()
     }, [size, cells, cols, direction, scrollYProgress])
 
+    // Canvas redraws the whole grid each scroll frame in a single loop, instead of using a div per pixel (for performance reasons)
+    const canvas = <canvas ref={canvasRef} className={`block size-full ${className ?? ""}`} />
+
+    if (!scrollDistance || scrollTargetRef) return canvas
+
     return (
-        // Canvas redraws the whole grid each scroll frame in a single loop, instead of using a div per pixel (for performance reasons)
-        <canvas ref={canvasRef} className={`block size-full ${className ?? ""}`} />
+        <section ref={ownTargetRef} className="relative" style={{ height: scrollDistance }}>
+            <div className="sticky top-0 h-screen">{canvas}</div>
+        </section>
     )
 }

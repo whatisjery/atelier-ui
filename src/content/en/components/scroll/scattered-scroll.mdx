@@ -3,7 +3,7 @@ title: "Scattered Scroll"
 description: "Items that spread apart horizontally while scrolling."
 tags: ["Motion", "Tailwind CSS", "Lenis"]
 createdAt: "2026-05-07"
-updatedAt: "2026-06-16"
+updatedAt: "2026-07-09"
 ---
 
 <DemoPreview name="scattered-scroll" />
@@ -18,19 +18,37 @@ updatedAt: "2026-06-16"
 
 ## Usage
 
-Point `scrollTargetRef` to a scroll container with a sticky inner wrapper and the items will animate as that container scrolls through the viewport, the higher the container, the longer the animation.
+The component takes the items as children. Any element works.
 
 ```tsx
-const scrollTargetRef = useRef<HTMLDivElement>(null)
+<ScatteredScroll>
+  <img src="/1.webp" alt="" className="aspect-[5/7] w-[30vw] object-cover" />
+  <img src="/2.webp" alt="" className="aspect-[5/7] w-[30vw] object-cover" />
+  <img src="/3.webp" alt="" className="aspect-[5/7] w-[30vw] object-cover" />
+</ScatteredScroll>
+```
 
-<div ref={scrollTargetRef} className="relative h-[300vh]">
-  <div className="sticky top-0 flex h-screen items-center justify-center gap-2">
-    <ScatteredScroll scrollTargetRef={scrollTargetRef}>
-      {images.map((src) => (
-        <img key={src} src={src} alt="" className="aspect-[5/7] w-[30vw] object-cover" />
-      ))}
-    </ScatteredScroll>
+### Custom scroll section
+
+By default the component creates the scroll section for you. If you need control over the layout, you can also build the section yourself and pass `scrollTargetRef`:
+
+```tsx
+const scrollTargetRef = useRef<ComponentRef<"div">>(null)
+
+<div>
+  <div className="h-screen" />
+
+  <div ref={scrollTargetRef} className="relative h-[500vh] overflow-x-clip">
+    <div className="sticky top-0 flex h-screen items-center justify-center gap-2">
+      <ScatteredScroll scrollTargetRef={scrollTargetRef}>
+        <img src="/1.webp" alt="" className="aspect-[5/7] w-[30vw] object-cover" />
+        <img src="/2.webp" alt="" className="aspect-[5/7] w-[30vw] object-cover" />
+        <img src="/3.webp" alt="" className="aspect-[5/7] w-[30vw] object-cover" />
+      </ScatteredScroll>
+    </div>
   </div>
+
+  <div className="h-screen" />
 </div>
 ```
 
@@ -41,7 +59,8 @@ const scrollTargetRef = useRef<HTMLDivElement>(null)
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
 | `children` | `ReactNode` | — | The items to animate. Any JSX element allowed. |
-| `scrollTargetRef` | `RefObject<HTMLElement \| null>` | — | Reference to the scroll target element. |
+| `scrollDistance` | `string` | `"500vh"` | How much scrolling the effect takes. Any CSS height. Ignored when `scrollTargetRef` is set. |
+| `scrollTargetRef` | `RefObject<HTMLElement \| null>` | — | External scrolled section driving the animation. Disables the built-in section. |
 
 ---
 

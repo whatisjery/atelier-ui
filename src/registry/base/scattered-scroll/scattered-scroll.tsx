@@ -12,8 +12,9 @@ import {
 } from "react"
 
 export type ScatteredScrollProps = {
-    scrollTargetRef: RefObject<HTMLElement | null>
     children: ReactNode
+    scrollDistance?: string
+    scrollTargetRef?: RefObject<HTMLElement | null>
 }
 
 // (used instead of Math.random) Avoid hydration error on next.js
@@ -74,9 +75,14 @@ const Item = ({
     )
 }
 
-export default function ScatteredScroll({ children, scrollTargetRef }: ScatteredScrollProps) {
+export default function ScatteredScroll({
+    children,
+    scrollDistance = "500vh",
+    scrollTargetRef,
+}: ScatteredScrollProps) {
     const childrenArray = Children.toArray(children).filter(isValidElement)
     const firstItemRef = useRef<ComponentRef<"div">>(null)
+    const ownTargetRef = useRef<ComponentRef<"section">>(null)
     const [xValue, setXValue] = useState(0)
 
     useLayoutEffect(() => {
@@ -95,22 +101,32 @@ export default function ScatteredScroll({ children, scrollTargetRef }: Scattered
 
     const { scrollYProgress } = useScroll({
         offset: ["start start", "end end"],
-        ...(scrollTargetRef ? { target: scrollTargetRef } : {}),
+        target: scrollTargetRef ?? ownTargetRef,
     })
 
+    const items = childrenArray.map((child, index) => (
+        <Item
+            xValue={xValue}
+            progress={scrollYProgress}
+            index={index}
+            key={index}
+            itemRef={index === 0 ? firstItemRef : undefined}
+        >
+            {child}
+        </Item>
+    ))
+
+    if (scrollTargetRef) return <>{items}</>
+
     return (
-        <>
-            {childrenArray.map((child, index) => (
-                <Item
-                    xValue={xValue}
-                    progress={scrollYProgress}
-                    index={index}
-                    key={index}
-                    itemRef={index === 0 ? firstItemRef : undefined}
-                >
-                    {child}
-                </Item>
-            ))}
-        </>
+        <section
+            ref={ownTargetRef}
+            className="relative overflow-x-clip"
+            style={{ height: scrollDistance }}
+        >
+            <div className="sticky top-0 flex h-screen items-center justify-center gap-2">
+                {items}
+            </div>
+        </section>
     )
 }

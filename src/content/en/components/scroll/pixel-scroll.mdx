@@ -3,7 +3,7 @@ title: "Pixel Scroll"
 description: "A grid of pixels that fill in or clear out as you scroll, with optional color hints."
 tags: ["Motion", "Canvas", "Lenis", "Tailwind CSS"]
 createdAt: "2026-06-22"
-updatedAt: "2026-06-22"
+updatedAt: "2026-07-09"
 ---
 
 import Alert from '@/components/ui/Alert'
@@ -65,22 +65,34 @@ By default the reveal is driven by the component's own scroll position, filling 
 
 ### Pinned to a scroll section
 
-Pass `scrollTargetRef` with a `sticky` wrapper to pin the canvas while a taller section scrolls past.
-
-In the demo we pin it over a fixed div so the grid looks like it covers the content.
+Set `scrollDistance` and the component pins the canvas on screen while that much page scrolls past. This is what the demo above uses.
 
 ```tsx
-const scrollTargetRef = useRef<HTMLDivElement>(null)
+<PixelScroll scrollDistance="300vh" direction="sweep" className="bg-black text-white" />
+```
 
-<div ref={scrollTargetRef} className="relative h-[300vh]">
-  <div className="sticky top-0 h-screen">
-    <PixelScroll scrollTargetRef={scrollTargetRef} className="size-full bg-black text-white" />
+### Custom scroll section
+
+If you need control over the layout, you can also build the section yourself and pass `scrollTargetRef`:
+
+```tsx
+const scrollTargetRef = useRef<ComponentRef<"div">>(null)
+
+<div>
+  <div className="h-screen" />
+
+  <div ref={scrollTargetRef} className="relative h-[300vh]">
+    <div className="sticky top-0 h-screen">
+      <PixelScroll scrollTargetRef={scrollTargetRef} className="size-full bg-black text-white" />
+    </div>
   </div>
+
+  <div className="h-screen" />
 </div>
 ```
 
 <Alert icon={<TriangleAlert strokeWidth={1.5} className="size-6" />} title="Section height" variant="neutral">
-  When using this pinned scroll technique, the scroll section must be taller than `100vh`, otherwise the grid snaps straight to filled.
+  When pinning, the scroll section must be taller than `100vh`, otherwise the grid snaps straight to filled.
 </Alert>
 
 ---
@@ -94,5 +106,6 @@ const scrollTargetRef = useRef<HTMLDivElement>(null)
 | `colorRatio` | `number` | `0.25` | Fraction of pixels that show a color hint, from 0 to 1. Has no effect when `colors` is empty. |
 | `randomness` | `number` | `0.4` | How far each pixel's fill point deviates from the bottom-to-top gradient, from 0 to 1. At `0` the grid fills as an ordered gradient; at `1` the fill points are fully scattered. |
 | `direction` | `"cover" \| "clear" \| "sweep"` | `"cover"` | How the grid responds to scroll. `"cover"` fills it in, `"clear"` empties it, and `"sweep"` does both in one scroll. |
+| `scrollDistance` | `string` | — | When set, pins the canvas and drives the reveal over that much scrolling. Any CSS height. Ignored when `scrollTargetRef` is set. |
 | `scrollTargetRef` | `RefObject<HTMLElement \| null>` | — | Element whose scroll position drives the reveal. Defaults to the component's own canvas. |
 | `className` | `string` | — | Classes forwarded to the canvas element. |
