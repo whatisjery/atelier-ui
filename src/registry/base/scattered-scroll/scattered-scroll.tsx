@@ -90,7 +90,7 @@ export default function ScatteredScroll({
 
         const update = () => {
             const containerWidth = window.innerWidth * 0.5
-            const itemWidth = firstItemRef.current?.offsetWidth ?? 0
+            const itemWidth = firstItemRef.current?.getBoundingClientRect().width ?? 0
             setXValue(containerWidth + itemWidth * 0.5 * childrenArray.length)
         }
 
