@@ -9,15 +9,17 @@ const { values, positionals } = parseArgs({
     args: process.argv.slice(2),
     options: {
         category: { type: "string", short: "c" },
+        pro: { type: "boolean" },
     },
     allowPositionals: true,
 })
 
 const name = positionals[0]
 const category = values.category
+const pro = values.pro ?? false
 
 if (!name || !/^[a-z][a-z0-9-]*$/.test(name)) {
-    console.error("Usage: pnpm scafold-new <kebab-case-name> --category <category>")
+    console.error("Usage: pnpm scafold-new <kebab-case-name> --category <category> [--pro]")
     console.error("e.g. pnpm scafold-new infinite-gallery --category scroll")
     process.exit(1)
 }
@@ -67,7 +69,7 @@ export function ${Pascal}() {
 `
 
 const demoTemplate: Template = ({ name, Pascal }) => `\
-import { ${Pascal} } from "@/registry/base/${name}/${name}"
+import { ${Pascal} } from "${pro ? "@/pro" : "@"}/registry/base/${name}/${name}"
 
 export default function ${Pascal}Demo() {
     return (
@@ -89,7 +91,18 @@ updatedAt: "${new Date().toISOString().slice(0, 10)}"
 
 <DemoPreview name="${name}" />
 
-## CLI Install
+${
+    pro
+        ? `<ProGate>
+
+---
+
+## Install
+
+<InstallTabs name="${name}" />
+
+</ProGate>`
+        : `## CLI Install
 
 <InstalGuideCLI name="${name}" />
 
@@ -97,7 +110,8 @@ updatedAt: "${new Date().toISOString().slice(0, 10)}"
 
 ## Manual Install
 
-<InstalGuideManual name="${name}" />
+<InstalGuideManual name="${name}" />`
+}
 
 ---
 
@@ -110,10 +124,12 @@ updatedAt: "${new Date().toISOString().slice(0, 10)}"
 
 const vars = { name, Pascal, Title }
 
+const srcRoot = pro ? "src/pro" : "src"
+
 const files: Record<string, string> = {
-    [`src/registry/base/${name}/${name}.tsx`]: baseTemplate(vars),
-    [`src/registry/demos/${name}/${name}.tsx`]: demoTemplate(vars),
-    [`src/content/en/components/${category}/${name}.mdx`]: mdxTemplate(vars),
+    [`${srcRoot}/registry/base/${name}/${name}.tsx`]: baseTemplate(vars),
+    [`${srcRoot}/registry/demos/${name}/${name}.tsx`]: demoTemplate(vars),
+    [`${srcRoot}/content/en/components/${category}/${name}.mdx`]: mdxTemplate(vars),
 }
 
 for (const [rel, contents] of Object.entries(files)) {
@@ -129,7 +145,9 @@ for (const [rel, contents] of Object.entries(files)) {
 
 const demosPath = join(root, "src/registry/demos/index.ts")
 const demosSrc = readFileSync(demosPath, "utf8")
-const demosEntry = `    "${name}": lazy(() => import("./${name}/${name}")),\n`
+const demosEntry = pro
+    ? `    "${name}": lazy(() => import("@/pro/registry/demos/${name}/${name}")),\n`
+    : `    "${name}": lazy(() => import("./${name}/${name}")),\n`
 
 const demosPatched = demosSrc.replace(/\n\}\s*$/, `\n${demosEntry}}\n`)
 
@@ -149,7 +167,7 @@ const regEntry = `    {
         description: "TODO",
         shared: [],
         dependencies: [],
-        registryDependencies: [],
+        registryDependencies: [],${pro ? "\n        pro: true," : ""}
     },\n`
 
 const regPatched = regSrc.replace(/\n\]\s*$/, `\n${regEntry}]\n`)
@@ -161,7 +179,7 @@ if (regPatched === regSrc) {
 
 writeFileSync(regPath, regPatched)
 console.log(`✓ patched src/registry/index.ts`)
-console.log(`\n→ open src/registry/base/${name}/${name}.tsx and start coding`)
+console.log(`\n→ open ${srcRoot}/registry/base/${name}/${name}.tsx and start coding`)
 
 execSync("pnpm lint:fix", { stdio: "inherit" })
 console.log("✓ lint:fix")
