@@ -26,17 +26,20 @@ export default function ListItem({
             {...rest}
             ref={ref}
             className={cn(
-                "py-1 text-sm text-accent-2 flex items-center justify-between hover:text-accent-1",
+                "py-1 text-sm relative text-accent-2 flex items-center justify-between hover:text-accent-1",
                 {
                     "border-l border-accent-3 pl-6 ml-2": sideLine,
-                    "border border-transparent": !sideLine,
+                    "py-1.5": !sideLine,
                     "border-accent-1 text-accent-1 [text-shadow:0_0_0.4px_currentColor]":
                         activeItem,
-                    "bg-accent-5 border-accent-3 -ml-2 pl-2 rounded-md": activeItem && !sideLine,
                 },
                 className,
             )}
         >
+            {activeItem && !sideLine && (
+                <span className="h-full w-[calc(100%+0.8rem)] -ml-[0.4rem] absolute -z-1 inset-0 rounded-sm bg-accent-5" />
+            )}
+
             <Link className="flex items-center gap-x-3" href={linkItem.href} onClick={onLinkClick}>
                 {linkItem.icon}
                 <span>{linkItem.label}</span>

@@ -1,5 +1,6 @@
 "use client"
 
+import SideRails from "@/components/common/SideRails"
 import { cn } from "@/lib/utils"
 import DocFooter from "./DocFooter"
 
@@ -25,7 +26,7 @@ export default function PageDocLayout({
     topBarSlot,
 }: PageDocLayoutProps) {
     return (
-        <div className="flex flex-col min-w-0 w-full relative">
+        <SideRails className="flex flex-col min-w-0 w-full">
             <header className="flex top-sticky w-full border-b h-under-nav-h sticky bg-bg z-3">
                 <div className={cn("w-full flex items-center", maxWidth, paddingX)}>
                     <div className="flex-1 flex items-center justify-between">
@@ -36,9 +37,6 @@ export default function PageDocLayout({
                     {TOCSlot && <Spacer />}
                 </div>
             </header>
-
-            <div className="max-md:hidden before:bg-fixed pattern-line z-2 border-r h-full w-10 absolute left-0 bg-bg top-0" />
-            <div className="max-md:hidden before:bg-fixed pattern-line z-2 border-l h-full w-10 absolute right-0 bg-bg top-0" />
 
             <main className={cn("flex min-h-screen w-full", maxWidth, paddingX)}>
                 {contentSlot && (
@@ -64,6 +62,6 @@ export default function PageDocLayout({
                 <DocFooter className={cn("", maxWidth, paddingX)} />
                 {TOCSlot && <Spacer />}
             </footer>
-        </div>
+        </SideRails>
     )
 }

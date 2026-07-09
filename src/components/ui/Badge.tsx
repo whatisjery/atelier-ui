@@ -21,13 +21,13 @@ export default function Badge({ title, className, variant, icon, ...props }: Bad
         <div
             {...props}
             className={cn(
-                "text-xs font-regular px-1 py-[0.09rem] rounded-sm flex items-center gap-x-1",
+                "text-xs font-regular px-1 py-[0.09rem] rounded-sm flex items-center gap-x-1 min-w-0",
                 variantMap[variant],
                 className,
             )}
         >
             {icon}
-            {title}
+            <span className="min-w-0 truncate">{title}</span>
         </div>
     )
 }

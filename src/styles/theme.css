@@ -13,6 +13,7 @@
     --spacing-nav-h: 4rem;
     --spacing-under-nav-h: 3.2rem;
     --spacing-offset: 2rem;
+    --spacing-control-h: 2rem;
     --spacing-sticky: var(--spacing-nav-h);
     --spacing-sticky-nested: calc(var(--spacing-sticky) + var(--spacing-nav-h));
 

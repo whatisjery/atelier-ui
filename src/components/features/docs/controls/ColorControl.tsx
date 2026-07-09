@@ -2,7 +2,7 @@ import Colorful from "@uiw/react-color-colorful"
 import { type ComponentRef, useEffect, useRef, useState } from "react"
 import { toKebabCase } from "@/lib/utils"
 import type { ControlColor } from "@/types/controls"
-import Label from "./ui/Label"
+import ControlLayout from "./ui/ControlLayout"
 import Value from "./ui/Value"
 
 type ColorControlProps = {
@@ -10,9 +10,18 @@ type ColorControlProps = {
     onChange: (value: string) => void
     control: ControlColor
     value: string
+    slot?: React.ReactNode
+    variant?: "inline" | "stacked"
+    onReset?: () => void
 }
 
-export default function ColorControl({ label, value, onChange }: ColorControlProps) {
+export default function ColorControl({
+    label,
+    value,
+    onChange,
+    slot,
+    variant = "inline",
+}: ColorControlProps) {
     const [open, setOpen] = useState(false)
     const [selectedColor, setSelectedColor] = useState<string | null>(null)
     const displayValue = selectedColor ?? value
@@ -44,23 +53,22 @@ export default function ColorControl({ label, value, onChange }: ColorControlPro
         // biome-ignore lint/correctness/useExhaustiveDependencies: React compiler
     }, [open, close])
 
-    return (
-        <div ref={ref} className="flex items-center relative">
-            <div className="w-full flex items-center justify-between">
-                <span className="flex items-center gap-4">
-                    <button
-                        type="button"
-                        aria-label={`Pick a color ${displayValue}`}
-                        onClick={() => (open ? close() : setOpen(true))}
-                        className="size-10 cursor-pointer border hover:opacity-80 rounded flex items-center justify-center bg-accent-5"
-                    >
-                        <div className="size-4 rounded" style={{ backgroundColor: displayValue }} />
-                    </button>
-                    <Label>{toKebabCase(label)}</Label>
-                </span>
+    const body = (
+        <div
+            ref={ref}
+            className="flex min-h-control-h items-center px-1 gap-x-2 relative bg-accent-5 flex-1 rounded-sm"
+        >
+            <button
+                type="button"
+                aria-label={`Pick a color ${displayValue}`}
+                onClick={() => (open ? close() : setOpen(true))}
+                className="size-5.5 rounded cursor-pointer hover:opacity-80"
+                style={{ backgroundColor: displayValue }}
+            />
 
-                <Value>{displayValue}</Value>
-            </div>
+            <Value>{displayValue.replace("#", "")}</Value>
+
+            {slot && <div className="ml-auto mr-1 shrink-0">{slot}</div>}
 
             {open && (
                 <div className="absolute bottom-0 right-0 z-50">
@@ -74,4 +82,19 @@ export default function ColorControl({ label, value, onChange }: ColorControlPro
             )}
         </div>
     )
+
+    if (variant === "stacked") {
+        return (
+            <div className="flex flex-col gap-1.5">
+                {label && (
+                    <div className="flex items-center justify-between gap-2">
+                        <div className="text-xs">{toKebabCase(label)}</div>
+                    </div>
+                )}
+                {body}
+            </div>
+        )
+    }
+
+    return <ControlLayout label={label}>{body}</ControlLayout>
 }

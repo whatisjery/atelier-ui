@@ -4,7 +4,7 @@ type ValueProps = {
 
 export default function Value({ children }: ValueProps) {
     return (
-        <div className="font-mono font-medium py-0.5 text-center rounded-md text-xs">
+        <div className="font-mono min-h-control-h font-light flex items-center justify-center rounded-sm text-xs bg-accent-5">
             {children}
         </div>
     )

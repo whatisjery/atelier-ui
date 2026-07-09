@@ -40,9 +40,9 @@ export default function ControlsPanel({ controls, onChange, onReset, values }: C
                     </>
                 }
             >
-                <div className="flex flex-col relative sm:grid sm:grid-cols-2 gap-x-8 p-5">
+                <div className="relative grid sm:grid-cols-2 gap-x-8 p-5">
                     {controlKeys.map((key) => (
-                        <div className="relative mb-3 pb-3 sm:border-b border-dashed" key={key}>
+                        <div className="relative mb-3 border-b border-dashed" key={key}>
                             <ControlFields
                                 label={key}
                                 control={controls[key]}

@@ -1,6 +1,6 @@
 "use client"
 
-import { ChevronLeft, X } from "lucide-react"
+import { X } from "lucide-react"
 import { AnimatePresence, motion, type Transition, type Variants } from "motion/react"
 import { useEffect } from "react"
 import BrandLink from "@/components/common/Brand"
@@ -33,9 +33,7 @@ const backdropVariants: Variants = {
 }
 
 export default function SideBar({ sections }: DocSidebarProps) {
-    const sideBarOpen = useGlobalStore((state) => state.sideBarOpen)
     const sheetSidebarOpen = useGlobalStore((state) => state.sheetSidebarOpen)
-    const toggleSidebar = useGlobalStore((state) => state.toggleSidebar)
     const toggleSheetSidebar = useGlobalStore((state) => state.toggleSheetSidebar)
     const pathname = usePathname()
 
@@ -48,26 +46,15 @@ export default function SideBar({ sections }: DocSidebarProps) {
     return (
         <>
             {/* Desktop sidebar */}
-            {sideBarOpen && (
-                <SideBarContent
-                    className="max-lg:hidden min-w-70 sticky top-sticky"
-                    topBarSlot={
-                        <div className="border-b h-under-nav-h flex items-center justify-between px-5 shrink-0">
-                            <div>Docs {VERSION}</div>
-
-                            <Button
-                                aria-label="Close sidebar"
-                                onClick={toggleSidebar}
-                                size="icon"
-                                variant="tertiary"
-                            >
-                                <ChevronLeft strokeWidth={1.5} />
-                            </Button>
-                        </div>
-                    }
-                    sections={sections}
-                />
-            )}
+            <SideBarContent
+                className="max-lg:hidden min-w-70 sticky top-sticky"
+                topBarSlot={
+                    <div className="border-b h-under-nav-h flex items-center justify-between px-5 shrink-0">
+                        Docs {VERSION}
+                    </div>
+                }
+                sections={sections}
+            />
 
             {/* Mobile sidebar */}
             <AnimatePresence>
