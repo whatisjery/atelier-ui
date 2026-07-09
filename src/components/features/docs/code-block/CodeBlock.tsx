@@ -1,4 +1,4 @@
-import { getCodeThemeColors, themes } from "@/lib/shiki"
+import { getCodeThemeColors, highlightToHast } from "@/lib/shiki"
 import type { CodeBlock } from "@/types/code"
 import CodeBlockClient from "./CodeBlockClient"
 
@@ -15,15 +15,7 @@ export default async function DocCodeBlock({
 }: DocCodeBlockProps) {
     const { highlighter } = await getCodeThemeColors()
 
-    const hast = highlighter.codeToHast(code, {
-        lang,
-        themes,
-        defaultColor: false,
-        colorReplacements: {
-            // Replace the background color of the dark theme.
-            "#24292e": "oklch(0.15 0.01 284.79)",
-        },
-    })
+    const hast = highlightToHast(highlighter, code, lang)
 
     return (
         <CodeBlockClient

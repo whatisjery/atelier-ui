@@ -1,6 +1,6 @@
 "use client"
 
-import { BookOpen, ChevronDown, Folder, FolderOpen } from "lucide-react"
+import { BookOpen, ChevronDown, Folder, FolderOpen, Palette } from "lucide-react"
 import { useTranslations } from "next-intl"
 import React, { useState } from "react"
 import Badge from "@/components/ui/Badge"
@@ -148,36 +148,59 @@ export default function SideBarContent({ className, sections, topBarSlot }: Side
                     }
 
                     return (
-                        <section className="mb-6" key={section.url}>
-                            <h2 className="sr-only">{section.title}</h2>
+                        <React.Fragment key={section.url}>
+                            <section>
+                                <h2 className="sr-only">{section.title}</h2>
 
-                            <ul>
-                                <ListItem
-                                    sideLine={false}
-                                    activeItem={pathname === "/docs/components"}
-                                    linkItem={{
-                                        href: "/docs",
-                                        label: tSidebar("browse-catalog"),
-                                        icon: <BookOpen strokeWidth={1.5} className="size-5" />,
-                                    }}
-                                />
-                                {section.children.map(({ url, title, icon }) => {
-                                    const Icon = getLucideIcon(icon)
-                                    return (
-                                        <ListItem
-                                            key={url}
-                                            sideLine={false}
-                                            activeItem={pathname === url}
-                                            linkItem={{
-                                                href: url,
-                                                label: title,
-                                                icon: <Icon strokeWidth={1.5} className="size-5" />,
-                                            }}
-                                        />
-                                    )
-                                })}
-                            </ul>
-                        </section>
+                                <ul>
+                                    {section.children.map(({ url, title, icon }) => {
+                                        const Icon = getLucideIcon(icon)
+                                        return (
+                                            <ListItem
+                                                key={url}
+                                                sideLine={false}
+                                                activeItem={pathname === url}
+                                                linkItem={{
+                                                    href: url,
+                                                    label: title,
+                                                    icon: (
+                                                        <Icon
+                                                            strokeWidth={1.5}
+                                                            className="size-5"
+                                                        />
+                                                    ),
+                                                }}
+                                            />
+                                        )
+                                    })}
+                                </ul>
+                            </section>
+
+                            <section className="mb-6">
+                                <h2 className="sr-only">tools</h2>
+                                <ul>
+                                    <ListItem
+                                        sideLine={false}
+                                        activeItem={pathname === "/docs/components"}
+                                        linkItem={{
+                                            href: "/docs",
+                                            label: tSidebar("browse-catalog"),
+                                            icon: <BookOpen strokeWidth={1.5} className="size-5" />,
+                                        }}
+                                    />
+                                    <ListItem
+                                        sideLine={false}
+                                        activeItem={pathname === "/shader-studio"}
+                                        leftSlot={<Badge title="new" variant="neutral" />}
+                                        linkItem={{
+                                            href: "/shader-studio",
+                                            label: tSidebar("shader-studio"),
+                                            icon: <Palette strokeWidth={1.5} className="size-5" />,
+                                        }}
+                                    />
+                                </ul>
+                            </section>
+                        </React.Fragment>
                     )
                 })}
             </nav>

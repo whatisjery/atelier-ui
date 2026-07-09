@@ -1,8 +1,25 @@
-import { type BundledTheme, getSingletonHighlighter } from "shiki"
+import { type BundledTheme, getSingletonHighlighter, type HighlighterGeneric } from "shiki"
+import type { CodeHast } from "@/types/code"
 
 export const themes: Record<"light" | "dark", BundledTheme> = {
     light: "github-light",
     dark: "github-dark",
+}
+
+export function highlightToHast(
+    highlighter: HighlighterGeneric<never, never>,
+    code: string,
+    lang: string,
+): CodeHast {
+    return highlighter.codeToHast(code, {
+        lang,
+        themes,
+        defaultColor: false,
+        colorReplacements: {
+            // Replace the background color of the dark theme.
+            "#24292e": "oklch(0.15 0.01 284.79)",
+        },
+    })
 }
 
 export async function getCodeThemeColors() {

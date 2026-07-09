@@ -63,6 +63,18 @@
     }
 }
 
+@keyframes kf-gradient-pan {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
 @keyframes kf-hammer-tap {
     0% {
         transform: rotate(0deg);
@@ -118,4 +130,10 @@
 
 @utility a-hammer-tap {
     animation: kf-hammer-tap 1.8s ease-in-out infinite;
+}
+
+@utility a-gradient-pan {
+    background: linear-gradient(115deg, #6031ff, #4599ff, #f5c2d8, #6031ff);
+    background-size: 200% 200%;
+    animation: kf-gradient-pan 6s ease infinite;
 }

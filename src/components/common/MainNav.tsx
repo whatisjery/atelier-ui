@@ -1,6 +1,6 @@
 "use client"
 
-import { ArrowUpRight, Search } from "lucide-react"
+import { ArrowUpRight, Menu, Search } from "lucide-react"
 import { useTranslations } from "next-intl"
 import Brand from "@/components/common/Brand"
 import GlobalSearch from "@/components/common/GlobalSearch"
@@ -24,6 +24,7 @@ export default function MainNav({ className }: MainNavProps) {
     const isMobile = useIsMobile(1024)
     const customer = useGlobalStore((s) => s.customer)
     const isCustomerPending = useGlobalStore((s) => s.isCustomerPending)
+    const toggleSheetSidebar = useGlobalStore((state) => state.toggleSheetSidebar)
     const tCommon = useTranslations("common")
     const pathname = usePathname()
 
@@ -36,29 +37,47 @@ export default function MainNav({ className }: MainNavProps) {
                 )}
             >
                 <div className="text-sm flex items-center space-x-4 font-light">
+                    <Button
+                        onClick={toggleSheetSidebar}
+                        className="min-lg:hidden"
+                        size="icon"
+                        aria-label="Open sidebar"
+                    >
+                        <Menu className="size-5" />
+                    </Button>
+
                     <Link href="/">
                         <Brand />
                     </Link>
 
-                    <span className="h-5 w-px bg-accent-4"></span>
+                    <span className="h-5 w-px bg-accent-4 max-md:hidden"></span>
 
                     {!isMobile && <ThemeSwitcher />}
 
                     {!isMobile && (
-                        <nav className="flex items-center gap-x-4">
+                        <nav className="flex items-center gap-x-4.5 text-accent-2">
                             <Link
                                 href="/docs"
-                                className={cn("hover:underline", {
-                                    "pointer-events-none font-regular": pathname.includes("/docs"),
+                                className={cn("hover:text-accent-1", {
+                                    "text-accent-1": pathname.includes("/docs"),
                                 })}
                             >
                                 {tCommon("read-the-docs")}
                             </Link>
 
                             <Link
+                                href="/shader-studio"
+                                className={cn("hover:text-accent-1", {
+                                    "text-accent-1": pathname.includes("/shader-studio"),
+                                })}
+                            >
+                                {tCommon("shader-studio")}
+                            </Link>
+
+                            <Link
                                 href={REPO_URL}
                                 target="_blank"
-                                className="hover:underline flex items-center"
+                                className="hover:text-accent-1 flex items-center"
                             >
                                 Github
                                 <sup className="font-mono">

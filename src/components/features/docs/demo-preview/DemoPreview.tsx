@@ -17,6 +17,7 @@ import { useScrollLock } from "@/hooks/use-scroll-lock"
 import { expoOut } from "@/lib/ease"
 import { useGlobalStore } from "@/lib/store"
 import { cn } from "@/lib/utils"
+import OpenInStudioLink from "@/pro/components/features/studio/OpenInStudioLink"
 import { components } from "@/registry"
 import type { ControlDef, ControlValue } from "@/types/controls"
 
@@ -29,6 +30,7 @@ type ControlledState = Record<string, ControlValue>
 type DocComponentPreviewProps = {
     name: string
     controls?: Record<string, ControlDef> | undefined
+    studio?: string | undefined
     codePreviewSlot: React.ReactNode
 }
 
@@ -36,6 +38,7 @@ export default function DemoPreview({
     name,
     codePreviewSlot,
     controls = undefined,
+    studio = undefined,
 }: DocComponentPreviewProps) {
     const defaults = controls
         ? Object.fromEntries(Object.entries(controls).map(([key, { value }]) => [key, value]))
@@ -286,13 +289,18 @@ export default function DemoPreview({
                 </div>
             </MotionDocCard>
 
-            {controls && !isSourceCodeDisabled && (
-                <ControlsPanel
-                    controls={controls}
-                    onChange={updateControlledValues}
-                    onReset={() => setControlledValues({})}
-                    values={{ ...defaults, ...controlledValues }}
-                />
+            {studio ? (
+                <OpenInStudioLink shader={studio} />
+            ) : (
+                controls &&
+                !isSourceCodeDisabled && (
+                    <ControlsPanel
+                        controls={controls}
+                        onChange={updateControlledValues}
+                        onReset={() => setControlledValues({})}
+                        values={{ ...defaults, ...controlledValues }}
+                    />
+                )
             )}
         </>
     )
