@@ -306,4 +306,14 @@ export const components: TRegistryComponent[] = [
         dependencies: ["motion"],
         registryDependencies: [],
     },
+    {
+        name: "wavy-scroll",
+        files: ["wavy-scroll.tsx"],
+        description:
+            "Text, images and any other element that wave across the screen while scrolling.",
+        shared: [],
+        dependencies: ["motion"],
+        registryDependencies: ["text-split"],
+        pro: true,
+    },
 ]
