@@ -2,7 +2,7 @@
 
 Source: https://atelier-ui.com/docs
 
-Generated: 2026-07-08T22:41:15.907Z
+Generated: 2026-07-10T13:48:34.641Z
 
 ---
 
@@ -1374,17 +1374,29 @@ By default the reveal is driven by the component's own scroll position, filling 
 
 ### Pinned to a scroll section
 
-Pass `scrollTargetRef` with a `sticky` wrapper to pin the canvas while a taller section scrolls past.
-
-In the demo we pin it over a fixed div so the grid looks like it covers the content.
+Set `scrollDistance` and the component pins the canvas on screen while that much page scrolls past. This is what the demo above uses.
 
 ```tsx
-const scrollTargetRef = useRef<HTMLDivElement>(null)
+<PixelScroll scrollDistance="300vh" direction="sweep" className="bg-black text-white" />
+```
 
-<div ref={scrollTargetRef} className="relative h-[300vh]">
-  <div className="sticky top-0 h-screen">
-    <PixelScroll scrollTargetRef={scrollTargetRef} className="size-full bg-black text-white" />
+### Custom scroll section
+
+If you need control over the layout, you can also build the section yourself and pass `scrollTargetRef`:
+
+```tsx
+const scrollTargetRef = useRef<ComponentRef<"div">>(null)
+
+<div>
+  <div className="h-screen" />
+
+  <div ref={scrollTargetRef} className="relative h-[300vh]">
+    <div className="sticky top-0 h-screen">
+      <PixelScroll scrollTargetRef={scrollTargetRef} className="size-full bg-black text-white" />
+    </div>
   </div>
+
+  <div className="h-screen" />
 </div>
 ```
 
@@ -1399,6 +1411,7 @@ const scrollTargetRef = useRef<HTMLDivElement>(null)
 | `colorRatio`      | `number`                         | `0.25`    | Fraction of pixels that show a color hint, from 0 to 1. Has no effect when `colors` is empty.                                                                                    |
 | `randomness`      | `number`                         | `0.4`     | How far each pixel's fill point deviates from the bottom-to-top gradient, from 0 to 1. At `0` the grid fills as an ordered gradient; at `1` the fill points are fully scattered. |
 | `direction`       | `"cover" \| "clear" \| "sweep"`  | `"cover"` | How the grid responds to scroll. `"cover"` fills it in, `"clear"` empties it, and `"sweep"` does both in one scroll.                                                             |
+| `scrollDistance`  | `string`                         | —         | When set, pins the canvas and drives the reveal over that much scrolling. Any CSS height. Ignored when `scrollTargetRef` is set.                                                 |
 | `scrollTargetRef` | `RefObject<HTMLElement \| null>` | —         | Element whose scroll position drives the reveal. Defaults to the component's own canvas.                                                                                         |
 | `className`       | `string`                         | —         | Classes forwarded to the canvas element.                                                                                                                                         |
 
@@ -1417,19 +1430,37 @@ Source file: components/scroll/scattered-scroll.mdx
 
 ## Usage
 
-Point `scrollTargetRef` to a scroll container with a sticky inner wrapper and the items will animate as that container scrolls through the viewport, the higher the container, the longer the animation.
+The component takes the items as children. Any element works.
 
 ```tsx
-const scrollTargetRef = useRef<HTMLDivElement>(null)
+<ScatteredScroll>
+  <img src="/1.webp" alt="" className="aspect-[5/7] w-[30vw] object-cover" />
+  <img src="/2.webp" alt="" className="aspect-[5/7] w-[30vw] object-cover" />
+  <img src="/3.webp" alt="" className="aspect-[5/7] w-[30vw] object-cover" />
+</ScatteredScroll>
+```
 
-<div ref={scrollTargetRef} className="relative h-[300vh]">
-  <div className="sticky top-0 flex h-screen items-center justify-center gap-2">
-    <ScatteredScroll scrollTargetRef={scrollTargetRef}>
-      {images.map((src) => (
-        <img key={src} src={src} alt="" className="aspect-[5/7] w-[30vw] object-cover" />
-      ))}
-    </ScatteredScroll>
+### Custom scroll section
+
+By default the component creates the scroll section for you. If you need control over the layout, you can also build the section yourself and pass `scrollTargetRef`:
+
+```tsx
+const scrollTargetRef = useRef<ComponentRef<"div">>(null)
+
+<div>
+  <div className="h-screen" />
+
+  <div ref={scrollTargetRef} className="relative h-[500vh] overflow-x-clip">
+    <div className="sticky top-0 flex h-screen items-center justify-center gap-2">
+      <ScatteredScroll scrollTargetRef={scrollTargetRef}>
+        <img src="/1.webp" alt="" className="aspect-[5/7] w-[30vw] object-cover" />
+        <img src="/2.webp" alt="" className="aspect-[5/7] w-[30vw] object-cover" />
+        <img src="/3.webp" alt="" className="aspect-[5/7] w-[30vw] object-cover" />
+      </ScatteredScroll>
+    </div>
   </div>
+
+  <div className="h-screen" />
 </div>
 ```
 
@@ -1437,10 +1468,11 @@ const scrollTargetRef = useRef<HTMLDivElement>(null)
 
 ## API
 
-| Prop              | Type                             | Default | Description                                    |
-| ----------------- | -------------------------------- | ------- | ---------------------------------------------- |
-| `children`        | `ReactNode`                      | —       | The items to animate. Any JSX element allowed. |
-| `scrollTargetRef` | `RefObject<HTMLElement \| null>` | —       | Reference to the scroll target element.        |
+| Prop              | Type                             | Default   | Description                                                                                 |
+| ----------------- | -------------------------------- | --------- | ------------------------------------------------------------------------------------------- |
+| `children`        | `ReactNode`                      | —         | The items to animate. Any JSX element allowed.                                              |
+| `scrollDistance`  | `string`                         | `"500vh"` | How much scrolling the effect takes. Any CSS height. Ignored when `scrollTargetRef` is set. |
+| `scrollTargetRef` | `RefObject<HTMLElement \| null>` | —         | External scrolled section driving the animation. Disables the built-in section.             |
 
 ***
 
@@ -2145,30 +2177,33 @@ Source file: components/background/halftone-glow.mdx
 
 Source file: components/scroll/elastic-stick.mdx
 
-## Usage
+***
 
-Point `scrollTargetRef` at a tall scroll container with a sticky inner wrapper; the items bounce and stick to the center as that container scrolls through the viewport.
+## API
 
-```tsx
-const scrollTargetRef = useRef<HTMLDivElement>(null)
+| Name              | Type                             | Default   | Description                                                                                 |
+| ----------------- | -------------------------------- | --------- | ------------------------------------------------------------------------------------------- |
+| `children`        | `ReactNode`                      | —         | The items to animate.                                                                       |
+| `staggerValue`    | `number`                         | `0.03`    | Delay between each item, as a fraction of the scroll.                                       |
+| `scrollDistance`  | `string`                         | `"500vh"` | How much scrolling the effect takes. Any CSS height. Ignored when `scrollTargetRef` is set. |
+| `scrollTargetRef` | `RefObject<HTMLElement \| null>` | —         | External scrolled section driving the animation. Disables the built-in section.             |
 
-<div ref={scrollTargetRef} className="relative h-[300vh]">
-  <div className="sticky top-0 flex h-screen items-center justify-center gap-2">
-    <ElasticStick scrollTargetRef={scrollTargetRef}>
-      {images.map((src) => (
-        <img key={src} src={src} alt="" className="aspect-[5/7] w-[30vw] object-cover" />
-      ))}
-    </ElasticStick>
-  </div>
-</div>
-```
+
+============================================================
+## Wavy Scroll
+> Text, images and any other element that wave across the screen while scrolling.
+
+Source file: components/scroll/wavy-scroll.mdx
 
 ***
 
 ## API
 
-| Prop              | Type                             | Default     | Description                                       |
-| ----------------- | -------------------------------- | ----------- | ------------------------------------------------- |
-| `children`        | `ReactNode`                      | —           | The items to animate. Any JSX element allowed.    |
-| `staggerValue`    | `number`                         | `0.03`      | Time offset between each child's animation start. |
-| `scrollTargetRef` | `RefObject<HTMLElement \| null>` | `undefined` | Reference to the scroll target element.           |
+| Name              | Type                             | Default   | Description                                                                                 |
+| ----------------- | -------------------------------- | --------- | ------------------------------------------------------------------------------------------- |
+| `children`        | `ReactNode`                      | —         | The sentence. Text is split per letter, other elements are animated as one block.           |
+| `amplitude`       | `number`                         | `60`      | Maximum wave height in pixels.                                                              |
+| `wavelength`      | `number`                         | `900`     | Distance in pixels between two wave crests.                                                 |
+| `intensity`       | `number`                         | `1`       | How strongly the wave reacts to scrolling. `2` gives a full wave at half the scroll speed.  |
+| `scrollDistance`  | `string`                         | `"500vh"` | How much scrolling the effect takes. Any CSS height. Ignored when `scrollTargetRef` is set. |
+| `scrollTargetRef` | `RefObject<HTMLElement \| null>` | —         | External scrolled section driving the animation. Disables the built-in section.             |

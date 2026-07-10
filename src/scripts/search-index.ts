@@ -8,7 +8,7 @@ import remarkGfm from "remark-gfm"
 import remarkMdx from "remark-mdx"
 import type { Node } from "unist"
 import { SKIP, visit } from "unist-util-visit"
-import { overlayRoots } from "@/lib/pro-overlay"
+import { overlayRoots } from "@/pro/lib/pro-overlay"
 import type { SearchEntry } from "@/types/scripts"
 
 function getSectionTitle(dir: string): string {

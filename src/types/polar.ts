@@ -4,4 +4,4 @@ export type PolarCustomer = {
     licenseKey: string | null
 }
 
-export type PolarAuthError = "email_failed" | "payment_failed"
+export type PolarAuthError = "email_failed" | "payment_failed" | "no_license"

@@ -45,6 +45,9 @@
     --color-backdrop: var(--backdrop);
     --color-ring: var(--ring);
     --color-link: var(--link);
+    --color-error-bg: var(--danger-bg);
+    --color-error-fg: var(--danger-fg);
+    --color-error-border: var(--danger-border);
 
     --font-sans: var(--font-geist-sans);
     --font-serif: var(--font-instrument-serif);
@@ -75,6 +78,10 @@
     --theme-border: var(--theme-1-border);
 
     --link: oklch(0.59 0.21 258.71);
+
+    --danger-bg: oklch(0.97 0.02 25.33);
+    --danger-fg: oklch(0.58 0.22 27.33);
+    --danger-border: oklch(0.89 0.06 20.98);
 
     --pattern-grid: oklch(0.91 0 0 / 1);
     --pattern-line: oklch(0.94 0 0);
@@ -107,6 +114,10 @@
     --theme-fg: var(--theme-1-fg);
 
     --link: oklch(73.68% 0.1379 255.71);
+
+    --danger-bg: oklch(0.26 0.06 25.33);
+    --danger-fg: oklch(0.79 0.13 20.06);
+    --danger-border: oklch(0.55 0.16 25.33);
 
     --pattern-line: oklch(0.21 0.01 278.71);
     --pattern-grid: oklch(0.25 0.02 279.63);

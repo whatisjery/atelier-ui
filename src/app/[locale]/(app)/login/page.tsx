@@ -1,10 +1,10 @@
 import { redirect } from "next/navigation"
-import AuthLoginForm from "@/components/features/auth/AuthLoginForm"
-import { getPolarSession } from "@/lib/polar"
+import AuthLoginForm from "@/pro/components/features/auth/AuthLoginForm"
+import { getSessionCustomer } from "@/pro/lib/auth/session"
 
 export default async function LoginPage() {
-    const session = await getPolarSession()
-    if (session) redirect("/docs")
+    const customer = await getSessionCustomer()
+    if (customer) redirect("/docs")
 
     return <AuthLoginForm />
 }

@@ -84,7 +84,7 @@ function SectionNode({ node, pathname, hasCustomer, closedKeys, toggle }: NodePr
 }
 
 export default function SideBarContent({ className, sections, topBarSlot }: SideBarContentProps) {
-    const hasCustomer = useGlobalStore((state) => state.customer !== null)
+    const hasCustomer = useGlobalStore((state) => state.customer?.licenseKey != null)
     const pathname = usePathname()
     const [closedKeys, setClosedKeys] = useState<string[]>([])
     const tSidebar = useTranslations("docs.sidebar")

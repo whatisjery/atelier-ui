@@ -15,7 +15,7 @@ type AlertProps = {
 
 const variantMap = {
     neutral: "bg-bg border-dashed text-accent-1 border",
-    error: "bg-red-400/10 text-red-500 border border-red-200",
+    error: "bg-error-bg text-error-fg border border-error-border",
 }
 
 export default function Alert({

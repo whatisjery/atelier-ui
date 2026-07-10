@@ -1,11 +1,11 @@
 import { redirect } from "next/navigation"
-import AuthSuccessPanel from "@/components/features/auth/AuthSuccessPanel"
-import { getPolarSession } from "@/lib/polar"
+import AuthSuccessPanel from "@/pro/components/features/auth/AuthSuccessPanel"
+import { getSessionCustomer } from "@/pro/lib/auth/session"
 
 export default async function SuccessPage() {
-    const session = await getPolarSession()
+    const customer = await getSessionCustomer()
 
-    if (!session) redirect("/login")
+    if (!customer) redirect("/login")
 
-    return <AuthSuccessPanel licenseKey={session.licenseKey} />
+    return <AuthSuccessPanel licenseKey={customer.licenseKey} />
 }

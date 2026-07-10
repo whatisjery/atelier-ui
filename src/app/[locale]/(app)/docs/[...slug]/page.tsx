@@ -14,9 +14,9 @@ import DemoPreview from "@/components/features/docs/demo-preview/DemoPreview"
 import InstalGuideCLI from "@/components/features/docs/install-guide/InstalGuideCLI"
 import InstalGuideManual from "@/components/features/docs/install-guide/InstalGuideManual"
 import InstallTabs from "@/components/features/docs/install-guide/InstallTabs"
-import ProCodeBlock from "@/components/features/pro/ProCodeBlock"
-import ProLicenseHelper from "@/components/features/pro/ProLicenseHelper"
-import ProPaywall from "@/components/features/pro/ProPaywall"
+import ProCodeBlock from "@/pro/components/features/pro/ProCodeBlock"
+import ProLicenseHelper from "@/pro/components/features/pro/ProLicenseHelper"
+import ProPaywall from "@/pro/components/features/pro/ProPaywall"
 import { env } from "@/env"
 import {
     getAllDocs,

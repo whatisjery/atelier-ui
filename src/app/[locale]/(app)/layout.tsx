@@ -7,10 +7,10 @@ import { getTranslations, setRequestLocale } from "next-intl/server"
 import { Tooltip } from "radix-ui"
 import { ThemeProvider } from "@/components/common/ThemeProvider"
 import { ThemeSync } from "@/components/common/ThemeSync"
-import AuthInit from "@/components/features/auth/AuthInit"
 import Toaster from "@/components/ui/Toaster"
 import { routing } from "@/i18n/routing"
 import { getCodeThemeColors } from "@/lib/shiki"
+import AuthInit from "@/pro/components/features/auth/AuthInit"
 
 const fontSans = Geist({
     variable: "--font-geist-sans",

@@ -6,8 +6,6 @@ import Brand from "@/components/common/Brand"
 import GlobalSearch from "@/components/common/GlobalSearch"
 import ThemeSwitcher from "@/components/common/ThemeSwitcher"
 import ThemeToggle from "@/components/common/ThemeToggle"
-import AuthAccountDropdown from "@/components/features/auth/AuthAccountDropdown"
-import AuthGuestDropdown from "@/components/features/auth/AuthGuestDropdown"
 import Button from "@/components/ui/Button"
 import Skeleton from "@/components/ui/Skeleton"
 import { useIsMobile } from "@/hooks/use-mobile"
@@ -15,6 +13,8 @@ import { Link, usePathname } from "@/i18n/navigation"
 import { REPO_URL } from "@/lib/constants"
 import { useGlobalStore } from "@/lib/store"
 import { cn } from "@/lib/utils"
+import AuthAccountDropdown from "@/pro/components/features/auth/AuthAccountDropdown"
+import AuthGuestDropdown from "@/pro/components/features/auth/AuthGuestDropdown"
 
 type MainNavProps = {
     className?: string

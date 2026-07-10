@@ -17,6 +17,10 @@ export default function Toaster({ ...props }: ToasterProps) {
         <Sonner
             theme={theme as ToasterProps["theme"]}
             className="toaster group"
+            richColors
+            toastOptions={{ style: { boxShadow: "none" } }}
+            offset={{ bottom: "2.5rem" }}
+            mobileOffset={{ bottom: "1.5rem" }}
             icons={{
                 success: <CircleCheckIcon className="size-4" />,
                 info: <InfoIcon className="size-4" />,
@@ -28,8 +32,21 @@ export default function Toaster({ ...props }: ToasterProps) {
                 {
                     "--normal-bg": "var(--color-bg)",
                     "--normal-text": "var(--color-accent-1)",
-                    "--normal-border": "var(--border)",
+                    "--normal-border": "var(--theme-border)",
                     "--border-radius": "0.8rem",
+
+                    "--error-bg": "var(--danger-bg)",
+                    "--error-text": "var(--danger-fg)",
+                    "--error-border": "var(--danger-border)",
+                    "--success-bg": "var(--color-bg)",
+                    "--success-text": "var(--color-accent-1)",
+                    "--success-border": "var(--theme-border)",
+                    "--info-bg": "var(--color-bg)",
+                    "--info-text": "var(--color-accent-1)",
+                    "--info-border": "var(--theme-border)",
+                    "--warning-bg": "var(--color-bg)",
+                    "--warning-text": "var(--color-accent-1)",
+                    "--warning-border": "var(--theme-border)",
                 } as React.CSSProperties
             }
             {...props}

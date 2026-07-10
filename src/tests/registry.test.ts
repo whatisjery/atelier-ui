@@ -1,7 +1,7 @@
 import fs from "node:fs"
 import path from "node:path"
 import { describe, expect, it } from "vitest"
-import { proOverlay } from "@/lib/pro-overlay"
+import { proOverlay } from "@/pro/lib/pro-overlay"
 import { collages } from "@/registry/collage/index"
 import { demos } from "@/registry/demos/index"
 import { components } from "@/registry/index"

@@ -6,11 +6,11 @@ import { notFound } from "next/navigation"
 import { cache } from "react"
 import { visit } from "unist-util-visit"
 import { routing } from "@/i18n/routing"
+import { overlayRoots } from "@/pro/lib/pro-overlay"
 import { components } from "@/registry"
 import type { CodeFile } from "@/types/code"
 import type { DirMeta, DocNavigation, DocTree } from "@/types/docs"
 import type { TOCItem } from "@/types/toc"
-import { overlayRoots } from "./pro-overlay"
 import { slugify } from "./utils"
 
 const DOCS_DIR = path.join(process.cwd(), "src/content")
@@ -19,9 +19,7 @@ const TEXT_EXTENSIONS = ["ts", "tsx", "js", "jsx", "css", "json"]
 const REGISTRY_DIR = path.join(process.cwd(), "src/registry")
 
 export const getDocsTree = cache(function getDocsTree(locale: string): DocTree[] {
-    const trees = overlayRoots(path.join(DOCS_DIR, locale)).map((dir) =>
-        buildDocTree(dir, "/docs"),
-    )
+    const trees = overlayRoots(path.join(DOCS_DIR, locale)).map((dir) => buildDocTree(dir, "/docs"))
     return trees.reduce(mergeDocTrees, [])
 })
 

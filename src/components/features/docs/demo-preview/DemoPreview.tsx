@@ -63,7 +63,7 @@ export default function DemoPreview({
 
     const ExpandIcon = isExpanded ? Minimize : Expand
     const isPro = components.some((component) => component.name === name && component.pro)
-    const isSourceCodeDisabled = isPro && !customer
+    const isSourceCodeDisabled = isPro && !customer?.licenseKey
 
     function updateControlledValues(key: string, value: ControlValue) {
         setControlledValues((prev) => ({ ...prev, [key]: value }))

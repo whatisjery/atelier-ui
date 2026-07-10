@@ -69,12 +69,16 @@
 
     "auth": {
         "login": {
-            "magic-link-sent": "If an account exists with that email, a login link has been sent. Check your inbox",
+            "magic-link-sent": "Login link sent. Check your inbox",
             "intro": "If you already have a license, we'll email you a secure link to sign in.",
             "sending-link": "Sending the link...",
             "submit": "Send login link",
             "need-pro": "Need pro access?",
-            "buy-license": "Buy a license"
+            "buy-license": "Buy a license",
+            "errors": {
+                "no-license": "No license is linked to this account. Sign in with the email you used at purchase.",
+                "unknown": "Something went wrong. Please try again."
+            }
         },
         "success": {
             "title": "Thank you for your support! ♥️",
@@ -86,6 +90,7 @@
             "title": "Something went wrong",
             "email-failed": "The link you used to access the page is invalid or expired, try again.",
             "payment-failed": "We couldn't verify your purchase. Try signing in from your account.",
+            "no-license": "No license found for that email. Make sure to sign in with the email you used at purchase.",
             "help": "If the problem persists, <link>send us an email</link> and include the address you used at purchase."
         },
         "guest-dropdown": {
