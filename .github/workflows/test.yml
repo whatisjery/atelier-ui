@@ -37,7 +37,10 @@ jobs:
                   RESEND_FROM_EMAIL: noreply@example.com
                   POLAR_ACCESS_TOKEN: dummy
                   POLAR_ORGANIZATION_ID: dummy
-                  SESSION_SECRET: dummy-session-secret
+                  DATABASE_URL: postgres://user:pass@localhost:5432/db
+                  BETTER_AUTH_SECRET: dummy-better-auth-secret-at-least-32-chars
+                  GOOGLE_CLIENT_ID: dummy
+                  GOOGLE_CLIENT_SECRET: dummy
                   NEXT_PUBLIC_SITE_URL: https://example.com
                   NEXT_PUBLIC_POLAR_CHECKOUT_URL: https://example.com
 
