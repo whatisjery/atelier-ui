@@ -7,9 +7,10 @@ import Button from "@/components/ui/Button"
 type InstallTabsProps = {
     cliSlot: React.ReactNode
     manualSlot: React.ReactNode
+    promptSlot?: React.ReactNode
 }
 
-export default function InstallTabs({ cliSlot, manualSlot }: InstallTabsProps) {
+export default function InstallTabs({ cliSlot, manualSlot, promptSlot }: InstallTabsProps) {
     const [value, setValue] = useState("cli")
 
     return (
@@ -20,6 +21,13 @@ export default function InstallTabs({ cliSlot, manualSlot }: InstallTabsProps) {
                         CLI
                     </Button>
                 </Tabs.Trigger>
+                {promptSlot && (
+                    <Tabs.Trigger value="prompt" asChild>
+                        <Button variant={value === "prompt" ? "secondary" : "ghost"} size="tag">
+                            Prompt
+                        </Button>
+                    </Tabs.Trigger>
+                )}
                 <Tabs.Trigger value="manual" asChild>
                     <Button variant={value === "manual" ? "secondary" : "ghost"} size="tag">
                         Manual
@@ -34,6 +42,12 @@ export default function InstallTabs({ cliSlot, manualSlot }: InstallTabsProps) {
             <Tabs.Content value="manual" forceMount className="data-[state=inactive]:hidden">
                 {manualSlot}
             </Tabs.Content>
+
+            {promptSlot && (
+                <Tabs.Content value="prompt" forceMount className="data-[state=inactive]:hidden">
+                    {promptSlot}
+                </Tabs.Content>
+            )}
         </Tabs.Root>
     )
 }

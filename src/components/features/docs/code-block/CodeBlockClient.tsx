@@ -144,7 +144,7 @@ export default function CodeBlockClient({
                                 "overflow-y-auto max-h-125": mode === "scroll",
                                 "m-0 flex-1 min-h-0 overflow-y-auto": mode === "preview",
                                 "max-h-50 overflow-y-hidden": mode === "expand" && !isExpanded,
-                                "max-h-full overflow-y-auto": mode === "expand" && isExpanded,
+                                "max-h-full overflow-y-auto pb-18": mode === "expand" && isExpanded,
                                 "code-block-line": !installTabs && showLineNumbers === true,
 
                                 // makes the text color of the install tabs 'unthemed'.

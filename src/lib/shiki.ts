@@ -25,7 +25,7 @@ export function highlightToHast(
 export async function getCodeThemeColors() {
     const highlighter = await getSingletonHighlighter({
         themes: Object.values(themes),
-        langs: ["tsx", "ts", "css", "bash", "yaml"],
+        langs: ["tsx", "ts", "css", "bash", "yaml", "markdown"],
     })
 
     return {

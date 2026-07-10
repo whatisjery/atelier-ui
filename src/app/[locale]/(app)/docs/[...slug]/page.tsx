@@ -17,6 +17,7 @@ import InstallTabs from "@/components/features/docs/install-guide/InstallTabs"
 import ProCodeBlock from "@/components/features/pro/ProCodeBlock"
 import ProLicenseHelper from "@/components/features/pro/ProLicenseHelper"
 import ProPaywall from "@/components/features/pro/ProPaywall"
+import { env } from "@/env"
 import {
     getAllDocs,
     getCategorySlugs,
@@ -27,6 +28,7 @@ import {
     getSection,
     getSectionCategories,
 } from "@/lib/docs"
+import { buildComponentPrompt } from "@/pro/components/features/prompt/build-prompt"
 import { components } from "@/registry"
 import type { ControlDef } from "@/types/controls"
 
@@ -110,6 +112,16 @@ export default async function Page({ params }: PageProps) {
     const content = await importDoc(locale, slug)
     const isPro = components.some(({ name, pro }) => name === slug[slug.length - 1] && pro)
 
+    const frontmatter = content.frontmatter as DocMeta
+
+    const prompt = buildComponentPrompt({
+        name: slug[slug.length - 1],
+        title: frontmatter.title,
+        description: frontmatter.description,
+        rawMarkdown,
+        docUrl: `${env.NEXT_PUBLIC_SITE_URL}/${locale}/docs/${slug.join("/")}`,
+    })
+
     return (
         <PageDocLayout
             TOCSlot={<DocTableOfContent headings={headings} />}
@@ -137,6 +149,7 @@ export default async function Page({ params }: PageProps) {
                             return (
                                 <DemoPreview
                                     {...props}
+                                    prompt={prompt ?? undefined}
                                     codePreviewSlot={
                                         isPro ? (
                                             <ProCodeBlock
@@ -193,6 +206,16 @@ export default async function Page({ params }: PageProps) {
                                             name={props.name}
                                             snippets={snippets[props.name]}
                                         />
+                                    }
+                                    promptSlot={
+                                        prompt ? (
+                                            <DocCodeBlock
+                                                mode="expand"
+                                                title="prompt.md"
+                                                code={prompt}
+                                                lang="markdown"
+                                            />
+                                        ) : undefined
                                     }
                                 />
                             )

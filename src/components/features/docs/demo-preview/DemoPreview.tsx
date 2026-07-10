@@ -1,6 +1,6 @@
 "use client"
 
-import { Lock, Maximize, Minimize, RotateCcw } from "lucide-react"
+import { Expand, Lock, Minimize, RotateCcw } from "lucide-react"
 import { AnimatePresence, motion } from "motion/react"
 import { useLocale, useTranslations } from "next-intl"
 import { type ComponentRef, useEffect, useEffectEvent, useMemo, useRef, useState } from "react"
@@ -17,6 +17,7 @@ import { useScrollLock } from "@/hooks/use-scroll-lock"
 import { expoOut } from "@/lib/ease"
 import { useGlobalStore } from "@/lib/store"
 import { cn } from "@/lib/utils"
+import CopyPromptButton from "@/pro/components/features/prompt/CopyPromptButton"
 import OpenInStudioLink from "@/pro/components/features/studio/OpenInStudioLink"
 import { components } from "@/registry"
 import type { ControlDef, ControlValue } from "@/types/controls"
@@ -31,6 +32,7 @@ type DocComponentPreviewProps = {
     name: string
     controls?: Record<string, ControlDef> | undefined
     studio?: string | undefined
+    prompt?: string | undefined
     codePreviewSlot: React.ReactNode
 }
 
@@ -39,6 +41,7 @@ export default function DemoPreview({
     codePreviewSlot,
     controls = undefined,
     studio = undefined,
+    prompt = undefined,
 }: DocComponentPreviewProps) {
     const defaults = controls
         ? Object.fromEntries(Object.entries(controls).map(([key, { value }]) => [key, value]))
@@ -58,7 +61,7 @@ export default function DemoPreview({
     const [reloadKey, setReloadKey] = useState(0)
     const [animationDone, setAnimationDone] = useState(true)
 
-    const ExpandIcon = isExpanded ? Minimize : Maximize
+    const ExpandIcon = isExpanded ? Minimize : Expand
     const isPro = components.some((component) => component.name === name && component.pro)
     const isSourceCodeDisabled = isPro && !customer
 
@@ -153,7 +156,7 @@ export default function DemoPreview({
                         <div className="flex items-center gap-x-3 min-w-0 flex-1">
                             <ThemeSwitcher size="0.6rem" />
 
-                            <div className="cursor-default min-w-0 max-w-60 flex-1 h-8 bg-accent-5 flex items-center gap-x-1 text-xs p-1 px-3 border rounded">
+                            <div className="cursor-default max-sm:hidden min-w-0 max-w-60 flex-1 h-8 bg-accent-5 flex items-center gap-x-1 text-xs p-1 px-3 border rounded">
                                 <Lock className="size-2.5 mr-1 text-accent-2 shrink-0" />
 
                                 <span className="flex-1 min-w-0 overflow-hidden text-ellipsis whitespace-nowrap">
@@ -163,22 +166,6 @@ export default function DemoPreview({
                         </div>
 
                         <div className="flex items-center gap-x-1 h-8">
-                            <Tooltip title={tTooltips("expand-preview")}>
-                                <Button
-                                    size="icon"
-                                    variant="ghost"
-                                    className="h-full"
-                                    onClick={() => setPreviewMode(isExpanded ? "small" : "big")}
-                                    aria-label={
-                                        isExpanded ? "Close expanded preview" : "Expand preview"
-                                    }
-                                >
-                                    <ExpandIcon strokeWidth={1.5} className="size-4" />
-                                </Button>
-                            </Tooltip>
-
-                            <span className="bg-border h-6 w-px flex" />
-
                             <Tooltip title={tTooltips("refresh-preview")}>
                                 <Button
                                     size="icon"
@@ -194,6 +181,28 @@ export default function DemoPreview({
                                     />
                                 </Button>
                             </Tooltip>
+
+                            <Tooltip title={tTooltips("expand-preview")}>
+                                <Button
+                                    size="icon"
+                                    variant="ghost"
+                                    className="h-full"
+                                    onClick={() => setPreviewMode(isExpanded ? "small" : "big")}
+                                    aria-label={
+                                        isExpanded ? "Close expanded preview" : "Expand preview"
+                                    }
+                                >
+                                    <ExpandIcon strokeWidth={1.5} className="size-4" />
+                                </Button>
+                            </Tooltip>
+
+                            <span
+                                className={cn("bg-theme-border h-5 w-px flex", {
+                                    "mr-5 ml-2": isSourceCodeDisabled,
+                                })}
+                            />
+
+                            {prompt && <CopyPromptButton prompt={prompt} />}
 
                             {!isSourceCodeDisabled && (
                                 <Button
@@ -264,7 +273,7 @@ export default function DemoPreview({
                         )}
                     >
                         <div className="flex items-center gap-x-2 animate-pulse">
-                            <Maximize />
+                            <ExpandIcon />
 
                             <span className="text-2xl">
                                 {isTouchScreen
