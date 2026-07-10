@@ -1,6 +1,3 @@
-import { type LenisRef, ReactLenis } from "lenis/react"
-import { cancelFrame, type FrameData, frame } from "motion"
-import { useEffect, useRef } from "react"
 import ScatteredScroll, {
     type ScatteredScrollProps,
 } from "@/registry/base/scattered-scroll/scattered-scroll"
@@ -13,19 +10,8 @@ const IMAGE_URLS = [
 ]
 
 export default function ScatteredScrollDemo(controls: Partial<ScatteredScrollProps>) {
-    const lenisRef = useRef<LenisRef>(null)
-
-    useEffect(() => {
-        function update(data: FrameData) {
-            const ref = lenisRef.current
-            if (ref?.lenis) ref.lenis.raf(data.timestamp)
-        }
-        frame.update(update, true)
-        return () => cancelFrame(update)
-    }, [])
-
     return (
-        <ReactLenis root ref={lenisRef} options={{ autoRaf: false, syncTouch: true }}>
+        <>
             <div className="h-screen font-serif text-5xl flex w-full items-center justify-center">
                 Scroll down
             </div>
@@ -46,6 +32,6 @@ export default function ScatteredScrollDemo(controls: Partial<ScatteredScrollPro
             <div className="h-screen font-serif text-5xl flex w-full items-center justify-center">
                 Scroll up
             </div>
-        </ReactLenis>
+        </>
     )
 }

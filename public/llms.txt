@@ -37,7 +37,7 @@ A: Yes, by design. WebGL media and text mirror a real `<img>`, `<video>`, or tex
 A: No. Many components are zero-dependency, using the native Canvas 2D API or pure CSS: `magnetic-dot-grid`, `pixel-trail`, `pixelated-text`, `text-scramble`, `infinite-gallery`, `text-roll`. Only WebGL components pull in `three` and React Three Fiber.
 
 **Q: How do I install a component?**
-A: `npx atelier-ui add <component-name>`. It copies the source, copies shared utilities, pulls in any components it depends on, and installs npm peer deps. You then own and edit the files. WebGL effects also require wrapping your app root once in `<WebglProvider>`.
+A: `npx atelier-ui add <component-name>`. It copies the source, copies shared utilities, pulls in any components it depends on, and installs npm peer deps. You then own and edit the files. WebGL effects also require wrapping your app root once in `<WebglProvider>`. Scroll effects install `<SmoothScroll>` with them and work best with it at the root.
 
 **Q: Is it free?**
 A: Mostly. Free components are fully open. A few Pro components require a license key (`ATELIER_PRO_KEY` in `.env.local`). Both tiers use the same CLI and install flow.
@@ -65,6 +65,7 @@ The shared building blocks every WebGL component composes on. Install `webgl-pro
 - [WebGL Video](https://atelier-ui.com/docs/components/primitive/webgl-video): Same as WebGL Image but for `<video>` via a `VideoTexture`. Dependencies: `three`, `@react-three/fiber`.
 - [WebGL Text](https://atelier-ui.com/docs/components/primitive/webgl-text): DOM-aligned WebGL plane that rasterizes CSS-styled text onto a canvas texture, mirroring computed typography so it matches the DOM. Base for `text-fluid`. Dependencies: `three`, `@react-three/fiber`.
 - [WebGL Scene](https://atelier-ui.com/docs/components/primitive/webgl-scene): A primitive that owns its own Three.js scene and camera, rendered into a tracked DOM rect on the shared canvas (scissor or texture mode). For effects that need camera motion. Base for `sphere-gallery`. Dependencies: `three`, `@react-three/fiber`.
+- [Smooth Scroll](https://atelier-ui.com/docs/components/primitive/smooth-scroll): Lenis smooth scrolling for the whole page, driven by Motion's frame loop so scroll, animations, and WebGL update on one clock. Wrap your app root in it once. Scroll components install it automatically and work best with it. Dependencies: `lenis`, `motion`.
 - [Text Split](https://atelier-ui.com/docs/components/primitive/text-split): Foundation block that splits a string into letters or words, wraps each in an `overflow-clip` span, and exposes them via a `renderItems` render prop. Used by `text-bounce` and `text-roll`. Zero dependencies.
 
 ## Components — Cursor
@@ -80,13 +81,14 @@ The shared building blocks every WebGL component composes on. Install `webgl-pro
 
 ## Components — Scroll
 
-- [Curve Media](https://atelier-ui.com/docs/components/scroll/curve-media): SEO-friendly `<img>` or `<video>` that bends with scroll velocity using sine-based vertex displacement, plus chromatic aberration on the scroll axis (driven by Lenis). Key props: `type`, `src`, `alt`, `amplitude`, `aberration`, `smoothing`, `segments`, `webglEnabled`. Dependencies: `three`, `@react-three/fiber`, `@react-three/drei`.
+- [Curve Media](https://atelier-ui.com/docs/components/scroll/curve-media): SEO-friendly `<img>` or `<video>` that bends with scroll velocity using sine-based vertex displacement, plus chromatic aberration on the scroll axis (driven by Lenis). Key props: `type`, `src`, `alt`, `amplitude`, `aberration`, `smoothing`, `segments`, `webglEnabled`. Dependencies: `three`, `@react-three/fiber`, `@react-three/drei`. Installs `smooth-scroll` automatically.
 - [Infinite Gallery](https://atelier-ui.com/docs/components/scroll/infinite-gallery): Zero-dependency infinite horizontal gallery with drag and wheel input, momentum, and two transform modes (`"flip"` or `"shrink"`). Generic via `data` + `renderItem`. Key props: `data`, `renderItem`, `mode`, `perView`, `speed`, `inertia`, `gap`. Zero dependencies (JS animation).
-- [Infinite Parallax](https://atelier-ui.com/docs/components/scroll/infinite-parallax): Vertically infinite parallax column with auto-scroll and looping content. Wraps any `children`. Key props: `speed`, `autoScroll`, `className`. Dependencies: `motion`, `lenis`.
+- [Infinite Parallax](https://atelier-ui.com/docs/components/scroll/infinite-parallax): Vertically infinite parallax column with auto-scroll and looping content. Wraps any `children`. Key props: `speed`, `autoScroll`, `className`. Dependencies: `motion`. Installs `smooth-scroll` automatically.
 - [Infinite Zoom](https://atelier-ui.com/docs/components/scroll/infinite-zoom): Mouse-wheel infinite zoom illusion using stacked, cycling layers. Key props: `children`, `zoomAmount`, `lerpValue`, `backgroundSpeed`, `className`. Dependencies: `motion`.
-- [Pixel Scroll](https://atelier-ui.com/docs/components/scroll/pixel-scroll): Scroll-driven canvas pixel grid that fills in or clears out as you scroll, with optional color hints and three directions (`cover`, `clear`, `sweep`). Key props: `density`, `colors`, `colorRatio`, `randomness`, `direction`, `scrollTargetRef`. Dependencies: `motion`.
-- [Scattered Scroll](https://atelier-ui.com/docs/components/scroll/scattered-scroll): Scroll-driven horizontal scatter; children spread apart along the x-axis as the user scrolls. Key props: `children`, `scrollTargetRef`. Dependencies: `motion`, `lenis`.
-- [Elastic Stick](https://atelier-ui.com/docs/components/scroll/elastic-stick): **(Pro)** Items spring and stick to the center of the viewport while scrolling, with staggered timing. Key props: `children`, `staggerValue`, `scrollTargetRef`. Dependencies: `motion`, `lenis`.
+- [Pixel Scroll](https://atelier-ui.com/docs/components/scroll/pixel-scroll): Scroll-driven canvas pixel grid that fills in or clears out as you scroll, with optional color hints and three directions (`cover`, `clear`, `sweep`). Key props: `density`, `colors`, `colorRatio`, `randomness`, `direction`, `scrollTargetRef`. Dependencies: `motion`. Installs `smooth-scroll` automatically.
+- [Scattered Scroll](https://atelier-ui.com/docs/components/scroll/scattered-scroll): Scroll-driven horizontal scatter; children spread apart along the x-axis as the user scrolls. Key props: `children`, `scrollTargetRef`. Dependencies: `motion`. Installs `smooth-scroll` automatically.
+- [Elastic Stick](https://atelier-ui.com/docs/components/scroll/elastic-stick): **(Pro)** Items spring and stick to the center of the viewport while scrolling, with staggered timing. Key props: `children`, `staggerValue`, `scrollTargetRef`. Dependencies: `motion`. Installs `smooth-scroll` automatically.
+- [Wavy Scroll](https://atelier-ui.com/docs/components/scroll/wavy-scroll): **(Pro)** Text, images, and any other element that wave across the screen while scrolling. Key props: `children`, `amplitude`, `wavelength`, `intensity`, `scrollDistance`, `scrollTargetRef`. Dependencies: `motion`. Installs `smooth-scroll` and `text-split` automatically.
 
 ## Components — Text
 

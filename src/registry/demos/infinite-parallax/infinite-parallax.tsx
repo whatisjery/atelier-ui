@@ -1,6 +1,3 @@
-import { type LenisRef, ReactLenis } from "lenis/react"
-import { cancelFrame, type FrameData, frame } from "motion"
-import { useEffect, useRef } from "react"
 import {
     InfiniteParallax,
     type InfiniteParallaxProps,
@@ -14,19 +11,8 @@ const IMAGE_URLS = [
 ]
 
 export default function InfiniteParallaxDemo(controls: Partial<InfiniteParallaxProps>) {
-    const lenisRef = useRef<LenisRef>(null)
-
-    useEffect(() => {
-        function update(data: FrameData) {
-            const ref = lenisRef.current
-            if (ref?.lenis) ref.lenis.raf(data.timestamp)
-        }
-        frame.update(update, true)
-        return () => cancelFrame(update)
-    }, [])
-
     return (
-        <ReactLenis root ref={lenisRef} options={{ autoRaf: false, syncTouch: true }}>
+        <>
             <div className="h-screen font-serif text-5xl flex items-center justify-center">
                 Scroll down
             </div>
@@ -75,6 +61,6 @@ export default function InfiniteParallaxDemo(controls: Partial<InfiniteParallaxP
             <div className="h-screen font-serif text-5xl flex items-center justify-center">
                 Scroll up
             </div>
-        </ReactLenis>
+        </>
     )
 }

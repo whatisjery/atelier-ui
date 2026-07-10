@@ -50,6 +50,16 @@ Then use it anywhere in your app:
 <CurveMedia type="image" src="/photo.jpg" alt="A photo" className="w-full h-auto" />
 ```
 
+Works best with smooth scrolling, you can add [Smooth Scroll](/docs/components/primitive/smooth-scroll) at the root for that:
+
+```tsx title="Root layout"
+import { SmoothScroll } from "@/components/smooth-scroll";
+
+export default function RootLayout({ children }) {
+  return <SmoothScroll>{children}</SmoothScroll>;
+}
+```
+
 ---
 
 ## API

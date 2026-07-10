@@ -1,4 +1,3 @@
-import ReactLenis from "lenis/react"
 import { motion, useScroll, useTransform } from "motion/react"
 import { type ComponentRef, useRef, useState } from "react"
 import { useDreiLoader } from "@/hooks/use-drei-loader"
@@ -57,143 +56,139 @@ export default function FluidScene() {
 
             <FluidDistortion />
 
-            <ReactLenis root>
-                <header className="inset-0 text-xs sm:text-[1.3vw] flex fixed flex-col justify-between z-20 p-4 text-[#ffffff] pointer-events-none">
-                    <span className="flex justify-between w-full">
-                        <span>atelier-ui.com</span>
-                        <span>atelier-ui.com</span>
-                        <span>atelier-ui.com</span>
-                    </span>
+            <header className="inset-0 text-xs sm:text-[1.3vw] flex fixed flex-col justify-between z-20 p-4 text-[#ffffff] pointer-events-none">
+                <span className="flex justify-between w-full">
+                    <span>atelier-ui.com</span>
+                    <span>atelier-ui.com</span>
+                    <span>atelier-ui.com</span>
+                </span>
 
-                    <span className="flex justify-between w-full mb-18">
-                        <span>+</span>
-                        <span>+</span>
-                        <span>+</span>
-                    </span>
+                <span className="flex justify-between w-full mb-18">
+                    <span>+</span>
+                    <span>+</span>
+                    <span>+</span>
+                </span>
 
-                    <span className="flex justify-between w-full">
-                        <span>atelier-ui.com</span>
-                        <span>atelier-ui.com</span>
-                        <span>atelier-ui.com</span>
-                    </span>
-                </header>
+                <span className="flex justify-between w-full">
+                    <span>atelier-ui.com</span>
+                    <span>atelier-ui.com</span>
+                    <span>atelier-ui.com</span>
+                </span>
+            </header>
 
-                <section className="h-screen relative flex items-end w-full text-[#ffffff] px-5">
+            <section className="h-screen relative flex items-end w-full text-[#ffffff] px-5">
+                <WebglImage
+                    alt="runner"
+                    src="/images/demo/shared/1.webp"
+                    className="object-cover h-full absolute inset-0 w-full"
+                />
+
+                <div className="flex flex-col items-center w-full">
+                    <h1 className="flex w-full justify-center text-[17vw]/[1.3]">
+                        <WebglText zIndex={1} render={<p className="tracking-[-0.05em]"></p>}>
+                            Atelier
+                        </WebglText>
+
+                        <WebglText
+                            zIndex={1}
+                            render={<p className="font-serif italic tracking-[-0.03em]"></p>}
+                        >
+                            (Collage)
+                        </WebglText>
+                    </h1>
+
+                    <p className="text-[1.2vw] uppercase max-w-[50%] text-center mb-10">
+                        {DEMO_TEXT}
+                    </p>
+                </div>
+            </section>
+
+            <section className="h-[180vh] bg-[black] flex overflow-hidden relative">
+                <div className="absolute inset-0 z-5 bg-[#0000009d] pointer-events-none" />
+
+                <div className="absolute inset-0 flex items-center justify-end z-20 py-50 flex-col">
+                    <TextRoll
+                        duration={1.2}
+                        playOnScroll
+                        cycles={2}
+                        playOnMount={false}
+                        render={
+                            <p className="text-[10vw]/[1.1] text-[#ffffff] tracking-[-0.04em] font-medium" />
+                        }
+                    >
+                        AUI / 26-27
+                    </TextRoll>
+                </div>
+
+                <motion.div className="absolute inset-0 flex">
+                    {PARALLAX_CFG.map(({ parallaxAmount, reversed, reverseImages }, i) => {
+                        const urls = reverseImages ? [...IMAGE_URLS].reverse() : IMAGE_URLS
+                        return (
+                            <InfiniteParallax
+                                key={i}
+                                parallaxAmount={parallaxAmount}
+                                reversed={reversed}
+                            >
+                                {urls.map((url) => (
+                                    <img
+                                        width={100}
+                                        height={100}
+                                        key={url}
+                                        src={url}
+                                        alt={url}
+                                        className="aspect-2.5/2 w-full object-cover"
+                                    />
+                                ))}
+                            </InfiniteParallax>
+                        )
+                    })}
+                </motion.div>
+            </section>
+
+            <footer ref={footerRef} className="overflow-hidden">
+                <motion.div
+                    style={{ y: yFooter }}
+                    className="h-screen relative flex items-end w-full text-[#ffffff]"
+                >
                     <WebglImage
-                        alt="runner"
-                        src="/images/demo/shared/1.webp"
-                        className="object-cover h-full absolute inset-0 w-full"
+                        // parent is animated, so the plane must follow it each frame
+                        autoReflow
+                        alt="skateboarder"
+                        src="/images/demo/shared/2.webp"
+                        className="object-cover absolute h-full inset-0 w-full"
                     />
+                    <div className="flex flex-col items-center w-full relative z-2 h-full">
+                        <WebglImage
+                            src="/images/demo/shared/barcode.png"
+                            alt="barcode"
+                            autoReflow
+                            className="mt-auto w-[12%] mb-4"
+                            zIndex={2}
+                        />
+                        <p className="text-[1.2vw] uppercase max-w-[50%] text-center">
+                            {DEMO_TEXT}
+                        </p>
 
-                    <div className="flex flex-col items-center w-full">
-                        <h1 className="flex w-full justify-center text-[17vw]/[1.3]">
-                            <WebglText zIndex={1} render={<p className="tracking-[-0.05em]"></p>}>
+                        <span className="flex justify-center w-full text-[17vw]/[1.3] mb-10 text-center">
+                            <WebglText
+                                autoReflow
+                                zIndex={1}
+                                render={<p className="tracking-[-0.05em]"></p>}
+                            >
                                 Atelier
                             </WebglText>
 
                             <WebglText
+                                autoReflow
                                 zIndex={1}
                                 render={<p className="font-serif italic tracking-[-0.03em]"></p>}
                             >
                                 (Collage)
                             </WebglText>
-                        </h1>
-
-                        <p className="text-[1.2vw] uppercase max-w-[50%] text-center mb-10">
-                            {DEMO_TEXT}
-                        </p>
+                        </span>
                     </div>
-                </section>
-
-                <section className="h-[180vh] bg-[black] flex overflow-hidden relative">
-                    <div className="absolute inset-0 z-5 bg-[#0000009d] pointer-events-none" />
-
-                    <div className="absolute inset-0 flex items-center justify-end z-20 py-50 flex-col">
-                        <TextRoll
-                            duration={1.2}
-                            playOnScroll
-                            cycles={2}
-                            playOnMount={false}
-                            render={
-                                <p className="text-[10vw]/[1.1] text-[#ffffff] tracking-[-0.04em] font-medium" />
-                            }
-                        >
-                            AUI / 26-27
-                        </TextRoll>
-                    </div>
-
-                    <motion.div className="absolute inset-0 flex">
-                        {PARALLAX_CFG.map(({ parallaxAmount, reversed, reverseImages }, i) => {
-                            const urls = reverseImages ? [...IMAGE_URLS].reverse() : IMAGE_URLS
-                            return (
-                                <InfiniteParallax
-                                    key={i}
-                                    parallaxAmount={parallaxAmount}
-                                    reversed={reversed}
-                                >
-                                    {urls.map((url) => (
-                                        <img
-                                            width={100}
-                                            height={100}
-                                            key={url}
-                                            src={url}
-                                            alt={url}
-                                            className="aspect-2.5/2 w-full object-cover"
-                                        />
-                                    ))}
-                                </InfiniteParallax>
-                            )
-                        })}
-                    </motion.div>
-                </section>
-
-                <footer ref={footerRef} className="overflow-hidden">
-                    <motion.div
-                        style={{ y: yFooter }}
-                        className="h-screen relative flex items-end w-full text-[#ffffff]"
-                    >
-                        <WebglImage
-                            // parent is animated, so the plane must follow it each frame
-                            autoReflow
-                            alt="skateboarder"
-                            src="/images/demo/shared/2.webp"
-                            className="object-cover absolute h-full inset-0 w-full"
-                        />
-                        <div className="flex flex-col items-center w-full relative z-2 h-full">
-                            <WebglImage
-                                src="/images/demo/shared/barcode.png"
-                                alt="barcode"
-                                autoReflow
-                                className="mt-auto w-[12%] mb-4"
-                                zIndex={2}
-                            />
-                            <p className="text-[1.2vw] uppercase max-w-[50%] text-center">
-                                {DEMO_TEXT}
-                            </p>
-
-                            <span className="flex justify-center w-full text-[17vw]/[1.3] mb-10 text-center">
-                                <WebglText
-                                    autoReflow
-                                    zIndex={1}
-                                    render={<p className="tracking-[-0.05em]"></p>}
-                                >
-                                    Atelier
-                                </WebglText>
-
-                                <WebglText
-                                    autoReflow
-                                    zIndex={1}
-                                    render={
-                                        <p className="font-serif italic tracking-[-0.03em]"></p>
-                                    }
-                                >
-                                    (Collage)
-                                </WebglText>
-                            </span>
-                        </div>
-                    </motion.div>
-                </footer>
-            </ReactLenis>
+                </motion.div>
+            </footer>
         </>
     )
 }

@@ -36,6 +36,16 @@ By default the reveal is driven by the component's own scroll position, filling 
 <div className="h-screen" />
 ```
 
+Works best with smooth scrolling, you can add [Smooth Scroll](/docs/components/primitive/smooth-scroll) at the root for that:
+
+```tsx title="Root layout"
+import { SmoothScroll } from "@/components/smooth-scroll";
+
+export default function RootLayout({ children }) {
+  return <SmoothScroll>{children}</SmoothScroll>;
+}
+```
+
 ### Color
 
 - `text-white` sets the pixel color.

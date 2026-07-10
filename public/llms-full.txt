@@ -2,7 +2,7 @@
 
 Source: https://atelier-ui.com/docs
 
-Generated: 2026-07-10T13:48:34.641Z
+Generated: 2026-07-10T19:39:19.553Z
 
 ---
 
@@ -23,6 +23,7 @@ Source file: collage/fluid-scene.mdx
 * [Text Roll](/docs/components/text/text-roll)
 * [Infinite Parallax](/docs/components/scroll/infinite-parallax)
 * [Sweep Exit](/docs/components/transition/sweep-exit)
+* [Smooth Scroll](/docs/components/primitive/smooth-scroll)
 
 ***
 
@@ -666,6 +667,91 @@ Pixel trail effect inspired by his portfolio, reimplemented using a 2D canvas.
 
 
 ============================================================
+## Smooth Scroll
+> Lenis smooth scrolling for the whole page, driven by one shared frame loop.
+
+Source file: components/primitive/smooth-scroll.mdx
+
+Adds [Lenis](https://lenis.dev) smooth scrolling to your page, with Motion as the clock.
+
+Scroll, JS animations, and WebGL usually each run on their own loop, and they can fall out of sync.\
+**Smooth Scroll** runs them on a single loop, in a fixed order, so they always move together without delay.
+
+***
+
+## Install
+
+***
+
+## Usage
+
+Wrap your root layout with the provider.
+
+```tsx title="Root layout"
+import { SmoothScroll } from "@/components/smooth-scroll"
+
+export default function RootLayout({ children }) {
+    return <SmoothScroll>{children}</SmoothScroll>
+}
+```
+
+### With the WebGL Provider
+
+Both providers run on Motion's clock, nesting order does not matter.
+
+```tsx title="Root layout"
+<SmoothScroll>
+    <WebglProvider>{children}</WebglProvider>
+</SmoothScroll>
+```
+
+### Control scrolling from components
+
+Any component under the provider can access the Lenis instance with `useLenis`:
+
+```tsx
+import { useLenis } from "lenis/react"
+
+function BackToTop() {
+    const lenis = useLenis()
+
+    return <button onClick={() => lenis?.scrollTo(0)}>Back to top</button>
+}
+```
+
+### Pass Lenis options
+
+Any [Lenis option](https://github.com/darkroomengineering/lenis#instance-settings) can be passed through the `options` prop, `syncTouch` is enabled by default:
+
+```tsx title="Custom scroll feel"
+<SmoothScroll options={{ lerp: 0.08, syncTouch: false }}>
+    {children}
+</SmoothScroll>
+```
+
+The one option you can't change is `autoRaf`: the provider drives Lenis itself.
+
+***
+
+## API
+
+| Name       | Type           | Default               | Description                                           |
+| ---------- | -------------- | --------------------- | ----------------------------------------------------- |
+| `children` | `ReactNode`    | -                     | Your app or page content. Required.                   |
+| `options`  | `LenisOptions` | `{ syncTouch: true }` | Lenis instance settings. `autoRaf` is always `false`. |
+
+***
+
+## Credits
+
+[Lenis](https://lenis.dev)
+Smooth scroll library by darkroom.engineering.
+
+[Motion](https://motion.dev)
+React animation library whose frame loop drives the page.
+
+
+============================================================
 ## Text Split
 > A foundation block that splits a string into letters or words.
 
@@ -822,6 +908,9 @@ Source file: components/primitive/webgl-provider.mdx
 
 WebGL Provider mounts a single `<Canvas>` for the whole page and renders your application inside it. Every other WebGL component draws onto this canvas, so the application holds one WebGL context instead of one per effect.
 
+The canvas draws on Motion's clock instead of its own `requestAnimationFrame`.
+With [Smooth Scroll](/docs/components/primitive/smooth-scroll) on the page, every tick moves the scroll first, then the page, then draws the canvas, so WebGL elements always stay exactly on top of the elements they follow.
+
 Add the provider once, at your application root. For installation steps, see the [installation guide](/docs/getting-started/installation).
 
 ***
@@ -888,6 +977,7 @@ function Effect() {
 | `style`     | `CSSProperties` | —       | Merged into the canvas style.                                                  |
 
 All other [React Three Fiber Canvas props](https://r3f.docs.pmnd.rs/api/canvas) are forwarded, except `children` and `eventSource`.
+`frameloop` is always `"never"`, because Motion's frame loop advances the canvas.
 
 ### useWebglReady
 
@@ -1157,6 +1247,16 @@ Then use it anywhere in your app:
 <CurveMedia type="image" src="/photo.jpg" alt="A photo" className="w-full h-auto" />
 ```
 
+Works best with smooth scrolling, you can add [Smooth Scroll](/docs/components/primitive/smooth-scroll) at the root for that:
+
+```tsx title="Root layout"
+import { SmoothScroll } from "@/components/smooth-scroll";
+
+export default function RootLayout({ children }) {
+  return <SmoothScroll>{children}</SmoothScroll>;
+}
+```
+
 ***
 
 ## API
@@ -1261,6 +1361,16 @@ Each column is composable: stack as many as you want, you can change `autoScroll
 </div>
 ```
 
+Works best with smooth scrolling, you can add [Smooth Scroll](/docs/components/primitive/smooth-scroll) at the root for that:
+
+```tsx title="Root layout"
+import { SmoothScroll } from "@/components/smooth-scroll";
+
+export default function RootLayout({ children }) {
+  return <SmoothScroll>{children}</SmoothScroll>;
+}
+```
+
 ***
 
 ## API
@@ -1343,6 +1453,16 @@ By default the reveal is driven by the component's own scroll position, filling 
 <div className="h-screen" />
 <PixelScroll className="h-screen bg-black text-white" />
 <div className="h-screen" />
+```
+
+Works best with smooth scrolling, you can add [Smooth Scroll](/docs/components/primitive/smooth-scroll) at the root for that:
+
+```tsx title="Root layout"
+import { SmoothScroll } from "@/components/smooth-scroll";
+
+export default function RootLayout({ children }) {
+  return <SmoothScroll>{children}</SmoothScroll>;
+}
 ```
 
 ### Color
@@ -1438,6 +1558,16 @@ The component takes the items as children. Any element works.
   <img src="/2.webp" alt="" className="aspect-[5/7] w-[30vw] object-cover" />
   <img src="/3.webp" alt="" className="aspect-[5/7] w-[30vw] object-cover" />
 </ScatteredScroll>
+```
+
+Works best with smooth scrolling, you can add [Smooth Scroll](/docs/components/primitive/smooth-scroll) at the root for that:
+
+```tsx title="Root layout"
+import { SmoothScroll } from "@/components/smooth-scroll";
+
+export default function RootLayout({ children }) {
+  return <SmoothScroll>{children}</SmoothScroll>;
+}
 ```
 
 ### Custom scroll section

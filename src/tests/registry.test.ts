@@ -1,6 +1,7 @@
 import fs from "node:fs"
 import path from "node:path"
 import { describe, expect, it } from "vitest"
+import { resolveTransitiveDependencies } from "@/lib/resolve-dependencies"
 import { proOverlay } from "@/pro/lib/pro-overlay"
 import { collages } from "@/registry/collage/index"
 import { demos } from "@/registry/demos/index"
@@ -55,6 +56,74 @@ describe("Cleanliness of the registry", () => {
                 const publicPath = path.join(process.cwd(), "src/registry", sharedPath)
                 const exists = fs.existsSync(publicPath) || fs.existsSync(proOverlay(publicPath))
                 expect(exists, `missing shared file "${sharedPath}"`).toBe(true)
+            }
+        })
+    })
+})
+
+/**
+ * The CLI writes the resolved component's files, its shared files, and the
+ * files of its resolved registry dependencies, then installs its resolved
+ * npm dependencies. Every import in that install must be covered.
+ */
+describe("Resolved installs are self-contained", () => {
+    const IGNORED_PACKAGES = new Set(["react", "react-dom"])
+
+    function packageName(specifier: string): string {
+        const parts = specifier.split("/")
+        return specifier.startsWith("@") ? parts.slice(0, 2).join("/") : parts[0]
+    }
+
+    function importsOf(component: (typeof components)[number]): string[] {
+        const files = component.files.map((file) => path.join(componentBaseDir(component), file))
+        const sources = files.map((file) => fs.readFileSync(file, "utf-8"))
+        return sources.flatMap((source) =>
+            [...source.matchAll(/from\s+"([^"]+)"/g)].map((match) => match[1]),
+        )
+    }
+
+    function componentByName(name: string) {
+        const entry = components.find((c) => c.name === name)
+        if (!entry) throw new Error(`unknown component "${name}"`)
+        return entry
+    }
+
+    describe.each(components)("$name", (component) => {
+        it("installs every npm package its files import", () => {
+            const resolved = resolveTransitiveDependencies(component.name)
+            const tree = [component.name, ...resolved.registryDependencies].map(componentByName)
+
+            for (const entry of tree) {
+                const packages = importsOf(entry)
+                    .filter((s) => !s.startsWith(".") && !s.startsWith("@/"))
+                    .map(packageName)
+                    .filter((pkg) => !IGNORED_PACKAGES.has(pkg))
+
+                for (const pkg of packages) {
+                    expect(
+                        resolved.dependencies,
+                        `"${component.name}" installs "${entry.name}" which imports "${pkg}"`,
+                    ).toContain(pkg)
+                }
+            }
+        })
+
+        it("ships every registry file its files import", () => {
+            const resolved = resolveTransitiveDependencies(component.name)
+            const shipped = new Set([component.name, ...resolved.registryDependencies])
+
+            for (const entry of [...shipped].map(componentByName)) {
+                const siblings = importsOf(entry).flatMap((specifier) => {
+                    const match = specifier.match(/^\.\.\/([^./][^/]*)\//)
+                    return match ? [match[1]] : []
+                })
+
+                for (const sibling of siblings) {
+                    expect(
+                        shipped,
+                        `"${component.name}" installs "${entry.name}" which imports sibling "${sibling}"`,
+                    ).toContain(sibling)
+                }
             }
         })
     })

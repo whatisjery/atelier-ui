@@ -1,6 +1,5 @@
-import { type LenisRef, ReactLenis, useLenis } from "lenis/react"
-import { cancelFrame, type FrameData, frame } from "motion"
-import { useEffect, useRef, useState } from "react"
+import { useLenis } from "lenis/react"
+import { useState } from "react"
 import PixelScroll, { type PixelScrollProps } from "@/registry/base/pixel-scroll/pixel-scroll"
 
 function ScrollLabel() {
@@ -15,18 +14,8 @@ function ScrollLabel() {
 }
 
 export default function PixelScrollDemo(controls: Partial<PixelScrollProps>) {
-    const lenisRef = useRef<LenisRef>(null)
-
-    useEffect(() => {
-        function update(data: FrameData) {
-            lenisRef.current?.lenis?.raf(data.timestamp)
-        }
-        frame.update(update, true)
-        return () => cancelFrame(update)
-    }, [])
-
     return (
-        <ReactLenis root ref={lenisRef} options={{ autoRaf: false, syncTouch: true }}>
+        <>
             <ScrollLabel />
 
             <PixelScroll
@@ -36,6 +25,6 @@ export default function PixelScrollDemo(controls: Partial<PixelScrollProps>) {
                 className="text-[#191d24] dark:text-[#191b21]"
                 scrollDistance="250vh"
             />
-        </ReactLenis>
+        </>
     )
 }

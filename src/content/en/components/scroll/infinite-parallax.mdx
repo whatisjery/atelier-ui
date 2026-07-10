@@ -38,6 +38,16 @@ Each column is composable: stack as many as you want, you can change `autoScroll
 </div>
 ```
 
+Works best with smooth scrolling, you can add [Smooth Scroll](/docs/components/primitive/smooth-scroll) at the root for that:
+
+```tsx title="Root layout"
+import { SmoothScroll } from "@/components/smooth-scroll";
+
+export default function RootLayout({ children }) {
+  return <SmoothScroll>{children}</SmoothScroll>;
+}
+```
+
 ---
 
 ## API

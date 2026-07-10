@@ -1,6 +1,5 @@
 "use client"
 
-import ReactLenis from "lenis/react"
 import { motion, useScroll, useTransform } from "motion/react"
 import { useTranslations } from "next-intl"
 import { type ComponentRef, useEffect, useRef, useState } from "react"
@@ -23,6 +22,7 @@ import { env } from "@/env"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { Link } from "@/i18n/navigation"
 import { DEFAULT_PIXEL_SIZE, VERSION } from "@/lib/constants"
+import { SmoothScroll } from "@/registry/base/smooth-scroll/smooth-scroll"
 import type { DocTree } from "@/types/docs"
 import LandingClipReveal from "./LandingClipReveal"
 import LandingGridScroll from "./LandingGridScroll"
@@ -93,7 +93,7 @@ export default function PageLanding({ showcaseComponents }: PageLadingProps) {
     }, [])
 
     return (
-        <ReactLenis root options={{ lerp: 0.11, smoothWheel: !isMobile }}>
+        <SmoothScroll options={{ lerp: 0.11, smoothWheel: !isMobile, syncTouch: false }}>
             <LandingPreloader isLoaded={!showLoader} />
 
             <MainNav className="max-w-[calc(var(--spacing-landing-w)+100px)] mx-auto" />
@@ -225,6 +225,6 @@ export default function PageLanding({ showcaseComponents }: PageLadingProps) {
             </main>
 
             <Footer />
-        </ReactLenis>
+        </SmoothScroll>
     )
 }

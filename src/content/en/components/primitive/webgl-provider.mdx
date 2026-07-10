@@ -8,6 +8,9 @@ updatedAt: "2026-06-19"
 
 WebGL Provider mounts a single `<Canvas>` for the whole page and renders your application inside it. Every other WebGL component draws onto this canvas, so the application holds one WebGL context instead of one per effect.
 
+The canvas draws on Motion's clock instead of its own `requestAnimationFrame`.
+With [Smooth Scroll](/docs/components/primitive/smooth-scroll) on the page, every tick moves the scroll first, then the page, then draws the canvas, so WebGL elements always stay exactly on top of the elements they follow.
+
 Add the provider once, at your application root. For installation steps, see the [installation guide](/docs/getting-started/installation).
 
 ---
@@ -76,6 +79,7 @@ function Effect() {
 | `style` | `CSSProperties` | — | Merged into the canvas style. |
 
 All other [React Three Fiber Canvas props](https://r3f.docs.pmnd.rs/api/canvas) are forwarded, except `children` and `eventSource`.
+`frameloop` is always `"never"`, because Motion's frame loop advances the canvas.
 
 ### useWebglReady
 

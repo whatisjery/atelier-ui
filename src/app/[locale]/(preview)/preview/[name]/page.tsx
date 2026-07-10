@@ -3,6 +3,7 @@
 import { useProgress } from "@react-three/drei"
 import { useParams } from "next/navigation"
 import { useEffect, useRef, useState } from "react"
+import { SmoothScroll } from "@/registry/base/smooth-scroll/smooth-scroll"
 import { WebglProvider } from "@/registry/base/webgl-provider/webgl-provider"
 import { collages } from "@/registry/collage"
 import { demos } from "@/registry/demos"
@@ -49,9 +50,11 @@ export default function PreviewPage() {
                 className="pointer-events-none user-select-none -z-1 fixed inset-0 w-full h-full pattern-line opacity-60"
             />
 
-            <WebglProvider>
-                <Demo {...values} />
-            </WebglProvider>
+            <SmoothScroll>
+                <WebglProvider>
+                    <Demo {...values} />
+                </WebglProvider>
+            </SmoothScroll>
         </>
     )
 }

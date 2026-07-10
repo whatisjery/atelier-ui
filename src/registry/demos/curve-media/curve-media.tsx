@@ -1,22 +1,11 @@
-import { addEffect } from "@react-three/fiber"
-import { type LenisRef, ReactLenis } from "lenis/react"
-import { useEffect, useRef } from "react"
 import { type CurveEffectProps, CurveMedia } from "@/registry/base/curve-media/curve-media"
 
 // The controls only tweak the shared curve knobs; `type` picks the media.
 type CurveMediaControls = Partial<CurveEffectProps> & { type?: "image" | "video" }
 
 export default function CurveMediaDemo({ type = "image", ...controls }: CurveMediaControls) {
-    const lenisRef = useRef<LenisRef>(null)
-
-    useEffect(() => {
-        return addEffect((time) => {
-            lenisRef.current?.lenis?.raf(time)
-        })
-    }, [])
-
     return (
-        <ReactLenis root ref={lenisRef} options={{ autoRaf: false, syncTouch: true }}>
+        <>
             <div className="h-screen flex items-center justify-center font-serif text-5xl">
                 Scroll down
             </div>
@@ -43,6 +32,6 @@ export default function CurveMediaDemo({ type = "image", ...controls }: CurveMed
             <div className="h-screen flex items-center justify-center font-serif text-5xl">
                 Scroll up
             </div>
-        </ReactLenis>
+        </>
     )
 }

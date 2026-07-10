@@ -1,5 +1,6 @@
 import { mkdir, readFile, writeFile } from "node:fs/promises"
 import path from "node:path"
+import { resolveTransitiveDependencies } from "../lib/resolve-dependencies"
 import { components } from "../registry"
 
 const REGISTRY_DIR = path.join(process.cwd(), "src/registry")
@@ -18,7 +19,9 @@ async function buildRegistry() {
 
     await writeFile(path.join(OUTPUT_DIR, "index.json"), JSON.stringify(index, null, 2), "utf-8")
 
-    for (const component of freeComponents) {
+    for (const entry of freeComponents) {
+        const component = resolveTransitiveDependencies(entry.name)
+
         const files = await Promise.all(
             component.files.map(async (filePath) => {
                 const fullPath = path.join(REGISTRY_DIR, "base", component.name, filePath)
@@ -41,7 +44,7 @@ async function buildRegistry() {
             files: files,
             shared: sharedFiles,
             dependencies: component.dependencies,
-            registryDependencies: component.registryDependencies ?? [],
+            registryDependencies: component.registryDependencies,
         }
 
         await writeFile(

@@ -1,7 +1,8 @@
 "use client"
 
-import { Canvas, type CanvasProps, useThree } from "@react-three/fiber"
+import { advance, Canvas, type CanvasProps, useStore, useThree } from "@react-three/fiber"
 import { EffectComposer } from "@react-three/postprocessing"
+import { cancelFrame, type FrameData, frame } from "motion"
 import { type ComponentRef, type ReactNode, useEffect, useRef, useState } from "react"
 import type { Camera, Scene } from "three"
 import { effectTeleport, WebglPortal } from "../webgl-portal/webgl-portal"
@@ -51,6 +52,43 @@ export function useWebglReady({ scene, camera, enabled = true, onReady }: WebglR
     return ready
 }
 
+// Renders in Motion's `postRender` phase, after Lenis and Motion have
+// updated. One shared driver serves every mounted provider.
+type CanvasStore = ReturnType<typeof useStore>
+const canvasStores = new Set<CanvasStore>()
+let clockStart: number | null = null
+
+function tick(data: FrameData) {
+    if (clockStart === null) clockStart = data.timestamp
+
+    // frameloop="never" expects the elapsed clock time in seconds.
+    const elapsed = (data.timestamp - clockStart) / 1000
+
+    let runGlobalEffects = true
+    for (const store of canvasStores) {
+        const state = store.getState()
+        if (state.internal.active) {
+            advance(elapsed, runGlobalEffects, state)
+            runGlobalEffects = false
+        }
+    }
+}
+
+function MotionFrameloop() {
+    const store = useStore()
+
+    useEffect(() => {
+        canvasStores.add(store)
+        if (canvasStores.size === 1) frame.postRender(tick, true)
+        return () => {
+            canvasStores.delete(store)
+            if (canvasStores.size === 0) cancelFrame(tick)
+        }
+    }, [store])
+
+    return null
+}
+
 function Effects() {
     const effects = effectTeleport.useItems()
     if (effects.length === 0) return null
@@ -81,6 +119,7 @@ export function WebglProvider({
                 eventPrefix="client"
                 dpr={[1, 1.5]}
                 {...canvasProps}
+                frameloop="never"
                 eventSource={eventSource ?? undefined}
                 style={{
                     position: contained ? "absolute" : "fixed",
@@ -89,6 +128,7 @@ export function WebglProvider({
                     ...style,
                 }}
             >
+                <MotionFrameloop />
                 <WebglPortal />
                 <Effects />
             </Canvas>
