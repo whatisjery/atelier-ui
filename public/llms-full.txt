@@ -2,7 +2,7 @@
 
 Source: https://atelier-ui.com/docs
 
-Generated: 2026-07-10T19:39:19.553Z
+Generated: 2026-07-10T20:05:59.716Z
 
 ---
 
@@ -480,19 +480,19 @@ Then use it anywhere in your app:
 
 ## API
 
-| Name         | Type                 | Default      | Description                                                        |
-| ------------ | -------------------- | ------------ | ------------------------------------------------------------------ |
-| type         | `"image" \| "video"` | `"image"`    | Render the ripple on a still image or a video.                     |
-| src          | `string`             | —            | Media source.                                                      |
-| alt          | `string`             | —            | Image alt text. Required (and only used) when `type` is `"image"`. |
-| rippleMap    | `Texture`            | `ripple.png` | Custom ripple texture.                                             |
-| intensity    | `number`             | `0.14`       | Displacement strength.                                             |
-| radius       | `number`             | `3`          | Initial ripple size.                                               |
-| expandRate   | `number`             | `7`          | How fast ripples grow.                                             |
-| decayRate    | `number`             | `3`          | How fast ripples fade out.                                         |
-| maxRipples   | `number`             | `50`         | Max simultaneous ripples.                                          |
-| segments     | `number`             | `1`          | Plane geometry subdivisions.                                       |
-| webglEnabled | `boolean`            | `true`       | Toggle WebGL effect on/off.                                        |
+| Name         | Type                 | Default   | Description                                                        |
+| ------------ | -------------------- | --------- | ------------------------------------------------------------------ |
+| type         | `"image" \| "video"` | `"image"` | Render the ripple on a still image or a video.                     |
+| src          | `string`             | —         | Media source.                                                      |
+| alt          | `string`             | —         | Image alt text. Required (and only used) when `type` is `"image"`. |
+| rippleMap    | `Texture`            | built-in  | Custom ripple texture.                                             |
+| intensity    | `number`             | `0.14`    | Displacement strength.                                             |
+| radius       | `number`             | `3`       | Initial ripple size.                                               |
+| expandRate   | `number`             | `7`       | How fast ripples grow.                                             |
+| decayRate    | `number`             | `3`       | How fast ripples fade out.                                         |
+| maxRipples   | `number`             | `50`      | Max simultaneous ripples.                                          |
+| segments     | `number`             | `1`       | Plane geometry subdivisions.                                       |
+| webglEnabled | `boolean`            | `true`    | Toggle WebGL effect on/off.                                        |
 
 It also forwards `<img>` attributes to [WebGL Image](/docs/components/primitive/webgl-image) and `<video>` attributes to [WebGL Video](/docs/components/primitive/webgl-video) depending on `type`.
 

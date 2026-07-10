@@ -117,7 +117,6 @@ The shared building blocks every WebGL component composes on. Install `webgl-pro
 - **webgl-portal**: The DOM-to-canvas teleport backing every WebGL component (`useSyncExternalStore` tunnels for meshes and post-processing passes). Installed automatically as a dependency of `webgl-provider`; not placed by hand.
 - **use-frame-loop**: Lightweight `requestAnimationFrame` hook with delta timing. Auto-installed for canvas-based components (`pixel-trail`, `magnetic-dot-grid`, `pixelated-text`, `text-scramble`, `infinite-gallery`).
 - **use-render**: Render-prop / polymorphic-element helper used by text and primitive components.
-- **ripple.png**: Brush texture asset used by `liquid-media` for ripple displacement. Copied automatically.
 
 ## Optional full docs
 

@@ -69,7 +69,7 @@ export const components: TRegistryComponent[] = [
         name: "liquid-media",
         files: ["liquid-media.tsx"],
         description: "An image or video that ripples under the cursor.",
-        shared: ["assets/ripple.png"],
+        shared: [],
         dependencies: ["three", "@react-three/fiber", "@react-three/drei"],
         registryDependencies: ["webgl-image", "webgl-video"],
     },
