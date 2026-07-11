@@ -316,4 +316,23 @@ export const components: TRegistryComponent[] = [
         registryDependencies: ["text-split", "smooth-scroll"],
         pro: true,
     },
+    {
+        name: "scattered-grid",
+        files: ["scattered-grid.tsx"],
+        description: "A grid that scatters away from the hovered item.",
+        shared: [],
+        dependencies: ["motion"],
+        registryDependencies: [],
+        pro: true,
+    },
+    {
+        name: "tag-cloud",
+        files: ["tag-cloud.tsx"],
+        description:
+            "Flat images scattered over a draggable sphere, where depth is only a change of scale.",
+        shared: [],
+        dependencies: ["motion"],
+        registryDependencies: [],
+        pro: true,
+    },
 ]

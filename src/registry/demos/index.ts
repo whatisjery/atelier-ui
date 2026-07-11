@@ -30,4 +30,6 @@ export const demos: Record<string, React.LazyExoticComponent<React.ComponentType
     "orbit-gallery": lazy(() => import("./orbit-gallery/orbit-gallery")),
     "edge-bounce": lazy(() => import("./edge-bounce/edge-bounce")),
     "wavy-scroll": lazy(() => import("@/pro/registry/demos/wavy-scroll/wavy-scroll")),
+    "scattered-grid": lazy(() => import("@/pro/registry/demos/scattered-grid/scattered-grid")),
+    "tag-cloud": lazy(() => import("@/pro/registry/demos/tag-cloud/tag-cloud")),
 }
