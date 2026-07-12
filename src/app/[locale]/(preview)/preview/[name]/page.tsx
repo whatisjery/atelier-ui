@@ -3,6 +3,7 @@
 import { useProgress } from "@react-three/drei"
 import { useParams } from "next/navigation"
 import { useEffect, useRef, useState } from "react"
+import { components } from "@/registry"
 import { SmoothScroll } from "@/registry/base/smooth-scroll/smooth-scroll"
 import { WebglProvider } from "@/registry/base/webgl-provider/webgl-provider"
 import { collages } from "@/registry/collage"
@@ -12,6 +13,17 @@ import type { ControlValue } from "@/types/controls"
 const registry = { ...demos, ...collages }
 
 type Values = Record<string, ControlValue>
+
+/*
+ * Only for 'scrollable' demos when they need Lenis.
+ * To avoid blocking the scroll for non-scrollable demos.
+ */
+function needsSmoothScroll(name: string): boolean {
+    const isCollage = collages[name] !== undefined
+    const meta = components.find((component) => component.name === name)
+    const scrollDependent = Boolean(meta?.registryDependencies?.includes("smooth-scroll"))
+    return isCollage || scrollDependent
+}
 
 export default function PreviewPage() {
     const { name } = useParams<{ name: string }>()
@@ -43,6 +55,12 @@ export default function PreviewPage() {
 
     if (!Demo) return null
 
+    const scene = (
+        <WebglProvider>
+            <Demo {...values} />
+        </WebglProvider>
+    )
+
     return (
         <>
             <div
@@ -50,11 +68,7 @@ export default function PreviewPage() {
                 className="pointer-events-none user-select-none -z-1 fixed inset-0 w-full h-full pattern-line opacity-60"
             />
 
-            <SmoothScroll>
-                <WebglProvider>
-                    <Demo {...values} />
-                </WebglProvider>
-            </SmoothScroll>
+            {needsSmoothScroll(name) ? <SmoothScroll>{scene}</SmoothScroll> : scene}
         </>
     )
 }
