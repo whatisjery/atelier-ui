@@ -2,7 +2,7 @@
 
 Source: https://atelier-ui.com/docs
 
-Generated: 2026-07-12T10:09:02.470Z
+Generated: 2026-07-12T13:11:50.318Z
 
 ---
 
@@ -20,7 +20,7 @@ Source file: collage/fluid-scene.mdx
 * [WebGL Image](/docs/components/primitive/webgl-image): lets post-processing apply to `<img>` content.
 * [WebGL Text](/docs/components/primitive/webgl-text): lets post-processing apply to text.
 * [Fluid Distortion](/docs/components/cursor/fluid-distortion)
-* [Text Roll](/docs/components/text/text-roll)
+* [Text Roll](/docs/components/text/text-roll)&#x20;
 * [Infinite Parallax](/docs/components/scroll/infinite-parallax)
 * [Sweep Exit](/docs/components/transition/sweep-exit)
 * [Smooth Scroll](/docs/components/primitive/smooth-scroll)
@@ -78,6 +78,24 @@ The size comes from the element you render it into. Use `className` to decide it
 <OrbitGallery items={ITEMS} className="h-[500px] w-[500px]" />
 ```
 
+### Overlays
+
+`onActiveChange` gives you the index of the opened image (and `null` when it closes). Use it to look up that item in your own data and render a caption, link, or anything else as regular HTML.
+
+```tsx title="Overlay"
+const [active, setActive] = useState<number | null>(null)
+
+<>
+  {active !== null && (
+    <a className="fixed bottom-8 left-1/2 -translate-x-1/2 text-white" href={ITEMS[active].href}>
+      {ITEMS[active].title}
+    </a>
+  )}
+
+  <OrbitGallery items={ITEMS} onActiveChange={setActive} className="fixed inset-0" />
+</>
+```
+
 ### Post-processing
 
 Orbit Gallery renders through a [WebGL Scene](/docs/components/primitive/webgl-scene). By default that scene draws above other content. Set `mode="texture"` to render it into post-processing instead, so effects like `FluidDistortion` apply to the ring.
@@ -92,20 +110,22 @@ Orbit Gallery renders through a [WebGL Scene](/docs/components/primitive/webgl-s
 
 ## API
 
-| Name            | Type                 | Default | Description                                                                                     |
-| --------------- | -------------------- | ------- | ----------------------------------------------------------------------------------------------- |
-| items           | `OrbitGalleryItem[]` | -       | The images placed around the rings, as `{ src, alt }`. They repeat to fill each ring.           |
-| radius          | `number`             | `2.8`   | Radius of the innermost ring, in world units.                                                   |
-| rings           | `number`             | `3`     | Number of rings around the center.                                                              |
-| ringGap         | `number`             | `1.6`   | Distance between two neighboring rings, in world units.                                         |
-| tileHeight      | `number`             | `0.7`   | Height of each image tile. Width follows from the image aspect ratio.                           |
-| cornerRadius    | `number`             | `0.08`  | Corner radius of each tile, in world units. `0` keeps square corners.                           |
-| spinSpeed       | `number`             | `1`     | Revolutions per minute of the innermost ring. Negative values spin the other way.               |
-| spinStagger     | `number`             | `0.2`   | Speed ratio between one ring and the next. Below `1` outer rings spin slower, above `1` faster. |
-| wheelMultiplier | `number`             | `3`     | How much the scroll wheel accelerates the spin. `0` disables it.                                |
-| revealDuration  | `number`             | `2`     | Duration of the reveal animation, in seconds.                                                   |
-| focusDuration   | `number`             | `1`     | Duration of the click-to-focus zoom and the ring fade, in seconds.                              |
-| className       | `string`             | -       | Classes for the interaction surface the gallery renders into.                                   |
+| Name            | Type                              | Default | Description                                                                                                                     |
+| --------------- | --------------------------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------- |
+| items           | `OrbitGalleryItem[]`              | -       | The images placed around the rings, as `{ src, alt }`. They repeat to fill each ring.                                           |
+| radius          | `number`                          | `2.8`   | Radius of the innermost ring, in world units.                                                                                   |
+| rings           | `number`                          | `3`     | Number of rings around the center.                                                                                              |
+| ringGap         | `number`                          | `1.6`   | Distance between two neighboring rings, in world units.                                                                         |
+| tileHeight      | `number`                          | `0.7`   | Height of each image tile. Width follows from the image aspect ratio.                                                           |
+| cornerRadius    | `number`                          | `0.08`  | Corner radius of each tile, in world units. `0` keeps square corners.                                                           |
+| spinSpeed       | `number`                          | `1`     | Revolutions per minute of the innermost ring. Negative values spin the other way.                                               |
+| spinStagger     | `number`                          | `0.2`   | Speed ratio between one ring and the next. Below `1` outer rings spin slower, above `1` faster.                                 |
+| wheel           | `boolean`                         | `true`  | Whether the scroll wheel accelerates the spin. When `false` the wheel does nothing.                                             |
+| wheelMultiplier | `number`                          | `3`     | How much the scroll wheel accelerates the spin. `0` disables it.                                                                |
+| revealDuration  | `number`                          | `2`     | Duration of the reveal animation, in seconds.                                                                                   |
+| focusDuration   | `number`                          | `1`     | Duration of the click-to-focus zoom and the ring fade, in seconds.                                                              |
+| onActiveChange  | `(index: number \| null) => void` | -       | Fires with the opened image index when one opens, or `null` when none is. Use it to render your own overlay from your own data. |
+| className       | `string`                          | -       | Classes for the interaction surface the gallery renders into.                                                                   |
 
 It also forwards [WebGL Scene](/docs/components/primitive/webgl-scene) props: `mode`, `priority`, `zIndex`, and `transparent`.
 
@@ -1741,55 +1761,6 @@ Then use it anywhere in your app:
 
 
 ============================================================
-## Text Roll
-> Interactive rolling text effect on hover, mount and scroll.
-
-Source file: components/text/text-roll.mdx
-
-***
-
-## Install
-
-***
-
-## Usage
-
-By default the text renders inside a `<span>`.
-
-```tsx title="Default"
-<TextRoll>Roll me</TextRoll>
-```
-
-Pass `render` to swap the wrapper for any DOM element. Your props are merged with the component's, so it stays the right semantic tag (heading, paragraph, link) while keeping the animation.
-
-```tsx title="Custom element"
-<TextRoll render={<h1 className="text-4xl font-bold" />}>Roll me</TextRoll>
-```
-
-***
-
-## Notes
-
-Each letter is wrapped in an `overflow-clip` span. Some descenders and ascenders (g, p, t, f) can get clipped. Increase `line-height` / `leading` on the parent if needed.
-
-## API
-
-| Name           | Type                                  | Default     | Description                                                              |
-| -------------- | ------------------------------------- | ----------- | ------------------------------------------------------------------------ |
-| `children`     | `string`                              | —           | The text content to animate.                                             |
-| `axis`         | `"x" \| "y"`                          | `"y"`       | Axis along which letters roll.                                           |
-| `mode`         | `"letters" \| "group"`                | `"letters"` | Animate each letter independently on hover, or the entire group at once. |
-| `direction`    | `"forward" \| "backward" \| "random"` | `"forward"` | Roll direction.                                                          |
-| `playOnScroll` | `boolean`                             | `true`      | Trigger the animation when the element enters the viewport.              |
-| `playOnMount`  | `boolean`                             | `true`      | Trigger the animation on mount.                                          |
-| `playOnHover`  | `boolean`                             | `true`      | Trigger the animation on hover.                                          |
-| `stagger`      | `number`                              | `0.01`      | Delay in seconds between each letter's animation start.                  |
-| `duration`     | `number`                              | `0.8`       | Duration of each letter's roll animation in seconds.                     |
-| `cycles`       | `number`                              | `1`         | Number of times the letter rolls before settling.                        |
-| `render`       | `ReactElement \| function`            | `<span/>`   | Override the wrapper element.                                            |
-
-
-============================================================
 ## Text Scramble
 > A simple text scramble effect that reveals characters from left to right.
 
@@ -2313,7 +2284,7 @@ Source file: components/background/scattered-grid.mdx
 | `pushDistance`    | `number`    | `15`    | How far the other items are pushed away, in pixels. |
 | `scatterDistance` | `number`    | `40`    | Random offset added on top of the push, in pixels.  |
 | `maxRotation`     | `number`    | `15`    | Random tilt of the other items, in degrees.         |
-| `fadeOpacity`     | `number`    | `0.05`  | Opacity of the other items, from 0 to 1.            |
+| `fadeOpacity`     | `number`    | `1`     | Opacity of the other items, from 0 to 1.            |
 | `duration`        | `number`    | `0.35`  | How long the movement visually takes, in seconds.   |
 | `bounce`          | `number`    | `0.4`   | Bounciness of the spring, from 0 to 1.              |
 
@@ -2378,8 +2349,33 @@ Source file: components/scroll/wavy-scroll.mdx
 | Name              | Type                             | Default   | Description                                                                                 |
 | ----------------- | -------------------------------- | --------- | ------------------------------------------------------------------------------------------- |
 | `children`        | `ReactNode`                      | —         | The sentence. Text is split per letter, other elements are animated as one block.           |
-| `amplitude`       | `number`                         | `60`      | Maximum wave height in pixels.                                                              |
-| `wavelength`      | `number`                         | `900`     | Distance in pixels between two wave crests.                                                 |
-| `intensity`       | `number`                         | `1`       | How strongly the wave reacts to scrolling. `2` gives a full wave at half the scroll speed.  |
+| `amplitude`       | `number`                         | `80`      | Maximum wave height in pixels.                                                              |
+| `wavelength`      | `number`                         | `1000`    | Distance in pixels between two wave crests.                                                 |
+| `intensity`       | `number`                         | `1.5`     | How strongly the wave reacts to scrolling. `2` gives a full wave at half the scroll speed.  |
 | `scrollDistance`  | `string`                         | `"500vh"` | How much scrolling the effect takes. Any CSS height. Ignored when `scrollTargetRef` is set. |
 | `scrollTargetRef` | `RefObject<HTMLElement \| null>` | —         | External scrolled section driving the animation. Disables the built-in section.             |
+
+
+============================================================
+## Text Roll
+> Interactive rolling text effect on hover, mount and scroll.
+
+Source file: components/text/text-roll.mdx
+
+***
+
+## API
+
+| Name           | Type                                  | Default     | Description                                                              |
+| -------------- | ------------------------------------- | ----------- | ------------------------------------------------------------------------ |
+| `children`     | `string`                              | —           | The text content to animate.                                             |
+| `axis`         | `"x" \| "y"`                          | `"y"`       | Axis along which letters roll.                                           |
+| `mode`         | `"letters" \| "group"`                | `"letters"` | Animate each letter independently on hover, or the entire group at once. |
+| `direction`    | `"forward" \| "backward" \| "random"` | `"forward"` | Roll direction.                                                          |
+| `playOnScroll` | `boolean`                             | `true`      | Trigger the animation when the element enters the viewport.              |
+| `playOnMount`  | `boolean`                             | `true`      | Trigger the animation on mount.                                          |
+| `playOnHover`  | `boolean`                             | `true`      | Trigger the animation on hover.                                          |
+| `stagger`      | `number`                              | `0.01`      | Delay in seconds between each letter's animation start.                  |
+| `duration`     | `number`                              | `0.8`       | Duration of each letter's roll animation in seconds.                     |
+| `cycles`       | `number`                              | `1`         | Number of times the letter rolls before settling.                        |
+| `render`       | `ReactElement \| function`            | `<span/>`   | Override the wrapper element.                                            |
