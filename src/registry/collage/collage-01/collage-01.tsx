@@ -23,7 +23,7 @@ const PARALLAX_CFG = [
     { parallaxAmount: 3, reversed: true },
 ]
 
-export default function FluidScene() {
+export default function Collage01() {
     const footerRef = useRef<ComponentRef<"footer">>(null)
     const [preloader, setShowPreloader] = useState(true)
     const { loaded, messageRef } = useDreiLoader()

@@ -2,16 +2,16 @@
 
 Source: https://atelier-ui.com/docs
 
-Generated: 2026-07-12T13:11:50.318Z
+Generated: 2026-07-12T22:24:23.100Z
 
 ---
 
 
 ============================================================
-## Fluid Scene
+## Collage 01
 > Fluid post-processing over WebGL primitives plus infinite parallax, and text roll.
 
-Source file: collage/fluid-scene.mdx
+Source file: collage/collage-01.mdx
 
 ***
 

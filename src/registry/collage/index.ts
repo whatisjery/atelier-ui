@@ -1,5 +1,5 @@
 import { lazy } from "react"
 
 export const collages: Record<string, React.LazyExoticComponent<React.ComponentType>> = {
-    "fluid-scene": lazy(() => import("./fluid-scene/fluid-scene")),
+    "collage-01": lazy(() => import("./collage-01/collage-01")),
 }
