@@ -83,7 +83,7 @@ export default function Catalog({ catalogItems, facetByTag }: CatalogProps) {
     return (
         <div className="not-prose">
             <div className="flex items-center justify-between">
-                <search className="relative flex items-center justify-stae h-12 w-90 py-10">
+                <search className="relative flex items-center h-12 w-full sm:w-90 py-10">
                     <Search className="size-4 text-accent-1 ml-3" />
                     <Input
                         type="search"
@@ -104,7 +104,7 @@ export default function Catalog({ catalogItems, facetByTag }: CatalogProps) {
                     )}
                 </search>
 
-                <span className="text-xs text-accent-2 italic">
+                <span className="text-xs text-accent-2 italic max-sm:hidden">
                     {tCatalog("results-count", {
                         filtered: filteredCount,
                         total: totalCount,
