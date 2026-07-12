@@ -4,11 +4,16 @@ import {
     type InfiniteGalleryProps,
 } from "@/registry/base/infinite-gallery/infinite-gallery"
 
-const ITEMS = [
-    { src: "/images/demo/shared/1.webp" },
-    { src: "/images/demo/shared/2.webp" },
-    { src: "/images/demo/shared/3.webp" },
-    { src: "/images/demo/shared/4.webp" },
+const IMAGE_URLS = [
+    "/images/demo/shared/20.webp",
+    "/images/demo/shared/7.webp",
+    "/images/demo/shared/9.webp",
+    "/images/demo/shared/11.webp",
+    "/images/demo/shared/15.webp",
+    "/images/demo/shared/1.webp",
+    "/images/demo/shared/7.webp",
+    "/images/demo/shared/3.webp",
+    "/images/demo/shared/4.webp",
 ]
 
 export default function InfiniteGalleryDemo(controls: Partial<InfiniteGalleryProps>) {
@@ -18,13 +23,13 @@ export default function InfiniteGalleryDemo(controls: Partial<InfiniteGalleryPro
         <div className="w-full h-full absolute flex justify-center">
             <InfiniteGallery
                 className="w-full items-center"
-                perView={isMobile ? 2 : ITEMS.length - 1}
+                perView={isMobile ? 2 : 4}
                 {...controls}
             >
-                {ITEMS.map((item) => (
+                {IMAGE_URLS.map((url) => (
                     <img
-                        key={item.src}
-                        src={item.src}
+                        key={url}
+                        src={url}
                         alt="image"
                         width={600}
                         height={200}

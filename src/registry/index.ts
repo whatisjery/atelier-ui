@@ -104,6 +104,7 @@ export const components: TRegistryComponent[] = [
         shared: ["hooks/use-render.ts"],
         dependencies: ["motion"],
         registryDependencies: ["text-split"],
+        pro: true,
     },
     {
         name: "text-split",

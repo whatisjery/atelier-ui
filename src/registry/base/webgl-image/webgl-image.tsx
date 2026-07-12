@@ -13,6 +13,8 @@ import { webglTeleport } from "../webgl-portal/webgl-portal"
 
 export type Pointer = {
     uv: Vector2
+    texUv: Vector2
+    repeat: Vector2
     hover: number
 }
 
@@ -36,11 +38,12 @@ type PlaneProps = {
     segments: number
     material?: (map: Texture, pointer: Pointer) => React.ReactNode
     pointer: Pointer
+    uvFit: RefObject<{ x: number; y: number }>
     zIndex: number
     autoReflow: boolean
 }
 
-function Plane({ el, src, segments, material, pointer, zIndex, autoReflow }: PlaneProps) {
+function Plane({ el, src, segments, material, pointer, uvFit, zIndex, autoReflow }: PlaneProps) {
     const mesh = useRef<Mesh>(null)
     const texture = useTexture(src)
     const size = useThree((s) => s.size)
@@ -95,6 +98,10 @@ function Plane({ el, src, segments, material, pointer, zIndex, autoReflow }: Pla
             const offsetU = (1 - repeatU) / 2
             const offsetV = (1 - repeatV) / 2
 
+            pointer.repeat.set(repeatU, repeatV)
+            uvFit.current.x = repeatU / fitScale.current.x
+            uvFit.current.y = repeatV / fitScale.current.y
+
             const uvAttribute = m.geometry.attributes.uv
 
             for (let iy = 0; iy <= segments; iy++) {
@@ -115,7 +122,7 @@ function Plane({ el, src, segments, material, pointer, zIndex, autoReflow }: Pla
         ro.observe(target)
         ro.observe(document.body)
         return () => ro.disconnect()
-    }, [el, texture, segments])
+    }, [el, texture, segments, uvFit, pointer])
 
     useFrame(() => {
         const m = mesh.current
@@ -165,9 +172,12 @@ export function WebglImage({
     ...rest
 }: WebglImageProps) {
     const el = useRef<ComponentRef<"img">>(null)
+    const uvFit = useRef({ x: 1, y: 1 })
     const pointer = useMemo<Pointer>(() => {
         return {
             uv: new Vector2(0.5, 0.5),
+            texUv: new Vector2(0.5, 0.5),
+            repeat: new Vector2(1, 1),
             hover: 0,
         }
     }, [])
@@ -183,7 +193,9 @@ export function WebglImage({
             const { width, left, top, height } = target.getBoundingClientRect()
             const x = (e.clientX - left) / width
             const y = 1 - (e.clientY - top) / height
+            const fit = uvFit.current
             pointer.uv.set(x, y)
+            pointer.texUv.set(x * fit.x + (1 - fit.x) / 2, y * fit.y + (1 - fit.y) / 2)
         }
 
         const onEnter = () => (pointer.hover = 1)
@@ -218,6 +230,7 @@ export function WebglImage({
                         segments={segments}
                         material={material}
                         pointer={pointer}
+                        uvFit={uvFit}
                         zIndex={zIndex}
                         autoReflow={autoReflow}
                     />

@@ -10,14 +10,10 @@ export default function StripeWipeDemo(controls: Partial<StripeWipeProps>) {
     return (
         <div className="w-screen h-screen">
             <img
-                src="/images/demo/shared/1.webp"
+                src="/images/demo/shared/20.webp"
                 alt="Hero"
                 className="absolute inset-0 h-full w-full object-cover"
             />
-
-            <span className="absolute inset-0 flex items-center justify-center font-serif text-white text-6xl">
-                Atelier UI
-            </span>
 
             <StripeWipe
                 key={JSON.stringify(controls)}

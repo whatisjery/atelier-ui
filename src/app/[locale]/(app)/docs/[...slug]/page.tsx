@@ -14,9 +14,7 @@ import DemoPreview from "@/components/features/docs/demo-preview/DemoPreview"
 import InstalGuideCLI from "@/components/features/docs/install-guide/InstalGuideCLI"
 import InstalGuideManual from "@/components/features/docs/install-guide/InstalGuideManual"
 import InstallTabs from "@/components/features/docs/install-guide/InstallTabs"
-import ProCodeBlock from "@/pro/components/features/pro/ProCodeBlock"
-import ProLicenseHelper from "@/pro/components/features/pro/ProLicenseHelper"
-import ProPaywall from "@/pro/components/features/pro/ProPaywall"
+import Badge from "@/components/ui/Badge"
 import { env } from "@/env"
 import {
     getAllDocs,
@@ -28,6 +26,9 @@ import {
     getSection,
     getSectionCategories,
 } from "@/lib/docs"
+import ProCodeBlock from "@/pro/components/features/pro/ProCodeBlock"
+import ProLicenseHelper from "@/pro/components/features/pro/ProLicenseHelper"
+import ProPaywall from "@/pro/components/features/pro/ProPaywall"
 import { buildComponentPrompt } from "@/pro/components/features/prompt/build-prompt"
 import { components } from "@/registry"
 import type { ControlDef } from "@/types/controls"
@@ -186,6 +187,17 @@ export default async function Page({ params }: PageProps) {
                         ProGate: ({ children }: { children: React.ReactNode }) => (
                             <ProPaywall>{children}</ProPaywall>
                         ),
+
+                        ProTag: ({ name }: { name: string }) =>
+                            components.some(
+                                (component) => component.name === name && component.pro,
+                            ) ? (
+                                <Badge
+                                    title="pro"
+                                    variant="neutral"
+                                    className="inline-flex align-middle"
+                                />
+                            ) : null,
 
                         ProLicenseHelper: () => <ProLicenseHelper />,
 

@@ -2,8 +2,8 @@ import { motion } from "motion/react"
 import { useState } from "react"
 import { OrbitGallery, type OrbitGalleryProps } from "@/registry/base/orbit-gallery/orbit-gallery"
 
-const ITEMS = Array.from({ length: 16 }, (_, index) => ({
-    src: `/images/demo/sphere/${index + 1}.webp`,
+const ITEMS = Array.from({ length: 20 }, (_, index) => ({
+    src: `/images/demo/shared/${index + 1}.webp`,
     alt: `Orbit gallery image ${index + 1}`,
 }))
 

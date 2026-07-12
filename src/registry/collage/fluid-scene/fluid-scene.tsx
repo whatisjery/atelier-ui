@@ -1,10 +1,10 @@
 import { motion, useScroll, useTransform } from "motion/react"
 import { type ComponentRef, useRef, useState } from "react"
 import { useDreiLoader } from "@/hooks/use-drei-loader"
+import { TextRoll } from "@/pro/registry/base/text-roll/text-roll"
 import { FluidDistortion } from "@/registry/base/fluid-distortion/fluid-distortion"
 import { InfiniteParallax } from "@/registry/base/infinite-parallax/infinite-parallax"
 import { SweepExit } from "@/registry/base/sweep-exit/sweep-exit"
-import { TextRoll } from "@/registry/base/text-roll/text-roll"
 import { WebglImage } from "@/registry/base/webgl-image/webgl-image"
 import { WebglText } from "@/registry/base/webgl-text/webgl-text"
 

@@ -1,10 +1,14 @@
 import InfiniteZoom, { type InfiniteZoomProps } from "@/registry/base/infinite-zoom/infinite-zoom"
 
 const DATA = [
-    "/images/demo/shared/3.webp",
-    "/images/demo/shared/2.webp",
-    "/images/demo/shared/4.webp",
     "/images/demo/shared/1.webp",
+    "/images/demo/shared/7.webp",
+    "/images/demo/shared/3.webp",
+    "/images/demo/shared/12.webp",
+    "/images/demo/shared/15.webp",
+    "/images/demo/shared/17.webp",
+    "/images/demo/shared/11.webp",
+    "/images/demo/shared/20.webp",
 ]
 
 export default function InfiniteParallaxDemo(controls: Partial<InfiniteZoomProps>) {

@@ -1,4 +1,4 @@
-import { AnimatePresence, motion } from "motion/react"
+import { motion } from "motion/react"
 import { useTheme } from "next-themes"
 import { useState } from "react"
 import {
@@ -6,32 +6,10 @@ import {
     type SphereGalleryProps,
 } from "@/registry/base/sphere-gallery/sphere-gallery"
 
-const BASE_ITEMS = [
-    { img: 1, credit: "https://www.cosmos.so/e/17756802" },
-    { img: 2, credit: "https://www.cosmos.so/e/108831909" },
-    { img: 3, credit: "https://www.cosmos.so/e/21166243" },
-    { img: 4, credit: "https://www.cosmos.so/e/174672888" },
-    { img: 5, credit: "https://www.cosmos.so/e/486842213" },
-    { img: 6, credit: "https://www.cosmos.so/e/561750665" },
-    { img: 7, credit: "https://www.cosmos.so/e/595454458" },
-    { img: 8, credit: "https://www.cosmos.so/e/957041836" },
-    { img: 9, credit: "https://www.cosmos.so/e/1301703474" },
-    { img: 10, credit: "https://www.cosmos.so/e/1313669861" },
-    { img: 11, credit: "https://www.cosmos.so/e/1561608022" },
-    { img: 12, credit: "https://www.cosmos.so/e/1704730173" },
-    { img: 13, credit: "https://www.cosmos.so/e/1897005460" },
-    { img: 14, credit: "https://www.cosmos.so/e/1908995889" },
-    { img: 15, credit: "https://www.cosmos.so/e/1946095704" },
-    { img: 16, credit: "https://www.cosmos.so/e/2142048452" },
-]
-
-const ITEMS = BASE_ITEMS.map((item) => {
-    return {
-        src: `/images/demo/sphere/${item.img}.webp`,
-        alt: `Image sphere gallery ${item.img}`,
-        credit: item.credit,
-    }
-})
+const ITEMS = Array.from({ length: 20 }, (_, index) => ({
+    src: `/images/demo/shared/${index + 1}.webp`,
+    alt: `Image sphere gallery ${index + 1}`,
+}))
 
 export default function SphereGalleryDemo({
     showTileColor = true,
@@ -61,31 +39,14 @@ export default function SphereGalleryDemo({
                         duration: 0.8,
                         ease: [0.2, 0.03, 0.26, 0.99],
                     }}
-                    className="-translate-x-1/2 -translate-y-1/2 font-serif pointer-events-none fixed top-1/2 left-1/2 z-10 text-3xl text-white mix-blend-difference"
+                    className="-translate-x-1/2 -translate-y-1/2 flex flex-col items-center justify-center pointer-events-none fixed top-1/2 left-1/2 z-10 text-white mix-blend-difference"
                 >
-                    Sphere Gallery
+                    <span className="text-4xl font-serif mb-0.5">Orbit gallery</span>
+                    <span className="text-sm text-accent-2 opacity-55">
+                        Scroll or select a ring image
+                    </span>
                 </motion.h1>
             )}
-            <AnimatePresence mode="wait">
-                {activeIndex !== null && (
-                    <motion.a
-                        rel="noopener"
-                        target="_blank"
-                        href={ITEMS[activeIndex].credit}
-                        key={ITEMS[activeIndex].credit}
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        transition={{
-                            duration: 0.4,
-                            ease: [0.7, 0.03, 0.26, 0.99],
-                        }}
-                        className="-translate-x-1/2 -translate-y-1/2 fixed bottom-2 text-accent-2 hover:text-accent-1 left-1/2 z-10 text-xs"
-                    >
-                        {ITEMS[activeIndex].credit}
-                    </motion.a>
-                )}
-            </AnimatePresence>
 
             <SphereGallery
                 items={ITEMS}

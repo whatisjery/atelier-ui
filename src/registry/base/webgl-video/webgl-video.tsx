@@ -13,6 +13,8 @@ import { webglTeleport } from "../webgl-portal/webgl-portal"
 
 export type Pointer = {
     uv: Vector2
+    texUv: Vector2
+    repeat: Vector2
     hover: number
 }
 
@@ -34,11 +36,12 @@ type PlaneProps = {
     segments: number
     material?: (map: Texture, pointer: Pointer) => React.ReactNode
     pointer: Pointer
+    uvFit: RefObject<{ x: number; y: number }>
     zIndex: number
     autoReflow: boolean
 }
 
-function Plane({ el, segments, material, pointer, zIndex, autoReflow }: PlaneProps) {
+function Plane({ el, segments, material, pointer, uvFit, zIndex, autoReflow }: PlaneProps) {
     const mesh = useRef<Mesh>(null)
     const [texture, setTexture] = useState<VideoTexture | null>(null)
     const size = useThree((state) => state.size)
@@ -108,6 +111,10 @@ function Plane({ el, segments, material, pointer, zIndex, autoReflow }: PlanePro
             const offsetU = (1 - repeatU) / 2
             const offsetV = (1 - repeatV) / 2
 
+            pointer.repeat.set(repeatU, repeatV)
+            uvFit.current.x = repeatU / fitScale.current.x
+            uvFit.current.y = repeatV / fitScale.current.y
+
             const uvAttribute = m.geometry.attributes.uv
 
             for (let iy = 0; iy <= segments; iy++) {
@@ -136,7 +143,7 @@ function Plane({ el, segments, material, pointer, zIndex, autoReflow }: PlanePro
             target.removeEventListener("loadedmetadata", measure)
             target.removeEventListener("resize", measure)
         }
-    }, [el, texture, segments])
+    }, [el, texture, segments, uvFit, pointer])
 
     useFrame(() => {
         const m = mesh.current
@@ -195,9 +202,12 @@ export function WebglVideo({
     ...rest
 }: WebglVideoProps) {
     const el = useRef<ComponentRef<"video">>(null)
+    const uvFit = useRef({ x: 1, y: 1 })
     const pointer = useMemo<Pointer>(() => {
         return {
             uv: new Vector2(0.5, 0.5),
+            texUv: new Vector2(0.5, 0.5),
+            repeat: new Vector2(1, 1),
             hover: 0,
         }
     }, [])
@@ -213,7 +223,9 @@ export function WebglVideo({
             const { width, left, top, height } = target.getBoundingClientRect()
             const x = (event.clientX - left) / width
             const y = 1 - (event.clientY - top) / height
+            const fit = uvFit.current
             pointer.uv.set(x, y)
+            pointer.texUv.set(x * fit.x + (1 - fit.x) / 2, y * fit.y + (1 - fit.y) / 2)
         }
 
         const onEnter = () => (pointer.hover = 1)
@@ -250,6 +262,7 @@ export function WebglVideo({
                         segments={segments}
                         material={material}
                         pointer={pointer}
+                        uvFit={uvFit}
                         zIndex={zIndex}
                         autoReflow={autoReflow}
                     />

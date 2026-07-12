@@ -59,7 +59,6 @@ extend({ PixelMediaMat })
 
 const REFERENCE_FPS = 60
 
-// Effect props shared by both the image and video variants.
 export type PixelEffectProps = {
     gridSize?: number
     interactionRadius?: number
@@ -73,7 +72,9 @@ export type PixelEffectProps = {
 type PixelMediaMaterialProps = {
     map: Texture
     pointer: Pointer
-} & Required<Pick<PixelEffectProps, "gridSize" | "interactionRadius" | "strength" | "aberration" | "trail">>
+} & Required<
+    Pick<PixelEffectProps, "gridSize" | "interactionRadius" | "strength" | "aberration" | "trail">
+>
 
 type PixelMediaImageProps = PixelEffectProps & {
     type?: "image"
@@ -99,6 +100,7 @@ function PixelMediaMaterial({
 }: PixelMediaMaterialProps) {
     const ref = useRef<InstanceType<typeof PixelMediaMat>>(null)
     const previous = useMemo(() => new Vector2(0.5, 0.5), [])
+    const wasHovering = useRef(false)
 
     const grid = useMemo(() => {
         const data = new Float32Array(gridSize * gridSize * 4)
@@ -114,13 +116,17 @@ function PixelMediaMaterial({
         if (!material) return
 
         const { data } = grid
-        const velocityX = (pointer.uv.x - previous.x) * pointer.hover
-        const velocityY = (pointer.uv.y - previous.y) * pointer.hover
-        previous.copy(pointer.uv)
+
+        if (pointer.hover > 0 && !wasHovering.current) previous.copy(pointer.texUv)
+        wasHovering.current = pointer.hover > 0
+
+        const velocityX = (pointer.texUv.x - previous.x) * pointer.hover
+        const velocityY = (pointer.texUv.y - previous.y) * pointer.hover
+        previous.copy(pointer.texUv)
 
         const fade = trail ** (delta * REFERENCE_FPS)
-        const cursorColumn = pointer.uv.x * gridSize
-        const cursorRow = pointer.uv.y * gridSize
+        const cursorColumn = pointer.texUv.x * gridSize
+        const cursorRow = pointer.texUv.y * gridSize
 
         for (let row = 0; row < gridSize; row++) {
             for (let column = 0; column < gridSize; column++) {

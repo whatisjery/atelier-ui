@@ -6,6 +6,22 @@ const ITEMS = [
     "/images/demo/shared/2.webp",
     "/images/demo/shared/3.webp",
     "/images/demo/shared/4.webp",
+    "/images/demo/shared/5.webp",
+    "/images/demo/shared/6.webp",
+    "/images/demo/shared/7.webp",
+    "/images/demo/shared/8.webp",
+    "/images/demo/shared/9.webp",
+    "/images/demo/shared/10.webp",
+    "/images/demo/shared/11.webp",
+    "/images/demo/shared/12.webp",
+    "/images/demo/shared/13.webp",
+    "/images/demo/shared/14.webp",
+    "/images/demo/shared/15.webp",
+    "/images/demo/shared/16.webp",
+    "/images/demo/shared/17.webp",
+    "/images/demo/shared/18.webp",
+    "/images/demo/shared/19.webp",
+    "/images/demo/shared/20.webp",
 ]
 
 export default function ImageTrailDemo(controls: Partial<ImageTrailProps>) {

@@ -11,7 +11,7 @@ export default function MagneticDotGridDemo(controls: Partial<MagneticDotGridPro
     return (
         <>
             <div className="absolute inset-0 flex items-center justify-center font-serif xs:text-5xl text-center text-4xl z-3 pointer-events-none">
-                hover anywhere.
+                Hover anywhere!
             </div>
 
             <MagneticDotGrid

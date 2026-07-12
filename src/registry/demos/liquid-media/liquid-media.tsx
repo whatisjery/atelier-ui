@@ -5,20 +5,23 @@ type LiquidMediaControls = Partial<LiquidEffectProps> & { type?: "image" | "vide
 
 export default function LiquidMediaDemo({ type = "image", ...controls }: LiquidMediaControls) {
     return (
-        <div className="w-full h-screen flex items-center justify-center px-2">
+        <div className="w-full h-screen flex items-center justify-center">
+            <div className="absolute inset-0 flex items-center justify-center font-serif xs:text-5xl text-center text-4xl text-white z-3 pointer-events-none">
+                Hover anywhere!
+            </div>
             {type === "video" ? (
                 <LiquidMedia
                     type="video"
                     src="/video/demo/shared/1.mp4"
-                    className="w-2xl h-auto"
+                    className="w-full h-full object-cover"
                     {...controls}
                 />
             ) : (
                 <LiquidMedia
                     type="image"
                     alt="my image"
-                    src="/images/demo/shared/1.webp"
-                    className="w-sm h-auto"
+                    src="/images/demo/shared/15.webp"
+                    className="w-full h-full object-cover"
                     {...controls}
                 />
             )}

@@ -21,8 +21,8 @@ const TAU = Math.PI * 2
 const ANIMATION_EASING = [0.7, 0, 0.1, 1] as Easing
 const REVEAL_SPEED_BOOST = 50
 const SELECT_SPEED_BOOST = 10
-const MOTION_BLUR_AMOUNT = 0.01
 const RING_DOWNSCALE = 0.8
+const TILE_ASPECT = 0.8
 const FOCUS_TILE_SIZE = 5
 const FOCUS_TILE_HIDDEN_SCALE = 2
 const DISTORTION_AMOUNT = 0.5
@@ -36,6 +36,7 @@ const DEFAULT_PROPS = {
     cornerRadius: 0.08,
     spinSpeed: 1,
     spinStagger: 0.2,
+    wheel: true,
     wheelMultiplier: 3,
     revealDuration: 2,
     focusDuration: 1,
@@ -48,7 +49,6 @@ type TileProps = {
     isSelected: boolean
     ready: boolean
     onSelect: () => void
-    motionBlur: { current: number }
 } & Pick<typeof DEFAULT_PROPS, "tileHeight" | "cornerRadius" | "revealDuration" | "focusDuration">
 
 type RingProps = {
@@ -60,7 +60,7 @@ type RingProps = {
     textures: THREE.Texture[]
     isSelected: boolean
     ready: boolean
-    onSelect: (texture: THREE.Texture) => void
+    onSelect: (index: number) => void
     speedFactor: { current: number }
     revealBoost: { current: number }
 } & Pick<typeof DEFAULT_PROPS, "tileHeight" | "cornerRadius" | "revealDuration" | "focusDuration">
@@ -75,6 +75,9 @@ type FocusTileProps = {
 type OrbitSceneProps = {
     sources: string[]
     surface: RefObject<HTMLElement | null>
+    activeIndex: number | null
+    onSelect: (index: number) => void
+    onDismiss: () => void
     onReady?: () => void
 } & typeof DEFAULT_PROPS
 
@@ -86,6 +89,7 @@ export type OrbitGalleryProps = {
         alt: string
     }[]
     className?: string
+    onActiveChange?: (index: number | null) => void
     onReady?: () => void
 } & Partial<typeof DEFAULT_PROPS> &
     Pick<WebglSceneProps, "mode" | "priority" | "zIndex" | "transparent">
@@ -98,16 +102,17 @@ declare module "@react-three/fiber" {
 
 /*
  * Shader material for each tile.
- * Draws the image, the rounded mask, the dispersion blur and the reveal motion blur.
+ * Draws the image, the rounded mask and the dispersion blur.
  */
 const OrbitTileMaterial = shaderMaterial(
     {
         uMap: new THREE.Texture(),
         uTileSize: new THREE.Vector2(1, 1),
+        uUvScale: new THREE.Vector2(1, 1),
+        uUvOffset: new THREE.Vector2(0, 0),
         uRadius: 0,
         uOpacity: 1,
         uReveal: 1,
-        uMotionBlur: 0,
         uDistortion: 0,
         uDispersion: 0,
     },
@@ -121,10 +126,11 @@ const OrbitTileMaterial = shaderMaterial(
     /* glsl */ `
         uniform sampler2D uMap;
         uniform vec2 uTileSize;
+        uniform vec2 uUvScale;
+        uniform vec2 uUvOffset;
         uniform float uRadius;
         uniform float uOpacity;
         uniform float uReveal;
-        uniform float uMotionBlur;
         uniform float uDistortion;
         uniform float uDispersion;
         varying vec2 vUv;
@@ -135,6 +141,10 @@ const OrbitTileMaterial = shaderMaterial(
         float sdRoundBox(vec2 point, vec2 halfSize, float radius) {
             vec2 corner = abs(point) - halfSize + radius;
             return min(max(corner.x, corner.y), 0.0) + length(max(corner, 0.0)) - radius;
+        }
+
+        vec4 sampleMap(vec2 uv) {
+            return texture2D(uMap, uUvOffset + uv * uUvScale);
         }
 
         float roundBoxMask(vec2 uv) {
@@ -150,7 +160,7 @@ const OrbitTileMaterial = shaderMaterial(
             vec2 centered = vUv - 0.5;
             vec2 uv = 0.5 + centered * (1.0 + uDistortion * (0.5 - dot(centered, centered)));
 
-            vec4 texel = texture2D(uMap, uv);
+            vec4 texel = sampleMap(uv);
             vec3 color = texel.rgb;
             float alpha = texel.a;
 
@@ -167,9 +177,9 @@ const OrbitTileMaterial = shaderMaterial(
                     float scale = 1.0 - amount * progress;
                     float spread = RGB_SHIFT * amount * progress;
 
-                    blurred.r += texture2D(uMap, 0.5 + offset * (scale + spread)).r * weight;
-                    blurred.g += texture2D(uMap, 0.5 + offset * scale).g * weight;
-                    blurred.b += texture2D(uMap, 0.5 + offset * (scale - spread)).b * weight;
+                    blurred.r += sampleMap(0.5 + offset * (scale + spread)).r * weight;
+                    blurred.g += sampleMap(0.5 + offset * scale).g * weight;
+                    blurred.b += sampleMap(0.5 + offset * (scale - spread)).b * weight;
 
                     total += weight;
                 }
@@ -178,23 +188,6 @@ const OrbitTileMaterial = shaderMaterial(
             }
 
             float mask = roundBoxMask(uv);
-
-            if (uMotionBlur > 0.0) {
-                float spread = uMotionBlur / uTileSize.x;
-                vec3 smeared = vec3(0.0);
-                float smearedMask = 0.0;
-
-                for (int sampleIndex = 0; sampleIndex < BLUR_SAMPLES; sampleIndex++) {
-                    float progress = float(sampleIndex) / float(BLUR_SAMPLES - 1) - 0.5;
-                    vec2 sampleUv = uv + vec2(progress * spread, 0.0);
-
-                    smeared += texture2D(uMap, sampleUv).rgb;
-                    smearedMask += roundBoxMask(sampleUv);
-                }
-
-                color = smeared / float(BLUR_SAMPLES);
-                mask = smearedMask / float(BLUR_SAMPLES);
-            }
 
             alpha *= mask;
 
@@ -220,13 +213,24 @@ function Tile({
     revealDuration,
     focusDuration,
     onSelect,
-    motionBlur,
 }: TileProps) {
-    const meshRef = useRef<PlaneMesh<InstanceType<typeof OrbitTileMaterial>>>(null)
     const [hovered, setHovered] = useState(false)
+    const meshRef = useRef<PlaneMesh<InstanceType<typeof OrbitTileMaterial>>>(null)
     const wasSelected = useRef(isSelected)
-    const image = texture.image as HTMLImageElement
-    const width = tileHeight * (image.width / image.height)
+    const width = tileHeight * TILE_ASPECT
+
+    const crop = useMemo(() => {
+        const image = texture.image as HTMLImageElement
+        const imageAspect = image.width / image.height
+        const scale =
+            imageAspect > TILE_ASPECT
+                ? new THREE.Vector2(TILE_ASPECT / imageAspect, 1)
+                : new THREE.Vector2(1, imageAspect / TILE_ASPECT)
+        return {
+            scale,
+            offset: new THREE.Vector2((1 - scale.x) / 2, (1 - scale.y) / 2),
+        }
+    }, [texture])
 
     const tilePlacement = useMemo(() => {
         return {
@@ -270,12 +274,6 @@ function Tile({
         return tileRevealAnimation()
     }, [ready, revealDuration])
 
-    useFrame(() => {
-        const material = meshRef.current?.material
-        if (!material) return
-        material.uMotionBlur = motionBlur.current
-    })
-
     return (
         <group position={tilePlacement.position} rotation-z={tilePlacement.rotation}>
             <mesh
@@ -293,6 +291,8 @@ function Tile({
                     key={OrbitTileMaterial.key}
                     uMap={texture}
                     uTileSize={new THREE.Vector2(width, tileHeight)}
+                    uUvScale={crop.scale}
+                    uUvOffset={crop.offset}
                     uRadius={cornerRadius}
                     uReveal={0}
                     transparent
@@ -305,7 +305,7 @@ function Tile({
 
 /*
  * One rotating ring of tiles.
- * Handles the spin, the speed-based motion blur and the fade-out when a tile is selected.
+ * Handles the spin and the fade-out when a tile is selected.
  */
 function Ring({
     textures,
@@ -326,13 +326,16 @@ function Ring({
 }: RingProps) {
     const groupRef = useRef<THREE.Group>(null)
     const selectBoost = useRef(0)
-    const motionBlur = useRef(0)
 
     const tiles = useMemo(() => {
-        return Array.from({ length: count }, (_, index) => ({
-            angle: (index / count) * TAU,
-            texture: textures[(index + offset) % textures.length],
-        }))
+        return Array.from({ length: count }, (_, index) => {
+            const textureIndex = (index + offset) % textures.length
+            return {
+                angle: (index / count) * TAU,
+                textureIndex,
+                texture: textures[textureIndex],
+            }
+        })
     }, [count, offset, textures])
 
     useEffect(() => {
@@ -366,12 +369,6 @@ function Ring({
         const direction = Math.sign(speed)
         const rmp = (speed + direction * boost) * speedFactor.current
         group.rotation.z += (rmp * TAU * delta) / 60
-
-        const idleSpeed = Math.abs(speed) + 1
-        const extraSpeed = Math.max(0, Math.abs(rmp) - idleSpeed)
-        const blur = MOTION_BLUR_AMOUNT * extraSpeed * radius
-
-        motionBlur.current = blur < 0.001 ? 0 : blur
     })
 
     return (
@@ -388,8 +385,7 @@ function Ring({
                     ready={ready}
                     revealDuration={revealDuration}
                     focusDuration={focusDuration}
-                    onSelect={() => onSelect(tile.texture)}
-                    motionBlur={motionBlur}
+                    onSelect={() => onSelect(tile.textureIndex)}
                 />
             ))}
         </group>
@@ -482,6 +478,9 @@ function FocusTile({ texture, cornerRadius, focusDuration, onDismiss }: FocusTil
 function OrbitScene({
     sources,
     surface,
+    activeIndex,
+    onSelect,
+    onDismiss,
     radius,
     rings,
     ringGap,
@@ -489,25 +488,24 @@ function OrbitScene({
     cornerRadius,
     spinSpeed,
     spinStagger,
+    wheel,
     wheelMultiplier,
     revealDuration,
     focusDuration,
     onReady,
 }: OrbitSceneProps) {
-    const [selected, setSelected] = useState<THREE.Texture | null>(null)
     const textures = useTexture(sources)
     const speedFactor = useRef(1)
     const revealBoost = useRef(REVEAL_SPEED_BOOST)
     const ready = useWebglReady({ onReady })
-
-    const dismiss = useCallback(() => setSelected(null), [])
+    const selected = activeIndex !== null ? textures[activeIndex] : null
 
     const select = useCallback(
-        (texture: THREE.Texture) => {
-            setSelected(texture)
+        (index: number) => {
+            onSelect(index)
             surface.current?.style.removeProperty("cursor")
         },
-        [surface],
+        [onSelect, surface],
     )
 
     useEffect(() => {
@@ -526,7 +524,7 @@ function OrbitScene({
 
     useEffect(() => {
         const target = surface.current
-        if (!target) return
+        if (!target || !wheel) return
 
         const onWheel = (event: WheelEvent) => {
             event.preventDefault()
@@ -534,15 +532,15 @@ function OrbitScene({
         }
         target.addEventListener("wheel", onWheel)
         return () => target.removeEventListener("wheel", onWheel)
-    }, [surface, wheelMultiplier])
+    }, [surface, wheel, wheelMultiplier])
 
     useEffect(() => {
         const onKeyDown = (event: KeyboardEvent) => {
-            if (event.key === "Escape") dismiss()
+            if (event.key === "Escape") onDismiss()
         }
         window.addEventListener("keydown", onKeyDown)
         return () => window.removeEventListener("keydown", onKeyDown)
-    }, [dismiss])
+    }, [onDismiss])
 
     useFrame((_, delta) => {
         speedFactor.current = THREE.MathUtils.damp(
@@ -571,7 +569,7 @@ function OrbitScene({
 
     return (
         <group
-            onPointerMissed={dismiss}
+            onPointerMissed={onDismiss}
             onPointerOver={() => surface.current?.style.setProperty("cursor", "pointer")}
             onPointerOut={() => surface.current?.style.removeProperty("cursor")}
         >
@@ -600,7 +598,7 @@ function OrbitScene({
                 texture={selected}
                 cornerRadius={cornerRadius}
                 focusDuration={focusDuration}
-                onDismiss={dismiss}
+                onDismiss={onDismiss}
             />
         </group>
     )
@@ -613,6 +611,7 @@ function OrbitScene({
 export function OrbitGallery({
     items,
     className,
+    onActiveChange,
     mode,
     priority,
     zIndex,
@@ -621,14 +620,29 @@ export function OrbitGallery({
 }: OrbitGalleryProps) {
     const surface = useRef<ComponentRef<"div">>(null)
     const sceneProps = { ...DEFAULT_PROPS, ...rest }
+    const [activeIndex, setActiveIndex] = useState<number | null>(null)
+
+    const dismiss = useCallback(() => {
+        setActiveIndex(null)
+    }, [])
+
+    useEffect(() => {
+        onActiveChange?.(activeIndex)
+    }, [activeIndex, onActiveChange])
 
     return (
         <div ref={surface} className={`touch-none select-none ${className ?? ""}`}>
             {/* Basic SEO/accessibility layer */}
             <ul className="sr-only">
-                {items.map((image) => (
+                {items.map((image, index) => (
                     <li key={image.src}>
-                        <img src={image.src} alt={image.alt} />
+                        <button
+                            type="button"
+                            aria-current={activeIndex === index}
+                            onClick={() => setActiveIndex(index)}
+                        >
+                            <img src={image.src} alt={image.alt} />
+                        </button>
                     </li>
                 ))}
             </ul>
@@ -645,6 +659,9 @@ export function OrbitGallery({
                         {...sceneProps}
                         surface={surface}
                         sources={items.map((image) => image.src)}
+                        activeIndex={activeIndex}
+                        onSelect={setActiveIndex}
+                        onDismiss={dismiss}
                     />
                 </WebglScene>
             )}

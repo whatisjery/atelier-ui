@@ -1,6 +1,6 @@
 ---
 title: "Infinite Gallery"
-description: "Zero-dependency infinite horizontal gallery with drag/wheel input, and transform modes."
+description: "Zero-dependency infinite horizontal gallery with drag/wheel input, and a 3D flip effect."
 tags: ["JS Animation", "Tailwind CSS"]
 createdAt: "2026-05-07"
 updatedAt: "2026-06-18"
@@ -10,7 +10,6 @@ updatedAt: "2026-06-18"
     speed: { type: "slider", value: 6, min: 1, max: 10, step: 1 },
     inertia: { type: "slider", value: 0.6, min: 0, max: 0.9, step: 0.1 },
     dragMultiplier: { type: "slider", value: 3, min: 1, max: 10, step: 0.5 },
-    mode: { type: "select", value: "flip", options: ["flip", "shrink"] },
 }} />
 
 ---
@@ -38,7 +37,6 @@ updatedAt: "2026-06-18"
 | Name            | Type                              | Default             | Description |
 | --------------- | --------------------------------- | ------------------- | ------------------------|
 | children      | `ReactNode`                       | —                   | Items to render in the gallery.|
-| mode          | `"shrink" \| "flip"`              | `"flip"`            | `flip` tilts items in 3D. `shrink` compresses edges.|
 | perView      | `number`                          | `4`                 | Number of items visible at once.|
 | speed         | `number`                          | `6`                 | Speed of the scroll.|
 | inertia       | `number`                          | `0.6`               | Inertia of the scroll.|

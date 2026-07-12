@@ -22,7 +22,7 @@ export default function CurveMediaDemo({ type = "image", ...controls }: CurveMed
                     <CurveMedia
                         type="image"
                         alt="my image"
-                        src="/images/demo/shared/1.webp"
+                        src="/images/demo/shared/14.webp"
                         className="w-xl h-auto object-cover rounded-md"
                         {...controls}
                     />

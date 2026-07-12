@@ -15,7 +15,7 @@ export const demos: Record<string, React.LazyExoticComponent<React.ComponentType
     "glowing-fog": lazy(() => import("@/pro/registry/demos/glowing-fog/glowing-fog")),
     "infinite-zoom": lazy(() => import("./infinite-zoom/infinite-zoom")),
     "scattered-scroll": lazy(() => import("./scattered-scroll/scattered-scroll")),
-    "text-roll": lazy(() => import("./text-roll/text-roll")),
+    "text-roll": lazy(() => import("@/pro/registry/demos/text-roll/text-roll")),
     "text-bounce": lazy(() => import("./text-bounce/text-bounce")),
     "gradient-flow": lazy(() => import("@/pro/registry/demos/gradient-flow/gradient-flow")),
     "curve-media": lazy(() => import("./curve-media/curve-media")),

@@ -109,11 +109,7 @@
     "studio": {
         "export": "Export component",
         "export-description": "Add {shader} to your project",
-        "pro-badge": "Pro",
-        "paywall": {
-            "title": "Export is a Pro feature",
-            "description": "Unlock the CLI install and component source with a one-time license."
-        }
+        "pro-badge": "Pro"
     },
 
     "pro": {
@@ -124,8 +120,9 @@
         },
         "paywall": {
             "title": "Unlock component",
-            "description": "Unlock the source code and CLI installation with a one-time license.",
-            "footer-note": "One-time payment. Lifetime access to all current and future pro components."
+            "export-title": "Export is a Pro feature",
+            "description": "One license unlocks every pro feature for life, including the ones we haven't built yet.",
+            "sign-in-hint": "Already have an account?"
         }
     }
 }

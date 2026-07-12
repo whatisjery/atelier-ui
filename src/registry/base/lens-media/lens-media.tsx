@@ -66,12 +66,12 @@ const LensMediaMat = shaderMaterial(
         uMap: new Texture(),
         uMouse: new Vector2(0.5, 0.5),
         uAspect: 1,
-        uSize: 0.23,
-        uSoftness: 0.38,
-        uAberration: 0.17,
-        uRefraction: 0.39,
+        uSize: 0.12,
+        uSoftness: 0.5,
+        uAberration: 0.18,
+        uRefraction: 0.4,
         uHover: 0,
-        uDispersion: 50,
+        uDispersion: 35,
     },
     vertexShader,
     fragmentShader,
@@ -127,12 +127,15 @@ function LensMediaMaterial({
         if (!material) return
 
         const mouse = material.uMouse
-        mouse.x = MathUtils.damp(mouse.x, pointer.uv.x, smoothing, delta)
-        mouse.y = MathUtils.damp(mouse.y, pointer.uv.y, smoothing, delta)
+        mouse.x = MathUtils.damp(mouse.x, pointer.texUv.x, smoothing, delta)
+        mouse.y = MathUtils.damp(mouse.y, pointer.texUv.y, smoothing, delta)
         material.uHover = MathUtils.damp(material.uHover, pointer.hover, smoothing, delta)
 
         const parent = anchorRef.current?.parent
-        if (parent) material.uAspect = parent.scale.x / parent.scale.y
+        if (parent) {
+            const aspect = parent.scale.x / parent.scale.y
+            material.uAspect = (aspect * pointer.repeat.y) / pointer.repeat.x
+        }
     })
 
     return (
@@ -156,12 +159,12 @@ function LensMediaMaterial({
 
 export function LensMedia(props: LensMediaProps) {
     const {
-        size = 0.23,
-        softness = 0.38,
-        aberration = 0.17,
-        refraction = 0.39,
-        dispersion = 50,
-        smoothing = 10,
+        size = 0.12,
+        softness = 0.5,
+        aberration = 0.18,
+        refraction = 0.4,
+        dispersion = 35,
+        smoothing = 7,
         segments = 1,
         webglEnabled = true,
         ...rest

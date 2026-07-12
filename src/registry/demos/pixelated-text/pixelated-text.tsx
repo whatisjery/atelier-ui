@@ -18,14 +18,26 @@ export default function PixelatedTextDemo(controls: Partial<PixelatedTextProps>)
     return (
         <div className="font-serif xs:text-7xl text-center text-4xl flex items-center justify-center h-screen w-screen flex-col space-y-2">
             <span>
-                <PixelatedText colors={PALETTE} {...controls}>
+                <PixelatedText render={<p />} colors={PALETTE} {...controls}>
                     Pixelated
                 </PixelatedText>{" "}
-                text
+                text effect
             </span>
-            <span>seo friendly.</span>
 
-            <span className="font-sans text-xs mt-5">(Responsive and match your font style)</span>
+            <span>
+                Realistic and{" "}
+                <PixelatedText render={<p />} colors={PALETTE} {...controls}>
+                    accessible
+                </PixelatedText>{" "}
+            </span>
+
+            <span>
+                {" "}
+                <PixelatedText render={<p />} {...controls}>
+                    and also
+                </PixelatedText>{" "}
+                responsive!
+            </span>
         </div>
     )
 }

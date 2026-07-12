@@ -9,14 +9,10 @@ export default function SweepExitDemo(controls: Partial<SweepExitProps>) {
     return (
         <div className="w-screen h-screen">
             <img
-                src="/images/demo/shared/1.webp"
+                src="/images/demo/shared/9.webp"
                 alt="Hero"
                 className="absolute inset-0 h-full w-full object-cover"
             />
-
-            <span className="absolute inset-0 flex items-center justify-center font-serif text-white text-6xl">
-                Atelier UI
-            </span>
 
             <SweepExit
                 key={JSON.stringify(controls)}
@@ -24,7 +20,7 @@ export default function SweepExitDemo(controls: Partial<SweepExitProps>) {
                 trigger={loaded}
                 backgroundSlot={
                     <img
-                        src="/images/demo/shared/2.webp"
+                        src="/images/demo/shared/10.webp"
                         alt="overlay"
                         className="absolute inset-0 h-full w-full object-cover"
                     />

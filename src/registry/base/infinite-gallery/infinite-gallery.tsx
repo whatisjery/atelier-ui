@@ -16,11 +16,8 @@ const DEFAULT_SCROLL_STATE = {
     prev: 0,
 }
 
-export type InfiniteGalleryMode = "shrink" | "flip"
-
 export type InfiniteGalleryProps = {
     children: ReactNode
-    mode?: InfiniteGalleryMode
     perView?: number
     gap?: number
     speed?: number
@@ -39,7 +36,6 @@ function clamp(min: number, max: number, value: number) {
 
 export function InfiniteGallery({
     children,
-    mode = "flip",
     perView = 4,
     gap = 5,
     className,
@@ -49,13 +45,13 @@ export function InfiniteGallery({
 }: InfiniteGalleryProps) {
     const items = Children.toArray(children).filter(isValidElement)
     const containerRef = useRef<ComponentRef<"div">>(null)
-    const measureRef = useRef({ containerWidth: 0, itemWidth: 0, offsetWidth: 0 })
+    const measureRef = useRef({ containerWidth: 0, itemWidth: 0 })
     const scrollRef = useRef({ ...DEFAULT_SCROLL_STATE }).current
 
     const calcItemsPositions = useCallback(
         (scrollOffset: number, velocity: number) => {
             const container = containerRef.current
-            const { containerWidth, itemWidth, offsetWidth } = measureRef.current
+            const { containerWidth, itemWidth } = measureRef.current
 
             if (!container) return
 
@@ -74,25 +70,9 @@ export function InfiniteGallery({
                 const itemInView = xPos > -itemWidth && xPos < containerWidth
 
                 if (itemInView) {
-                    let transform = `translate3d(${xPos - i * itemWidth}px, 0, 0)`
-
-                    if (mode === "shrink") {
-                        if (xPos < 0) {
-                            const scaleX = (xPos + offsetWidth) / offsetWidth
-                            itemElement.style.transformOrigin = "right"
-                            transform += ` scaleX(${clamp(0, 1, scaleX)})`
-                        } else if (xPos + itemWidth > containerWidth) {
-                            const scaleX = (containerWidth - xPos) / offsetWidth
-                            itemElement.style.transformOrigin = "left"
-                            transform += ` scaleX(${clamp(0, 1, scaleX)})`
-                        } else {
-                            itemElement.style.transformOrigin = "center"
-                        }
-                    } else if (mode === "flip") {
-                        const maxDeg = 85
-                        const rotate = clamp(-maxDeg, maxDeg, velocity * 0.02)
-                        transform += ` perspective(800px) rotateY(${rotate}deg)`
-                    }
+                    const maxDeg = 85
+                    const rotate = itemWidth ? clamp(-maxDeg, maxDeg, (velocity / itemWidth) * 6) : 0
+                    const transform = `translate3d(${xPos - i * itemWidth}px, 0, 0) perspective(800px) rotateY(${rotate}deg)`
 
                     itemElement.style.transform = transform
                     itemElement.style.visibility = "visible"
@@ -101,7 +81,7 @@ export function InfiniteGallery({
                 }
             }
         },
-        [items, mode],
+        [items],
     )
 
     const measure = useCallback(() => {
@@ -115,7 +95,6 @@ export function InfiniteGallery({
         measureRef.current = {
             containerWidth: container.getBoundingClientRect().width,
             itemWidth: firstChild.offsetWidth + computedGap,
-            offsetWidth: firstChild.offsetWidth,
         }
     }, [])
 

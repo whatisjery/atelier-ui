@@ -10,11 +10,10 @@ updatedAt: "2026-06-19"
   name="liquid-media"
   controls={{
     type: { type: "select", value: "image", options: ["image", "video"] },
-    intensity: { type: "slider", value: 0.14, min: 0, max: 1, step: 0.01 },
-    radius: { type: "slider", value: 3, min: 0, max: 10, step: 1 },
-    expandRate: { type: "slider", value: 7, min: 0, max: 10, step: 1 },
-    decayRate: { type: "slider", value: 3, min: 0, max: 10, step: 1 },
-    maxRipples: { type: "slider", value: 50, min: 0, max: 100, step: 1 },
+    intensity: { type: "slider", value: 0.2, min: 0, max: 1, step: 0.01 },
+    radius: { type: "slider", value: 12, min: 0, max: 50, step: 1 },
+    expandRate: { type: "slider", value: 11, min: 0, max: 20, step: 1 },
+    decayRate: { type: "slider", value: 3, min: 3, max: 10, step: 1 },
     webglEnabled: { type: "boolean", value: true },
   }}
 />
@@ -55,11 +54,10 @@ Then use it anywhere in your app:
 | src          | `string`             | —            | Media source.                                            |
 | alt          | `string`             | —            | Image alt text. Required (and only used) when `type` is `"image"`. |
 | rippleMap    | `Texture`            | built-in     | Custom ripple texture.                                   |
-| intensity    | `number`             | `0.14`       | Displacement strength.                                   |
-| radius       | `number`             | `3`          | Initial ripple size.                                     |
-| expandRate   | `number`             | `7`          | How fast ripples grow.                                   |
-| decayRate    | `number`             | `3`          | How fast ripples fade out.                               |
-| maxRipples   | `number`             | `50`         | Max simultaneous ripples.                                |
+| intensity    | `number`             | `0.2`        | Displacement strength.                                   |
+| radius       | `number`             | `12`         | Ripple size, up to `50`.                                 |
+| expandRate   | `number`             | `11`         | How fast ripples grow, up to `20`.                       |
+| decayRate    | `number`             | `3`          | How fast ripples fade out, between `3` and `10`.         |
 | segments     | `number`             | `1`          | Plane geometry subdivisions.                             |
 | webglEnabled | `boolean`            | `true`       | Toggle WebGL effect on/off.                              |
 

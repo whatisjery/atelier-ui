@@ -9,6 +9,18 @@ const IMAGE_URLS = [
     "/images/demo/shared/3.webp",
     "/images/demo/shared/4.webp",
 ]
+const IMAGE_URLS_2 = [
+    "/images/demo/shared/12.webp",
+    "/images/demo/shared/19.webp",
+    "/images/demo/shared/18.webp",
+    "/images/demo/shared/6.webp",
+]
+const IMAGE_URLS_3 = [
+    "/images/demo/shared/11.webp",
+    "/images/demo/shared/15.webp",
+    "/images/demo/shared/20.webp",
+    "/images/demo/shared/19.webp",
+]
 
 export default function InfiniteParallaxDemo(controls: Partial<InfiniteParallaxProps>) {
     return (
@@ -26,33 +38,33 @@ export default function InfiniteParallaxDemo(controls: Partial<InfiniteParallaxP
                             key={url}
                             src={url}
                             alt={url}
-                            className="aspect-5/7 w-full mb-2"
+                            className="aspect-5/7 w-full mb-2 object-cover"
                         />
                     ))}
                 </InfiniteParallax>
 
                 <InfiniteParallax {...controls} reversed>
-                    {IMAGE_URLS.map((url) => (
+                    {IMAGE_URLS_2.map((url) => (
                         <img
                             width={100}
                             height={100}
                             key={url}
                             src={url}
                             alt={url}
-                            className="aspect-5/7 w-full mb-2"
+                            className="aspect-5/7 w-full mb-2 object-cover"
                         />
                     ))}
                 </InfiniteParallax>
 
                 <InfiniteParallax {...controls}>
-                    {IMAGE_URLS.map((url) => (
+                    {IMAGE_URLS_3.map((url) => (
                         <img
                             width={100}
                             height={100}
                             key={url}
                             src={url}
                             alt={url}
-                            className="aspect-5/7 w-full mb-2"
+                            className="aspect-5/7 w-full mb-2 object-cover"
                         />
                     ))}
                 </InfiniteParallax>

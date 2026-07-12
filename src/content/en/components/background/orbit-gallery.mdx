@@ -3,7 +3,7 @@ title: "Orbit Gallery"
 description: "A WebGL gallery that places images on rotating rings. Scroll to spin them, click an image to zoom in."
 tags: ["React Three Fiber", "Drei", "Motion", "Tailwind CSS"]
 createdAt: "2026-06-24"
-updatedAt: "2026-07-02"
+updatedAt: "2026-07-12"
 ---
 
 <DemoPreview
@@ -16,6 +16,7 @@ updatedAt: "2026-07-02"
     cornerRadius: { type: "slider", value: 0.08, min: 0, max: 0.3, step: 0.01 },
     spinSpeed: { type: "slider", value: 1, min: -10, max: 10, step: 0.5 },
     spinStagger: { type: "slider", value: 0.2, min: 0, max: 2.5, step: 0.1 },
+    wheel: { type: "boolean", value: true },
     wheelMultiplier: { type: "slider", value: 3, min: 0, max: 4, step: 0.1 },
     revealDuration: { type: "slider", value: 2, min: 0, max: 4, step: 0.1 },
     focusDuration: { type: "slider", value: 1, min: 0, max: 4, step: 0.1 },
@@ -66,6 +67,24 @@ The size comes from the element you render it into. Use `className` to decide it
 <OrbitGallery items={ITEMS} className="h-[500px] w-[500px]" />
 ```
 
+### Overlays
+
+`onActiveChange` gives you the index of the opened image (and `null` when it closes). Use it to look up that item in your own data and render a caption, link, or anything else as regular HTML.
+
+```tsx title="Overlay"
+const [active, setActive] = useState<number | null>(null)
+
+<>
+  {active !== null && (
+    <a className="fixed bottom-8 left-1/2 -translate-x-1/2 text-white" href={ITEMS[active].href}>
+      {ITEMS[active].title}
+    </a>
+  )}
+
+  <OrbitGallery items={ITEMS} onActiveChange={setActive} className="fixed inset-0" />
+</>
+```
+
 ### Post-processing
 
 Orbit Gallery renders through a [WebGL Scene](/docs/components/primitive/webgl-scene). By default that scene draws above other content. Set `mode="texture"` to render it into post-processing instead, so effects like `FluidDistortion` apply to the ring.
@@ -90,9 +109,11 @@ Orbit Gallery renders through a [WebGL Scene](/docs/components/primitive/webgl-s
 | cornerRadius| `number`              | `0.08`  | Corner radius of each tile, in world units. `0` keeps square corners.             |
 | spinSpeed   | `number`              | `1`     | Revolutions per minute of the innermost ring. Negative values spin the other way. |
 | spinStagger | `number`              | `0.2`   | Speed ratio between one ring and the next. Below `1` outer rings spin slower, above `1` faster. |
+| wheel       | `boolean`             | `true`  | Whether the scroll wheel accelerates the spin. When `false` the wheel does nothing. |
 | wheelMultiplier | `number`           | `3`     | How much the scroll wheel accelerates the spin. `0` disables it.                  |
 | revealDuration | `number`           | `2`     | Duration of the reveal animation, in seconds.                                     |
 | focusDuration | `number`            | `1`     | Duration of the click-to-focus zoom and the ring fade, in seconds.                |
+| onActiveChange | `(index: number \| null) => void` | - | Fires with the opened image index when one opens, or `null` when none is. Use it to render your own overlay from your own data. |
 | className   | `string`              | -       | Classes for the interaction surface the gallery renders into.                     |
 
 It also forwards [WebGL Scene](/docs/components/primitive/webgl-scene) props: `mode`, `priority`, `zIndex`, and `transparent`.
@@ -106,6 +127,3 @@ React renderer for Three.js used for the WebGL scene.
 
 [Drei](https://github.com/pmndrs/drei)  
 Helper used to load the image textures.
-
-[Cosmos](https://www.cosmos.so/)   
-Demo images sourced from the website. If you don't want your image shown in this demo, [send me an email](mailto:jeremienallet@gmail.com) and I'll remove it.

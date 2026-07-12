@@ -20,9 +20,6 @@ export default function ClipRevealDemo(controls: Partial<ClipRevealProps>) {
                     alt="Hero"
                     className="absolute inset-0 h-full w-full object-cover"
                 />
-                <span className="absolute inset-0 flex items-center justify-center font-serif text-white text-6xl">
-                    Atelier UI
-                </span>
             </ClipReveal>
 
             <AnimatePresence>
