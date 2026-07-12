@@ -28,7 +28,7 @@ export default function ListItem({
             className={cn(
                 "py-1 text-sm relative text-accent-2 flex items-center justify-between hover:text-accent-1",
                 {
-                    "border-l border-accent-3 pl-6 ml-2": sideLine,
+                    "border-l border-theme-border pl-6 ml-2": sideLine,
                     "py-1.5": !sideLine,
                     "border-accent-1 text-accent-1 [text-shadow:0_0_0.4px_currentColor]":
                         activeItem,
