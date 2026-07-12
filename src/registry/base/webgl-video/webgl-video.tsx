@@ -53,8 +53,10 @@ function Plane({ el, segments, material, pointer, uvFit, zIndex, autoReflow }: P
         const video = el.current
         if (!video) return
 
-        // Build the texture from the DOM <video> itself so a single element
-        // decodes once; VideoTexture pulls each new frame from it.
+        /*
+         * Build the texture from the DOM <video> itself so a single element
+         * decodes once. VideoTexture pulls each new frame from it.
+         */
         const videoTexture = new VideoTexture(video)
         videoTexture.colorSpace = SRGBColorSpace
         setTexture(videoTexture)
@@ -69,17 +71,20 @@ function Plane({ el, segments, material, pointer, uvFit, zIndex, autoReflow }: P
             const m = mesh.current
             if (!m) return
 
-            // Rect in document coords (top/left offset by current scroll at measure time),
-            // so we can later derive viewport position with just `window.scrollX/Y`,
-            // instead of recalculating bounds on every render
+            /*
+             * Rect in document coords so viewport position later needs only
+             * window.scrollX/Y, instead of re-measuring bounds every render.
+             */
             const rect = target.getBoundingClientRect()
             bounds.current.x = rect.left + window.scrollX
             bounds.current.y = rect.top + window.scrollY
             bounds.current.width = rect.width
             bounds.current.height = rect.height
 
-            // Replicate CSS object-fit: cover crops via UV repeat/offset; contain shrinks the mesh scale
-            // because UVs alone can't letterbox: the plane would still fill the element.
+            /*
+             * Replicate CSS object-fit: cover crops via UV repeat/offset,
+             * contain shrinks the mesh scale (UVs alone can't letterbox).
+             */
             const video = texture.image as HTMLVideoElement
             const objectFit = getComputedStyle(target).objectFit
             const planeAspect = rect.width / rect.height
@@ -91,7 +96,7 @@ function Plane({ el, segments, material, pointer, uvFit, zIndex, autoReflow }: P
             fitScale.current.x = 1
             fitScale.current.y = 1
 
-            // videoWidth/Height are 0 until metadata loads; skip cropping until then.
+            /* videoWidth/Height are 0 until metadata loads, so skip cropping until then. */
             if (video.videoWidth > 0) {
                 if (objectFit === "cover") {
                     if (planeAspect > videoAspect) {
@@ -131,7 +136,7 @@ function Plane({ el, segments, material, pointer, uvFit, zIndex, autoReflow }: P
 
         measure()
 
-        // Re-measure once the video reports its intrinsic size.
+        /* Re-measure once the video reports its intrinsic size. */
         target.addEventListener("loadedmetadata", measure)
         target.addEventListener("resize", measure)
 
@@ -149,13 +154,15 @@ function Plane({ el, segments, material, pointer, uvFit, zIndex, autoReflow }: P
         const m = mesh.current
         if (!m) return
 
-        // Browsers without requestVideoFrameCallback need an explicit pull.
+        /* Browsers without requestVideoFrameCallback need an explicit pull. */
         texture?.update()
 
         const pxToWorld = viewport.height / size.height
 
-        // autoReflow re-reads the rect each frame so the mesh follows parent
-        // CSS transforms (e.g. parallax). One layout read per frame.
+        /*
+         * autoReflow re-reads the rect each frame so the mesh follows parent
+         * CSS transforms like parallax. One layout read per frame.
+         */
         if (autoReflow && el.current) {
             const rect = el.current.getBoundingClientRect()
             m.position.x = (rect.left + rect.width / 2 - size.width / 2) * pxToWorld
@@ -217,8 +224,10 @@ export function WebglVideo({
         const target = el.current
         if (!target) return
 
-        // Pointer events still fire on the DOM element through opacity:0,
-        // so the browser tells us when the cursor is over it.
+        /*
+         * Pointer events still fire on the DOM element through opacity:0,
+         * so the browser tells us when the cursor is over it.
+         */
         const onMove = (event: PointerEvent) => {
             const { width, left, top, height } = target.getBoundingClientRect()
             const x = (event.clientX - left) / width
@@ -234,6 +243,13 @@ export function WebglVideo({
         target.addEventListener("pointermove", onMove)
         target.addEventListener("pointerenter", onEnter)
         target.addEventListener("pointerleave", onLeave)
+
+        /*
+         * Hover in too fast and pointerenter fires before these listeners
+         * attach, so seed hover from the live :hover state instead.
+         */
+        if (target.matches(":hover")) pointer.hover = 1
+
         return () => {
             target.removeEventListener("pointermove", onMove)
             target.removeEventListener("pointerenter", onEnter)
