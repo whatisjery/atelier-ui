@@ -29,9 +29,12 @@
         },
         "sidebar": {
             "browse-catalog": "Browse Catalog",
-            "shader-studio": "Shader Studio"
+            "shader-studio": "Shader Studio",
+            "collage": "Collage",
+            "documentation": "Documentation"
         },
         "catalog": {
+            "all": "All",
             "results-count": "{filtered, plural, =0 {No results} other {Showing {filtered} of {total}}}",
             "clear-filters": "Clear filters"
         }
@@ -52,6 +55,7 @@
         "search": "Search...",
         "copied": "Copied",
         "read-the-docs": "Docs",
+        "catalog": "Catalog",
         "shader-studio": "Shader Studio",
         "search-empty": "Start typing to search",
         "search-results": "{count, plural, =0 {No entries found} one {# entry found} other {# entries found}}",

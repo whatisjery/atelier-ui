@@ -161,8 +161,8 @@ export default function PageLanding({ showcaseComponents }: PageLadingProps) {
                                 asChild
                                 variant="dashed"
                             >
-                                <Link href="/docs">
-                                    Read docs
+                                <Link href="/catalog">
+                                    Browse catalog
                                     <AnimatedArrow />
                                 </Link>
                             </Button>

@@ -1,10 +1,16 @@
 import Link from "next/link"
 import { getNavCategories } from "@/lib/docs"
 import { cn } from "@/lib/utils"
+import type { DocTree } from "@/types/docs"
 
 type DocNavigationProps = {
     locale: string
     activeSlug?: string
+}
+
+function countItems(node: DocTree): number {
+    if (node.type === "file") return 1
+    return node.children.reduce((sum, child) => sum + countItems(child), 0)
 }
 
 export default function CatalogNavigation({ locale, activeSlug }: DocNavigationProps) {
@@ -20,7 +26,7 @@ export default function CatalogNavigation({ locale, activeSlug }: DocNavigationP
                     return (
                         <Link
                             key={category.url}
-                            href={category.url}
+                            href={`/catalog/${slug}`}
                             className={cn(
                                 "flex px-1 items-center border-b opacity-30 hover:opacity-100 transition-opacity duration-100 border-transparent gap-x-2",
                                 {
@@ -28,7 +34,7 @@ export default function CatalogNavigation({ locale, activeSlug }: DocNavigationP
                                 },
                             )}
                         >
-                            {category.title}
+                            {category.title} ({countItems(category)})
                         </Link>
                     )
                 })

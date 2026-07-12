@@ -22,7 +22,12 @@ const nextConfig: NextConfig = {
             },
             {
                 source: "/:locale/docs",
-                destination: "/:locale/docs/components",
+                destination: "/:locale/docs/getting-started/installation",
+                permanent: true,
+            },
+            {
+                source: "/:locale/catalog",
+                destination: "/:locale/catalog/components",
                 permanent: true,
             },
         ]

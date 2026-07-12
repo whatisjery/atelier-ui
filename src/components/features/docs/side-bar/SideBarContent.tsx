@@ -1,6 +1,6 @@
 "use client"
 
-import { BookOpen, ChevronDown, Folder, FolderOpen, Palette } from "lucide-react"
+import { Blocks, BookOpen, ChevronDown, Folder, FolderOpen, Palette } from "lucide-react"
 import { useTranslations } from "next-intl"
 import React, { useState } from "react"
 import Badge from "@/components/ui/Badge"
@@ -96,7 +96,9 @@ export default function SideBarContent({ className, sections, topBarSlot }: Side
         })
     }
 
-    const orderedSections = [...sections].sort((a, b) => a.order - b.order)
+    const orderedSections = [...sections]
+        .filter((section) => (section.display ?? "flat") !== "folder")
+        .sort((a, b) => a.order - b.order)
 
     return (
         <aside
@@ -110,19 +112,6 @@ export default function SideBarContent({ className, sections, topBarSlot }: Side
             <nav className="px-5 py-5 overflow-y-auto flex-1 overscroll-none">
                 {orderedSections.map((section) => {
                     const display = section.display ?? "flat"
-
-                    if (display === "folder") {
-                        return (
-                            <SectionNode
-                                key={section.url}
-                                node={section}
-                                pathname={pathname}
-                                hasCustomer={hasCustomer}
-                                closedKeys={closedKeys}
-                                toggle={toggle}
-                            />
-                        )
-                    }
 
                     if (display === "group") {
                         const subFolders = section.children.filter(({ type }) => type === "folder")
@@ -149,8 +138,52 @@ export default function SideBarContent({ className, sections, topBarSlot }: Side
 
                     return (
                         <React.Fragment key={section.url}>
+                            <section className="mb-6">
+                                <h2 className="sr-only">tools</h2>
+                                <ul>
+                                    <ListItem
+                                        sideLine={false}
+                                        activeItem={
+                                            pathname.startsWith("/catalog") &&
+                                            !pathname.startsWith("/catalog/collage")
+                                        }
+                                        linkItem={{
+                                            href: "/catalog",
+                                            label: tSidebar("browse-catalog"),
+                                            icon: <BookOpen strokeWidth={1.5} className="size-5" />,
+                                        }}
+                                    />
+                                    <ListItem
+                                        sideLine={false}
+                                        activeItem={pathname === "/shader-studio"}
+                                        leftSlot={
+                                            hasCustomer ? undefined : (
+                                                <Badge title="pro" variant="neutral" />
+                                            )
+                                        }
+                                        linkItem={{
+                                            href: "/shader-studio",
+                                            label: tSidebar("shader-studio"),
+                                            icon: <Palette strokeWidth={1.5} className="size-5" />,
+                                        }}
+                                    />
+                                    <ListItem
+                                        sideLine={false}
+                                        activeItem={pathname.startsWith("/catalog/collage")}
+                                        leftSlot={<Badge title="new" variant="neutral" />}
+                                        linkItem={{
+                                            href: "/catalog/collage",
+                                            label: tSidebar("collage"),
+                                            icon: <Blocks strokeWidth={1.5} className="size-5" />,
+                                        }}
+                                    />
+                                </ul>
+                            </section>
+
                             <section>
-                                <h2 className="sr-only">{section.title}</h2>
+                                <h2 className="font-medium mb-3 text-accent-1 mt-6">
+                                    {tSidebar("documentation")}
+                                </h2>
 
                                 <ul>
                                     {section.children.map(({ url, title, icon }) => {
@@ -173,31 +206,6 @@ export default function SideBarContent({ className, sections, topBarSlot }: Side
                                             />
                                         )
                                     })}
-                                </ul>
-                            </section>
-
-                            <section className="mb-6">
-                                <h2 className="sr-only">tools</h2>
-                                <ul>
-                                    <ListItem
-                                        sideLine={false}
-                                        activeItem={pathname === "/docs/components"}
-                                        linkItem={{
-                                            href: "/docs",
-                                            label: tSidebar("browse-catalog"),
-                                            icon: <BookOpen strokeWidth={1.5} className="size-5" />,
-                                        }}
-                                    />
-                                    <ListItem
-                                        sideLine={false}
-                                        activeItem={pathname === "/shader-studio"}
-                                        leftSlot={<Badge title="new" variant="neutral" />}
-                                        linkItem={{
-                                            href: "/shader-studio",
-                                            label: tSidebar("shader-studio"),
-                                            icon: <Palette strokeWidth={1.5} className="size-5" />,
-                                        }}
-                                    />
                                 </ul>
                             </section>
                         </React.Fragment>

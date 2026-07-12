@@ -6,59 +6,72 @@ import { useState } from "react"
 import Button from "@/components/ui/Button"
 import Input from "@/components/ui/Input"
 import { useKeyDown } from "@/hooks/use-key-down"
-import { getLucideIcon } from "@/lib/utils"
 import type { DocTree } from "@/types/docs"
 import CatalogCard from "./CatalogCard"
 
-function countElements(items: DocTree[]) {
-    let itemCount = 0
-    const tagCounts: Record<string, number> = {}
-
-    for (const component of items) {
-        for (const child of component.children) {
-            itemCount++
-            for (const tag of child.tags ?? []) {
-                if (tagCounts[tag]) tagCounts[tag]++
-                else tagCounts[tag] = 1
-            }
-        }
-    }
-    return { itemCount, tagCounts }
-}
-
 type CatalogProps = {
     catalogItems: DocTree[]
-    title: string
+    facetByTag: boolean
 }
 
-export default function Catalog({ catalogItems, title }: CatalogProps) {
+type CatalogFilter = {
+    label: string
+    value: string
+    count: number
+}
+
+type CatalogSection = {
+    id: string
+    heading?: string
+    children: DocTree[]
+}
+
+export default function Catalog({ catalogItems, facetByTag }: CatalogProps) {
     const tCommon = useTranslations("common")
     const tCatalog = useTranslations("docs.catalog")
 
     const [query, setQuery] = useState("")
-    const [activeTags, setActiveTags] = useState<string[]>([])
-    const { itemCount, tagCounts } = countElements(catalogItems)
+    const [activeFilter, setActiveFilter] = useState<string | null>(null)
 
-    function toggleTag(tag: string) {
-        setActiveTags((prev) => {
-            if (prev.includes(tag)) return prev.filter((t) => t !== tag)
-            return [...prev, tag]
-        })
-    }
+    const allItems = catalogItems.flatMap((group) => group.children)
+    const totalCount = allItems.length
 
-    function filterChildren(item: DocTree) {
-        return item.children.filter((child) => {
-            if (query.trim()) return child.title.toLowerCase().includes(query.trim().toLowerCase())
-            if (activeTags.length > 0) return child.tags?.some((tag) => activeTags.includes(tag))
-            return true
-        })
-    }
+    const matchesQuery = (item: DocTree) =>
+        item.title.toLowerCase().includes(query.trim().toLowerCase())
 
-    const filteredList = catalogItems
-        .map((item) => ({ ...item, children: filterChildren(item) }))
-        .filter(({ children }) => children.length > 0)
+    const filters: CatalogFilter[] = facetByTag
+        ? [...new Set(allItems.flatMap((item) => item.tags ?? []))].sort().map((tag) => ({
+              label: tag,
+              value: tag,
+              count: allItems.filter((item) => item.tags?.includes(tag)).length,
+          }))
+        : catalogItems.map((group) => ({
+              label: group.category ?? group.title,
+              value: group.url,
+              count: group.children.length,
+          }))
 
-    const filteredCount = filteredList.flatMap(({ children }) => children).length
+    const sections: CatalogSection[] = facetByTag
+        ? [
+              {
+                  id: "all",
+                  children: allItems.filter(
+                      (item) =>
+                          (activeFilter === null || item.tags?.includes(activeFilter)) &&
+                          matchesQuery(item),
+                  ),
+              },
+          ]
+        : catalogItems
+              .filter((group) => activeFilter === null || group.url === activeFilter)
+              .map((group) => ({
+                  id: group.url,
+                  heading: group.category,
+                  children: group.children.filter(matchesQuery),
+              }))
+
+    const visibleSections = sections.filter((section) => section.children.length > 0)
+    const filteredCount = visibleSections.reduce((sum, section) => sum + section.children.length, 0)
 
     useKeyDown({
         key: "Escape",
@@ -69,12 +82,8 @@ export default function Catalog({ catalogItems, title }: CatalogProps) {
 
     return (
         <div className="not-prose">
-            <h2 className="text-3xl font-semibold mb-5">
-                {title} ({filteredCount})
-            </h2>
-
-            <div className="flex flex-col gap-y-2">
-                <search className="relative flex items-center justify-between h-12">
+            <div className="flex items-center justify-between">
+                <search className="relative flex items-center justify-stae h-12 w-90 py-10">
                     <Search className="size-4 text-accent-1 ml-3" />
                     <Input
                         type="search"
@@ -95,67 +104,56 @@ export default function Catalog({ catalogItems, title }: CatalogProps) {
                     )}
                 </search>
 
-                <div className="flex flex-wrap gap-1.5">
-                    {Object.keys(tagCounts).map((tag) => {
-                        const isActive = activeTags.includes(tag)
-                        return (
-                            <Button
-                                key={tag}
-                                size="tag"
-                                variant={isActive ? "secondary" : "primary"}
-                                onClick={() => toggleTag(tag)}
-                            >
-                                {tag} ({tagCounts[tag]})
-                            </Button>
-                        )
-                    })}
-                </div>
-            </div>
-
-            <div className="text-sm text-accent-2 flex items-center gap-x-3 pt-10 mb-2">
-                {activeTags.length > 0 && (
-                    <button
-                        type="button"
-                        onClick={() => setActiveTags([])}
-                        className="hover:text-accent-3 font-medium text-accent-1 cursor-pointer flex items-center gap-x-0.5"
-                    >
-                        <X size={15} />
-                        {tCatalog("clear-filters")}
-                    </button>
-                )}
-
-                <span>
+                <span className="text-xs text-accent-2 italic">
                     {tCatalog("results-count", {
                         filtered: filteredCount,
-                        total: itemCount,
+                        total: totalCount,
                     })}
                 </span>
             </div>
 
+            <div className="flex flex-col gap-y-2 border-t border-b py-5">
+                <div className="flex flex-wrap gap-1.5">
+                    <Button
+                        size="tag"
+                        variant={activeFilter === null ? "secondary" : "primary"}
+                        onClick={() => setActiveFilter(null)}
+                    >
+                        {tCatalog("all")} ({totalCount})
+                    </Button>
+
+                    {filters.map((filter) => (
+                        <Button
+                            key={filter.value}
+                            size="tag"
+                            variant={activeFilter === filter.value ? "secondary" : "primary"}
+                            onClick={() => setActiveFilter(filter.value)}
+                        >
+                            {filter.label} ({filter.count})
+                        </Button>
+                    ))}
+                </div>
+            </div>
+
             <div className="relative">
-                {filteredList.map((item) => {
-                    const Icon = getLucideIcon(item.icon)
+                {visibleSections.map((section) => (
+                    <div className="mt-5" key={section.id}>
+                        {section.heading && (
+                            <h3 className="w-full py-4 flex items-center justify-between just gap-x-3 ml-1">
+                                <span className="text-2xl font-serif ">{section.heading}</span>
+                                <span className="text-2xl font-serif">
+                                    / {section.children.length.toLocaleString().padStart(2, "0")}
+                                </span>
+                            </h3>
+                        )}
 
-                    return (
-                        <div className="mb-15 border-t pt-10 border-dashed" key={item.title}>
-                            {item.category && (
-                                <h3 className="not-prose font-semibold w-full gap-2 pb-2 flex items-center">
-                                    <Icon
-                                        strokeWidth={1.5}
-                                        className="size-6 p-1 rounded-md text-accent-1 bg-accent-4"
-                                    />
-                                    <span className="text-xl font-medium">{item.category}</span>
-                                </h3>
-                            )}
-
-                            <div className="grid md:grid-cols-2 2xl:grid-cols-3 gap-3">
-                                {item.children.map((child) => (
-                                    <CatalogCard key={child.title} catalogItem={child} />
-                                ))}
-                            </div>
+                        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3">
+                            {section.children.map((child) => (
+                                <CatalogCard key={child.title} catalogItem={child} />
+                            ))}
                         </div>
-                    )
-                })}
+                    </div>
+                ))}
             </div>
         </div>
     )

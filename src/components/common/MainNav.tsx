@@ -16,6 +16,12 @@ import { cn } from "@/lib/utils"
 import AuthAccountDropdown from "@/pro/components/features/auth/AuthAccountDropdown"
 import AuthGuestDropdown from "@/pro/components/features/auth/AuthGuestDropdown"
 
+const NAV_LINKS = [
+    { href: "/docs", labelKey: "read-the-docs" },
+    { href: "/catalog", labelKey: "catalog" },
+    { href: "/shader-studio", labelKey: "shader-studio" },
+] as const
+
 type MainNavProps = {
     className?: string
 }
@@ -56,23 +62,17 @@ export default function MainNav({ className }: MainNavProps) {
 
                     {!isMobile && (
                         <nav className="flex items-center gap-x-4.5 text-accent-2">
-                            <Link
-                                href="/docs"
-                                className={cn("hover:text-accent-1", {
-                                    "text-accent-1": pathname.includes("/docs"),
-                                })}
-                            >
-                                {tCommon("read-the-docs")}
-                            </Link>
-
-                            <Link
-                                href="/shader-studio"
-                                className={cn("hover:text-accent-1", {
-                                    "text-accent-1": pathname.includes("/shader-studio"),
-                                })}
-                            >
-                                {tCommon("shader-studio")}
-                            </Link>
+                            {NAV_LINKS.map(({ href, labelKey }) => (
+                                <Link
+                                    key={href}
+                                    href={href}
+                                    className={cn("hover:text-accent-1", {
+                                        "text-accent-1": pathname.includes(href),
+                                    })}
+                                >
+                                    {tCommon(labelKey)}
+                                </Link>
+                            ))}
 
                             <Link
                                 href={REPO_URL}

@@ -3,8 +3,6 @@ import { notFound } from "next/navigation"
 import { setRequestLocale } from "next-intl/server"
 import RouteBreadCrumb from "@/components/common/RouteBreadCrumb"
 import PageDocLayout from "@/components/features/docs/_PageDocLayout"
-import Catalog from "@/components/features/docs/catalog/Catalog"
-import CatalogNavigation from "@/components/features/docs/catalog/CatalogNavigation"
 import DocCodeBlock from "@/components/features/docs/code-block/CodeBlock"
 import DocHeaderGroupTitle from "@/components/features/docs/DocHeaderGroupTitle"
 import DocHeaderNavButtons from "@/components/features/docs/DocHeaderNavButtons"
@@ -23,8 +21,6 @@ import {
     getComponentSnippets,
     getDocBySlug,
     getDocNavigation,
-    getSection,
-    getSectionCategories,
 } from "@/lib/docs"
 import ProCodeBlock from "@/pro/components/features/pro/ProCodeBlock"
 import ProLicenseHelper from "@/pro/components/features/pro/ProLicenseHelper"
@@ -60,15 +56,6 @@ async function importDoc(locale: string, slug: string[]) {
 }
 
 async function getDocMeta(locale: string, slug: string[]): Promise<DocMeta> {
-    if (slug.length === 1) {
-        const folder = getSection(locale, slug[0])
-        if (folder)
-            return {
-                title: folder.title,
-                description: folder.description,
-            }
-    }
-
     const content = await importDoc(locale, slug)
     return content.frontmatter as DocMeta
 }
@@ -88,20 +75,6 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 export default async function Page({ params }: PageProps) {
     const { locale, slug } = await params
     setRequestLocale(locale)
-
-    if (slug.length === 1) {
-        const section = getSection(locale, slug[0])
-        if (section) {
-            const catalogItems = getSectionCategories(locale, slug[0])
-
-            return (
-                <PageDocLayout
-                    navigationSlot={<CatalogNavigation locale={locale} activeSlug={slug[0]} />}
-                    contentSlot={<Catalog title={section.title} catalogItems={catalogItems} />}
-                />
-            )
-        }
-    }
 
     const { headings, rawMarkdown } = getDocBySlug(locale, slug)
     const navigation = getDocNavigation(locale, slug)
