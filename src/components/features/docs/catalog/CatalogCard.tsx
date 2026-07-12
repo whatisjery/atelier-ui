@@ -1,7 +1,8 @@
 "use client"
 
 import Link from "next/link"
-import { useRef } from "react"
+import { useRef, useState } from "react"
+import { cn } from "@/lib/utils"
 import type { DocTree } from "@/types/docs"
 
 type CatalogCardProps = {
@@ -9,6 +10,7 @@ type CatalogCardProps = {
 }
 
 export default function CatalogCard({ catalogItem }: CatalogCardProps) {
+    const [isPlaying, setIsPlaying] = useState(false)
     const playRequest = useRef<Promise<void> | null>(null)
     const poster = catalogItem.preview?.replace(/\.[^.]+$/, ".webp")
 
@@ -33,20 +35,24 @@ export default function CatalogCard({ catalogItem }: CatalogCardProps) {
                             onMouseEnter={(e) => {
                                 playRequest.current = e.currentTarget.play()
                             }}
-                            onMouseLeave={(e) => {
-                                const video = e.currentTarget
+                            onMouseLeave={({ currentTarget }) => {
                                 playRequest.current?.then(() => {
-                                    video.pause()
-                                    video.currentTime = 0
+                                    currentTarget.pause()
+                                    currentTarget.currentTime = 0
                                 })
+                                setIsPlaying(false)
                             }}
+                            onPlaying={() => setIsPlaying(true)}
                         />
                         <img
                             src={poster}
                             alt={`${catalogItem.title} preview`}
                             width={720}
                             height={460}
-                            className="absolute inset-0 w-full h-full object-cover rounded-xl opacity-100 transition-opacity duration-300 ease-expo-out pointer-events-none group-hover:opacity-0"
+                            className={cn(
+                                "absolute inset-0 w-full h-full object-cover rounded-xl transition-opacity duration-300 ease-expo-out pointer-events-none",
+                                isPlaying ? "opacity-0" : "opacity-100",
+                            )}
                         />
                     </div>
                 </div>
