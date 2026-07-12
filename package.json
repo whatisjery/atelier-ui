@@ -11,7 +11,8 @@
         "prebuild": "git submodule update --init --remote src/pro && tsx src/scripts/build-registry.ts && tsx src/scripts/search-index.ts && tsx src/scripts/generate-llms-full.ts",
         "dev": "tsx src/scripts/build-registry.ts && tsx src/scripts/search-index.ts && tsx src/scripts/generate-llms-full.ts && next dev",
         "install:vercel": "bash ./bin/init-submodule.sh && pnpm install",
-        "scafold-new": "tsx src/scripts/scafold-new.ts"
+        "scafold-new": "tsx src/scripts/scafold-new.ts",
+        "video": "tsx src/pro/scripts/build-videos.ts"
     },
     "dependencies": {
         "@mdx-js/loader": "^3.1.1",
@@ -25,6 +26,7 @@
         "@react-three/postprocessing": "^3.0.4",
         "@t3-oss/env-nextjs": "^0.13.11",
         "@uiw/react-color-colorful": "^2.10.1",
+        "@vercel/blob": "^2.6.1",
         "better-auth": "^1.6.23",
         "clsx": "^2.1.1",
         "fast-glob": "^3.3.3",

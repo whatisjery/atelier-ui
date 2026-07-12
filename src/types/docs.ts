@@ -32,6 +32,7 @@ export type DocTree = {
     pro?: boolean
     nav?: boolean
     display?: SectionDisplay
+    preview?: string
 }
 
 export type DocHeading = {

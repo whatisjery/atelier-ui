@@ -45,6 +45,10 @@ yarn-error.log*
 # vercel
 .vercel
 
+# videos live on Vercel Blob, not in git (URLs tracked in src/lib/video-manifest.json)
+public/video/raw-video
+public/video/catalog
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts

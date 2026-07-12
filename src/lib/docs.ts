@@ -12,6 +12,9 @@ import type { CodeFile } from "@/types/code"
 import type { DirMeta, DocNavigation, DocTree } from "@/types/docs"
 import type { TOCItem } from "@/types/toc"
 import { slugify } from "./utils"
+import videoManifestJson from "./video-manifest.json"
+
+const videoManifest: Record<string, string> = videoManifestJson
 
 const DOCS_DIR = path.join(process.cwd(), "src/content")
 const HEADING_REGEX = /^(#{2,3})\s+(.+)$/gm
@@ -23,11 +26,6 @@ export const getDocsTree = cache(function getDocsTree(locale: string): DocTree[]
     return trees.reduce(mergeDocTrees, [])
 })
 
-/**
- * Overlays one doc tree onto another, matching folders by url and merging their
- * children so pro files (from the submodule) join the public folders that hold
- * their free siblings. Public metadata wins; files are appended and re-sorted.
- */
 function mergeDocTrees(base: DocTree[], overlay: DocTree[]): DocTree[] {
     const merged = [...base]
     for (const node of overlay) {
@@ -70,11 +68,10 @@ export function getCodesBlock(strPath: string): Record<string, CodeFile[]> {
     const codes: Record<string, CodeFile[]> = {}
 
     for (const dirPath of overlayRoots(path.join(process.cwd(), strPath))) {
-        for (const entry of fs.readdirSync(dirPath, { withFileTypes: true })) {
-            if (!entry.isDirectory()) continue
+        const dirs = fs.readdirSync(dirPath, { withFileTypes: true }).filter((e) => e.isDirectory())
+        for (const entry of dirs) {
             const folderPath = path.join(dirPath, entry.name)
-            const files = fs.readdirSync(folderPath)
-            codes[entry.name] = files.map((file) => ({
+            codes[entry.name] = fs.readdirSync(folderPath).map((file) => ({
                 content: fs.readFileSync(path.join(folderPath, file), "utf-8"),
                 filename: file,
                 extension: path.extname(file).slice(1),
@@ -114,7 +111,7 @@ export function getAllDocs() {
         for (const root of getDocsTree(locale)) {
             visit(root, (node) => {
                 const slug = node.url.replace("/docs/", "").split("/")
-                if (slug[0] && (node.type === "file" || slug.length === 1)) {
+                if (slug[0] && node.type === "file") {
                     result.push({ locale, slug })
                 }
             })
@@ -163,6 +160,7 @@ function buildFileNode(fullPath: string, urlPath: string, item: string): DocTree
         createdAt: createdAt ?? undefined,
         updatedAt: updatedAt ?? undefined,
         pro: isPro,
+        preview: videoManifest[slug],
     }
 }
 
