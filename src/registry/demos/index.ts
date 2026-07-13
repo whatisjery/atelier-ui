@@ -4,20 +4,15 @@ export const demos: Record<string, React.LazyExoticComponent<React.ComponentType
     "fluid-distortion": lazy(() => import("./fluid-distortion/fluid-distortion")),
     "pixel-trail": lazy(() => import("./pixel-trail/pixel-trail")),
     "magnetic-dot-grid": lazy(() => import("./magnetic-dot-grid/magnetic-dot-grid")),
-    "halftone-glow": lazy(() => import("@/pro/registry/demos/halftone-glow/halftone-glow")),
     "pixelated-text": lazy(() => import("./pixelated-text/pixelated-text")),
     "image-trail": lazy(() => import("./image-trail/image-trail")),
     "infinite-gallery": lazy(() => import("./infinite-gallery/infinite-gallery")),
     "text-scramble": lazy(() => import("./text-scramble/text-scramble")),
     "liquid-media": lazy(() => import("./liquid-media/liquid-media")),
     "infinite-parallax": lazy(() => import("./infinite-parallax/infinite-parallax")),
-    "elastic-stick": lazy(() => import("@/pro/registry/demos/elastic-stick/elastic-stick")),
-    "glowing-fog": lazy(() => import("@/pro/registry/demos/glowing-fog/glowing-fog")),
     "infinite-zoom": lazy(() => import("./infinite-zoom/infinite-zoom")),
     "scattered-scroll": lazy(() => import("./scattered-scroll/scattered-scroll")),
-    "text-roll": lazy(() => import("@/pro/registry/demos/text-roll/text-roll")),
     "text-bounce": lazy(() => import("./text-bounce/text-bounce")),
-    "gradient-flow": lazy(() => import("@/pro/registry/demos/gradient-flow/gradient-flow")),
     "curve-media": lazy(() => import("./curve-media/curve-media")),
     "text-fluid": lazy(() => import("./text-fluid/text-fluid")),
     "clip-reveal": lazy(() => import("./clip-reveal/clip-reveal")),
@@ -29,7 +24,10 @@ export const demos: Record<string, React.LazyExoticComponent<React.ComponentType
     "pixel-scroll": lazy(() => import("./pixel-scroll/pixel-scroll")),
     "orbit-gallery": lazy(() => import("./orbit-gallery/orbit-gallery")),
     "edge-bounce": lazy(() => import("./edge-bounce/edge-bounce")),
-    "wavy-scroll": lazy(() => import("@/pro/registry/demos/wavy-scroll/wavy-scroll")),
-    "scattered-grid": lazy(() => import("@/pro/registry/demos/scattered-grid/scattered-grid")),
-    "tag-cloud": lazy(() => import("@/pro/registry/demos/tag-cloud/tag-cloud")),
 }
+
+/*
+ * Demos that need page-level smooth scrolling even though they are not
+ * registry components with a smooth-scroll dependency (showcase entries).
+ */
+export const scrollDemos: string[] = []

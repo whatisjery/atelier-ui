@@ -1,9 +1,8 @@
-type TRegistryComponent = {
+export type TRegistryComponent = {
     name: string
     description: string
     shared: string[]
     files: string[]
-    pro?: boolean
     dependencies: string[]
     registryDependencies: string[]
 }
@@ -98,15 +97,6 @@ export const components: TRegistryComponent[] = [
         registryDependencies: ["smooth-scroll"],
     },
     {
-        name: "text-roll",
-        files: ["text-roll.tsx"],
-        description: "Text that rolls through its letters.",
-        shared: ["hooks/use-render.ts"],
-        dependencies: ["motion"],
-        registryDependencies: ["text-split"],
-        pro: true,
-    },
-    {
         name: "text-split",
         files: ["text-split.tsx"],
         description: "A utility that splits text for animation.",
@@ -115,48 +105,12 @@ export const components: TRegistryComponent[] = [
         registryDependencies: [],
     },
     {
-        name: "halftone-glow",
-        files: ["halftone-glow.tsx"],
-        description: "A glowing halftone background.",
-        shared: [],
-        dependencies: ["three", "@react-three/fiber", "@react-three/drei"],
-        registryDependencies: ["webgl-portal"],
-        pro: true,
-    },
-    {
-        name: "elastic-stick",
-        files: ["elastic-stick.tsx"],
-        description: "Items that bounce and stick to the center while scrolling.",
-        shared: [],
-        dependencies: ["motion"],
-        registryDependencies: ["smooth-scroll"],
-        pro: true,
-    },
-    {
-        name: "glowing-fog",
-        files: ["glowing-fog.tsx"],
-        description: "A glowing fog background.",
-        shared: [],
-        dependencies: ["three", "@react-three/fiber", "@react-three/drei"],
-        registryDependencies: ["webgl-portal"],
-        pro: true,
-    },
-    {
         name: "text-bounce",
         files: ["text-bounce.tsx"],
         description: "Text that bounces away on hover.",
         shared: ["hooks/use-render.ts"],
         dependencies: ["motion"],
         registryDependencies: ["text-split"],
-    },
-    {
-        name: "gradient-flow",
-        files: ["gradient-flow.tsx"],
-        description: "An animated flowing gradient background.",
-        shared: [],
-        dependencies: ["three", "@react-three/fiber"],
-        registryDependencies: ["webgl-portal"],
-        pro: true,
     },
     {
         name: "webgl-portal",
@@ -307,33 +261,5 @@ export const components: TRegistryComponent[] = [
         shared: [],
         dependencies: ["motion"],
         registryDependencies: [],
-    },
-    {
-        name: "wavy-scroll",
-        files: ["wavy-scroll.tsx"],
-        description: "Text and images that wave across the screen while scrolling.",
-        shared: [],
-        dependencies: ["motion"],
-        registryDependencies: ["text-split", "smooth-scroll"],
-        pro: true,
-    },
-    {
-        name: "scattered-grid",
-        files: ["scattered-grid.tsx"],
-        description: "A grid that scatters away from the hovered item.",
-        shared: [],
-        dependencies: ["motion"],
-        registryDependencies: [],
-        pro: true,
-    },
-    {
-        name: "tag-cloud",
-        files: ["tag-cloud.tsx"],
-        description:
-            "Flat images scattered over a draggable sphere, where depth is only a change of scale.",
-        shared: [],
-        dependencies: ["motion"],
-        registryDependencies: [],
-        pro: true,
     },
 ]

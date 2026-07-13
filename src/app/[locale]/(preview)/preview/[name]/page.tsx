@@ -6,11 +6,10 @@ import { useEffect, useRef, useState } from "react"
 import { components } from "@/registry"
 import { SmoothScroll } from "@/registry/base/smooth-scroll/smooth-scroll"
 import { WebglProvider } from "@/registry/base/webgl-provider/webgl-provider"
-import { collages } from "@/registry/collage"
-import { demos } from "@/registry/demos"
+import { demos, scrollDemos } from "@/registry/demos"
 import type { ControlValue } from "@/types/controls"
 
-const registry = { ...demos, ...collages }
+const registry = demos
 
 type Values = Record<string, ControlValue>
 
@@ -19,10 +18,9 @@ type Values = Record<string, ControlValue>
  * To avoid blocking the scroll for non-scrollable demos.
  */
 function needsSmoothScroll(name: string): boolean {
-    const isCollage = collages[name] !== undefined
     const meta = components.find((component) => component.name === name)
     const scrollDependent = Boolean(meta?.registryDependencies?.includes("smooth-scroll"))
-    return isCollage || scrollDependent
+    return scrollDemos.includes(name) || scrollDependent
 }
 
 export default function PreviewPage() {

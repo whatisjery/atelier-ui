@@ -9,17 +9,15 @@ const { values, positionals } = parseArgs({
     args: process.argv.slice(2),
     options: {
         category: { type: "string", short: "c" },
-        pro: { type: "boolean" },
     },
     allowPositionals: true,
 })
 
 const name = positionals[0]
 const category = values.category
-const pro = values.pro ?? false
 
 if (!name || !/^[a-z][a-z0-9-]*$/.test(name)) {
-    console.error("Usage: pnpm scafold-new <kebab-case-name> --category <category> [--pro]")
+    console.error("Usage: pnpm scafold-new <kebab-case-name> --category <category>")
     console.error("e.g. pnpm scafold-new infinite-gallery --category scroll")
     process.exit(1)
 }
@@ -69,7 +67,7 @@ export function ${Pascal}() {
 `
 
 const demoTemplate: Template = ({ name, Pascal }) => `\
-import { ${Pascal} } from "${pro ? "@/pro" : "@"}/registry/base/${name}/${name}"
+import { ${Pascal} } from "@/registry/base/${name}/${name}"
 
 export default function ${Pascal}Demo() {
     return (
@@ -91,18 +89,7 @@ updatedAt: "${new Date().toISOString().slice(0, 10)}"
 
 <DemoPreview name="${name}" />
 
-${
-    pro
-        ? `<ProGate>
-
----
-
-## Install
-
-<InstallTabs name="${name}" />
-
-</ProGate>`
-        : `## CLI Install
+## CLI Install
 
 <InstalGuideCLI name="${name}" />
 
@@ -110,8 +97,7 @@ ${
 
 ## Manual Install
 
-<InstalGuideManual name="${name}" />`
-}
+<InstalGuideManual name="${name}" />
 
 ---
 
@@ -124,7 +110,7 @@ ${
 
 const vars = { name, Pascal, Title }
 
-const srcRoot = pro ? "src/pro" : "src"
+const srcRoot = "src"
 
 const files: Record<string, string> = {
     [`${srcRoot}/registry/base/${name}/${name}.tsx`]: baseTemplate(vars),
@@ -145,11 +131,9 @@ for (const [rel, contents] of Object.entries(files)) {
 
 const demosPath = join(root, "src/registry/demos/index.ts")
 const demosSrc = readFileSync(demosPath, "utf8")
-const demosEntry = pro
-    ? `    "${name}": lazy(() => import("@/pro/registry/demos/${name}/${name}")),\n`
-    : `    "${name}": lazy(() => import("./${name}/${name}")),\n`
+const demosEntry = `    "${name}": lazy(() => import("./${name}/${name}")),\n`
 
-const demosPatched = demosSrc.replace(/\n\}\s*$/, `\n${demosEntry}}\n`)
+const demosPatched = demosSrc.replace(/\n\}\n/, `\n${demosEntry}}\n`)
 
 if (demosPatched === demosSrc) {
     console.error(`✘ could not patch ${demosPath} — expected a trailing '}' on its own line`)
@@ -167,7 +151,7 @@ const regEntry = `    {
         description: "TODO",
         shared: [],
         dependencies: [],
-        registryDependencies: [],${pro ? "\n        pro: true," : ""}
+        registryDependencies: [],
     },\n`
 
 const regPatched = regSrc.replace(/\n\]\s*$/, `\n${regEntry}]\n`)

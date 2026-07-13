@@ -7,29 +7,27 @@ import GlobalSearch from "@/components/common/GlobalSearch"
 import ThemeSwitcher from "@/components/common/ThemeSwitcher"
 import ThemeToggle from "@/components/common/ThemeToggle"
 import Button from "@/components/ui/Button"
-import Skeleton from "@/components/ui/Skeleton"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { Link, usePathname } from "@/i18n/navigation"
 import { REPO_URL } from "@/lib/constants"
 import { useGlobalStore } from "@/lib/store"
 import { cn } from "@/lib/utils"
-import AuthAccountDropdown from "@/pro/components/features/auth/AuthAccountDropdown"
-import AuthGuestDropdown from "@/pro/components/features/auth/AuthGuestDropdown"
 
 const NAV_LINKS = [
     { href: "/docs", labelKey: "read-the-docs" },
     { href: "/catalog", labelKey: "catalog" },
-    { href: "/shader-studio", labelKey: "shader-studio" },
 ] as const
 
 type MainNavProps = {
     className?: string
+    /* Extra nav links, rendered between the built-in links and the GitHub link. */
+    navSlot?: React.ReactNode
+    /* Rendered at the far end of the bar, after the theme toggle. */
+    endSlot?: React.ReactNode
 }
 
-export default function MainNav({ className }: MainNavProps) {
+export default function MainNav({ className, navSlot, endSlot }: MainNavProps) {
     const isMobile = useIsMobile(1024)
-    const customer = useGlobalStore((s) => s.customer)
-    const isCustomerPending = useGlobalStore((s) => s.isCustomerPending)
     const toggleSheetSidebar = useGlobalStore((state) => state.toggleSheetSidebar)
     const tCommon = useTranslations("common")
     const pathname = usePathname()
@@ -74,6 +72,8 @@ export default function MainNav({ className }: MainNavProps) {
                                 </Link>
                             ))}
 
+                            {navSlot}
+
                             <Link
                                 href={REPO_URL}
                                 target="_blank"
@@ -116,11 +116,7 @@ export default function MainNav({ className }: MainNavProps) {
 
                     <ThemeToggle key="theme" />
 
-                    {isCustomerPending && <Skeleton className="size-9 rounded-lg" />}
-
-                    {!isCustomerPending && customer && <AuthAccountDropdown />}
-
-                    {!isCustomerPending && !customer && <AuthGuestDropdown />}
+                    {endSlot}
                 </div>
             </div>
         </header>

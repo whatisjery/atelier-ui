@@ -18,10 +18,9 @@ import Button from "@/components/ui/Button"
 import Card from "@/components/ui/Card"
 import BackgroundPixelGrid from "@/components/ui/PixelGrid"
 import ScrollingMarquee from "@/components/ui/ScrollingMarquee"
-import { env } from "@/env"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { Link } from "@/i18n/navigation"
-import { DEFAULT_PIXEL_SIZE, VERSION } from "@/lib/constants"
+import { DEFAULT_PIXEL_SIZE, REPO_URL, VERSION } from "@/lib/constants"
 import { SmoothScroll } from "@/registry/base/smooth-scroll/smooth-scroll"
 import type { DocTree } from "@/types/docs"
 import LandingClipReveal from "./LandingClipReveal"
@@ -65,9 +64,11 @@ const MotionCard = motion.create(Card)
 
 type PageLadingProps = {
     showcaseComponents: DocTree[]
+    /* Replaces the default hero call-to-action (a GitHub link) when provided. */
+    ctaSlot?: React.ReactNode
 }
 
-export default function PageLanding({ showcaseComponents }: PageLadingProps) {
+export default function PageLanding({ showcaseComponents, ctaSlot }: PageLadingProps) {
     const tMetadata = useTranslations("metadata")
     const [showLoader, setShowLoader] = useState(true)
     const bottomCardRef = useRef<ComponentRef<"div">>(null)
@@ -139,21 +140,23 @@ export default function PageLanding({ showcaseComponents }: PageLadingProps) {
                         </p>
 
                         <div className="flex items-center justify-center gap-2 my-2 w-full sm:flex-row flex-col">
-                            <Button
-                                size="big"
-                                className="w-full sm:w-auto"
-                                asChild
-                                variant="secondary"
-                            >
-                                <a
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    href={env.NEXT_PUBLIC_POLAR_CHECKOUT_URL}
+                            {ctaSlot ?? (
+                                <Button
+                                    size="big"
+                                    className="w-full sm:w-auto"
+                                    asChild
+                                    variant="secondary"
                                 >
-                                    Pro access
-                                    <AnimatedArrow />
-                                </a>
-                            </Button>
+                                    <a
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        href={REPO_URL}
+                                    >
+                                        Star on GitHub
+                                        <AnimatedArrow />
+                                    </a>
+                                </Button>
+                            )}
 
                             <Button
                                 size="big"

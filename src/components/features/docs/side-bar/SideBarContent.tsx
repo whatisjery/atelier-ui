@@ -1,43 +1,46 @@
 "use client"
 
-import { Blocks, BookOpen, ChevronDown, Folder, FolderOpen, Palette } from "lucide-react"
+import { BookOpen, ChevronDown, Folder, FolderOpen } from "lucide-react"
 import { useTranslations } from "next-intl"
 import React, { useState } from "react"
 import Badge from "@/components/ui/Badge"
 import ListItem from "@/components/ui/ListItem"
 import { usePathname } from "@/i18n/navigation"
 import { BRAND, VERSION } from "@/lib/constants"
-import { useGlobalStore } from "@/lib/store"
 import { cn, getLucideIcon, padStartFormat } from "@/lib/utils"
 import type { DocTree } from "@/types/docs"
 import DocStatusBadge from "../DocStatusBadge"
+
+type RenderBadge = (node: DocTree) => React.ReactNode
 
 type SideBarContentProps = {
     className?: string
     sections: DocTree[]
     topBarSlot?: React.ReactNode
+    toolsSlot?: React.ReactNode
+    renderBadge?: RenderBadge
 }
 
 type NodeProps = {
     node: DocTree
     pathname: string
-    hasCustomer: boolean
+    renderBadge: RenderBadge
     closedKeys: string[]
     toggle: (key: string) => void
 }
 
-function getBadge(node: DocTree, hasCustomer: boolean) {
-    if (node.pro && !hasCustomer) return <Badge title="pro" variant="neutral" />
+function defaultBadge(node: DocTree) {
+    if (node.tag) return <Badge title={node.tag} variant="neutral" />
     return <DocStatusBadge createdAt={node.createdAt} />
 }
 
-function SectionNode({ node, pathname, hasCustomer, closedKeys, toggle }: NodeProps) {
+function SectionNode({ node, pathname, renderBadge, closedKeys, toggle }: NodeProps) {
     if (node.type === "file") {
         return (
             <ListItem
                 sideLine={true}
                 activeItem={pathname === node.url}
-                leftSlot={getBadge(node, hasCustomer)}
+                leftSlot={renderBadge(node)}
                 linkItem={{ href: node.url, label: node.title }}
             />
         )
@@ -73,7 +76,7 @@ function SectionNode({ node, pathname, hasCustomer, closedKeys, toggle }: NodePr
                         key={child.url}
                         node={child}
                         pathname={pathname}
-                        hasCustomer={hasCustomer}
+                        renderBadge={renderBadge}
                         closedKeys={closedKeys}
                         toggle={toggle}
                     />
@@ -83,8 +86,13 @@ function SectionNode({ node, pathname, hasCustomer, closedKeys, toggle }: NodePr
     )
 }
 
-export default function SideBarContent({ className, sections, topBarSlot }: SideBarContentProps) {
-    const hasCustomer = useGlobalStore((state) => state.customer?.licenseKey != null)
+export default function SideBarContent({
+    className,
+    sections,
+    topBarSlot,
+    toolsSlot,
+    renderBadge = defaultBadge,
+}: SideBarContentProps) {
     const pathname = usePathname()
     const [closedKeys, setClosedKeys] = useState<string[]>([])
     const tSidebar = useTranslations("docs.sidebar")
@@ -127,7 +135,7 @@ export default function SideBarContent({ className, sections, topBarSlot }: Side
                                         key={folder.url}
                                         node={folder}
                                         pathname={pathname}
-                                        hasCustomer={hasCustomer}
+                                        renderBadge={renderBadge}
                                         closedKeys={closedKeys}
                                         toggle={toggle}
                                     />
@@ -143,40 +151,14 @@ export default function SideBarContent({ className, sections, topBarSlot }: Side
                                 <ul>
                                     <ListItem
                                         sideLine={false}
-                                        activeItem={
-                                            pathname.startsWith("/catalog") &&
-                                            !pathname.startsWith("/catalog/collage")
-                                        }
+                                        activeItem={pathname.startsWith("/catalog")}
                                         linkItem={{
                                             href: "/catalog",
                                             label: tSidebar("browse-catalog"),
                                             icon: <BookOpen strokeWidth={1.5} className="size-5" />,
                                         }}
                                     />
-                                    <ListItem
-                                        sideLine={false}
-                                        activeItem={pathname === "/shader-studio"}
-                                        leftSlot={
-                                            hasCustomer ? undefined : (
-                                                <Badge title="pro" variant="neutral" />
-                                            )
-                                        }
-                                        linkItem={{
-                                            href: "/shader-studio",
-                                            label: tSidebar("shader-studio"),
-                                            icon: <Palette strokeWidth={1.5} className="size-5" />,
-                                        }}
-                                    />
-                                    <ListItem
-                                        sideLine={false}
-                                        activeItem={pathname.startsWith("/catalog/collage")}
-                                        leftSlot={<Badge title="new" variant="neutral" />}
-                                        linkItem={{
-                                            href: "/catalog/collage",
-                                            label: tSidebar("collage"),
-                                            icon: <Blocks strokeWidth={1.5} className="size-5" />,
-                                        }}
-                                    />
+                                    {toolsSlot}
                                 </ul>
                             </section>
 

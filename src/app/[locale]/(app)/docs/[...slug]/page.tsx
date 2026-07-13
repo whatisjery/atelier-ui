@@ -1,19 +1,12 @@
 import type { Metadata } from "next"
-import { notFound } from "next/navigation"
 import { setRequestLocale } from "next-intl/server"
 import RouteBreadCrumb from "@/components/common/RouteBreadCrumb"
 import PageDocLayout from "@/components/features/docs/_PageDocLayout"
-import DocCodeBlock from "@/components/features/docs/code-block/CodeBlock"
+import { buildDocMdxComponents } from "@/components/features/docs/doc-mdx"
 import DocHeaderGroupTitle from "@/components/features/docs/DocHeaderGroupTitle"
 import DocHeaderNavButtons from "@/components/features/docs/DocHeaderNavButtons"
 import DocPageDropdown from "@/components/features/docs/DocPageDropdown"
 import DocTableOfContent from "@/components/features/docs/DocTableOfContent"
-import DemoPreview from "@/components/features/docs/demo-preview/DemoPreview"
-import InstalGuideCLI from "@/components/features/docs/install-guide/InstalGuideCLI"
-import InstalGuideManual from "@/components/features/docs/install-guide/InstalGuideManual"
-import InstallTabs from "@/components/features/docs/install-guide/InstallTabs"
-import Badge from "@/components/ui/Badge"
-import { env } from "@/env"
 import {
     getAllDocs,
     getCategorySlugs,
@@ -22,12 +15,8 @@ import {
     getDocBySlug,
     getDocNavigation,
 } from "@/lib/docs"
-import ProCodeBlock from "@/pro/components/features/pro/ProCodeBlock"
-import ProLicenseHelper from "@/pro/components/features/pro/ProLicenseHelper"
-import ProPaywall from "@/pro/components/features/pro/ProPaywall"
-import { buildComponentPrompt } from "@/pro/components/features/prompt/build-prompt"
-import { components } from "@/registry"
-import type { ControlDef } from "@/types/controls"
+import { importDoc } from "@/lib/import-doc"
+import type { DocMeta } from "@/types/docs"
 
 type PageProps = {
     params: Promise<{ locale: string; slug: string[] }>
@@ -37,32 +26,10 @@ export async function generateStaticParams() {
     return getAllDocs()
 }
 
-type DocMeta = { title: string; description?: string; tags?: string[] }
-
-/**
- * Imports a doc's compiled MDX module, trying the public content tree first and
- * falling back to the pro submodule so private docs resolve without any copy.
- */
-async function importDoc(locale: string, slug: string[]) {
-    try {
-        return await import(`@/content/${locale}/${slug.join("/")}.mdx`)
-    } catch {
-        try {
-            return await import(`@/pro/content/${locale}/${slug.join("/")}.mdx`)
-        } catch {
-            notFound()
-        }
-    }
-}
-
-async function getDocMeta(locale: string, slug: string[]): Promise<DocMeta> {
-    const content = await importDoc(locale, slug)
-    return content.frontmatter as DocMeta
-}
-
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
     const { locale, slug } = await params
-    const { title, description, tags } = await getDocMeta(locale, slug)
+    const content = await importDoc(locale, slug)
+    const { title, description, tags } = content.frontmatter as Partial<DocMeta>
     return {
         title,
         description,
@@ -78,22 +45,17 @@ export default async function Page({ params }: PageProps) {
 
     const { headings, rawMarkdown } = getDocBySlug(locale, slug)
     const navigation = getDocNavigation(locale, slug)
-    const demoCode = {
-        ...getCodesBlock("src/registry/demos"),
-        ...getCodesBlock("src/registry/collage"),
-    }
+    const demoCode = getCodesBlock("src/registry/demos")
     const snippets = getComponentSnippets()
     const content = await importDoc(locale, slug)
-    const isPro = components.some(({ name, pro }) => name === slug[slug.length - 1] && pro)
 
-    const frontmatter = content.frontmatter as DocMeta
-
-    const prompt = buildComponentPrompt({
-        name: slug[slug.length - 1],
-        title: frontmatter.title,
-        description: frontmatter.description,
+    const mdxComponents = buildDocMdxComponents({
+        locale,
+        slug,
         rawMarkdown,
-        docUrl: `${env.NEXT_PUBLIC_SITE_URL}/${locale}/docs/${slug.join("/")}`,
+        frontmatter: content.frontmatter,
+        demoCode,
+        snippets,
     })
 
     return (
@@ -109,105 +71,10 @@ export default async function Page({ params }: PageProps) {
             metadataSlot={
                 <DocHeaderGroupTitle
                     showMetaTags={slug[0] === "components"}
-                    meta={content.frontmatter}
+                    meta={content.frontmatter as DocMeta}
                 />
             }
-            contentSlot={
-                <content.default
-                    components={{
-                        DemoPreview: (props: {
-                            name: string
-                            controls?: Record<string, ControlDef>
-                            studio?: string
-                        }) => {
-                            return (
-                                <DemoPreview
-                                    {...props}
-                                    prompt={prompt ?? undefined}
-                                    codePreviewSlot={
-                                        isPro ? (
-                                            <ProCodeBlock
-                                                name={props.name}
-                                                mode="preview"
-                                                showLineNumbers
-                                                title={demoCode[props.name][0].path}
-                                                lang={demoCode[props.name][0].extension}
-                                            />
-                                        ) : (
-                                            <DocCodeBlock
-                                                mode="preview"
-                                                showLineNumbers
-                                                title={demoCode[props.name][0].path}
-                                                code={demoCode[props.name][0].content}
-                                                lang={demoCode[props.name][0].extension}
-                                            />
-                                        )
-                                    }
-                                />
-                            )
-                        },
-
-                        SourceCode: (props: { name: string }) => (
-                            <DocCodeBlock
-                                mode="expand"
-                                showLineNumbers
-                                title={demoCode[props.name][0].path}
-                                code={demoCode[props.name][0].content}
-                                lang={demoCode[props.name][0].extension}
-                            />
-                        ),
-
-                        ProGate: ({ children }: { children: React.ReactNode }) => (
-                            <ProPaywall>{children}</ProPaywall>
-                        ),
-
-                        ProTag: ({ name }: { name: string }) =>
-                            components.some(
-                                (component) => component.name === name && component.pro,
-                            ) ? (
-                                <Badge
-                                    title="pro"
-                                    variant="neutral"
-                                    className="inline-flex align-middle"
-                                />
-                            ) : null,
-
-                        ProLicenseHelper: () => <ProLicenseHelper />,
-
-                        InstalGuideCLI: (props: { name: string }) => {
-                            return <InstalGuideCLI {...props} />
-                        },
-
-                        InstalGuideManual: (props: { name: string }) => {
-                            return <InstalGuideManual {...props} snippets={snippets[props.name]} />
-                        },
-
-                        InstallTabs: (props: { name: string }) => {
-                            return (
-                                <InstallTabs
-                                    cliSlot={<InstalGuideCLI name={props.name} />}
-                                    manualSlot={
-                                        <InstalGuideManual
-                                            name={props.name}
-                                            snippets={snippets[props.name]}
-                                        />
-                                    }
-                                    promptSlot={
-                                        prompt ? (
-                                            <DocCodeBlock
-                                                mode="expand"
-                                                title="prompt.md"
-                                                code={prompt}
-                                                lang="markdown"
-                                            />
-                                        ) : undefined
-                                    }
-                                />
-                            )
-                        },
-                    }}
-                />
-            }
+            contentSlot={<content.default components={mdxComponents} />}
         />
     )
 }

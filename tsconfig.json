@@ -19,8 +19,7 @@
             }
         ],
         "paths": {
-            "@/*": ["./src/*"],
-            "@/pro/*": ["./src/pro/*"]
+            "@/*": ["./src/*"]
         }
     },
     "include": [
@@ -31,5 +30,5 @@
         ".next/dev/types/**/*.ts",
         "**/*.mts"
     ],
-    "exclude": ["CLI", "node_modules", "packages/cli-tool", "src/pro"]
+    "exclude": ["CLI", "node_modules", "packages/cli-tool"]
 }

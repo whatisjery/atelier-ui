@@ -15,11 +15,7 @@ import { useIsTouch } from "@/hooks/use-is-touch"
 import { useKeyDown } from "@/hooks/use-key-down"
 import { useScrollLock } from "@/hooks/use-scroll-lock"
 import { expoOut } from "@/lib/ease"
-import { useGlobalStore } from "@/lib/store"
 import { cn } from "@/lib/utils"
-import CopyPromptButton from "@/pro/components/features/prompt/CopyPromptButton"
-import OpenInStudioLink from "@/pro/components/features/studio/OpenInStudioLink"
-import { components } from "@/registry"
 import type { ControlDef, ControlValue } from "@/types/controls"
 
 const MotionDocCard = motion.create(Card)
@@ -31,17 +27,24 @@ type ControlledState = Record<string, ControlValue>
 type DocComponentPreviewProps = {
     name: string
     controls?: Record<string, ControlDef> | undefined
-    studio?: string | undefined
-    prompt?: string | undefined
     codePreviewSlot: React.ReactNode
+    /* Extra header buttons, rendered before the code toggle. */
+    actionsSlot?: React.ReactNode
+    /* Replaces the default show/hide-code button when provided. */
+    codeButtonSlot?: React.ReactNode
+    /* Replaces the controls panel area when provided. */
+    footerSlot?: React.ReactNode
+    hideControls?: boolean
 }
 
 export default function DemoPreview({
     name,
     codePreviewSlot,
     controls = undefined,
-    studio = undefined,
-    prompt = undefined,
+    actionsSlot = undefined,
+    codeButtonSlot = undefined,
+    footerSlot = undefined,
+    hideControls = false,
 }: DocComponentPreviewProps) {
     const defaults = controls
         ? Object.fromEntries(Object.entries(controls).map(([key, { value }]) => [key, value]))
@@ -49,7 +52,6 @@ export default function DemoPreview({
 
     const iframeRef = useRef<ComponentRef<"iframe"> | null>(null)
     const locale = useLocale()
-    const customer = useGlobalStore((s) => s.customer)
     const isTouchScreen = useIsTouch()
     const tDemo = useTranslations("docs.demo-preview")
     const tTooltips = useTranslations("docs.tooltips")
@@ -62,8 +64,6 @@ export default function DemoPreview({
     const [animationDone, setAnimationDone] = useState(true)
 
     const ExpandIcon = isExpanded ? Minimize : Expand
-    const isPro = components.some((component) => component.name === name && component.pro)
-    const isSourceCodeDisabled = isPro && !customer?.licenseKey
 
     function updateControlledValues(key: string, value: ControlValue) {
         setControlledValues((prev) => ({ ...prev, [key]: value }))
@@ -196,38 +196,17 @@ export default function DemoPreview({
                                 </Button>
                             </Tooltip>
 
-                            <span
-                                className={cn("bg-theme-border h-5 w-px flex", {
-                                    "mr-5 ml-2": isSourceCodeDisabled,
-                                })}
-                            />
+                            <span className="bg-theme-border h-5 w-px flex" />
 
-                            {prompt && <CopyPromptButton prompt={prompt} />}
+                            {actionsSlot}
 
-                            {!isSourceCodeDisabled && (
+                            {codeButtonSlot ?? (
                                 <Button
                                     variant="secondary"
                                     className="px-4 w-25 h-full whitespace-nowrap text-xs"
                                     onClick={() => setShowCodePreview((prev) => !prev)}
                                 >
                                     {showCodePreview ? tDemo("hide-code") : tDemo("show-code")}
-                                </Button>
-                            )}
-
-                            {isSourceCodeDisabled && (
-                                <Button
-                                    variant="secondary"
-                                    asChild
-                                    className="px-4 w-25 h-full whitespace-nowrap text-xs"
-                                >
-                                    <a
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="no-underline"
-                                        href={env.NEXT_PUBLIC_POLAR_CHECKOUT_URL}
-                                    >
-                                        {tDemo("unlock-code")}
-                                    </a>
                                 </Button>
                             )}
                         </div>
@@ -259,7 +238,7 @@ export default function DemoPreview({
                                 exit={{ scale: 0.98, filter: "blur(3px)", opacity: 0 }}
                                 transition={{ duration: 0.3, ease: expoOut }}
                             >
-                                {!isSourceCodeDisabled && codePreviewSlot}
+                                {codePreviewSlot}
                             </motion.div>
                         )}
                     </AnimatePresence>
@@ -298,19 +277,15 @@ export default function DemoPreview({
                 </div>
             </MotionDocCard>
 
-            {studio ? (
-                <OpenInStudioLink shader={studio} />
-            ) : (
-                controls &&
-                !isSourceCodeDisabled && (
+            {footerSlot ??
+                (controls && !hideControls && (
                     <ControlsPanel
                         controls={controls}
                         onChange={updateControlledValues}
                         onReset={() => setControlledValues({})}
                         values={{ ...defaults, ...controlledValues }}
                     />
-                )
-            )}
+                ))}
         </>
     )
 }

@@ -15,6 +15,8 @@ import SideBarContent from "./SideBarContent"
 
 type DocSidebarProps = {
     sections: DocTree[]
+    toolsSlot?: React.ReactNode
+    renderBadge?: (node: DocTree) => React.ReactNode
 }
 
 const transition: Transition = {
@@ -32,7 +34,7 @@ const backdropVariants: Variants = {
     closed: { opacity: 0, transition },
 }
 
-export default function SideBar({ sections }: DocSidebarProps) {
+export default function SideBar({ sections, toolsSlot, renderBadge }: DocSidebarProps) {
     const sheetSidebarOpen = useGlobalStore((state) => state.sheetSidebarOpen)
     const toggleSheetSidebar = useGlobalStore((state) => state.toggleSheetSidebar)
     const pathname = usePathname()
@@ -54,6 +56,8 @@ export default function SideBar({ sections }: DocSidebarProps) {
                     </div>
                 }
                 sections={sections}
+                toolsSlot={toolsSlot}
+                renderBadge={renderBadge}
             />
 
             {/* Mobile sidebar */}
@@ -80,6 +84,8 @@ export default function SideBar({ sections }: DocSidebarProps) {
                         >
                             <SideBarContent
                                 sections={sections}
+                                toolsSlot={toolsSlot}
+                                renderBadge={renderBadge}
                                 className="xs:h-[calc(100vh-2rem)] h-screen xs:rounded-xl xs:border overflow-y-auto"
                                 topBarSlot={
                                     <div className="flex p-4 h-nav-h border-b border-dashed items-center justify-between">

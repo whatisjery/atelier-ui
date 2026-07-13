@@ -9,17 +9,14 @@ const OUTPUT_DIR = path.join(process.cwd(), "public/registry")
 async function buildRegistry() {
     await mkdir(OUTPUT_DIR, { recursive: true })
 
-    const freeComponents = components.filter((component) => !component.pro)
-
     const index = components.map((component) => ({
         name: component.name,
         description: component.description,
-        pro: component.pro ?? false,
     }))
 
     await writeFile(path.join(OUTPUT_DIR, "index.json"), JSON.stringify(index, null, 2), "utf-8")
 
-    for (const entry of freeComponents) {
+    for (const entry of components) {
         const component = resolveTransitiveDependencies(entry.name)
 
         const files = await Promise.all(

@@ -2,28 +2,18 @@ import fs from "node:fs"
 import path from "node:path"
 import { describe, expect, it } from "vitest"
 import { resolveTransitiveDependencies } from "@/lib/resolve-dependencies"
-import { proOverlay } from "@/pro/lib/pro-overlay"
-import { collages } from "@/registry/collage/index"
+import { resolveOverlayPath } from "@/lib/roots"
 import { demos } from "@/registry/demos/index"
 import { components } from "@/registry/index"
 
-const BASE_DIR = path.join(process.cwd(), "src/registry/base")
-const DEMOS_DIR = path.join(process.cwd(), "src/registry/demos")
-const COLLAGE_DIR = path.join(process.cwd(), "src/registry/collage")
-const PRO_CONTENT_DIR = path.join(process.cwd(), "src/pro/content")
+const BASE_DIR = "src/registry/base"
+const DEMOS_DIR = "src/registry/demos"
 const REGISTRY_OUTPUT = path.join(process.cwd(), "public/registry")
 
-/**
- * Pro components live in the submodule tree, mirroring the public layout.
- */
 function componentBaseDir(component: (typeof components)[number]): string {
-    const publicDir = path.join(BASE_DIR, component.name)
-    return component.pro ? proOverlay(publicDir) : publicDir
-}
-
-function demoDirCandidates(name: string): string[] {
-    const publicDir = path.join(DEMOS_DIR, name)
-    return [publicDir, proOverlay(publicDir)]
+    const dir = resolveOverlayPath(path.join(BASE_DIR, component.name))
+    if (!dir) throw new Error(`missing base folder for "${component.name}"`)
+    return dir
 }
 
 /**
@@ -53,9 +43,8 @@ describe("Cleanliness of the registry", () => {
 
         it("has all shared files on disk", () => {
             for (const sharedPath of component.shared) {
-                const publicPath = path.join(process.cwd(), "src/registry", sharedPath)
-                const exists = fs.existsSync(publicPath) || fs.existsSync(proOverlay(publicPath))
-                expect(exists, `missing shared file "${sharedPath}"`).toBe(true)
+                const resolved = resolveOverlayPath(path.join("src/registry", sharedPath))
+                expect(resolved, `missing shared file "${sharedPath}"`).toBeDefined()
             }
         })
     })
@@ -129,70 +118,22 @@ describe("Resolved installs are self-contained", () => {
     })
 })
 
-describe("Pro overlay structure", () => {
-    const proComponents = components.filter((component) => component.pro)
-
-    describe.each(proComponents)("$name", (component) => {
-        it("keeps its base files in the pro submodule only", () => {
-            expect(fs.existsSync(proOverlay(path.join(BASE_DIR, component.name)))).toBe(true)
-            expect(fs.existsSync(path.join(BASE_DIR, component.name))).toBe(false)
-        })
-
-        it("keeps its demo in the pro submodule only", () => {
-            expect(fs.existsSync(proOverlay(path.join(DEMOS_DIR, component.name)))).toBe(true)
-            expect(fs.existsSync(path.join(DEMOS_DIR, component.name))).toBe(false)
-        })
-
-        it("has a doc page in the pro content tree", () => {
-            const docs = fs
-                .readdirSync(PRO_CONTENT_DIR, { recursive: true })
-                .map(String)
-                .filter((file) => path.basename(file) === `${component.name}.mdx`)
-            expect(docs.length).toBeGreaterThan(0)
-        })
-    })
-})
-
 describe("Demo exports", () => {
     it("every demo key maps to a folder on disk", () => {
         for (const key of Object.keys(demos)) {
-            const exists = demoDirCandidates(key).some((dir) => fs.existsSync(dir))
-            expect(exists, `missing demo folder for "${key}"`).toBe(true)
+            const dir = resolveOverlayPath(path.join(DEMOS_DIR, key))
+            expect(dir, `missing demo folder for "${key}"`).toBeDefined()
         }
     })
 
     it("no orphan demo folders (every demo folder is exported)", () => {
-        const folders = [DEMOS_DIR, proOverlay(DEMOS_DIR)]
-            .filter((dir) => fs.existsSync(dir))
-            .flatMap((dir) =>
-                fs
-                    .readdirSync(dir, { withFileTypes: true })
-                    .filter((d) => d.isDirectory())
-                    .map((d) => d.name),
-            )
-
-        for (const folder of folders) {
-            expect(demos).toHaveProperty(folder)
-        }
-    })
-})
-
-describe("Collage exports", () => {
-    it("every collage key maps to a folder on disk", () => {
-        for (const key of Object.keys(collages)) {
-            const collageDir = path.join(COLLAGE_DIR, key)
-            expect(fs.existsSync(collageDir)).toBe(true)
-        }
-    })
-
-    it("no orphan collage folders (every collage folder is exported)", () => {
         const folders = fs
-            .readdirSync(COLLAGE_DIR, { withFileTypes: true })
+            .readdirSync(path.join(process.cwd(), DEMOS_DIR), { withFileTypes: true })
             .filter((d) => d.isDirectory())
             .map((d) => d.name)
 
         for (const folder of folders) {
-            expect(collages).toHaveProperty(folder)
+            expect(demos).toHaveProperty(folder)
         }
     })
 })
@@ -211,15 +152,8 @@ describe("Build output", () => {
         }
     })
 
-    it.skipIf(!buildExists)("pro components are absent from the public build output", () => {
-        for (const component of components.filter((component) => component.pro)) {
-            const jsonPath = path.join(REGISTRY_OUTPUT, `${component.name}.json`)
-            expect(fs.existsSync(jsonPath), `pro component "${component.name}" leaked`).toBe(false)
-        }
-    })
-
     it.skipIf(!buildExists)("each component has a JSON file with non-empty file content", () => {
-        for (const component of components.filter((component) => !component.pro)) {
+        for (const component of components) {
             const jsonPath = path.join(REGISTRY_OUTPUT, `${component.name}.json`)
             expect(fs.existsSync(jsonPath)).toBe(true)
 

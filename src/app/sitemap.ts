@@ -4,7 +4,7 @@ import { getAllDocs } from "@/lib/docs"
 
 const BASE_URL = "https://atelier-ui.com"
 
-const STATIC_PATHS = ["", "/docs", "/login"] as const
+const STATIC_PATHS = ["", "/docs"] as const
 
 export default function sitemap(): MetadataRoute.Sitemap {
     const staticEntries = routing.locales.flatMap((locale) =>

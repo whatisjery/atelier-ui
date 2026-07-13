@@ -10,7 +10,6 @@ import { ThemeSync } from "@/components/common/ThemeSync"
 import Toaster from "@/components/ui/Toaster"
 import { routing } from "@/i18n/routing"
 import { getCodeThemeColors } from "@/lib/shiki"
-import AuthInit from "@/pro/components/features/auth/AuthInit"
 
 const fontSans = Geist({
     variable: "--font-geist-sans",
@@ -97,7 +96,6 @@ export default async function AppLayout({ children, params }: AppLayoutProps) {
                         <Tooltip.Provider>
                             <ThemeSync />
                             <Toaster />
-                            <AuthInit />
                             {children}
                         </Tooltip.Provider>
                     </NextIntlClientProvider>

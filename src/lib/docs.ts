@@ -6,20 +6,19 @@ import { notFound } from "next/navigation"
 import { cache } from "react"
 import { visit } from "unist-util-visit"
 import { routing } from "@/i18n/routing"
-import { overlayRoots } from "@/pro/lib/pro-overlay"
+import videoManifestJson from "@/lib/video-manifest.json"
+import { overlayRoots, resolveOverlayPath } from "@/lib/roots"
 import { components } from "@/registry"
 import type { CodeFile } from "@/types/code"
 import type { DirMeta, DocNavigation, DocTree } from "@/types/docs"
 import type { TOCItem } from "@/types/toc"
 import { slugify } from "./utils"
-import videoManifestJson from "./video-manifest.json"
 
 const videoManifest: Record<string, string> = videoManifestJson
 
-const DOCS_DIR = path.join(process.cwd(), "src/content")
+const DOCS_DIR = "src/content"
 const HEADING_REGEX = /^(#{2,3})\s+(.+)$/gm
 const TEXT_EXTENSIONS = ["ts", "tsx", "js", "jsx", "css", "json"]
-const REGISTRY_DIR = path.join(process.cwd(), "src/registry")
 
 export const getDocsTree = cache(function getDocsTree(locale: string): DocTree[] {
     const trees = overlayRoots(path.join(DOCS_DIR, locale)).map((dir) => buildDocTree(dir, "/docs"))
@@ -29,11 +28,14 @@ export const getDocsTree = cache(function getDocsTree(locale: string): DocTree[]
 function mergeDocTrees(base: DocTree[], overlay: DocTree[]): DocTree[] {
     const merged = [...base]
     for (const node of overlay) {
-        const existing = merged.find((item) => item.url === node.url)
+        const index = merged.findIndex((item) => item.url === node.url)
+        const existing = index === -1 ? undefined : merged[index]
         if (existing && existing.type === "folder" && node.type === "folder") {
             existing.children = mergeDocTrees(existing.children, node.children).sort(
                 (a, b) => a.order - b.order,
             )
+        } else if (existing && existing.type === "file" && node.type === "file") {
+            merged[index] = node
         } else if (!existing) {
             merged.push(node)
         }
@@ -67,7 +69,7 @@ export function getDocNavigation(locale: string, currentSlug: string[]): DocNavi
 export function getCodesBlock(strPath: string): Record<string, CodeFile[]> {
     const codes: Record<string, CodeFile[]> = {}
 
-    for (const dirPath of overlayRoots(path.join(process.cwd(), strPath))) {
+    for (const dirPath of overlayRoots(strPath)) {
         const dirs = fs.readdirSync(dirPath, { withFileTypes: true }).filter((e) => e.isDirectory())
         for (const entry of dirs) {
             const folderPath = path.join(dirPath, entry.name)
@@ -87,9 +89,7 @@ export function getDocBySlug(
     slug: string[],
 ): { headings: TOCItem[]; rawMarkdown: string } {
     const relPath = path.join(locale, `${slug.join("/")}.mdx`)
-    const filePath = overlayRoots(DOCS_DIR)
-        .map((root) => path.join(root, relPath))
-        .find((candidate) => fs.existsSync(candidate))
+    const filePath = resolveOverlayPath(path.join(DOCS_DIR, relPath))
     if (!filePath) notFound()
     const fileContent = fs.readFileSync(filePath, "utf-8")
     const { content: rawMarkdown } = matter(fileContent)
@@ -145,7 +145,6 @@ function buildFileNode(fullPath: string, urlPath: string, item: string): DocTree
     const slug = item.replace(".mdx", "")
     const fileContents = fs.readFileSync(fullPath, "utf-8")
     const { data } = matter(fileContents)
-    const isPro = components.some((component) => component.name === slug && component.pro)
     const { createdAt, updatedAt } = data
 
     return {
@@ -159,7 +158,7 @@ function buildFileNode(fullPath: string, urlPath: string, item: string): DocTree
         tags: data.tags,
         createdAt: createdAt ?? undefined,
         updatedAt: updatedAt ?? undefined,
-        pro: isPro,
+        tag: data.tag,
         preview: videoManifest[slug],
     }
 }
@@ -208,7 +207,8 @@ export const getComponentSnippets = cache(function getComponentSnippets(): Recor
         const shared = component.shared
             .filter((dep) => TEXT_EXTENSIONS.includes(path.extname(dep).slice(1)))
             .map((dep) => {
-                const fullPath = path.join(REGISTRY_DIR, dep)
+                const fullPath = resolveOverlayPath(path.join("src/registry", dep))
+                if (!fullPath) throw new Error(`missing shared registry file "${dep}"`)
                 const file = path.basename(dep)
                 return {
                     content: fs.readFileSync(fullPath, "utf-8"),

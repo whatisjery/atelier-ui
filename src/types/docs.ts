@@ -29,7 +29,7 @@ export type DocTree = {
     tags?: string[]
     createdAt?: string
     updatedAt?: string
-    pro?: boolean
+    tag?: string
     nav?: boolean
     display?: SectionDisplay
     preview?: string

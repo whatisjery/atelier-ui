@@ -21,16 +21,11 @@
         "demo-preview": {
             "hide-code": "Hide Code",
             "show-code": "Show Code",
-            "unlock-code": "Unlock Code",
-            "copy-prompt": "Copy Prompt",
             "tap-to-preview": "Tap to preview",
-            "click-to-preview": "Click to preview",
-            "edit-in-studio": "Edit in Shader Studio"
+            "click-to-preview": "Click to preview"
         },
         "sidebar": {
             "browse-catalog": "Browse Catalog",
-            "shader-studio": "Shader Studio",
-            "collage": "Collage",
             "documentation": "Documentation"
         },
         "catalog": {
@@ -39,7 +34,6 @@
             "clear-filters": "Clear filters"
         }
     },
-
     "footer": {
         "design-and-built-by": "Designed & Built by <name></name>",
         "pages": "Pages",
@@ -50,83 +44,20 @@
         "components": "Components",
         "contribute": "Contribute"
     },
-
     "common": {
         "search": "Search...",
         "copied": "Copied",
         "read-the-docs": "Docs",
         "catalog": "Catalog",
-        "shader-studio": "Shader Studio",
         "search-empty": "Start typing to search",
         "search-results": "{count, plural, =0 {No entries found} one {# entry found} other {# entries found}}",
         "sign-in": "Sign in",
         "go-back": "Go back",
         "support": "Support",
-        "go-pro": "Get pro access",
         "try-again": "Try again"
     },
-
     "metadata": {
         "title": "Atelier UI — Handcrafted React Animations & UI Components",
         "description": "Atelier UI is a growing collection of quality web animations built with React, TypeScript, Tailwind CSS, and Motion and React Three Fiber."
-    },
-
-    "auth": {
-        "login": {
-            "magic-link-sent": "Login link sent. Check your inbox",
-            "intro": "If you already have a license, we'll email you a secure link to sign in.",
-            "sending-link": "Sending the link...",
-            "submit": "Send login link",
-            "need-pro": "Need pro access?",
-            "buy-license": "Buy a license",
-            "errors": {
-                "no-license": "No license is linked to this account. Sign in with the email you used at purchase.",
-                "unknown": "Something went wrong. Please try again."
-            }
-        },
-        "success": {
-            "title": "Thank you for your support! ♥️",
-            "subtitle": "You now have access to everything on atelier, forever.",
-            "installation-guide": "Installation Guide",
-            "footer-note": "Add the key to your .env.local file to access pro components via CLI."
-        },
-        "error": {
-            "title": "Something went wrong",
-            "email-failed": "The link you used to access the page is invalid or expired, try again.",
-            "payment-failed": "We couldn't verify your purchase. Try signing in from your account.",
-            "no-license": "No license found for that email. Make sure to sign in with the email you used at purchase.",
-            "help": "If the problem persists, <link>send us an email</link> and include the address you used at purchase."
-        },
-        "guest-dropdown": {
-            "welcome": "Welcome!",
-            "intro": "Sign in to access pro components and get your license key."
-        },
-        "account-dropdown": {
-            "signed-in-as": "Signed in as:",
-            "license-active": "Pro license active",
-            "license-help": "Copy and add to your .env file to install pro components.",
-            "get-license": "Get a license",
-            "sign-out": "Sign out"
-        }
-    },
-
-    "studio": {
-        "export": "Export component",
-        "export-description": "Add {shader} to your project",
-        "pro-badge": "Pro"
-    },
-
-    "pro": {
-        "license-helper": {
-            "title": "License key",
-            "description": "Only required for pro components: <link>see step 3</link>.",
-            "sign-in-prompt": "Sign in to view your license key."
-        },
-        "paywall": {
-            "title": "Unlock component",
-            "export-title": "Export is a Pro feature",
-            "description": "One license unlocks every pro feature for life, including the ones we haven't built yet.",
-            "sign-in-hint": "Already have an account?"
-        }
     }
 }
