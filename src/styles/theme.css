@@ -133,7 +133,7 @@
 
     --pattern-line: oklch(0.21 0.01 278.71);
     --pattern-grid: oklch(0.25 0.02 279.63);
-    --bg: oklch(0.14 0.01 285.45);
+    --bg: oklch(0.16 0.01 285.12);
     --transparent: oklch(0 0 0 / 0);
     --backdrop: oklch(0.17 0.01 285.25 / 0.89);
 }

@@ -20,7 +20,7 @@ export default function LandingRibbon({ className, items }: LandingRibbonProps) 
     return (
         <div
             className={cn(
-                "w-full h-ribbon-h relative z-10 bg-accent-1 dark:bg-accent-4 text-white border-b text-[0.7rem] uppercase tracking-widest",
+                "w-full h-ribbon-h relative z-10 bg-accent-1 dark:text-accent-5 dark:bg-accent-1 text-white border-b text-[0.7rem] uppercase tracking-widest",
                 className,
             )}
         >
