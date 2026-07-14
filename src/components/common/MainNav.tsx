@@ -1,5 +1,6 @@
 "use client"
 
+import { useLenis } from "lenis/react"
 import { ArrowUpRight, Menu, Search } from "lucide-react"
 import { useTranslations } from "next-intl"
 import Brand from "@/components/common/Brand"
@@ -31,6 +32,7 @@ export default function MainNav({ className, navSlot, endSlot }: MainNavProps) {
     const toggleSheetSidebar = useGlobalStore((state) => state.toggleSheetSidebar)
     const tCommon = useTranslations("common")
     const pathname = usePathname()
+    const lenis = useLenis()
 
     return (
         <header className="w-full mx-auto bg-bg/99 sticky top-0 border-b z-10 left-0">
@@ -73,6 +75,18 @@ export default function MainNav({ className, navSlot, endSlot }: MainNavProps) {
                             ))}
 
                             {navSlot}
+
+                            <Link
+                                href="/#pricing"
+                                className="hover:text-accent-1 flex items-center"
+                                onClick={(e) => {
+                                    if (pathname !== "/") return
+                                    e.preventDefault()
+                                    lenis?.scrollTo("#pricing")
+                                }}
+                            >
+                                {tCommon("pricing")}
+                            </Link>
 
                             <Link
                                 href={REPO_URL}

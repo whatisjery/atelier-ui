@@ -21,6 +21,7 @@ import ScrollingMarquee from "@/components/ui/ScrollingMarquee"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { Link } from "@/i18n/navigation"
 import { DEFAULT_PIXEL_SIZE, REPO_URL } from "@/lib/constants"
+import { cn } from "@/lib/utils"
 import { SmoothScroll } from "@/registry/base/smooth-scroll/smooth-scroll"
 import type { DocTree } from "@/types/docs"
 import LandingClipReveal from "./LandingClipReveal"
@@ -105,7 +106,7 @@ export default function PageLanding({
         <SmoothScroll options={{ lerp: 0.11, smoothWheel: !isMobile, syncTouch: false }}>
             <LandingPreloader isLoaded={!showLoader} />
 
-            <LandingRibbon items={newDocs} />
+            {newDocs.length > 0 && <LandingRibbon items={newDocs} />}
 
             <MainNav className="max-w-[calc(var(--spacing-landing-w)+100px)] mx-auto" />
 
@@ -115,10 +116,17 @@ export default function PageLanding({
             />
 
             <main className="w-full max-w-landing-w mx-auto relative sm:px-3">
-                <section className="sm:-mt-nav-h" ref={heroSectionRef}>
+                <section
+                    ref={heroSectionRef}
+                    className={cn({
+                        "sm:-mt-nav-h": newDocs.length === 0,
+                        "sm:-mt-[calc(var(--spacing-nav-h)+var(--spacing-ribbon-h))]":
+                            newDocs.length > 0,
+                    })}
+                >
                     <motion.div
                         style={{ y: heroY }}
-                        className="max-sm:transform-none! flex flex-col items-center justify-center h-fit max-sm:-mb-50 sm:h-210 px-5 pt-10 sm:pt-130 relative"
+                        className="max-sm:transform-none! flex flex-col items-center justify-center h-fit max-sm:-mb-50 sm:h-210 px-5 pt-10 sm:pt-140 relative"
                     >
                         <h1 className="flex flex-col items-center justify-center text-4xl xxs:text-5xl sm:text-6xl lg:text-7xl font-light mb-2">
                             <span className="flex items-center leading-[1.1em] sm:flex-row flex-col">

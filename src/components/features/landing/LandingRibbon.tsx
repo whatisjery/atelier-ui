@@ -1,6 +1,5 @@
-import { ArrowRight } from "lucide-react"
+import { useTranslations } from "next-intl"
 import React from "react"
-import Badge from "@/components/ui/Badge"
 import ScrollingMarquee from "@/components/ui/ScrollingMarquee"
 import { Link } from "@/i18n/navigation"
 import { cn } from "@/lib/utils"
@@ -16,12 +15,12 @@ type LandingRibbonProps = {
 }
 
 export default function LandingRibbon({ className, items }: LandingRibbonProps) {
-    if (items.length === 0) return null
+    const tCommon = useTranslations("common")
 
     return (
         <div
             className={cn(
-                "w-full py-2.5 pt-3 pattern-line relative border-b text-[0.7rem] uppercase tracking-widest",
+                "w-full h-ribbon-h relative z-10 bg-accent-1 dark:bg-accent-4 text-white border-b text-[0.7rem] uppercase tracking-widest",
                 className,
             )}
         >
@@ -29,13 +28,17 @@ export default function LandingRibbon({ className, items }: LandingRibbonProps) 
                 <span className="flex items-center gap-x-6 pr-6 whitespace-nowrap">
                     {items.map((item) => (
                         <React.Fragment key={item.url}>
-                            <span className="flex items-center gap-x-2">
-                                <Badge title="new" variant="neutral" aria-hidden="true" />
+                            <span className="flex items-center">
+                                <span className="flex items-center before:content-['('] after:content-[')'] mr-2">
+                                    {tCommon("new")}
+                                </span>
                                 <Link href={item.url} tabIndex={-1} className="hover:underline">
                                     {item.title}
                                 </Link>
                             </span>
-                            <ArrowRight className="size-3" />
+                            <span className="opacity-50 text-[0.85rem] -mb-1 font-medium font-mono">
+                                ***
+                            </span>
                         </React.Fragment>
                     ))}
                 </span>

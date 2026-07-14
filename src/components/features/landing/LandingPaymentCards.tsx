@@ -133,7 +133,10 @@ function PlanCard({ plan, checkoutHref }: PlanCardProps) {
 
 export default function LandingPaymentCards({ checkoutHref }: LandingPaymentCardsProps) {
     return (
-        <section className="flex flex-col items-center justify-center max-w-5xl w-full mb-80 max-sm:mt-20 min-lg:px-5">
+        <section
+            id="pricing"
+            className="flex flex-col items-center justify-center max-w-5xl w-full mb-80 max-sm:mt-20 min-lg:px-5 scroll-mt-nav-h"
+        >
             <IconPxRobot className="mb-8 size-20 a-float" />
             <h2 className="flex flex-col items-center text-center text-4xl xxs:text-5xl sm:text-6xl lg:text-7xl font-light">
                 <span className="font-serif italic">AI brings the speed</span>
