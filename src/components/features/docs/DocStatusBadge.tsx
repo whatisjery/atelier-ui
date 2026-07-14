@@ -2,22 +2,7 @@
 
 import { useEffect, useState } from "react"
 import Badge from "@/components/ui/Badge"
-import { GIT_DAYS_THRESHOLD } from "@/lib/constants"
-
-const MS_PER_DAY = 24 * 60 * 60 * 1000
-
-export function getDocStatus(createdAt?: string) {
-    if (!createdAt) return null
-
-    const now = Date.now()
-    const created = new Date(createdAt).getTime()
-
-    if ((now - created) / MS_PER_DAY < GIT_DAYS_THRESHOLD) {
-        return "new"
-    }
-
-    return null
-}
+import { getDocStatus } from "@/lib/utils"
 
 type DocStatusBadgeProps = {
     createdAt?: string

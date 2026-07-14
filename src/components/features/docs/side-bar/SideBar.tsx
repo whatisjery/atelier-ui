@@ -11,11 +11,11 @@ import { VERSION } from "@/lib/constants"
 import { expoOut } from "@/lib/ease"
 import { useGlobalStore } from "@/lib/store"
 import type { DocTree } from "@/types/docs"
-import SideBarContent from "./SideBarContent"
+import SideBarContent, { type SideBarTool } from "./SideBarContent"
 
 type DocSidebarProps = {
     sections: DocTree[]
-    toolsSlot?: React.ReactNode
+    tools?: SideBarTool[]
     renderBadge?: (node: DocTree) => React.ReactNode
 }
 
@@ -34,7 +34,7 @@ const backdropVariants: Variants = {
     closed: { opacity: 0, transition },
 }
 
-export default function SideBar({ sections, toolsSlot, renderBadge }: DocSidebarProps) {
+export default function SideBar({ sections, tools, renderBadge }: DocSidebarProps) {
     const sheetSidebarOpen = useGlobalStore((state) => state.sheetSidebarOpen)
     const toggleSheetSidebar = useGlobalStore((state) => state.toggleSheetSidebar)
     const pathname = usePathname()
@@ -56,7 +56,7 @@ export default function SideBar({ sections, toolsSlot, renderBadge }: DocSidebar
                     </div>
                 }
                 sections={sections}
-                toolsSlot={toolsSlot}
+                tools={tools}
                 renderBadge={renderBadge}
             />
 
@@ -84,7 +84,7 @@ export default function SideBar({ sections, toolsSlot, renderBadge }: DocSidebar
                         >
                             <SideBarContent
                                 sections={sections}
-                                toolsSlot={toolsSlot}
+                                tools={tools}
                                 renderBadge={renderBadge}
                                 className="xs:h-[calc(100vh-2rem)] h-screen xs:rounded-xl xs:border overflow-y-auto"
                                 topBarSlot={

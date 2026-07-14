@@ -1,6 +1,6 @@
 import { setRequestLocale } from "next-intl/server"
 import PageLanding from "@/components/features/landing/_PageLanding"
-import { getSectionCategories } from "@/lib/docs"
+import { getNewDocs, getSectionCategories } from "@/lib/docs"
 
 const SHOWCASE_COUNT = 6
 
@@ -25,5 +25,5 @@ export default async function Page({ params }: PageProps) {
         (_, i) => components[i % components.length],
     )
 
-    return <PageLanding showcaseComponents={showcaseComponents} />
+    return <PageLanding showcaseComponents={showcaseComponents} newDocs={getNewDocs(locale)} />
 }

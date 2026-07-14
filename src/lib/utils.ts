@@ -1,6 +1,7 @@
 import { type ClassValue, clsx } from "clsx"
 import { icons, type LucideIcon } from "lucide-react"
 import { twMerge } from "tailwind-merge"
+import { GIT_DAYS_THRESHOLD } from "@/lib/constants"
 
 export function cn(...inputs: ClassValue[]) {
     return twMerge(clsx(inputs))
@@ -29,4 +30,19 @@ export function getErrorMessage(error: unknown): string {
 
 export function slugify(text: string) {
     return text.trim().toLowerCase().replace(/\s+/g, "-") ?? ""
+}
+
+const MS_PER_DAY = 24 * 60 * 60 * 1000
+
+export function getDocStatus(createdAt?: string) {
+    if (!createdAt) return null
+
+    const now = Date.now()
+    const created = new Date(createdAt).getTime()
+
+    if ((now - created) / MS_PER_DAY < GIT_DAYS_THRESHOLD) {
+        return "new"
+    }
+
+    return null
 }

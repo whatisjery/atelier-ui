@@ -19,7 +19,8 @@ const variantMap = {
     primary: "bg-bg text-accent-1 border hover:text-accent-3",
     secondary:
         "text-theme-fg hover:bg-theme-bg/70 bg-theme-bg border border-accent-1 dark:border-theme-bg",
-    tertiary: "hover:bg-accent-5 border border-transparent hover:border-theme-border",
+    tertiary:
+        "hover:bg-accent-5 border border-transparent hover:border-theme-border aria-expanded:bg-accent-5 aria-expanded:border-theme-border",
     dashed: "border-dashed hover:bg-accent-5 border-accent-1 border dark:border-accent-2/70 bg-bg",
     ghost: "bg-transparent hover:text-accent-3 border border-transparent",
 } as const

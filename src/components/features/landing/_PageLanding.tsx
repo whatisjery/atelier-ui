@@ -28,6 +28,7 @@ import LandingGridScroll from "./LandingGridScroll"
 import LandingPaymentCards from "./LandingPaymentCards"
 import LandingPreloader from "./LandingPreloader"
 import LandingPreview from "./LandingPreview"
+import LandingRibbon from "./LandingRibbon"
 
 const SIZE_MULTIPLIER = 2.7 as const
 
@@ -65,12 +66,14 @@ const MotionCard = motion.create(Card)
 
 type PageLadingProps = {
     showcaseComponents: DocTree[]
+    newDocs?: DocTree[]
     ctaSlot?: React.ReactNode
     checkoutHref?: string
 }
 
 export default function PageLanding({
     showcaseComponents,
+    newDocs = [],
     ctaSlot,
     checkoutHref,
 }: PageLadingProps) {
@@ -101,6 +104,8 @@ export default function PageLanding({
     return (
         <SmoothScroll options={{ lerp: 0.11, smoothWheel: !isMobile, syncTouch: false }}>
             <LandingPreloader isLoaded={!showLoader} />
+
+            <LandingRibbon items={newDocs} />
 
             <MainNav className="max-w-[calc(var(--spacing-landing-w)+100px)] mx-auto" />
 
@@ -140,7 +145,7 @@ export default function PageLanding({
                             </span>
                         </h1>
 
-                        <p className="max-w-2xl text-center font-medium my-2">
+                        <p className="max-w-2xl text-center my-2 text-lg">
                             {tMetadata("description")}
                         </p>
 

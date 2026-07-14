@@ -13,11 +13,18 @@ import DocStatusBadge from "../DocStatusBadge"
 
 type RenderBadge = (node: DocTree) => React.ReactNode
 
+export type SideBarTool = {
+    href: string
+    label: string
+    icon?: React.ReactNode
+    leftSlot?: React.ReactNode
+}
+
 type SideBarContentProps = {
     className?: string
     sections: DocTree[]
     topBarSlot?: React.ReactNode
-    toolsSlot?: React.ReactNode
+    tools?: SideBarTool[]
     renderBadge?: RenderBadge
 }
 
@@ -27,6 +34,18 @@ type NodeProps = {
     renderBadge: RenderBadge
     closedKeys: string[]
     toggle: (key: string) => void
+}
+
+function matchesPath(pathname: string, href: string) {
+    return pathname === href || pathname.startsWith(`${href}/`)
+}
+
+function findActiveHref(pathname: string, tools: SideBarTool[]) {
+    return tools.reduce<string | null>((best, { href }) => {
+        if (!matchesPath(pathname, href)) return best
+        if (best !== null && href.length <= best.length) return best
+        return href
+    }, null)
 }
 
 function defaultBadge(node: DocTree) {
@@ -90,12 +109,22 @@ export default function SideBarContent({
     className,
     sections,
     topBarSlot,
-    toolsSlot,
+    tools = [],
     renderBadge = defaultBadge,
 }: SideBarContentProps) {
     const pathname = usePathname()
     const [closedKeys, setClosedKeys] = useState<string[]>([])
     const tSidebar = useTranslations("docs.sidebar")
+
+    const allTools: SideBarTool[] = [
+        {
+            href: "/catalog",
+            label: tSidebar("browse-catalog"),
+            icon: <BookOpen strokeWidth={1.5} className="size-5" />,
+        },
+        ...tools,
+    ]
+    const activeHref = findActiveHref(pathname, allTools)
 
     const toggle = (key: string) => {
         setClosedKeys((prev) => {
@@ -149,16 +178,15 @@ export default function SideBarContent({
                             <section className="mb-6">
                                 <h2 className="sr-only">tools</h2>
                                 <ul>
-                                    <ListItem
-                                        sideLine={false}
-                                        activeItem={pathname.startsWith("/catalog")}
-                                        linkItem={{
-                                            href: "/catalog",
-                                            label: tSidebar("browse-catalog"),
-                                            icon: <BookOpen strokeWidth={1.5} className="size-5" />,
-                                        }}
-                                    />
-                                    {toolsSlot}
+                                    {allTools.map(({ href, label, icon, leftSlot }) => (
+                                        <ListItem
+                                            key={href}
+                                            sideLine={false}
+                                            activeItem={href === activeHref}
+                                            leftSlot={leftSlot}
+                                            linkItem={{ href, label, icon }}
+                                        />
+                                    ))}
                                 </ul>
                             </section>
 

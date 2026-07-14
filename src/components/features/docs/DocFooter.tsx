@@ -36,7 +36,7 @@ export default function DocFooter({ className }: DocFooterProps) {
             </nav>
 
             <div className="flex items-center gap-x-1">
-                <ThemeToggle key="theme" />
+                <ThemeToggle key="theme" side="top" />
 
                 <Button variant="tertiary" size="icon" asChild>
                     <a

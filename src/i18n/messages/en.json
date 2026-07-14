@@ -54,10 +54,15 @@
         "sign-in": "Sign in",
         "go-back": "Go back",
         "support": "Support",
-        "try-again": "Try again"
+        "try-again": "Try again",
+        "theme": {
+            "system": "System",
+            "light": "Light",
+            "dark": "Dark"
+        }
     },
     "metadata": {
         "title": "Atelier UI — Handcrafted React Animations & UI Components",
-        "description": "Atelier UI is a growing collection of quality web animations built with React, TypeScript, Tailwind CSS, and Motion and React Three Fiber."
+        "description": "Atelier UI is a growing collection of quality web animations and creative tools, built with React, TypeScript, Tailwind CSS, Motion, and React Three Fiber."
     }
 }

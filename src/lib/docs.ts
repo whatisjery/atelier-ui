@@ -6,13 +6,13 @@ import { notFound } from "next/navigation"
 import { cache } from "react"
 import { visit } from "unist-util-visit"
 import { routing } from "@/i18n/routing"
-import videoManifestJson from "@/lib/video-manifest.json"
 import { overlayRoots, resolveOverlayPath } from "@/lib/roots"
+import videoManifestJson from "@/lib/video-manifest.json"
 import { components } from "@/registry"
 import type { CodeFile } from "@/types/code"
 import type { DirMeta, DocNavigation, DocTree } from "@/types/docs"
 import type { TOCItem } from "@/types/toc"
-import { slugify } from "./utils"
+import { getDocStatus, slugify } from "./utils"
 
 const videoManifest: Record<string, string> = videoManifestJson
 
@@ -177,6 +177,15 @@ function buildDocTree(dirPath: string, urlPath: string): DocTree[] {
         }
     }
     return result.sort((a, b) => a.order - b.order)
+}
+
+export function getNewDocs(locale: string): DocTree[] {
+    const flatten = (nodes: DocTree[]): DocTree[] =>
+        nodes.flatMap((node) => (node.type === "file" ? [node] : flatten(node.children)))
+
+    return flatten(getDocsTree(locale))
+        .filter((node) => getDocStatus(node.createdAt) === "new")
+        .sort((a, b) => new Date(b.createdAt ?? 0).getTime() - new Date(a.createdAt ?? 0).getTime())
 }
 
 export function getSection(locale: string, slug: string): DocTree | undefined {

@@ -117,7 +117,7 @@ export default function Footer() {
                             </small>
 
                             <div className="flex items-center">
-                                <ThemeToggle key="theme" />
+                                <ThemeToggle key="theme" side="top" />
 
                                 <Button variant="tertiary" size="icon" asChild>
                                     <a

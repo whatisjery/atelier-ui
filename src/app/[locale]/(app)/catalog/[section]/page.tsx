@@ -41,9 +41,7 @@ export default async function CatalogPage({ params }: PageProps) {
     const folder = getSection(locale, section)
     if (!folder) notFound()
 
-    const catalogItems = getSectionCategories(locale, section).filter(
-        (item) => !item.url.endsWith("/primitive"),
-    )
+    const catalogItems = getSectionCategories(locale, section)
     const facetByTag = folder.children.every((child) => child.type === "file")
 
     return (

@@ -1,6 +1,6 @@
 import { afterAll, beforeAll, describe, expect, it, vi } from "vitest"
-import { getDocStatus } from "@/components/features/docs/DocStatusBadge"
 import { GIT_DAYS_THRESHOLD } from "@/lib/constants"
+import { getDocStatus } from "@/lib/utils"
 
 const MS_PER_DAY = 24 * 60 * 60 * 1000
 const NOW = new Date("2026-05-28T00:00:00Z")

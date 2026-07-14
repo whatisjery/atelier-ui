@@ -45,9 +45,12 @@
     --color-backdrop: var(--backdrop);
     --color-ring: var(--ring);
     --color-link: var(--link);
-    --color-error-bg: var(--danger-bg);
-    --color-error-fg: var(--danger-fg);
-    --color-error-border: var(--danger-border);
+    --color-danger-bg: var(--danger-bg);
+    --color-danger-fg: var(--danger-fg);
+    --color-danger-border: var(--danger-border);
+    --color-warning-bg: var(--warning-bg);
+    --color-warning-fg: var(--warning-fg);
+    --color-warning-border: var(--warning-border);
 
     --font-sans: var(--font-geist-sans);
     --font-serif: var(--font-instrument-serif);
@@ -83,8 +86,12 @@
     --danger-fg: oklch(0.58 0.22 27.33);
     --danger-border: oklch(0.89 0.06 20.98);
 
+    --warning-bg: oklch(0.94 0.08 90.81);
+    --warning-fg: oklch(0.47 0.09 88.88);
+    --warning-border: oklch(0.88 0.09 91.77);
+
     --pattern-grid: oklch(0.91 0 0 / 1);
-    --pattern-line: oklch(0.94 0 0);
+    --pattern-line: oklch(0.94 0 0 / 0.85);
     --bg: oklch(1 0 0);
     --transparent: oklch(1 0 0 / 0);
     --backdrop: oklch(1 0 0 / 0.92);
@@ -118,6 +125,10 @@
     --danger-bg: oklch(0.26 0.06 25.33);
     --danger-fg: oklch(0.79 0.13 20.06);
     --danger-border: oklch(0.55 0.16 25.33);
+
+    --warning-bg: oklch(0.94 0.07 90.72);
+    --warning-fg: oklch(0.45 0.08 89.23);
+    --warning-border: oklch(0 0 0);
 
     --pattern-line: oklch(0.21 0.01 278.71);
     --pattern-grid: oklch(0.25 0.02 279.63);
