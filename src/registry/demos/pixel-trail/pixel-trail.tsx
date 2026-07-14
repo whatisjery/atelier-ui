@@ -33,7 +33,6 @@ export default function PixelTrailDemo(controls: Partial<PixelTrailProps>) {
                 mode="sample"
                 imageSelector="img"
                 lightenSample={20}
-                className="pointer-events-none top-0"
                 color={resolvedTheme === "dark" ? "#FFFFFF" : "#000000"}
                 pixelSize={20}
                 trailRadius={2}
