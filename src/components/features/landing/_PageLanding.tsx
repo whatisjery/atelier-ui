@@ -20,11 +20,12 @@ import BackgroundPixelGrid from "@/components/ui/PixelGrid"
 import ScrollingMarquee from "@/components/ui/ScrollingMarquee"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { Link } from "@/i18n/navigation"
-import { DEFAULT_PIXEL_SIZE, REPO_URL, VERSION } from "@/lib/constants"
+import { DEFAULT_PIXEL_SIZE, REPO_URL } from "@/lib/constants"
 import { SmoothScroll } from "@/registry/base/smooth-scroll/smooth-scroll"
 import type { DocTree } from "@/types/docs"
 import LandingClipReveal from "./LandingClipReveal"
 import LandingGridScroll from "./LandingGridScroll"
+import LandingPaymentCards from "./LandingPaymentCards"
 import LandingPreloader from "./LandingPreloader"
 import LandingPreview from "./LandingPreview"
 
@@ -64,11 +65,15 @@ const MotionCard = motion.create(Card)
 
 type PageLadingProps = {
     showcaseComponents: DocTree[]
-    /* Replaces the default hero call-to-action (a GitHub link) when provided. */
     ctaSlot?: React.ReactNode
+    checkoutHref?: string
 }
 
-export default function PageLanding({ showcaseComponents, ctaSlot }: PageLadingProps) {
+export default function PageLanding({
+    showcaseComponents,
+    ctaSlot,
+    checkoutHref,
+}: PageLadingProps) {
     const tMetadata = useTranslations("metadata")
     const [showLoader, setShowLoader] = useState(true)
     const bottomCardRef = useRef<ComponentRef<"div">>(null)
@@ -131,7 +136,7 @@ export default function PageLanding({ showcaseComponents, ctaSlot }: PageLadingP
                                         aria-hidden="true"
                                     />
                                 ))}
-                                <span className="px-2 tracking-[-0.03em]">web animations</span>
+                                <span className="px-2 tracking-[-0.03em]">react animations</span>
                             </span>
                         </h1>
 
@@ -147,11 +152,7 @@ export default function PageLanding({ showcaseComponents, ctaSlot }: PageLadingP
                                     asChild
                                     variant="secondary"
                                 >
-                                    <a
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        href={REPO_URL}
-                                    >
+                                    <a target="_blank" rel="noopener noreferrer" href={REPO_URL}>
                                         Star on GitHub
                                         <AnimatedArrow />
                                     </a>
@@ -203,19 +204,19 @@ export default function PageLanding({ showcaseComponents, ctaSlot }: PageLadingP
 
                 <LandingGridScroll items={showcaseComponents} />
 
-                <section className="flex px-5 flex-col justify-between items-center h-220 pb-20 relative border-r border-l">
+                <div className="flex px-5 flex-col justify-between items-center relative border-r border-l">
                     <MotionCard
                         ref={bottomCardRef}
                         style={isMobile ? undefined : { y: cardY }}
-                        className="w-full max-w-5xl max-sm:-mt-30 h-75 rounded-md overflow-hidden flex flex-col justify-between"
+                        className="w-full max-w-5xl max-sm:-mt-30 h-60 rounded-md overflow-hidden flex flex-col justify-between"
                     >
                         <div className="w-full h-full relative pattern-line"></div>
-                        <div className="w-full font-medium text-sm h-15 bg-bg border-t flex items-center justify-center">
-                            {VERSION} &nbsp; Work in progress
-                        </div>
+                        <div className="w-full h-15 bg-bg border-t"></div>
                     </MotionCard>
 
-                    <div className="w-fit flex-col flex items-center justify-center">
+                    <LandingPaymentCards checkoutHref={checkoutHref} />
+
+                    <div className="w-fit flex-col flex items-center justify-center mb-20">
                         <BarCode size={170} />
                         <small className='before:content-["***"] after:content-["***"] flex text-[0.7rem] font-mono uppercase tracking-wider items-center'>
                             assembled with care
@@ -224,7 +225,7 @@ export default function PageLanding({ showcaseComponents, ctaSlot }: PageLadingP
 
                     <Border direction="vertical" className="-left-px -bottom-15 h-15" />
                     <Border direction="vertical" className="-right-px -bottom-15 h-15" />
-                </section>
+                </div>
             </main>
 
             <Footer />
