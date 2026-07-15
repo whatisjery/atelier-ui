@@ -29,9 +29,9 @@ export function ClipReveal({
     const insets = `inset(${top}% ${right}% ${bottom}% ${left}%)`
 
     return (
-        <div className={`relative overflow-hidden ${className ?? ""}`}>
+        <div className={`relative table overflow-hidden ${className ?? ""}`}>
             <motion.div
-                className="absolute inset-0"
+                className="h-full w-full"
                 initial={{ clipPath: insets }}
                 animate={{ clipPath: trigger ? "inset(0% 0% 0% 0%)" : insets }}
                 transition={{ duration, ease: [0.85, 0, 0.2, 1] }}

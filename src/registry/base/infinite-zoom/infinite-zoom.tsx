@@ -49,6 +49,7 @@ function Items({
     const offset = index / itemsCount
     const minScale = zoomAmount ** -(itemsCount - 1)
     const totalScale = zoomAmount ** itemsCount
+    const wrapperRef = useRef<ComponentRef<"div">>(null)
 
     const scale = useTransform(() => {
         const position = wrap(0, 1, progress.get() + offset)
@@ -62,6 +63,16 @@ function Items({
         return scaleValue - overflow * (1 - backgroundSpeed)
     })
 
+    const clipPath = useTransform(() => {
+        const _scale = scale.get()
+        const wrapper = wrapperRef.current
+        const item = wrapper?.firstElementChild as HTMLElement | null
+        if (!wrapper || !item || _scale <= 1) return "none"
+        const x = Math.max(0, (wrapper.offsetWidth - item.offsetWidth / _scale) / 2)
+        const y = Math.max(0, (wrapper.offsetHeight - item.offsetHeight / _scale) / 2)
+        return `inset(${y}px ${x}px)`
+    })
+
     const zIndex = useTransform(() => {
         const pos = wrap(0, 1, progress.get() + offset)
         return Math.floor((1 - pos) * 1000)
@@ -69,8 +80,9 @@ function Items({
 
     return (
         <motion.div
+            ref={wrapperRef}
             aria-hidden={isClone || undefined}
-            style={{ scale, zIndex }}
+            style={{ scale, zIndex, clipPath }}
             className="absolute inset-0 flex items-center justify-center"
         >
             {children}
@@ -111,11 +123,11 @@ export default function InfiniteZoom({
     return (
         <motion.div
             ref={containerRef}
+            className={className}
             onPan={(event, info) => {
                 event.preventDefault()
                 progress.set(progress.get() + info.delta.y * 0.001)
             }}
-            className={`${className ?? "fixed inset-0 overflow-hidden touch-none"} `}
         >
             {Array.from({ length: itemsCount }, (_, index) => (
                 <Items

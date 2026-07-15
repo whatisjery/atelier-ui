@@ -9,14 +9,18 @@ type Cell = {
     flashAt: number
 }
 
+export type ScrollMode =
+    | "viewport"
+    | { scrollLength: number; track?: never }
+    | { track: RefObject<HTMLElement | null>; scrollLength?: never }
+
 export type PixelScrollProps = {
     density?: number
     colors?: string[]
     colorRatio?: number
     randomness?: number
     direction?: "cover" | "clear" | "sweep"
-    scrollDistance?: string
-    scrollTargetRef?: RefObject<HTMLElement | null>
+    scroll?: ScrollMode
     className?: string
 }
 
@@ -43,8 +47,7 @@ export default function PixelScroll({
     colorRatio = 0.25,
     randomness = 0.4,
     direction = "cover",
-    scrollDistance,
-    scrollTargetRef,
+    scroll = { scrollLength: 2 },
     className,
 }: PixelScrollProps) {
     const [size, setSize] = useState({ width: 0, height: 0, rows: 0 })
@@ -52,11 +55,9 @@ export default function PixelScroll({
     const ownTargetRef = useRef<ComponentRef<"section">>(null)
     const cols = Math.min(density, MAX_DENSITY)
 
-    const pinTarget = scrollTargetRef ?? (scrollDistance ? ownTargetRef : null)
-
     const { scrollYProgress } = useScroll({
-        target: pinTarget ?? canvasRef,
-        offset: pinTarget ? ["start start", "end end"] : ["start end", "start start"],
+        target: scroll === "viewport" ? canvasRef : (scroll.track ?? ownTargetRef),
+        offset: scroll === "viewport" ? ["start end", "start start"] : ["start start", "end end"],
     })
 
     useEffect(() => {
@@ -160,10 +161,14 @@ export default function PixelScroll({
     // Canvas redraws the whole grid each scroll frame in a single loop, instead of using a div per pixel (for performance reasons)
     const canvas = <canvas ref={canvasRef} className={`block size-full ${className ?? ""}`} />
 
-    if (!scrollDistance || scrollTargetRef) return canvas
+    if (scroll === "viewport" || scroll.track) return canvas
 
     return (
-        <section ref={ownTargetRef} className="relative" style={{ height: scrollDistance }}>
+        <section
+            ref={ownTargetRef}
+            className="relative"
+            style={{ height: `${(scroll.scrollLength + 1) * 100}vh` }}
+        >
             <div className="sticky top-0 h-screen">{canvas}</div>
         </section>
     )

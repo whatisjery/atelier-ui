@@ -75,6 +75,13 @@ function paint(
     ctx.fillText(text, 0, y)
 }
 
+function textRect(el: HTMLElement) {
+    const range = document.createRange()
+    range.selectNodeContents(el)
+    const rect = range.getBoundingClientRect()
+    return rect.width > 0 && rect.height > 0 ? rect : el.getBoundingClientRect()
+}
+
 function Plane({ el, segments, material, pointer, zIndex, autoReflow, pixelRatio }: PlaneProps) {
     const mesh = useRef<Mesh>(null)
     const size = useThree((s) => s.size)
@@ -101,7 +108,7 @@ function Plane({ el, segments, material, pointer, zIndex, autoReflow, pixelRatio
             // Rect in document coords (top/left offset by current scroll at measure time),
             // so we can later derive viewport position with just `window.scrollX/Y`,
             // instead of recalculating bounds on every render
-            const rect = target.getBoundingClientRect()
+            const rect = textRect(target)
             bounds.current.x = rect.left + window.scrollX
             bounds.current.y = rect.top + window.scrollY
             bounds.current.width = rect.width
@@ -127,7 +134,7 @@ function Plane({ el, segments, material, pointer, zIndex, autoReflow, pixelRatio
         // autoReflow re-reads the rect each frame so the mesh follows parent
         // CSS transforms (e.g. parallax). One layout read per frame.
         if (autoReflow && el.current) {
-            const rect = el.current.getBoundingClientRect()
+            const rect = textRect(el.current)
             m.position.x = (rect.left + rect.width / 2 - size.width / 2) * pxToWorld
             m.position.y = -(rect.top + rect.height / 2 - size.height / 2) * pxToWorld
             m.scale.x = rect.width * pxToWorld
@@ -180,7 +187,7 @@ export function WebglText({
         // Pointer events still fire on the DOM element through opacity:0,
         // so the browser tells us when the cursor is over it.
         const onMove = (e: PointerEvent) => {
-            const { width, left, top, height } = target.getBoundingClientRect()
+            const { width, left, top, height } = textRect(target)
             const x = (e.clientX - left) / width
             const y = 1 - (e.clientY - top) / height
             pointer.uv.set(x, y)

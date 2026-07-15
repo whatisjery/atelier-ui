@@ -14,6 +14,7 @@ export type SweepExitProps = {
     insetY?: number
     trigger?: boolean
     onComplete?: () => void
+    className?: string
 }
 
 export function SweepExit({
@@ -24,6 +25,7 @@ export function SweepExit({
     insetY = 10,
     trigger = true,
     onComplete,
+    className,
 }: SweepExitProps) {
     const [scope, animate] = useAnimate()
     const configRef = useRef({ duration, onComplete })
@@ -97,7 +99,7 @@ export function SweepExit({
     }, [trigger, animate, insetY, insetX])
 
     return (
-        <div ref={scope}>
+        <div ref={scope} className={className}>
             <div className="aui-bg-overlay fixed inset-0 z-50 w-screen h-screen overflow-hidden">
                 {backgroundSlot}
             </div>

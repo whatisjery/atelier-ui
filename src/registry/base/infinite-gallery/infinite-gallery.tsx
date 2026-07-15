@@ -43,7 +43,10 @@ export function InfiniteGallery({
     inertia = 0.6,
     dragMultiplier = 3,
 }: InfiniteGalleryProps) {
-    const items = Children.toArray(children).filter(isValidElement)
+    const sourceItems = Children.toArray(children).filter(isValidElement)
+    const repeats = sourceItems.length ? Math.ceil((perView + 2) / sourceItems.length) : 0
+    const items = Array.from({ length: repeats }, () => sourceItems).flat()
+
     const containerRef = useRef<ComponentRef<"div">>(null)
     const measureRef = useRef({ containerWidth: 0, itemWidth: 0 })
     const scrollRef = useRef({ ...DEFAULT_SCROLL_STATE }).current
@@ -71,7 +74,9 @@ export function InfiniteGallery({
 
                 if (itemInView) {
                     const maxDeg = 85
-                    const rotate = itemWidth ? clamp(-maxDeg, maxDeg, (velocity / itemWidth) * 6) : 0
+                    const rotate = itemWidth
+                        ? clamp(-maxDeg, maxDeg, (velocity / itemWidth) * 6)
+                        : 0
                     const transform = `translate3d(${xPos - i * itemWidth}px, 0, 0) perspective(800px) rotateY(${rotate}deg)`
 
                     itemElement.style.transform = transform
@@ -178,8 +183,9 @@ export function InfiniteGallery({
     return (
         <div
             ref={containerRef}
+            data-lenis-prevent
             style={{ gap: `${gap}px` }}
-            className={`overflow-hidden touch-pan-y user-select-none flex ${className}`}
+            className={`overflow-hidden touch-pan-y user-select-none ${className}`}
         >
             {items.map((item, index) => (
                 <div

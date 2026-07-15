@@ -23,7 +23,6 @@ export default function PixelScrollDemo(controls: Partial<PixelScrollProps>) {
                 {...controls}
                 direction="sweep"
                 className="text-[#191d24] dark:text-[#191b21]"
-                scrollDistance="250vh"
             />
         </>
     )

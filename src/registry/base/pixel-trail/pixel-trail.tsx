@@ -224,9 +224,15 @@ export function PixelTrail({
     }, [mode, color, imageSelector, lightenSample, pixelSize, trailRadius, lifetime, fade])
 
     return (
-        <canvas
-            ref={canvasRef}
-            className={`pointer-events-none fixed inset-0 h-full w-full ${className ?? ""}`}
-        />
+        <div className={`pointer-events-none ${className ?? ""}`}>
+            <canvas
+                ref={canvasRef}
+                style={{
+                    display: "block",
+                    width: "100%",
+                    height: "100%",
+                }}
+            />
+        </div>
     )
 }

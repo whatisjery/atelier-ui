@@ -32,6 +32,7 @@ export default function PixelTrailDemo(controls: Partial<PixelTrailProps>) {
             <PixelTrail
                 mode="sample"
                 imageSelector="img"
+                className="absolute inset-0 w-full h-full"
                 lightenSample={20}
                 color={resolvedTheme === "dark" ? "#FFFFFF" : "#000000"}
                 pixelSize={20}

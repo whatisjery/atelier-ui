@@ -22,7 +22,7 @@ export default function InfiniteGalleryDemo(controls: Partial<InfiniteGalleryPro
     return (
         <div className="w-full h-full absolute flex justify-center">
             <InfiniteGallery
-                className="w-full items-center"
+                className="w-full items-center flex"
                 perView={isMobile ? 2 : 4}
                 {...controls}
             >

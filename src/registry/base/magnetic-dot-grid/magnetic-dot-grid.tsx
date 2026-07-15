@@ -228,9 +228,8 @@ export function MagneticDotGrid({
     }, [spacing])
 
     return (
-        <canvas
-            ref={canvasRef}
-            className={className ?? "absolute inset-0 touch-none w-full h-full"}
-        />
+        <div className={className}>
+            <canvas ref={canvasRef} style={{ display: "block", width: "100%", height: "100%" }} />
+        </div>
     )
 }

@@ -9,6 +9,7 @@ export type InfiniteParallaxProps = {
     autoScrollSpeed?: number
     parallaxAmount?: number
     children?: React.ReactNode
+    className?: string
 }
 
 export function InfiniteParallax({
@@ -16,6 +17,7 @@ export function InfiniteParallax({
     autoScrollSpeed = 0.02,
     parallaxAmount = 2,
     children,
+    className,
 }: InfiniteParallaxProps) {
     const offsetRef = useRef(0)
     const contentHRef = useRef(0)
@@ -70,8 +72,12 @@ export function InfiniteParallax({
     })
 
     return (
-        <div ref={containerRef} className="h-full w-full overflow-hidden">
-            <motion.div style={{ y }}>
+        <div
+            ref={containerRef}
+            style={{ position: "relative", overflow: "hidden" }}
+            className={`h-full w-full ${className ?? ""}`}
+        >
+            <motion.div style={{ y, position: "absolute", top: 0, left: 0, right: 0 }}>
                 <div ref={measureRef}>{children}</div>
                 {Array.from({ length: clones }, (_, i) => (
                     <div key={i} aria-hidden>

@@ -114,7 +114,7 @@ export function EdgeBounce({
     return (
         <div
             ref={scope}
-            className={`will-change-transform ${className ?? ""}`}
+            className={`table will-change-transform ${className ?? ""}`}
             onPointerEnter={handlePointerEnter}
         >
             {children}

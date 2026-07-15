@@ -13,7 +13,7 @@ const DATA = [
 
 export default function InfiniteParallaxDemo(controls: Partial<InfiniteZoomProps>) {
     return (
-        <InfiniteZoom className="absolute w-screen h-screen inset-0 overflow-hidden" {...controls}>
+        <InfiniteZoom className="absolute w-screen h-screen inset-0 overflow-hidden touch-none" {...controls}>
             {DATA.map((item) => {
                 return (
                     <div className="relative w-full h-full overflow-hidden" key={item}>
