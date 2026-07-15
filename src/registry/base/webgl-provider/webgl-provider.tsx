@@ -91,7 +91,19 @@ function MotionFrameloop() {
 
 function Effects() {
     const effects = effectTeleport.useItems()
-    if (effects.length === 0) return null
+    const gl = useThree((state) => state.gl)
+    const mounted = effects.length > 0
+
+    // EffectComposer sets `renderer.autoClear = false` and never restores it;
+    // without this the canvas keeps its last frame once the composer unmounts.
+    useEffect(() => {
+        if (!mounted) return
+        return () => {
+            gl.autoClear = true
+        }
+    }, [mounted, gl])
+
+    if (!mounted) return null
 
     return (
         <EffectComposer key={effects.length}>
