@@ -3,7 +3,7 @@ title: "Infinite Gallery"
 description: "Zero-dependency infinite horizontal gallery with drag/wheel input, and a 3D flip effect."
 tags: ["JS Animation", "Tailwind CSS"]
 createdAt: "2026-05-07"
-updatedAt: "2026-06-18"
+updatedAt: "2026-07-15"
 ---
 
 <DemoPreview name="infinite-gallery" controls={{
@@ -22,11 +22,18 @@ updatedAt: "2026-06-18"
 
 ## Usage
 
+Pass the items as children. Drag or scroll to move the gallery.
+
 ```tsx
-<InfiniteGallery>
-  <img src="/1.jpg" alt="" />
-  <img src="/2.jpg" alt="" />
-  <img src="/3.jpg" alt="" />
+const IMAGES = [
+    "https://picsum.photos/seed/atelier-1/1200/800",
+    "https://picsum.photos/seed/atelier-2/1200/800",
+]
+
+<InfiniteGallery className="flex py-15" perView={4}>
+    {IMAGES.map((src) => (
+        <img key={src} src={src} alt="" className="h-80 w-auto object-cover" />
+    ))}
 </InfiniteGallery>
 ```
 
@@ -36,13 +43,13 @@ updatedAt: "2026-06-18"
 
 | Name            | Type                              | Default             | Description |
 | --------------- | --------------------------------- | ------------------- | ------------------------|
-| children      | `ReactNode`                       | —                   | Items to render in the gallery.|
-| perView      | `number`                          | `4`                 | Number of items visible at once.|
-| speed         | `number`                          | `6`                 | Speed of the scroll.|
-| inertia       | `number`                          | `0.6`               | Inertia of the scroll.|
-| dragMultiplier | `number`                         | `3`                 | Multiplier applied to drag distance.|
-| gap          | `number`                          | `5`                 | Gap between items.|
-| className     | `string`                          | `undefined`         | Class for the container element.|
+| `children`      | `ReactNode`                       | —                   | Items to render in the gallery. Repeated automatically to fill the view. Required.|
+| `perView`      | `number`                          | `4`                 | Number of items visible at once.|
+| `speed`         | `number`                          | `6`                 | Speed of the scroll.|
+| `inertia`       | `number`                          | `0.6`               | Inertia of the scroll.|
+| `dragMultiplier` | `number`                         | `3`                 | Multiplier applied to drag distance.|
+| `gap`          | `number`                          | `5`                 | Gap between items.|
+| `className`     | `string`                          | —                   | Class for the container element.|
 
 ---
 

@@ -47,10 +47,15 @@ export default function RootLayout({ children }) {
 Then use it anywhere in your app:
 
 ```tsx
-<CurveMedia type="image" src="/photo.jpg" alt="A photo" className="w-full h-auto" />
+<CurveMedia
+    type="image"
+    src="https://picsum.photos/seed/atelier-1/1200/800"
+    alt=""
+    className="w-full h-auto"
+/>
 ```
 
-Works best with smooth scrolling, you can add [Smooth Scroll](/docs/components/primitive/smooth-scroll) at the root for that:
+Works best with smooth scrolling. You can add [Smooth Scroll](/docs/components/primitive/smooth-scroll) at the root for that:
 
 ```tsx title="Root layout"
 import { SmoothScroll } from "@/components/smooth-scroll";
@@ -66,14 +71,14 @@ export default function RootLayout({ children }) {
 
 | Name         | Type                 | Default   | Description                                                                     |
 | ------------ | -------------------- | --------- | ------------------------------------------------------------------------------- |
-| type         | `"image" \| "video"` | `"image"` | Render the bend on a still image or a video.                                    |
-| src          | `string`             | —         | Media source.                                                                   |
-| alt          | `string`             | —         | Image alt text. Required (and only used) when `type` is `"image"`.              |
-| amplitude    | `number`             | `0.03`    | Maximum bend intensity, applied to the smoothed scroll velocity.                |
-| aberration   | `number`             | `0.003`   | RGB channel split along the scroll axis, scaled by velocity.                    |
-| smoothing    | `number`             | `6`       | Exponential smoothing for the velocity (higher = snappier, lower = floatier).   |
-| segments     | `number`             | `32`      | Plane subdivision count. Higher = smoother curve, more vertices.                |
-| webglEnabled | `boolean`            | `true`    | When false, the WebGL plane is skipped and the plain element is rendered as-is. |
+| `type`         | `"image" \| "video"` | `"image"` | Render the bend on a still image or a video.                                    |
+| `src`          | `string`             | —         | Media source.                                                                   |
+| `alt`          | `string`             | —         | Image alt text. Required (and only used) when `type` is `"image"`.              |
+| `amplitude`    | `number`             | `0.03`    | Maximum bend intensity, applied to the smoothed scroll velocity.                |
+| `aberration`   | `number`             | `0.003`   | RGB channel split along the scroll axis, scaled by velocity.                    |
+| `smoothing`    | `number`             | `6`       | Exponential smoothing for the velocity (higher = snappier, lower = floatier).   |
+| `segments`     | `number`             | `32`      | Plane subdivision count. Higher = smoother curve, more vertices.                |
+| `webglEnabled` | `boolean`            | `true`    | When false, the WebGL plane is skipped and the plain element is rendered as-is. |
 
 It also forwards `<img>` attributes to [WebGL Image](/docs/components/primitive/webgl-image) and `<video>` attributes to [WebGL Video](/docs/components/primitive/webgl-video) depending on `type`.
 

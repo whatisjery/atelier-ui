@@ -3,7 +3,7 @@ title: "Text Bounce"
 description: "Letters bounce away from the cursor on hover and spring back into place."
 tags: ["Motion", "Tailwind CSS"]
 createdAt: "2026-05-10"
-updatedAt: "2026-06-16"
+updatedAt: "2026-07-15"
 ---
 
 <DemoPreview
@@ -28,16 +28,18 @@ updatedAt: "2026-06-16"
 
 ## Usage
 
-By default the text renders inside a `<span>`.
+Each letter drifts away from the cursor on hover, then springs back into place.
 
-```tsx title="Default"
-<TextBounce>Hover over me</TextBounce>
+```tsx
+<TextBounce>Enter your text here</TextBounce>
 ```
 
-Pass `render` to swap the wrapper for any DOM element. Your props are merged with the component's, so it stays the right semantic tag (heading, paragraph, link) while keeping the animation.
+### Choose the wrapper element
 
-```tsx title="Custom element"
-<TextBounce render={<h1 className="text-4xl font-bold" />}>Hover over me</TextBounce>
+Pass `render` to choose the wrapper element. Your props are merged with the component's, so it stays the right semantic tag while keeping the animation. Without `render` the text renders inside a `<span>`.
+
+```tsx
+<TextBounce render={<p className="text-4xl" />}>Enter your text here</TextBounce>
 ```
 
 ---

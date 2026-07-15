@@ -26,11 +26,15 @@ updatedAt: "2026-06-18"
 
 ```tsx
 <SweepExit
-  backgroundSlot={
-    <img src="/overlay.jpg" alt="" className="absolute inset-0 h-full w-full object-cover" />
-  }
+    backgroundSlot={
+        <img
+            src="https://picsum.photos/seed/atelier-1/1200/800"
+            alt=""
+            className="absolute inset-0 h-full w-full object-cover"
+        />
+    }
 >
-  <YourPage />
+    <div className="h-screen" />
 </SweepExit>
 ```
 
@@ -47,6 +51,7 @@ updatedAt: "2026-06-18"
 | `insetY` | `number` | `10` | Vertical inset at peak contraction in percent. |
 | `trigger` | `boolean` | `true` | Starts the animation when set to true. |
 | `onComplete` | `() => void` | — | Called when the animation finishes. |
+| `className` | `string` | — | Classes applied to the root element. |
 
 ---
 

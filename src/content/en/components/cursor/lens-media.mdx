@@ -1,9 +1,9 @@
 ---
 title: "Lens Media"
-description: "An SEO-friendly WebGL image or video with a cursor-following circular lens and chromatic aberration"
+description: "An SEO-friendly WebGL image or video with a cursor-following circular lens and chromatic aberration."
 tags: ["React Three Fiber", "Drei"]
 createdAt: "2026-05-31"
-updatedAt: "2026-06-19"
+updatedAt: "2026-07-15"
 ---
 
 <DemoPreview
@@ -40,10 +40,15 @@ export default function RootLayout({ children }) {
 }
 ```
 
-Then use Lens Media anywhere in your app:
+Then use it anywhere in your app:
 
 ```tsx
-<LensMedia type="image" src="/photo.jpg" alt="A photo" className="w-full h-auto" />
+<LensMedia
+    type="image"
+    src="https://picsum.photos/seed/atelier-1/1200/800"
+    alt=""
+    className="w-full h-auto"
+/>
 ```
 
 ---
@@ -52,17 +57,17 @@ Then use Lens Media anywhere in your app:
 
 | Name         | Type                 | Default   | Description                                              |
 | ------------ | -------------------- | --------- | -------------------------------------------------------- |
-| type         | `"image" \| "video"` | `"image"` | Render the lens on a still image or a video.             |
-| src          | `string`             | —         | Media source.                                            |
-| alt          | `string`             | —         | Image alt text. Required (and only used) when `type` is `"image"`. |
-| size         | `number`             | `0.12`    | Lens radius.                                             |
-| softness     | `number`             | `0.5`     | Lens edge falloff.                                       |
-| aberration   | `number`             | `0.18`    | Color spread width.                                      |
-| dispersion   | `number`             | `35`      | Color sample count.                                      |
-| refraction   | `number`             | `0.4`     | Inward pull strength.                                    |
-| smoothing    | `number`             | `7`       | Cursor damping speed.                                    |
-| segments     | `number`             | `1`       | Plane geometry subdivisions.                             |
-| webglEnabled | `boolean`            | `true`    | Toggle WebGL effect on/off.                              |
+| `type`         | `"image" \| "video"` | `"image"` | Render the lens on a still image or a video.             |
+| `src`          | `string`             | —         | Media source.                                            |
+| `alt`          | `string`             | —         | Image alt text. Required (and only used) when `type` is `"image"`. |
+| `size`         | `number`             | `0.12`    | Lens radius.                                             |
+| `softness`     | `number`             | `0.5`     | Lens edge falloff.                                       |
+| `aberration`   | `number`             | `0.18`    | Color spread width.                                      |
+| `dispersion`   | `number`             | `35`      | Color sample count.                                      |
+| `refraction`   | `number`             | `0.4`     | Inward pull strength.                                    |
+| `smoothing`    | `number`             | `7`       | Cursor damping speed.                                    |
+| `segments`     | `number`             | `1`       | Plane geometry subdivisions.                             |
+| `webglEnabled` | `boolean`            | `true`    | Toggle WebGL effect on/off.                              |
 
 It also forwards `<img>` attributes to [WebGL Image](/docs/components/primitive/webgl-image) and `<video>` attributes to [WebGL Video](/docs/components/primitive/webgl-video) depending on `type`.
 

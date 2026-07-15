@@ -21,24 +21,37 @@ updatedAt: "2026-06-16"
 
 ## Usage
 
-Each column is composable: stack as many as you want, you can change `autoScrollSpeed` and `parallaxAmount` per column, and change the direction to `reversed` to alternate their direction to obtain the desired effect.
+Stack as many columns as you want. Alternate their direction with `reversed`.
 
 ```tsx
-<div className="flex h-screen gap-2 overflow-hidden">
-  <InfiniteParallax>
-    {images.map((src) => (
-      <img key={src} src={src} alt="" className="mb-2 w-full" />
-    ))}
-  </InfiniteParallax>
-  <InfiniteParallax reversed>
-    {images.map((src) => (
-      <img key={src} src={src} alt="" className="mb-2 w-full" />
-    ))}
-  </InfiniteParallax>
+const IMAGES = [
+    "https://picsum.photos/seed/atelier-1/1200/800",
+    "https://picsum.photos/seed/atelier-2/1200/800",
+    "https://picsum.photos/seed/atelier-3/1200/800",
+]
+
+<div className="flex h-200 gap-2 overflow-hidden">
+    <InfiniteParallax>
+        {IMAGES.map((src) => (
+            <img key={src} src={src} className="mb-2 w-full" alt="" />
+        ))}
+    </InfiniteParallax>
+
+    <InfiniteParallax reversed>
+        {IMAGES.map((src) => (
+            <img key={src} src={src} className="mb-2 w-full" alt="" />
+        ))}
+    </InfiniteParallax>
+
+    <InfiniteParallax>
+        {IMAGES.map((src) => (
+            <img key={src} src={src} className="mb-2 w-full" alt="" />
+        ))}
+    </InfiniteParallax>
 </div>
 ```
 
-Works best with smooth scrolling, you can add [Smooth Scroll](/docs/components/primitive/smooth-scroll) at the root for that:
+Works best with smooth scrolling. You can add [Smooth Scroll](/docs/components/primitive/smooth-scroll) at the root for that:
 
 ```tsx title="Root layout"
 import { SmoothScroll } from "@/components/smooth-scroll";
@@ -54,10 +67,11 @@ export default function RootLayout({ children }) {
 
 | Name         | Type                              | Default     | Description |
 | ------------ | --------------------------------- | ----------- | ----------- |
-| children     | `ReactNode`                       | —           | Items to render in the column. |
-| reversed     | `boolean`                         | `false`     | Reverse the column's scroll direction. |
-| autoScrollSpeed | `number`                       | `0.02`      | Auto-scroll speed. `0` to disable. |
-| parallaxAmount | `number`                        | `2`         | Parallax intensity applied while scrolling. |
+| `children`     | `ReactNode`                       | —           | Items to render in the column. |
+| `reversed`     | `boolean`                         | `false`     | Reverse the column's scroll direction. |
+| `autoScrollSpeed` | `number`                       | `0.02`      | Auto-scroll speed. `0` to disable. |
+| `parallaxAmount` | `number`                        | `2`         | Parallax intensity applied while scrolling. |
+| `className`  | `string`                          | —           | Extra classes applied to the column container. |
 
 ---
 

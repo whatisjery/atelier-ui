@@ -1,9 +1,9 @@
 ---
 title: "Image Trail"
-description: "Cursor trail effect that spawns images along it's path."
+description: "Cursor trail effect that spawns images along its path."
 tags: ["Motion", "Tailwind CSS"]
 createdAt: "2026-05-07"
-updatedAt: "2026-06-18"
+updatedAt: "2026-07-15"
 ---
 
 <DemoPreview
@@ -25,11 +25,19 @@ updatedAt: "2026-06-18"
 
 ## Usage
 
+Pass the trail items as children. They spawn along the cursor path.
+
 ```tsx
+const IMAGES = [
+    "https://picsum.photos/seed/atelier-1/1200/800",
+    "https://picsum.photos/seed/atelier-2/1200/800",
+    "https://picsum.photos/seed/atelier-3/1200/800",
+]
+
 <ImageTrail>
-  <img src="/1.jpg" alt="" className="w-32" />
-  <img src="/2.jpg" alt="" className="w-32" />
-  <img src="/3.jpg" alt="" className="w-32" />
+    {IMAGES.map((src) => (
+        <img key={src} src={src} className="w-32 h-32 object-cover rounded-xl" alt="" />
+    ))}
 </ImageTrail>
 ```
 
@@ -39,10 +47,10 @@ updatedAt: "2026-06-18"
 
 | Name           | Type        | Default | Description    |
 | -------------- | ----------- | ------- | ------------- |
-| children       | `ReactNode` | —       | Items to cycle through as the cursor moves.|
-| spawnDistance  | `number`    | `76`    | Distance in pixels before spawning an item.|
-| driftAmount    | `number`    | `36`    | How far each item drifts from its spawn point in px.|
-| removeDelay    | `number`    | `1.0`   | Seconds before a spawned item is removed.|
+| `children`       | `ReactNode` | —       | Items to cycle through as the cursor moves. Required.|
+| `spawnDistance`  | `number`    | `76`    | Distance in pixels before spawning an item.|
+| `driftAmount`    | `number`    | `36`    | How far each item drifts from its spawn point in px.|
+| `removeDelay`    | `number`    | `1.0`   | Seconds before a spawned item is removed.|
 
 ---
 

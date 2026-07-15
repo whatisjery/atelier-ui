@@ -3,7 +3,7 @@ title: "Pixelated Text"
 description: "A 2D canvas-based animated pixelated SEO friendly text effect."
 tags: ["Canvas", "Tailwind CSS"]
 createdAt: "2026-05-07"
-updatedAt: "2026-06-16"
+updatedAt: "2026-07-15"
 ---
 
 <DemoPreview name="pixelated-text" controls={{
@@ -23,16 +23,18 @@ updatedAt: "2026-06-16"
 
 ## Usage
 
-By default the text renders inside a `<span>`.
+The text is redrawn as animated pixel blocks on a 2D canvas, shifting between clear and pixelated. The original text stays in the DOM for SEO and screen readers.
 
-```tsx title="Default"
-<PixelatedText>Pixelate me</PixelatedText>
+```tsx
+<PixelatedText>Enter your text here</PixelatedText>
 ```
 
-Pass `render` to swap the wrapper for any DOM element. Your props are merged with the component's, so it stays the right semantic tag (heading, paragraph, link) while keeping the animation.
+### Choose the wrapper element
 
-```tsx title="Custom element"
-<PixelatedText render={<h1 className="text-4xl font-bold" />}>Pixelate me</PixelatedText>
+Pass `render` to choose the wrapper element. Your props are merged with the component's, so it stays the right semantic tag while keeping the animation. Without `render` the text renders inside a `<span>`.
+
+```tsx
+<PixelatedText render={<p className="text-4xl" />}>Enter your text here</PixelatedText>
 ```
 
 ---

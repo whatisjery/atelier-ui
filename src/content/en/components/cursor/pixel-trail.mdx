@@ -3,7 +3,7 @@ title: "Pixel Trail"
 description: "A 2D canvas-based pixelated cursor trail that can sample colors from images."
 tags: ["Canvas", "Tailwind CSS"]
 createdAt: "2026-05-07"
-updatedAt: "2026-06-16"
+updatedAt: "2026-07-15"
 ---
 
 <DemoPreview
@@ -15,7 +15,7 @@ updatedAt: "2026-06-16"
         pixelSize: { type: "slider", value: 20, min: 1, max: 50, step: 1 },
         trailRadius: { type: "slider", value: 2, min: 0, max: 10, step: 1 },
         lifetime: { type: "slider", value: 1, min: 0, max: 10, step: 1 },
-        fade: { type: "slider", value: 0, min: 0, max: 1, step: 0.1 },
+        fade: { type: "slider", value: 0.5, min: 0, max: 1, step: 0.1 },
     }}
 />
 
@@ -29,9 +29,23 @@ updatedAt: "2026-06-16"
 
 ## Usage
 
+The trail follows the cursor. In sample mode it picks its colors from the images under it.
+
 ```tsx
-<PixelTrail />
+<PixelTrail
+    className="w-screen h-screen inset-0 fixed"
+    mode="sample"
+    imageSelector="img"
+/>
+<img
+    crossOrigin="anonymous"
+    className="my-target"
+    src="https://picsum.photos/seed/atelier-1/1200/800"
+    alt=""
+/>
 ```
+
+Cross-origin images need `crossOrigin` to be sampled.
 
 ---
 
@@ -39,18 +53,18 @@ updatedAt: "2026-06-16"
 
 | Name            | Type                  | Default                      | Description   |
 | --------------- | --------------------- | ---------------------------- | -------------------------------------------------- |
-| mode           | `"color" \| "sample"` | `"color"`                    | Solid color trail or sample colors from images. |
-| color          | `string`              | `"#000000"`                  | Trail color. Fallback when sampling misses.  |
-| imageSelector  | `string`              | `"img"`                      | CSS selector for images to sample. |
-| lighten        | `number`              | `20`                         | Brightness boost on sampled colors (`0`–`255`). |
-| pixelSize      | `number`              | `20`                         | Size of each pixel square in px. |
-| trailRadius    | `number`              | `2`                          | Brush radius in grid cells. `0` for single pixel. |
-| lifetime       | `number`              | `1`                          | Max pixel lifetime in seconds. |
-| fade           | `number`              | `0.5`                        | Fade-out duration in seconds. `0` to disable. |
-| showGrid       | `boolean`             | `false`                      | Show a grid overlay. |
-| gridColor      | `string`              | `"rgba(255, 255, 255, 0.1)"` | Grid line color.  |
-| gridThickness  | `number`              | `1`                          | Grid line thickness in px. |
-| className      | `string`              | —                            | Root element classes for positioning and sizing. |
+| `mode`           | `"color" \| "sample"` | `"color"`                    | Solid color trail or sample colors from images. |
+| `color`          | `string`              | `"#000000"`                  | Trail color. Fallback when sampling misses.  |
+| `imageSelector`  | `string`              | `"img"`                      | CSS selector for images to sample. |
+| `lighten`        | `number`              | `20`                         | Brightness boost on sampled colors (`0`–`255`). |
+| `pixelSize`      | `number`              | `20`                         | Size of each pixel square in px. |
+| `trailRadius`    | `number`              | `2`                          | Brush radius in grid cells. `0` for single pixel. |
+| `lifetime`       | `number`              | `1`                          | Max pixel lifetime in seconds. |
+| `fade`           | `number`              | `0.5`                        | Fade-out duration in seconds. `0` to disable. |
+| `showGrid`       | `boolean`             | `false`                      | Show a grid overlay. |
+| `gridColor`      | `string`              | `"rgba(255, 255, 255, 0.1)"` | Grid line color.  |
+| `gridThickness`  | `number`              | `1`                          | Grid line thickness in px. |
+| `className`      | `string`              | —                            | Classes applied to the canvas. Use it to size and position the trail. |
 
 ---
 

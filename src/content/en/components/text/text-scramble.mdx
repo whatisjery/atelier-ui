@@ -3,7 +3,7 @@ title: "Text Scramble"
 description: "A simple text scramble effect that reveals characters from left to right."
 tags: ["JS Animation", "Tailwind CSS"]
 createdAt: "2026-05-07"
-updatedAt: "2026-06-16"
+updatedAt: "2026-07-15"
 ---
 
 <DemoPreview name="text-scramble" controls={{
@@ -20,16 +20,18 @@ updatedAt: "2026-06-16"
 
 ## Usage
 
-By default the text renders inside a `<span>`.
+The text scrambles through random characters and reveals from left to right. The animation plays on mount and replays on hover.
 
-```tsx title="Default"
-<TextScramble>Scramble me</TextScramble>
+```tsx
+<TextScramble>Enter your text here</TextScramble>
 ```
 
-Pass `render` to swap the wrapper for any DOM element. Your props are merged with the component's, so it stays the right semantic tag (heading, paragraph, link) while keeping the animation.
+### Choose the wrapper element
 
-```tsx title="Custom element"
-<TextScramble render={<h1 className="text-4xl font-bold" />}>Scramble me</TextScramble>
+Pass `render` to choose the wrapper element. Your props are merged with the component's, so it stays the right semantic tag while keeping the animation. Without `render` the text renders inside a `<span>`.
+
+```tsx
+<TextScramble render={<p className="text-4xl" />}>Enter your text here</TextScramble>
 ```
 
 ---
@@ -42,7 +44,7 @@ Pass `render` to swap the wrapper for any DOM element. Your props are merged wit
 | `duration` | `number` | `1` | Total duration of the reveal in seconds. |
 | `playOnMount` | `boolean` | `true` | Plays the scramble animation on mount. |
 | `playOnHover` | `boolean` | `true` | Replays the scramble animation on hover. |
-| `characters` | `string` | `"abcdefghijklmnopq rstuvwxyz@!#*$%^&+_[]"` | Characters used to scramble. |
+| `characters` | `string` | `"abcdefghijklmnopqrstuvwxyz@!#*$%^&+_[]"` | Characters used to scramble. |
 | `render` | `ReactElement \| function` | `<span/>` | Override the wrapper element. |
 
 ---

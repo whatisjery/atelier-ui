@@ -3,7 +3,7 @@ title: "Text Fluid"
 description: "SEO-friendly text with an animated WebGL shimmer and distortion effect."
 tags: ["React Three Fiber", "Drei"]
 createdAt: "2026-05-24"
-updatedAt: "2026-06-19"
+updatedAt: "2026-07-15"
 ---
 
 <DemoPreview
@@ -48,7 +48,7 @@ export default function RootLayout({ children }) {
 Then use it anywhere in your app:
 
 ```tsx
-<TextFluid>Liquid type</TextFluid>
+<TextFluid render={<p className="text-4xl"></p>}>Enter your text here</TextFluid>
 ```
 
 ---
@@ -57,12 +57,12 @@ Then use it anywhere in your app:
 
 | Name         | Type      | Default | Description                                           |
 | ------------ | --------- | ------- | ----------------------------------------------------- |
-| children     | `string`  | —       | Text content.                                         |
-| speed        | `number`  | `0.2`   | Overall animation speed multiplier.                   |
-| opacity      | `number`  | `1`     | Overall opacity.                                      |
-| ripple       | `number`  | `0.015` | UV warp strength: how much the surface refracts.      |
-| amplitude    | `number`  | `0.002` | FBM displacement amplitude: how far vertices scatter. |
-| frequency    | `number`  | `1.5`   | FBM spatial frequency: size of the noise pattern.     |
-| segments     | `number`  | `20`    | Plane geometry subdivisions, higher = better quality. |
-| webglEnabled | `boolean` | `true`  | Toggle WebGL effect on/off, falls back to plain text. |
-| className    | `string`  | —       | Class applied to the underlying span.                 |
+| `children`     | `string`  | —       | Text content. Required.                               |
+| `speed`        | `number`  | `0.2`   | Overall animation speed multiplier.                   |
+| `opacity`      | `number`  | `1`     | Overall opacity.                                      |
+| `ripple`       | `number`  | `0.015` | UV warp strength: how much the surface refracts.      |
+| `amplitude`    | `number`  | `0.002` | FBM displacement amplitude: how far vertices scatter. |
+| `frequency`    | `number`  | `1.5`   | FBM spatial frequency: size of the noise pattern.     |
+| `segments`     | `number`  | `20`    | Plane geometry subdivisions, higher = better quality. |
+| `webglEnabled` | `boolean` | `true`  | Toggle WebGL effect on/off, falls back to plain text. |
+| `className`    | `string`  | —       | Class applied to the underlying span.                 |

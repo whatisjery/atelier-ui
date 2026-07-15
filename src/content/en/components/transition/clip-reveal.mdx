@@ -3,7 +3,7 @@ title: "Clip Reveal"
 description: "A clip-path reveal that scales the content from a starting inset to fullscreen."
 tags: ["Motion", "Tailwind CSS"]
 createdAt: "2026-05-28"
-updatedAt: "2026-06-18"
+updatedAt: "2026-07-15"
 ---
 
 <DemoPreview name="clip-reveal" controls={{
@@ -25,9 +25,11 @@ updatedAt: "2026-06-18"
 
 ## Usage
 
+Wrap the content to reveal. The animation plays on mount.
+
 ```tsx
-<ClipReveal className="h-full w-full">
-  <img src="/photo.jpg" alt="" className="absolute inset-0 h-full w-full object-cover" />
+<ClipReveal className="bg-[#000000]">
+    <img src="https://picsum.photos/seed/atelier-1/1200/800" alt="image" />
 </ClipReveal>
 ```
 

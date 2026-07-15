@@ -1,9 +1,9 @@
 ---
 title: "Pixel Media"
-description: "A WebGL image or video that breaks into pixel blocks under the cursor, then falls back when you stop"
+description: "A WebGL image or video that breaks into pixel blocks under the cursor, then falls back when you stop."
 tags: ["React Three Fiber", "Drei"]
 createdAt: "2026-05-31"
-updatedAt: "2026-06-19"
+updatedAt: "2026-07-15"
 ---
 
 <DemoPreview
@@ -42,7 +42,12 @@ export default function RootLayout({ children }) {
 Then use it anywhere in your app:
 
 ```tsx
-<PixelMedia type="image" src="/photo.jpg" alt="A photo" className="w-full h-auto" />
+<PixelMedia
+    type="image"
+    src="https://picsum.photos/seed/atelier-1/1200/800"
+    alt=""
+    className="w-full h-auto"
+/>
 ```
 
 ---
@@ -51,16 +56,16 @@ Then use it anywhere in your app:
 
 | Name              | Type                 | Default   | Description                                              |
 | ----------------- | -------------------- | --------- | -------------------------------------------------------- |
-| type              | `"image" \| "video"` | `"image"` | Render the effect on a still image or a video.           |
-| src               | `string`             | —         | Media source.                                            |
-| alt               | `string`             | —         | Image alt text. Required (and only used) when `type` is `"image"`. |
-| gridSize          | `number`             | `22`      | Pixel blocks per axis.                                   |
-| interactionRadius | `number`             | `4`       | Cursor push radius.                                      |
-| strength          | `number`             | `1.65`    | Drag strength.                                           |
-| aberration        | `number`             | `0.25`    | RGB channel split.                                       |
-| trail             | `number`             | `0.93`    | Trail persistence.                                       |
-| segments          | `number`             | `1`       | Plane geometry subdivisions.                             |
-| webglEnabled      | `boolean`            | `true`    | Toggle WebGL effect on/off.                              |
+| `type`              | `"image" \| "video"` | `"image"` | Render the effect on a still image or a video.           |
+| `src`               | `string`             | —         | Media source.                                            |
+| `alt`               | `string`             | —         | Image alt text. Required (and only used) when `type` is `"image"`. |
+| `gridSize`          | `number`             | `22`      | Pixel blocks per axis.                                   |
+| `interactionRadius` | `number`             | `4`       | Cursor push radius.                                      |
+| `strength`          | `number`             | `1.65`    | Drag strength.                                           |
+| `aberration`        | `number`             | `0.25`    | RGB channel split.                                       |
+| `trail`             | `number`             | `0.93`    | Trail persistence.                                       |
+| `segments`          | `number`             | `1`       | Plane geometry subdivisions.                             |
+| `webglEnabled`      | `boolean`            | `true`    | Toggle WebGL effect on/off.                              |
 
 It also forwards `<img>` attributes to [WebGL Image](/docs/components/primitive/webgl-image) and `<video>` attributes to [WebGL Video](/docs/components/primitive/webgl-video) depending on `type`.
 

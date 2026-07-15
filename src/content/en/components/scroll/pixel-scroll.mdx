@@ -3,7 +3,7 @@ title: "Pixel Scroll"
 description: "A grid of pixels that fill in or clear out as you scroll, with optional color hints."
 tags: ["Motion", "Canvas", "Lenis", "Tailwind CSS"]
 createdAt: "2026-06-22"
-updatedAt: "2026-07-09"
+updatedAt: "2026-07-15"
 ---
 
 import Alert from '@/components/ui/Alert'
@@ -28,15 +28,13 @@ import { TriangleAlert } from 'lucide-react'
 
 ## Usage
 
-By default the reveal is driven by the component's own scroll position, filling in as it passes through the viewport.
+By default the component creates its own scroll section and pins the canvas on screen while the grid fills in. This is what the demo above uses.
 
 ```tsx
-<div className="h-screen" />
-<PixelScroll className="h-screen bg-black text-white" />
-<div className="h-screen" />
+<PixelScroll className="bg-black text-white" />
 ```
 
-Works best with smooth scrolling, you can add [Smooth Scroll](/docs/components/primitive/smooth-scroll) at the root for that:
+Works best with smooth scrolling. You can add [Smooth Scroll](/docs/components/primitive/smooth-scroll) at the root for that:
 
 ```tsx title="Root layout"
 import { SmoothScroll } from "@/components/smooth-scroll";
@@ -52,7 +50,7 @@ export default function RootLayout({ children }) {
 - `bg-black` sets the background.
 
 ```tsx
-<PixelScroll className="size-full bg-white text-black" />
+<PixelScroll className="bg-white text-black" />
 ```
 
 ### Direction
@@ -62,48 +60,54 @@ export default function RootLayout({ children }) {
 - `"sweep"` fills in, then clears out, within a single scroll.
 
 ```tsx title="direction=cover"
-<PixelScroll direction="cover" className="size-full bg-black text-white" />
+<PixelScroll direction="cover" className="bg-black text-white" />
 ```
 
 ```tsx title="direction=clear"
-<PixelScroll direction="clear" className="size-full bg-black text-white" />
+<PixelScroll direction="clear" className="bg-black text-white" />
 ```
 
 ```tsx title="direction=sweep"
-<PixelScroll direction="sweep" className="size-full bg-black text-white" />
+<PixelScroll direction="sweep" className="bg-black text-white" />
 ```
 
-### Pinned to a scroll section
+### Scroll length
 
-Set `scrollDistance` and the component pins the canvas on screen while that much page scrolls past. This is what the demo above uses.
+`scrollLength` sets how many viewport heights of scrolling the reveal takes:
 
 ```tsx
-<PixelScroll scrollDistance="300vh" direction="sweep" className="bg-black text-white" />
+<PixelScroll scroll={{ scrollLength: 3 }} className="bg-black text-white" />
+```
+
+### Driven by the viewport
+
+Set `scroll="viewport"` and nothing gets pinned: the reveal is driven by the canvas's own position, filling in as it passes through the viewport. Give the canvas a size.
+
+```tsx
+<div className="h-screen" />
+<PixelScroll scroll="viewport" className="h-screen bg-black text-white" />
+<div className="h-screen" />
 ```
 
 ### Custom scroll section
 
-If you need control over the layout, you can also build the section yourself and pass `scrollTargetRef`:
+If you need control over the layout, you can also build the pinned section yourself and pass it as `track`:
 
 ```tsx
-const scrollTargetRef = useRef<ComponentRef<"div">>(null)
+const trackRef = useRef<ComponentRef<"div">>(null)
 
 <div>
   <div className="h-screen" />
 
-  <div ref={scrollTargetRef} className="relative h-[300vh]">
+  <div ref={trackRef} className="relative h-[300vh]">
     <div className="sticky top-0 h-screen">
-      <PixelScroll scrollTargetRef={scrollTargetRef} className="size-full bg-black text-white" />
+      <PixelScroll scroll={{ track: trackRef }} className="bg-black text-white" />
     </div>
   </div>
 
   <div className="h-screen" />
 </div>
 ```
-
-<Alert icon={<TriangleAlert strokeWidth={1.5} className="size-6" />} title="Section height" variant="neutral">
-  When pinning, the scroll section must be taller than `100vh`, otherwise the grid snaps straight to filled.
-</Alert>
 
 ---
 
@@ -116,6 +120,13 @@ const scrollTargetRef = useRef<ComponentRef<"div">>(null)
 | `colorRatio` | `number` | `0.25` | Fraction of pixels that show a color hint, from 0 to 1. Has no effect when `colors` is empty. |
 | `randomness` | `number` | `0.4` | How far each pixel's fill point deviates from the bottom-to-top gradient, from 0 to 1. At `0` the grid fills as an ordered gradient; at `1` the fill points are fully scattered. |
 | `direction` | `"cover" \| "clear" \| "sweep"` | `"cover"` | How the grid responds to scroll. `"cover"` fills it in, `"clear"` empties it, and `"sweep"` does both in one scroll. |
-| `scrollDistance` | `string` | — | When set, pins the canvas and drives the reveal over that much scrolling. Any CSS height. Ignored when `scrollTargetRef` is set. |
-| `scrollTargetRef` | `RefObject<HTMLElement \| null>` | — | Element whose scroll position drives the reveal. Defaults to the component's own canvas. |
+| `scroll` | `ScrollMode` | `{ scrollLength: 2 }` | Scroll behavior, one of the modes below. |
 | `className` | `string` | — | Classes forwarded to the canvas element. |
+
+### Scroll modes
+
+| Mode | Description |
+| --- | --- |
+| `{ scrollLength: number }` | Pins the canvas in a built-in section and drives the reveal over that many viewport heights of scrolling. |
+| `"viewport"` | Skips pinning. The reveal follows the canvas's own position through the viewport. |
+| `{ track: RefObject<HTMLElement \| null> }` | Drives the reveal from your own scrolled section. |

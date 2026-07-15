@@ -3,7 +3,7 @@ title: "Infinite Zoom"
 description: "Mouse wheel infinite zoom effect."
 tags: ["Motion", "Tailwind CSS"]
 createdAt: "2026-05-07"
-updatedAt: "2026-06-16"
+updatedAt: "2026-07-15"
 ---
 
 <DemoPreview name="infinite-zoom" controls={{
@@ -25,10 +25,16 @@ updatedAt: "2026-06-16"
 Pass the items as children and scroll the wheel to zoom through them.
 
 ```tsx
-<InfiniteZoom>
-  <img src="/1.jpg" alt="" />
-  <img src="/2.jpg" alt="" />
-  <img src="/3.jpg" alt="" />
+const IMAGES = [
+    "https://picsum.photos/seed/atelier-1/1200/800",
+    "https://picsum.photos/seed/atelier-2/1200/800",
+    "https://picsum.photos/seed/atelier-3/1200/800",
+]
+
+<InfiniteZoom className="fixed inset-0 overflow-hidden touch-none">
+    {IMAGES.map((src) => (
+        <img key={src} src={src} alt="" className="h-auto w-150 object-cover" />
+    ))}
 </InfiniteZoom>
 ```
 
@@ -38,8 +44,8 @@ Pass the items as children and scroll the wheel to zoom through them.
 
 | Name       | Type        | Default     | Description |
 | ---------- | ----------- | ----------- | -----------------|
-| children   | `ReactNode` | —           | Items to zoom. |
-| zoomAmount  | `number`   | `3`         | Scale between items. Higher values equals increased depth.|
-| lerpValue | `number`     | `0.08`      | Smoothing for the wheel input.|
-| className  | `string`    | `fixed inset-0 overflow-hidden touch-none` | Class for the outer container.|
-| backgroundSpeed | `number` | `0.2` | Background speed. Deceleration of the last item in view.|
+| `children`   | `ReactNode` | —           | Items to zoom. Required. |
+| `zoomAmount`  | `number`   | `3`         | Scale between items. Higher values equals increased depth.|
+| `lerpValue` | `number`     | `0.08`      | Smoothing for the wheel input.|
+| `className`  | `string`    | — | Class for the outer container. Use it to size the zoom and block native scrolling, e.g. `fixed inset-0 overflow-hidden touch-none`.|
+| `backgroundSpeed` | `number` | `0.2` | Background speed. Deceleration of the last item in view.|

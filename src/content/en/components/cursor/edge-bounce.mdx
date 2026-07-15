@@ -3,7 +3,7 @@ title: "Edge Bounce"
 description: "A wrapper that bounces away from the cursor on hover and springs back into place."
 tags: ["Motion", "Tailwind CSS"]
 createdAt: "2026-07-05"
-updatedAt: "2026-07-05"
+updatedAt: "2026-07-15"
 ---
 
 <DemoPreview
@@ -28,9 +28,11 @@ updatedAt: "2026-07-05"
 
 ## Usage
 
-```tsx title="Default"
-<EdgeBounce className="w-64">
-  <img src="/images/photo.webp" alt="Photo" className="rounded-md" />
+Wrap the content that should bounce away from the cursor.
+
+```tsx
+<EdgeBounce>
+    <img src="https://picsum.photos/seed/atelier-1/1200/800" alt="Photo" />
 </EdgeBounce>
 ```
 
