@@ -61,7 +61,12 @@ export default async function Page({ params }: PageProps) {
     return (
         <PageDocLayout
             TOCSlot={<DocTableOfContent headings={headings} />}
-            topBarSlot={<RouteBreadCrumb skip={getCategorySlugs(locale)} />}
+            topBarSlot={
+                <RouteBreadCrumb
+                    skip={getCategorySlugs(locale)}
+                    hrefOverrides={{ "/docs/components": "/catalog/components" }}
+                />
+            }
             navigationSlot={
                 <>
                     <DocHeaderNavButtons navigation={navigation} />

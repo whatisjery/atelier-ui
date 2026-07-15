@@ -11,21 +11,29 @@ function formatSegment(seg: string): string {
 type RouteBreadCrumbProps = {
     className?: string
     skip?: string[]
+    hrefOverrides?: Record<string, string>
 }
 
-export default function RouteBreadCrumb({ className, skip = [] }: RouteBreadCrumbProps) {
+export default function RouteBreadCrumb({
+    className,
+    skip = [],
+    hrefOverrides = {},
+}: RouteBreadCrumbProps) {
     const pathname = usePathname()
     const segments = pathname
         .split("/")
         .filter(Boolean)
         .filter((segment) => !skip.includes(segment))
 
-    const breadcrumbs = segments.map((seg, i) => ({
-        href: `/${segments.slice(0, i + 1).join("/")}`,
-        label: formatSegment(seg),
-        isLast: i === segments.length - 1,
-        isFirst: i === 0,
-    }))
+    const breadcrumbs = segments.map((seg, i) => {
+        const href = `/${segments.slice(0, i + 1).join("/")}`
+        return {
+            href: hrefOverrides[href] ?? href,
+            label: formatSegment(seg),
+            isLast: i === segments.length - 1,
+            isFirst: i === 0,
+        }
+    })
 
     return (
         <nav
