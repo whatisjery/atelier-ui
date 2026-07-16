@@ -11,13 +11,10 @@ import {
     useState,
 } from "react"
 
-export type ScrollMode =
-    | { scrollLength: number; track?: never }
-    | { track: RefObject<HTMLElement | null>; scrollLength?: never }
-
 export type ScatteredScrollProps = {
     children: ReactNode
-    scroll?: ScrollMode
+    scrollDistance?: number
+    overlap?: number
 }
 
 // (used instead of Math.random) Avoid hydration error on next.js
@@ -80,7 +77,8 @@ const Item = ({
 
 export default function ScatteredScroll({
     children,
-    scroll = { scrollLength: 2 },
+    scrollDistance = 200,
+    overlap = 0,
 }: ScatteredScrollProps) {
     const childrenArray = Children.toArray(children).filter(isValidElement)
     const firstItemRef = useRef<ComponentRef<"div">>(null)
@@ -103,7 +101,7 @@ export default function ScatteredScroll({
 
     const { scrollYProgress } = useScroll({
         offset: ["start start", "end end"],
-        target: scroll.track ?? ownTargetRef,
+        target: ownTargetRef,
     })
 
     const items = childrenArray.map((child, index) => (
@@ -118,13 +116,11 @@ export default function ScatteredScroll({
         </Item>
     ))
 
-    if (scroll.track) return <>{items}</>
-
     return (
         <section
             ref={ownTargetRef}
             className="relative overflow-x-clip"
-            style={{ height: `${(scroll.scrollLength + 1) * 100}vh` }}
+            style={{ height: `${scrollDistance + 100}vh`, margin: `${-overlap / 2}vh 0` }}
         >
             <div className="sticky top-0 flex h-screen items-center justify-center gap-2">
                 {items}

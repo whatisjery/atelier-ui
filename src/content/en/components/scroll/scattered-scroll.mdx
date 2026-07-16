@@ -3,7 +3,7 @@ title: "Scattered Scroll"
 description: "Items that spread apart horizontally while scrolling."
 tags: ["Motion", "Tailwind CSS", "Lenis"]
 createdAt: "2026-05-07"
-updatedAt: "2026-07-15"
+updatedAt: "2026-07-16"
 ---
 
 <DemoPreview name="scattered-scroll" />
@@ -22,16 +22,21 @@ The component takes the items as children. Any element works.
 
 ```tsx
 const IMAGES = [
-    "https://picsum.photos/seed/atelier-1/1200/800",
-    "https://picsum.photos/seed/atelier-2/1200/800",
-    "https://picsum.photos/seed/atelier-3/1200/800",
-    "https://picsum.photos/seed/atelier-4/1200/800",
-    "https://picsum.photos/seed/atelier-5/1200/800",
+    "https://picsum.photos/seed/atelier-1/800/1000",
+    "https://picsum.photos/seed/atelier-2/800/1000",
+    "https://picsum.photos/seed/atelier-3/800/1000",
+    "https://picsum.photos/seed/atelier-4/800/1000",
+    "https://picsum.photos/seed/atelier-5/800/1000",
 ]
 
-<ScatteredScroll>
+<ScatteredScroll overlap={100} scrollDistance={350}>
     {IMAGES.map((src) => (
-        <img key={src} src={src} alt="" className="aspect-[5/7] w-[30vw] object-cover" />
+        <img
+            key={src}
+            src={src}
+            alt=""
+            className="w-[30vw] aspect-[5/7] object-cover rounded-xl"
+        />
     ))}
 </ScatteredScroll>
 ```
@@ -46,42 +51,6 @@ export default function RootLayout({ children }) {
 }
 ```
 
-### Scroll length
-
-By default the component creates the scroll section for you. `scrollLength` sets how many viewport heights of scrolling the effect takes:
-
-```tsx
-<ScatteredScroll scroll={{ scrollLength: 4 }}>
-  <img src="/1.webp" alt="" className="aspect-[5/7] w-[30vw] object-cover" />
-  <img src="/2.webp" alt="" className="aspect-[5/7] w-[30vw] object-cover" />
-  <img src="/3.webp" alt="" className="aspect-[5/7] w-[30vw] object-cover" />
-</ScatteredScroll>
-```
-
-### Custom scroll section
-
-If you need control over the layout, you can also build the section yourself and pass it as `track`:
-
-```tsx
-const trackRef = useRef<ComponentRef<"div">>(null)
-
-<div>
-  <div className="h-screen" />
-
-  <div ref={trackRef} className="relative h-[300vh] overflow-x-clip">
-    <div className="sticky top-0 flex h-screen items-center justify-center gap-2">
-      <ScatteredScroll scroll={{ track: trackRef }}>
-        <img src="/1.webp" alt="" className="aspect-[5/7] w-[30vw] object-cover" />
-        <img src="/2.webp" alt="" className="aspect-[5/7] w-[30vw] object-cover" />
-        <img src="/3.webp" alt="" className="aspect-[5/7] w-[30vw] object-cover" />
-      </ScatteredScroll>
-    </div>
-  </div>
-
-  <div className="h-screen" />
-</div>
-```
-
 ---
 
 ## API
@@ -89,14 +58,8 @@ const trackRef = useRef<ComponentRef<"div">>(null)
 | Name | Type | Default | Description |
 | --- | --- | --- | --- |
 | `children` | `ReactNode` | — | The items to animate. Any JSX element allowed. Required. |
-| `scroll` | `ScrollMode` | `{ scrollLength: 2 }` | Scroll behavior, one of the modes below. |
-
-### Scroll modes
-
-| Mode | Description |
-| --- | --- |
-| `{ scrollLength: number }` | Creates the scroll section and runs the effect over that many viewport heights of scrolling. |
-| `{ track: RefObject<HTMLElement \| null> }` | Drives the animation from your own scrolled section instead of the built-in one. |
+| `scrollDistance` | `number` | `200` | How long the animation lasts. `100` equals one viewport of scrolling. |
+| `overlap` | `number` | `0` | Shortens the empty space before and after the animation, so the animation starts sooner. `100` equals one viewport of scrolling. |
 
 ---
 

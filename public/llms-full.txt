@@ -2,7 +2,7 @@
 
 Source: https://atelier-ui.com/docs
 
-Generated: 2026-07-13T16:13:25.378Z
+Generated: 2026-07-15T21:32:49.067Z
 
 ---
 
@@ -31,42 +31,27 @@ export default function RootLayout({ children }) {
 }
 ```
 
-Pass your images as an `items` array. They spread evenly around each ring. Each item is a `src` and `alt`.
+Then use it anywhere in your app:
 
-```tsx title="Basic"
-const ITEMS = [
-  { src: "/a.jpg", alt: "Project A" },
-  { src: "/b.jpg", alt: "Project B" },
-  { src: "/c.jpg", alt: "Project C" },
-]
+```tsx
+const ITEMS = Array.from({ length: 20 }, (_, i) => ({
+    src: `https://picsum.photos/seed/atelier-${i + 1}/1200/800`,
+    alt: "",
+}))
 
 <OrbitGallery items={ITEMS} className="fixed inset-0" />
 ```
 
-### Sizing
-
-The size comes from the element you render it into. Use `className` to decide its size.
-
-```tsx title="Sizing"
-{/* Fills the viewport */}
-<OrbitGallery items={ITEMS} className="fixed inset-0 w-screen h-screen" />
-
-{/* Sits in a sized container */}
-<OrbitGallery items={ITEMS} className="h-[500px] w-[500px]" />
-```
-
 ### Overlays
 
-`onActiveChange` gives you the index of the opened image (and `null` when it closes). Use it to look up that item in your own data and render a caption, link, or anything else as regular HTML.
+`onActiveChange` gives you the index of the opened image, or `null` when it closes. Use it to render your own overlay as regular HTML:
 
-```tsx title="Overlay"
+```tsx
 const [active, setActive] = useState<number | null>(null)
 
 <>
   {active !== null && (
-    <a className="fixed bottom-8 left-1/2 -translate-x-1/2 text-white" href={ITEMS[active].href}>
-      {ITEMS[active].title}
-    </a>
+    <p className="fixed bottom-8 left-1/2 -translate-x-1/2 text-white">Image {active + 1}</p>
   )}
 
   <OrbitGallery items={ITEMS} onActiveChange={setActive} className="fixed inset-0" />
@@ -75,9 +60,9 @@ const [active, setActive] = useState<number | null>(null)
 
 ### Post-processing
 
-Orbit Gallery renders through a [WebGL Scene](/docs/components/primitive/webgl-scene). By default that scene draws above other content. Set `mode="texture"` to render it into post-processing instead, so effects like `FluidDistortion` apply to the ring.
+The gallery renders through a [WebGL Scene](/docs/components/primitive/webgl-scene) that draws above other content. Set `mode="texture"` to render it into post-processing instead, so effects like `FluidDistortion` apply to the rings:
 
-```tsx title="Post-processing"
+```tsx
 <FluidDistortion />
 
 <OrbitGallery items={ITEMS} mode="texture" className="fixed inset-0" />
@@ -87,22 +72,22 @@ Orbit Gallery renders through a [WebGL Scene](/docs/components/primitive/webgl-s
 
 ## API
 
-| Name            | Type                              | Default | Description                                                                                                                     |
-| --------------- | --------------------------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------- |
-| items           | `OrbitGalleryItem[]`              | -       | The images placed around the rings, as `{ src, alt }`. They repeat to fill each ring.                                           |
-| radius          | `number`                          | `2.8`   | Radius of the innermost ring, in world units.                                                                                   |
-| rings           | `number`                          | `3`     | Number of rings around the center.                                                                                              |
-| ringGap         | `number`                          | `1.6`   | Distance between two neighboring rings, in world units.                                                                         |
-| tileHeight      | `number`                          | `0.7`   | Height of each image tile. Width follows from the image aspect ratio.                                                           |
-| cornerRadius    | `number`                          | `0.08`  | Corner radius of each tile, in world units. `0` keeps square corners.                                                           |
-| spinSpeed       | `number`                          | `1`     | Revolutions per minute of the innermost ring. Negative values spin the other way.                                               |
-| spinStagger     | `number`                          | `0.2`   | Speed ratio between one ring and the next. Below `1` outer rings spin slower, above `1` faster.                                 |
-| wheel           | `boolean`                         | `true`  | Whether the scroll wheel accelerates the spin. When `false` the wheel does nothing.                                             |
-| wheelMultiplier | `number`                          | `3`     | How much the scroll wheel accelerates the spin. `0` disables it.                                                                |
-| revealDuration  | `number`                          | `2`     | Duration of the reveal animation, in seconds.                                                                                   |
-| focusDuration   | `number`                          | `1`     | Duration of the click-to-focus zoom and the ring fade, in seconds.                                                              |
-| onActiveChange  | `(index: number \| null) => void` | -       | Fires with the opened image index when one opens, or `null` when none is. Use it to render your own overlay from your own data. |
-| className       | `string`                          | -       | Classes for the interaction surface the gallery renders into.                                                                   |
+| Name              | Type                              | Default | Description                                                                                                                     |
+| ----------------- | --------------------------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------- |
+| `items`           | `OrbitGalleryItem[]`              | —       | The images placed around the rings, as `{ src, alt }`. They repeat to fill each ring. Required.                                 |
+| `radius`          | `number`                          | `2.8`   | Radius of the innermost ring, in world units.                                                                                   |
+| `rings`           | `number`                          | `3`     | Number of rings around the center.                                                                                              |
+| `ringGap`         | `number`                          | `1.6`   | Distance between two neighboring rings, in world units.                                                                         |
+| `tileHeight`      | `number`                          | `0.7`   | Height of each image tile. Width follows from the image aspect ratio.                                                           |
+| `cornerRadius`    | `number`                          | `0.08`  | Corner radius of each tile, in world units. `0` keeps square corners.                                                           |
+| `spinSpeed`       | `number`                          | `1`     | Revolutions per minute of the innermost ring. Negative values spin the other way.                                               |
+| `spinStagger`     | `number`                          | `0.2`   | Speed ratio between one ring and the next. Below `1` outer rings spin slower, above `1` faster.                                 |
+| `wheel`           | `boolean`                         | `true`  | Whether the scroll wheel accelerates the spin. When `false` the wheel does nothing.                                             |
+| `wheelMultiplier` | `number`                          | `3`     | How much the scroll wheel accelerates the spin. `0` disables it.                                                                |
+| `revealDuration`  | `number`                          | `2`     | Duration of the reveal animation, in seconds.                                                                                   |
+| `focusDuration`   | `number`                          | `1`     | Duration of the click-to-focus zoom and the ring fade, in seconds.                                                              |
+| `onActiveChange`  | `(index: number \| null) => void` | —       | Fires with the opened image index when one opens, or `null` when none is. Use it to render your own overlay from your own data. |
+| `className`       | `string`                          | —       | Classes for the interaction surface the gallery renders into. Sizes the gallery, any container size works.                      |
 
 It also forwards [WebGL Scene](/docs/components/primitive/webgl-scene) props: `mode`, `priority`, `zIndex`, and `transparent`.
 
@@ -141,35 +126,22 @@ export default function RootLayout({ children }) {
 }
 ```
 
-Pass your images as an `items` array; they tile across the sphere to fill the grid. Each item is just a `src` and `alt`.
+Then use it anywhere in your app:
 
-```tsx title="Basic"
-const ITEMS = [
-  { src: "/a.jpg", alt: "Project A" },
-  { src: "/b.jpg", alt: "Project B" },
-  { src: "/c.jpg", alt: "Project C" },
-]
+```tsx
+const ITEMS = Array.from({ length: 20 }, (_, i) => ({
+    src: `https://picsum.photos/seed/atelier-${i + 1}/1200/800`,
+    alt: "",
+}))
 
 <SphereGallery items={ITEMS} className="fixed inset-0" />
 ```
 
-### Sizing
-
-The size come from the element you render it into. Use `className` to decide of it's size.
-
-```tsx title="Sizing"
-{/* Fills the viewport */}
-<SphereGallery items={ITEMS} className="fixed inset-0 w-screen h-screen" />
-
-{/* Sits in a sized container */}
-<SphereGallery items={ITEMS} className="h-[500px] w-[500px]" />
-```
-
 ### Overlays
 
-`onActiveChange` gives you the index of the opened image (and `null` when it closes). Use it to look up that item in your own data and render a caption, link, or anything else as regular HTML.
+`onActiveChange` gives you the index of the opened image, or `null` when it closes. Use it to render your own overlay as regular HTML:
 
-```tsx title="Overlay"
+```tsx
 const [active, setActive] = useState<number | null>(null)
 
 <>
@@ -185,9 +157,9 @@ const [active, setActive] = useState<number | null>(null)
 
 ### Post-processing
 
-Sphere Gallery renders through a [WebGL Scene](/docs/components/primitive/webgl-scene). By default that scene draws above other content. Set `mode="texture"` to render it into post-processing instead, so effects like `FluidDistortion` apply to the sphere.
+The gallery renders through a [WebGL Scene](/docs/components/primitive/webgl-scene) that draws above other content. Set `mode="texture"` to render it into post-processing instead, so effects like `FluidDistortion` apply to the sphere:
 
-```tsx title="Post-processing"
+```tsx
 <FluidDistortion />
 
 <SphereGallery items={ITEMS} mode="texture" className="fixed inset-0" />
@@ -197,26 +169,26 @@ Sphere Gallery renders through a [WebGL Scene](/docs/components/primitive/webgl-
 
 ## API
 
-| Name           | Type                              | Default     | Description                                                                                                                               |
-| -------------- | --------------------------------- | ----------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
-| items          | `SphereGalleryItem[]`             | —           | The images to map onto the sphere, as `{ src, alt }`. They tile to fill the grid.                                                         |
-| reveal         | `boolean`                         | `true`      | When `false`, holds the reveal animation; flip to `true` to play it (e.g. after an intro).                                                |
-| revealDuration | `number`                          | `2`         | Duration of the reveal animation, in seconds.                                                                                             |
-| focusDuration  | `number`                          | `1`         | Duration of the click-to-focus zoom, in seconds.                                                                                          |
-| focusScale     | `number`                          | `1.7`       | How much a tile scales up when focused.                                                                                                   |
-| mouseParallax  | `number`                          | `0.2`       | Strength of the mouse-driven parallax tilt. `0` disables it.                                                                              |
-| onActiveChange | `(index: number \| null) => void` | —           | Fires with the focused image index when one opens, or `null` when none is. Use it to render your own overlay from your own data.          |
-| rows           | `number`                          | `7`         | Horizontal tile rings stacked from bottom to top. Tile height follows from this.                                                          |
-| columns        | `number`                          | `12`        | Sets the width of every tile. Higher values make tiles narrower and pack more around each ring.                                           |
-| latitudeRange  | `number`                          | `85`        | Vertical spread of the rings in degrees.                                                                                                  |
-| gap            | `number`                          | `0.01`      | Seam between neighboring tiles, in world units. `0` makes them touch.                                                                     |
-| padding        | `number`                          | `0.03`      | Even border between the tile edge and the contained image, in world units.                                                                |
-| cornerRadius   | `number`                          | `0.02`      | Tile corner rounding in world units. `0` is square.                                                                                       |
-| tileColor      | `string \| null`                  | `"#F8F8F8"` | Background color of the tile behind each image, shown in the padding and around images. Set to `null` to hide it so only the image shows. |
-| sphereColor    | `string`                          | `"#ffffff"` | Color of the sphere behind the tiles.                                                                                                     |
-| lensBlur       | `number`                          | `0.4`       | Strength of the edge lens blur. `0` disables it; higher values blur more toward the edges.                                                |
-| fov            | `number`                          | `70`        | Camera field of view in degrees. Narrows on click to zoom into an image.                                                                  |
-| className      | `string`                          | —           | Classes for the full-screen interaction surface.                                                                                          |
+| Name             | Type                              | Default     | Description                                                                                                                               |
+| ---------------- | --------------------------------- | ----------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| `items`          | `SphereGalleryItem[]`             | —           | The images to map onto the sphere, as `{ src, alt }`. They tile to fill the grid. Required.                                               |
+| `reveal`         | `boolean`                         | `true`      | When `false`, holds the reveal animation; flip to `true` to play it (e.g. after an intro).                                                |
+| `revealDuration` | `number`                          | `2`         | Duration of the reveal animation, in seconds.                                                                                             |
+| `focusDuration`  | `number`                          | `1`         | Duration of the click-to-focus zoom, in seconds.                                                                                          |
+| `focusScale`     | `number`                          | `1.7`       | How much a tile scales up when focused.                                                                                                   |
+| `mouseParallax`  | `number`                          | `0.2`       | Strength of the mouse-driven parallax tilt. `0` disables it.                                                                              |
+| `onActiveChange` | `(index: number \| null) => void` | —           | Fires with the focused image index when one opens, or `null` when none is. Use it to render your own overlay from your own data.          |
+| `rows`           | `number`                          | `7`         | Horizontal tile rings stacked from bottom to top. Tile height follows from this.                                                          |
+| `columns`        | `number`                          | `12`        | Sets the width of every tile. Higher values make tiles narrower and pack more around each ring.                                           |
+| `latitudeRange`  | `number`                          | `85`        | Vertical spread of the rings in degrees.                                                                                                  |
+| `gap`            | `number`                          | `0.01`      | Seam between neighboring tiles, in world units. `0` makes them touch.                                                                     |
+| `padding`        | `number`                          | `0.03`      | Even border between the tile edge and the contained image, in world units.                                                                |
+| `cornerRadius`   | `number`                          | `0.02`      | Tile corner rounding in world units. `0` is square.                                                                                       |
+| `tileColor`      | `string \| null`                  | `"#F8F8F8"` | Background color of the tile behind each image, shown in the padding and around images. Set to `null` to hide it so only the image shows. |
+| `sphereColor`    | `string`                          | `"#ffffff"` | Color of the sphere behind the tiles.                                                                                                     |
+| `lensBlur`       | `number`                          | `0.4`       | Strength of the edge lens blur. `0` disables it; higher values blur more toward the edges.                                                |
+| `fov`            | `number`                          | `70`        | Camera field of view in degrees. Narrows on click to zoom into an image.                                                                  |
+| `className`      | `string`                          | —           | Classes for the interaction surface the gallery renders into. Sizes the gallery, any container size works.                                |
 
 It also forwards [WebGL Scene](/docs/components/primitive/webgl-scene) props: `mode`, `priority`, `zIndex`, and `transparent`.
 
@@ -245,9 +217,11 @@ Source file: components/cursor/edge-bounce.mdx
 
 ## Usage
 
-```tsx title="Default"
-<EdgeBounce className="w-64">
-  <img src="/images/photo.webp" alt="Photo" className="rounded-md" />
+Wrap the content that should bounce away from the cursor.
+
+```tsx
+<EdgeBounce>
+    <img src="https://picsum.photos/seed/atelier-1/1200/800" alt="Photo" />
 </EdgeBounce>
 ```
 
@@ -269,7 +243,7 @@ Source file: components/cursor/edge-bounce.mdx
 
 ============================================================
 ## Fluid Distortion
-> A GPU-accelerated fluid distortion effect that reacts to cursor movement
+> A GPU-accelerated fluid distortion effect that reacts to cursor movement.
 
 Source file: components/cursor/fluid-distortion.mdx
 
@@ -301,22 +275,22 @@ Then use it anywhere in your app:
 
 ## API
 
-| Name                | Type          | Default   | Description                                                                               |
-| ------------------- | ------------- | --------- | ----------------------------------------------------------------------------------------- |
-| fluidColor          | `hexadecimal` | `#b4a6ff` | Sets the fluid color. Effective only when `rainbow` is set to `false`.                    |
-| backgroundColor     | `hexadecimal` | `#070410` | Sets the background color. Effective only when `showBackground` is `true`.                |
-| showBackground      | `boolean`     | `false`   | Toggles the background color's visibility. If `false` it becomes transparent.             |
-| blend               | `number`      | `5`       | Blends fluid into the scene when `showBackground` is true. Valid range: `0.00` to `10.0`. |
-| intensity           | `number`      | `7`       | Sets the fluid intensity. Valid range: `0` to `10`.                                       |
-| force               | `number`      | `1.1`     | Multiplies the mouse velocity to increase fluid splatter. Valid range: `0.0` to `20`.     |
-| distortion          | `number`      | `0.8`     | Sets the distortion amount. Valid range: `0.00` to `2.00`.                                |
-| radius              | `number`      | `0.65`    | Sets the fluid radius. Valid range: `0.01` to `1.00`.                                     |
-| curl                | `number`      | `0.8`     | Sets the amount of the curl effect. Valid range: `0.0` to `50`.                           |
-| swirl               | `number`      | `2`       | Sets the amount of the swirling effect. Valid range: `0` to `20`.                         |
-| velocityDissipation | `number`      | `0.98`    | Reduces the fluid velocity over time. Valid range: `0.00` to `1.00`.                      |
-| densityDissipation  | `number`      | `0.98`    | Reduces the fluid density over time. Valid range: `0.00` to `1.00`.                       |
-| pressure            | `number`      | `0.70`    | Controls the reduction of pressure. Valid range: `0.00` to `1.00`.                        |
-| rainbow             | `boolean`     | `false`   | Activates color mode based on mouse direction.                                            |
+| Name                  | Type      | Default   | Description                                                                               |
+| --------------------- | --------- | --------- | ----------------------------------------------------------------------------------------- |
+| `fluidColor`          | `string`  | `#b4a6ff` | Sets the fluid color. Effective only when `rainbow` is set to `false`.                    |
+| `backgroundColor`     | `string`  | `#070410` | Sets the background color. Effective only when `showBackground` is `true`.                |
+| `showBackground`      | `boolean` | `false`   | Toggles the background color's visibility. If `false` it becomes transparent.             |
+| `blend`               | `number`  | `5`       | Blends fluid into the scene when `showBackground` is true. Valid range: `0.00` to `10.0`. |
+| `intensity`           | `number`  | `7`       | Sets the fluid intensity. Valid range: `0` to `10`.                                       |
+| `force`               | `number`  | `1.1`     | Multiplies the mouse velocity to increase fluid splatter. Valid range: `0.0` to `20`.     |
+| `distortion`          | `number`  | `0.8`     | Sets the distortion amount. Valid range: `0.00` to `2.00`.                                |
+| `radius`              | `number`  | `0.65`    | Sets the fluid radius. Valid range: `0.01` to `1.00`.                                     |
+| `curl`                | `number`  | `0.8`     | Sets the amount of the curl effect. Valid range: `0.0` to `50`.                           |
+| `swirl`               | `number`  | `2`       | Sets the amount of the swirling effect. Valid range: `0` to `20`.                         |
+| `velocityDissipation` | `number`  | `0.98`    | Reduces the fluid velocity over time. Valid range: `0.00` to `1.00`.                      |
+| `densityDissipation`  | `number`  | `0.98`    | Reduces the fluid density over time. Valid range: `0.00` to `1.00`.                       |
+| `pressure`            | `number`  | `0.70`    | Controls the reduction of pressure. Valid range: `0.00` to `1.00`.                        |
+| `rainbow`             | `boolean` | `false`   | Activates color mode based on mouse direction.                                            |
 
 ***
 
@@ -337,7 +311,7 @@ React Three Fiber utilities.
 
 ============================================================
 ## Image Trail
-> Cursor trail effect that spawns images along it's path.
+> Cursor trail effect that spawns images along its path.
 
 Source file: components/cursor/image-trail.mdx
 
@@ -349,11 +323,19 @@ Source file: components/cursor/image-trail.mdx
 
 ## Usage
 
+Pass the trail items as children. They spawn along the cursor path.
+
 ```tsx
+const IMAGES = [
+    "https://picsum.photos/seed/atelier-1/1200/800",
+    "https://picsum.photos/seed/atelier-2/1200/800",
+    "https://picsum.photos/seed/atelier-3/1200/800",
+]
+
 <ImageTrail>
-  <img src="/1.jpg" alt="" className="w-32" />
-  <img src="/2.jpg" alt="" className="w-32" />
-  <img src="/3.jpg" alt="" className="w-32" />
+    {IMAGES.map((src) => (
+        <img key={src} src={src} className="w-32 h-32 object-cover rounded-xl" alt="" />
+    ))}
 </ImageTrail>
 ```
 
@@ -361,12 +343,12 @@ Source file: components/cursor/image-trail.mdx
 
 ## API
 
-| Name          | Type        | Default | Description                                          |
-| ------------- | ----------- | ------- | ---------------------------------------------------- |
-| children      | `ReactNode` | —       | Items to cycle through as the cursor moves.          |
-| spawnDistance | `number`    | `76`    | Distance in pixels before spawning an item.          |
-| driftAmount   | `number`    | `36`    | How far each item drifts from its spawn point in px. |
-| removeDelay   | `number`    | `1.0`   | Seconds before a spawned item is removed.            |
+| Name            | Type        | Default | Description                                           |
+| --------------- | ----------- | ------- | ----------------------------------------------------- |
+| `children`      | `ReactNode` | —       | Items to cycle through as the cursor moves. Required. |
+| `spawnDistance` | `number`    | `76`    | Distance in pixels before spawning an item.           |
+| `driftAmount`   | `number`    | `36`    | How far each item drifts from its spawn point in px.  |
+| `removeDelay`   | `number`    | `1.0`   | Seconds before a spawned item is removed.             |
 
 ***
 
@@ -378,7 +360,7 @@ React animation library.
 
 ============================================================
 ## Lens Media
-> An SEO-friendly WebGL image or video with a cursor-following circular lens and chromatic aberration
+> An SEO-friendly WebGL image or video with a cursor-following circular lens and chromatic aberration.
 
 Source file: components/cursor/lens-media.mdx
 
@@ -400,29 +382,34 @@ export default function RootLayout({ children }) {
 }
 ```
 
-Then use Lens Media anywhere in your app:
+Then use it anywhere in your app:
 
 ```tsx
-<LensMedia type="image" src="/photo.jpg" alt="A photo" className="w-full h-auto" />
+<LensMedia
+    type="image"
+    src="https://picsum.photos/seed/atelier-1/1200/800"
+    alt=""
+    className="w-full h-auto"
+/>
 ```
 
 ***
 
 ## API
 
-| Name         | Type                 | Default   | Description                                                        |
-| ------------ | -------------------- | --------- | ------------------------------------------------------------------ |
-| type         | `"image" \| "video"` | `"image"` | Render the lens on a still image or a video.                       |
-| src          | `string`             | —         | Media source.                                                      |
-| alt          | `string`             | —         | Image alt text. Required (and only used) when `type` is `"image"`. |
-| size         | `number`             | `0.12`    | Lens radius.                                                       |
-| softness     | `number`             | `0.5`     | Lens edge falloff.                                                 |
-| aberration   | `number`             | `0.18`    | Color spread width.                                                |
-| dispersion   | `number`             | `35`      | Color sample count.                                                |
-| refraction   | `number`             | `0.4`     | Inward pull strength.                                              |
-| smoothing    | `number`             | `7`       | Cursor damping speed.                                              |
-| segments     | `number`             | `1`       | Plane geometry subdivisions.                                       |
-| webglEnabled | `boolean`            | `true`    | Toggle WebGL effect on/off.                                        |
+| Name           | Type                 | Default   | Description                                                        |
+| -------------- | -------------------- | --------- | ------------------------------------------------------------------ |
+| `type`         | `"image" \| "video"` | `"image"` | Render the lens on a still image or a video.                       |
+| `src`          | `string`             | —         | Media source.                                                      |
+| `alt`          | `string`             | —         | Image alt text. Required (and only used) when `type` is `"image"`. |
+| `size`         | `number`             | `0.12`    | Lens radius.                                                       |
+| `softness`     | `number`             | `0.5`     | Lens edge falloff.                                                 |
+| `aberration`   | `number`             | `0.18`    | Color spread width.                                                |
+| `dispersion`   | `number`             | `35`      | Color sample count.                                                |
+| `refraction`   | `number`             | `0.4`     | Inward pull strength.                                              |
+| `smoothing`    | `number`             | `7`       | Cursor damping speed.                                              |
+| `segments`     | `number`             | `1`       | Plane geometry subdivisions.                                       |
+| `webglEnabled` | `boolean`            | `true`    | Toggle WebGL effect on/off.                                        |
 
 It also forwards `<img>` attributes to [WebGL Image](/docs/components/primitive/webgl-image) and `<video>` attributes to [WebGL Video](/docs/components/primitive/webgl-video) depending on `type`.
 
@@ -439,7 +426,7 @@ React Three Fiber utilities.
 
 ============================================================
 ## Liquid Media
-> An SEO-friendly WebGL image or video with a cursor-driven liquid ripple effect
+> An SEO-friendly WebGL image or video with a cursor-driven liquid ripple effect.
 
 Source file: components/cursor/liquid-media.mdx
 
@@ -464,25 +451,30 @@ export default function RootLayout({ children }) {
 Then use it anywhere in your app:
 
 ```tsx
-<LiquidMedia type="image" src="/photo.jpg" alt="A photo" className="w-full h-auto" />
+<LiquidMedia
+    type="image"
+    src="https://picsum.photos/seed/atelier-1/1200/800"
+    alt=""
+    className="w-full h-auto"
+/>
 ```
 
 ***
 
 ## API
 
-| Name         | Type                 | Default   | Description                                                        |
-| ------------ | -------------------- | --------- | ------------------------------------------------------------------ |
-| type         | `"image" \| "video"` | `"image"` | Render the ripple on a still image or a video.                     |
-| src          | `string`             | —         | Media source.                                                      |
-| alt          | `string`             | —         | Image alt text. Required (and only used) when `type` is `"image"`. |
-| rippleMap    | `Texture`            | built-in  | Custom ripple texture.                                             |
-| intensity    | `number`             | `0.2`     | Displacement strength.                                             |
-| radius       | `number`             | `12`      | Ripple size, up to `50`.                                           |
-| expandRate   | `number`             | `11`      | How fast ripples grow, up to `20`.                                 |
-| decayRate    | `number`             | `3`       | How fast ripples fade out, between `3` and `10`.                   |
-| segments     | `number`             | `1`       | Plane geometry subdivisions.                                       |
-| webglEnabled | `boolean`            | `true`    | Toggle WebGL effect on/off.                                        |
+| Name           | Type                 | Default   | Description                                                        |
+| -------------- | -------------------- | --------- | ------------------------------------------------------------------ |
+| `type`         | `"image" \| "video"` | `"image"` | Render the ripple on a still image or a video.                     |
+| `src`          | `string`             | —         | Media source.                                                      |
+| `alt`          | `string`             | —         | Image alt text. Required (and only used) when `type` is `"image"`. |
+| `rippleMap`    | `Texture`            | built-in  | Custom ripple texture.                                             |
+| `intensity`    | `number`             | `0.2`     | Displacement strength.                                             |
+| `radius`       | `number`             | `12`      | Ripple size, up to `50`.                                           |
+| `expandRate`   | `number`             | `11`      | How fast ripples grow, up to `20`.                                 |
+| `decayRate`    | `number`             | `3`       | How fast ripples fade out, between `3` and `10`.                   |
+| `segments`     | `number`             | `1`       | Plane geometry subdivisions.                                       |
+| `webglEnabled` | `boolean`            | `true`    | Toggle WebGL effect on/off.                                        |
 
 It also forwards `<img>` attributes to [WebGL Image](/docs/components/primitive/webgl-image) and `<video>` attributes to [WebGL Video](/docs/components/primitive/webgl-video) depending on `type`.
 
@@ -508,7 +500,7 @@ React Three Fiber utilities.
 
 ============================================================
 ## Magnetic Dot Grid
-> A 2D canvas-based interactive dot grid with magnetic cursor effect
+> A 2D canvas-based interactive dot grid with magnetic cursor effect.
 
 Source file: components/cursor/magnetic-dot-grid.mdx
 
@@ -520,28 +512,30 @@ Source file: components/cursor/magnetic-dot-grid.mdx
 
 ## Usage
 
+Render it inside the section it should fill.
+
 ```tsx
-<MagneticDotGrid />
+<MagneticDotGrid className="w-screen h-screen inset-0 fixed" />
 ```
 
 ***
 
 ## API
 
-| Name              | Type       | Default                                       | Description                                        |
-| ----------------- | ---------- | --------------------------------------------- | -------------------------------------------------- |
-| dotRadius         | `number`   | `0.6`                                         | Radius of each dot in px.                          |
-| spacing           | `number`   | `16`                                          | Distance between dots in px.                       |
-| strength          | `number`   | `20`                                          | Strength of the magnetic force in px.              |
-| interactionRadius | `number`   | `500`                                         | Cursor influence range in px.                      |
-| snapSpeed         | `number`   | `9`                                           | How fast dots react to the cursor.                 |
-| returnSpeed       | `number`   | `5`                                           | How slowly dots return to their base position.     |
-| floatAmplitude    | `number`   | `1.8`                                         | How far dots floats from the cursor.               |
-| floatSpeed        | `number`   | `2`                                           | Speed of the floating fx.animation.                |
-| baseColor         | `string`   | `"#000000"`                                   | Default dot color.                                 |
-| centerColors      | `string[]` | `["#BCBCBC"]`                                 | Colors near the cursor. Cycles through the array.  |
-| cycleSpeed        | `number`   | `1.5`                                         | Color cycle speed.                                 |
-| className         | `string`   | `"absolute inset-0 touch-none w-full h-full"` | Canvas element classes for positioning and sizing. |
+| Name                | Type       | Default       | Description                                                          |
+| ------------------- | ---------- | ------------- | -------------------------------------------------------------------- |
+| `dotRadius`         | `number`   | `0.6`         | Radius of each dot in px.                                            |
+| `spacing`           | `number`   | `16`          | Distance between dots in px.                                         |
+| `strength`          | `number`   | `20`          | Strength of the magnetic force in px.                                |
+| `interactionRadius` | `number`   | `500`         | Cursor influence range in px.                                        |
+| `snapSpeed`         | `number`   | `9`           | How fast dots react to the cursor.                                   |
+| `returnSpeed`       | `number`   | `5`           | How slowly dots return to their base position.                       |
+| `floatAmplitude`    | `number`   | `1.8`         | How far dots drift during the idle float animation.                  |
+| `floatSpeed`        | `number`   | `2`           | Speed of the floating animation.                                     |
+| `baseColor`         | `string`   | `"#000000"`   | Default dot color.                                                   |
+| `centerColors`      | `string[]` | `["#BCBCBC"]` | Colors near the cursor. Cycles through the array.                    |
+| `cycleSpeed`        | `number`   | `1.5`         | Color cycle speed.                                                   |
+| `className`         | `string`   | —             | Classes applied to the canvas. Use it to size and position the grid. |
 
 ***
 
@@ -553,7 +547,7 @@ Re-creation of the canvas hero effect (as of March 22, 2026). Enable dark mode t
 
 ============================================================
 ## Pixel Media
-> A WebGL image or video that breaks into pixel blocks under the cursor, then falls back when you stop
+> A WebGL image or video that breaks into pixel blocks under the cursor, then falls back when you stop.
 
 Source file: components/cursor/pixel-media.mdx
 
@@ -578,25 +572,30 @@ export default function RootLayout({ children }) {
 Then use it anywhere in your app:
 
 ```tsx
-<PixelMedia type="image" src="/photo.jpg" alt="A photo" className="w-full h-auto" />
+<PixelMedia
+    type="image"
+    src="https://picsum.photos/seed/atelier-1/1200/800"
+    alt=""
+    className="w-full h-auto"
+/>
 ```
 
 ***
 
 ## API
 
-| Name              | Type                 | Default   | Description                                                        |
-| ----------------- | -------------------- | --------- | ------------------------------------------------------------------ |
-| type              | `"image" \| "video"` | `"image"` | Render the effect on a still image or a video.                     |
-| src               | `string`             | —         | Media source.                                                      |
-| alt               | `string`             | —         | Image alt text. Required (and only used) when `type` is `"image"`. |
-| gridSize          | `number`             | `22`      | Pixel blocks per axis.                                             |
-| interactionRadius | `number`             | `4`       | Cursor push radius.                                                |
-| strength          | `number`             | `1.65`    | Drag strength.                                                     |
-| aberration        | `number`             | `0.25`    | RGB channel split.                                                 |
-| trail             | `number`             | `0.93`    | Trail persistence.                                                 |
-| segments          | `number`             | `1`       | Plane geometry subdivisions.                                       |
-| webglEnabled      | `boolean`            | `true`    | Toggle WebGL effect on/off.                                        |
+| Name                | Type                 | Default   | Description                                                        |
+| ------------------- | -------------------- | --------- | ------------------------------------------------------------------ |
+| `type`              | `"image" \| "video"` | `"image"` | Render the effect on a still image or a video.                     |
+| `src`               | `string`             | —         | Media source.                                                      |
+| `alt`               | `string`             | —         | Image alt text. Required (and only used) when `type` is `"image"`. |
+| `gridSize`          | `number`             | `22`      | Pixel blocks per axis.                                             |
+| `interactionRadius` | `number`             | `4`       | Cursor push radius.                                                |
+| `strength`          | `number`             | `1.65`    | Drag strength.                                                     |
+| `aberration`        | `number`             | `0.25`    | RGB channel split.                                                 |
+| `trail`             | `number`             | `0.93`    | Trail persistence.                                                 |
+| `segments`          | `number`             | `1`       | Plane geometry subdivisions.                                       |
+| `webglEnabled`      | `boolean`            | `true`    | Toggle WebGL effect on/off.                                        |
 
 It also forwards `<img>` attributes to [WebGL Image](/docs/components/primitive/webgl-image) and `<video>` attributes to [WebGL Video](/docs/components/primitive/webgl-video) depending on `type`.
 
@@ -625,28 +624,42 @@ Source file: components/cursor/pixel-trail.mdx
 
 ## Usage
 
+The trail follows the cursor. In sample mode it picks its colors from the images under it.
+
 ```tsx
-<PixelTrail />
+<PixelTrail
+    className="w-screen h-screen inset-0 fixed"
+    mode="sample"
+    imageSelector="img"
+/>
+<img
+    crossOrigin="anonymous"
+    className="my-target"
+    src="https://picsum.photos/seed/atelier-1/1200/800"
+    alt=""
+/>
 ```
+
+Cross-origin images need `crossOrigin` to be sampled.
 
 ***
 
 ## API
 
-| Name          | Type                  | Default                      | Description                                       |
-| ------------- | --------------------- | ---------------------------- | ------------------------------------------------- |
-| mode          | `"color" \| "sample"` | `"color"`                    | Solid color trail or sample colors from images.   |
-| color         | `string`              | `"#000000"`                  | Trail color. Fallback when sampling misses.       |
-| imageSelector | `string`              | `"img"`                      | CSS selector for images to sample.                |
-| lighten       | `number`              | `20`                         | Brightness boost on sampled colors (`0`–`255`).   |
-| pixelSize     | `number`              | `20`                         | Size of each pixel square in px.                  |
-| trailRadius   | `number`              | `2`                          | Brush radius in grid cells. `0` for single pixel. |
-| lifetime      | `number`              | `1`                          | Max pixel lifetime in seconds.                    |
-| fade          | `number`              | `0.5`                        | Fade-out duration in seconds. `0` to disable.     |
-| showGrid      | `boolean`             | `false`                      | Show a grid overlay.                              |
-| gridColor     | `string`              | `"rgba(255, 255, 255, 0.1)"` | Grid line color.                                  |
-| gridThickness | `number`              | `1`                          | Grid line thickness in px.                        |
-| className     | `string`              | —                            | Root element classes for positioning and sizing.  |
+| Name            | Type                  | Default                      | Description                                                           |
+| --------------- | --------------------- | ---------------------------- | --------------------------------------------------------------------- |
+| `mode`          | `"color" \| "sample"` | `"color"`                    | Solid color trail or sample colors from images.                       |
+| `color`         | `string`              | `"#000000"`                  | Trail color. Fallback when sampling misses.                           |
+| `imageSelector` | `string`              | `"img"`                      | CSS selector for images to sample.                                    |
+| `lighten`       | `number`              | `20`                         | Brightness boost on sampled colors (`0`–`255`).                       |
+| `pixelSize`     | `number`              | `20`                         | Size of each pixel square in px.                                      |
+| `trailRadius`   | `number`              | `2`                          | Brush radius in grid cells. `0` for single pixel.                     |
+| `lifetime`      | `number`              | `1`                          | Max pixel lifetime in seconds.                                        |
+| `fade`          | `number`              | `0.5`                        | Fade-out duration in seconds. `0` to disable.                         |
+| `showGrid`      | `boolean`             | `false`                      | Show a grid overlay.                                                  |
+| `gridColor`     | `string`              | `"rgba(255, 255, 255, 0.1)"` | Grid line color.                                                      |
+| `gridThickness` | `number`              | `1`                          | Grid line thickness in px.                                            |
+| `className`     | `string`              | —                            | Classes applied to the canvas. Use it to size and position the trail. |
 
 ***
 
@@ -727,7 +740,7 @@ The one option you can't change is `autoRaf`: the provider drives Lenis itself.
 
 | Name       | Type           | Default               | Description                                           |
 | ---------- | -------------- | --------------------- | ----------------------------------------------------- |
-| `children` | `ReactNode`    | -                     | Your app or page content. Required.                   |
+| `children` | `ReactNode`    | —                     | Your app or page content. Required.                   |
 | `options`  | `LenisOptions` | `{ syncTouch: true }` | Lenis instance settings. `autoRaf` is always `false`. |
 
 ***
@@ -1234,10 +1247,15 @@ export default function RootLayout({ children }) {
 Then use it anywhere in your app:
 
 ```tsx
-<CurveMedia type="image" src="/photo.jpg" alt="A photo" className="w-full h-auto" />
+<CurveMedia
+    type="image"
+    src="https://picsum.photos/seed/atelier-1/1200/800"
+    alt=""
+    className="w-full h-auto"
+/>
 ```
 
-Works best with smooth scrolling, you can add [Smooth Scroll](/docs/components/primitive/smooth-scroll) at the root for that:
+Works best with smooth scrolling. You can add [Smooth Scroll](/docs/components/primitive/smooth-scroll) at the root for that:
 
 ```tsx title="Root layout"
 import { SmoothScroll } from "@/components/smooth-scroll";
@@ -1251,16 +1269,16 @@ export default function RootLayout({ children }) {
 
 ## API
 
-| Name         | Type                 | Default   | Description                                                                     |
-| ------------ | -------------------- | --------- | ------------------------------------------------------------------------------- |
-| type         | `"image" \| "video"` | `"image"` | Render the bend on a still image or a video.                                    |
-| src          | `string`             | —         | Media source.                                                                   |
-| alt          | `string`             | —         | Image alt text. Required (and only used) when `type` is `"image"`.              |
-| amplitude    | `number`             | `0.03`    | Maximum bend intensity, applied to the smoothed scroll velocity.                |
-| aberration   | `number`             | `0.003`   | RGB channel split along the scroll axis, scaled by velocity.                    |
-| smoothing    | `number`             | `6`       | Exponential smoothing for the velocity (higher = snappier, lower = floatier).   |
-| segments     | `number`             | `32`      | Plane subdivision count. Higher = smoother curve, more vertices.                |
-| webglEnabled | `boolean`            | `true`    | When false, the WebGL plane is skipped and the plain element is rendered as-is. |
+| Name           | Type                 | Default   | Description                                                                     |
+| -------------- | -------------------- | --------- | ------------------------------------------------------------------------------- |
+| `type`         | `"image" \| "video"` | `"image"` | Render the bend on a still image or a video.                                    |
+| `src`          | `string`             | —         | Media source.                                                                   |
+| `alt`          | `string`             | —         | Image alt text. Required (and only used) when `type` is `"image"`.              |
+| `amplitude`    | `number`             | `0.03`    | Maximum bend intensity, applied to the smoothed scroll velocity.                |
+| `aberration`   | `number`             | `0.003`   | RGB channel split along the scroll axis, scaled by velocity.                    |
+| `smoothing`    | `number`             | `6`       | Exponential smoothing for the velocity (higher = snappier, lower = floatier).   |
+| `segments`     | `number`             | `32`      | Plane subdivision count. Higher = smoother curve, more vertices.                |
+| `webglEnabled` | `boolean`            | `true`    | When false, the WebGL plane is skipped and the plain element is rendered as-is. |
 
 It also forwards `<img>` attributes to [WebGL Image](/docs/components/primitive/webgl-image) and `<video>` attributes to [WebGL Video](/docs/components/primitive/webgl-video) depending on `type`.
 
@@ -1289,11 +1307,18 @@ Source file: components/scroll/infinite-gallery.mdx
 
 ## Usage
 
+Pass the items as children. Drag or scroll to move the gallery.
+
 ```tsx
-<InfiniteGallery>
-  <img src="/1.jpg" alt="" />
-  <img src="/2.jpg" alt="" />
-  <img src="/3.jpg" alt="" />
+const IMAGES = [
+    "https://picsum.photos/seed/atelier-1/1200/800",
+    "https://picsum.photos/seed/atelier-2/1200/800",
+]
+
+<InfiniteGallery className="flex py-15" perView={4}>
+    {IMAGES.map((src) => (
+        <img key={src} src={src} alt="" className="h-80 w-auto object-cover" />
+    ))}
 </InfiniteGallery>
 ```
 
@@ -1301,15 +1326,15 @@ Source file: components/scroll/infinite-gallery.mdx
 
 ## API
 
-| Name           | Type        | Default     | Description                          |
-| -------------- | ----------- | ----------- | ------------------------------------ |
-| children       | `ReactNode` | —           | Items to render in the gallery.      |
-| perView        | `number`    | `4`         | Number of items visible at once.     |
-| speed          | `number`    | `6`         | Speed of the scroll.                 |
-| inertia        | `number`    | `0.6`       | Inertia of the scroll.               |
-| dragMultiplier | `number`    | `3`         | Multiplier applied to drag distance. |
-| gap            | `number`    | `5`         | Gap between items.                   |
-| className      | `string`    | `undefined` | Class for the container element.     |
+| Name             | Type        | Default | Description                                                                        |
+| ---------------- | ----------- | ------- | ---------------------------------------------------------------------------------- |
+| `children`       | `ReactNode` | —       | Items to render in the gallery. Repeated automatically to fill the view. Required. |
+| `perView`        | `number`    | `4`     | Number of items visible at once.                                                   |
+| `speed`          | `number`    | `6`     | Speed of the scroll.                                                               |
+| `inertia`        | `number`    | `0.6`   | Inertia of the scroll.                                                             |
+| `dragMultiplier` | `number`    | `3`     | Multiplier applied to drag distance.                                               |
+| `gap`            | `number`    | `5`     | Gap between items.                                                                 |
+| `className`      | `string`    | —       | Class for the container element.                                                   |
 
 ***
 
@@ -1333,24 +1358,37 @@ Source file: components/scroll/infinite-parallax.mdx
 
 ## Usage
 
-Each column is composable: stack as many as you want, you can change `autoScrollSpeed` and `parallaxAmount` per column, and change the direction to `reversed` to alternate their direction to obtain the desired effect.
+Stack as many columns as you want. Alternate their direction with `reversed`.
 
 ```tsx
-<div className="flex h-screen gap-2 overflow-hidden">
-  <InfiniteParallax>
-    {images.map((src) => (
-      <img key={src} src={src} alt="" className="mb-2 w-full" />
-    ))}
-  </InfiniteParallax>
-  <InfiniteParallax reversed>
-    {images.map((src) => (
-      <img key={src} src={src} alt="" className="mb-2 w-full" />
-    ))}
-  </InfiniteParallax>
+const IMAGES = [
+    "https://picsum.photos/seed/atelier-1/1200/800",
+    "https://picsum.photos/seed/atelier-2/1200/800",
+    "https://picsum.photos/seed/atelier-3/1200/800",
+]
+
+<div className="flex h-200 gap-2 overflow-hidden">
+    <InfiniteParallax>
+        {IMAGES.map((src) => (
+            <img key={src} src={src} className="mb-2 w-full" alt="" />
+        ))}
+    </InfiniteParallax>
+
+    <InfiniteParallax reversed>
+        {IMAGES.map((src) => (
+            <img key={src} src={src} className="mb-2 w-full" alt="" />
+        ))}
+    </InfiniteParallax>
+
+    <InfiniteParallax>
+        {IMAGES.map((src) => (
+            <img key={src} src={src} className="mb-2 w-full" alt="" />
+        ))}
+    </InfiniteParallax>
 </div>
 ```
 
-Works best with smooth scrolling, you can add [Smooth Scroll](/docs/components/primitive/smooth-scroll) at the root for that:
+Works best with smooth scrolling. You can add [Smooth Scroll](/docs/components/primitive/smooth-scroll) at the root for that:
 
 ```tsx title="Root layout"
 import { SmoothScroll } from "@/components/smooth-scroll";
@@ -1364,12 +1402,13 @@ export default function RootLayout({ children }) {
 
 ## API
 
-| Name            | Type        | Default | Description                                 |
-| --------------- | ----------- | ------- | ------------------------------------------- |
-| children        | `ReactNode` | —       | Items to render in the column.              |
-| reversed        | `boolean`   | `false` | Reverse the column's scroll direction.      |
-| autoScrollSpeed | `number`    | `0.02`  | Auto-scroll speed. `0` to disable.          |
-| parallaxAmount  | `number`    | `2`     | Parallax intensity applied while scrolling. |
+| Name              | Type        | Default | Description                                    |
+| ----------------- | ----------- | ------- | ---------------------------------------------- |
+| `children`        | `ReactNode` | —       | Items to render in the column.                 |
+| `reversed`        | `boolean`   | `false` | Reverse the column's scroll direction.         |
+| `autoScrollSpeed` | `number`    | `0.02`  | Auto-scroll speed. `0` to disable.             |
+| `parallaxAmount`  | `number`    | `2`     | Parallax intensity applied while scrolling.    |
+| `className`       | `string`    | —       | Extra classes applied to the column container. |
 
 ***
 
@@ -1402,10 +1441,16 @@ Source file: components/scroll/infinite-zoom.mdx
 Pass the items as children and scroll the wheel to zoom through them.
 
 ```tsx
-<InfiniteZoom>
-  <img src="/1.jpg" alt="" />
-  <img src="/2.jpg" alt="" />
-  <img src="/3.jpg" alt="" />
+const IMAGES = [
+    "https://picsum.photos/seed/atelier-1/1200/800",
+    "https://picsum.photos/seed/atelier-2/1200/800",
+    "https://picsum.photos/seed/atelier-3/1200/800",
+]
+
+<InfiniteZoom className="fixed inset-0 overflow-hidden touch-none">
+    {IMAGES.map((src) => (
+        <img key={src} src={src} alt="" className="h-auto w-150 object-cover" />
+    ))}
 </InfiniteZoom>
 ```
 
@@ -1413,13 +1458,13 @@ Pass the items as children and scroll the wheel to zoom through them.
 
 ## API
 
-| Name            | Type        | Default                                    | Description                                                |
-| --------------- | ----------- | ------------------------------------------ | ---------------------------------------------------------- |
-| children        | `ReactNode` | —                                          | Items to zoom.                                             |
-| zoomAmount      | `number`    | `3`                                        | Scale between items. Higher values equals increased depth. |
-| lerpValue       | `number`    | `0.08`                                     | Smoothing for the wheel input.                             |
-| className       | `string`    | `fixed inset-0 overflow-hidden touch-none` | Class for the outer container.                             |
-| backgroundSpeed | `number`    | `0.2`                                      | Background speed. Deceleration of the last item in view.   |
+| Name              | Type        | Default | Description                                                                                                                         |
+| ----------------- | ----------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------- |
+| `children`        | `ReactNode` | —       | Items to zoom. Required.                                                                                                            |
+| `zoomAmount`      | `number`    | `3`     | Scale between items. Higher values equals increased depth.                                                                          |
+| `lerpValue`       | `number`    | `0.08`  | Smoothing for the wheel input.                                                                                                      |
+| `className`       | `string`    | —       | Class for the outer container. Use it to size the zoom and block native scrolling, e.g. `fixed inset-0 overflow-hidden touch-none`. |
+| `backgroundSpeed` | `number`    | `0.2`   | Background speed. Deceleration of the last item in view.                                                                            |
 
 
 ============================================================
@@ -1436,15 +1481,13 @@ Source file: components/scroll/pixel-scroll.mdx
 
 ## Usage
 
-By default the reveal is driven by the component's own scroll position, filling in as it passes through the viewport.
+By default the component creates its own scroll section and pins the canvas on screen while the grid fills in. This is what the demo above uses.
 
 ```tsx
-<div className="h-screen" />
-<PixelScroll className="h-screen bg-black text-white" />
-<div className="h-screen" />
+<PixelScroll className="bg-black text-white" />
 ```
 
-Works best with smooth scrolling, you can add [Smooth Scroll](/docs/components/primitive/smooth-scroll) at the root for that:
+Works best with smooth scrolling. You can add [Smooth Scroll](/docs/components/primitive/smooth-scroll) at the root for that:
 
 ```tsx title="Root layout"
 import { SmoothScroll } from "@/components/smooth-scroll";
@@ -1460,7 +1503,7 @@ export default function RootLayout({ children }) {
 * `bg-black` sets the background.
 
 ```tsx
-<PixelScroll className="size-full bg-white text-black" />
+<PixelScroll className="bg-white text-black" />
 ```
 
 ### Direction
@@ -1470,38 +1513,48 @@ export default function RootLayout({ children }) {
 * `"sweep"` fills in, then clears out, within a single scroll.
 
 ```tsx title="direction=cover"
-<PixelScroll direction="cover" className="size-full bg-black text-white" />
+<PixelScroll direction="cover" className="bg-black text-white" />
 ```
 
 ```tsx title="direction=clear"
-<PixelScroll direction="clear" className="size-full bg-black text-white" />
+<PixelScroll direction="clear" className="bg-black text-white" />
 ```
 
 ```tsx title="direction=sweep"
-<PixelScroll direction="sweep" className="size-full bg-black text-white" />
+<PixelScroll direction="sweep" className="bg-black text-white" />
 ```
 
-### Pinned to a scroll section
+### Scroll length
 
-Set `scrollDistance` and the component pins the canvas on screen while that much page scrolls past. This is what the demo above uses.
+`scrollLength` sets how many viewport heights of scrolling the reveal takes:
 
 ```tsx
-<PixelScroll scrollDistance="300vh" direction="sweep" className="bg-black text-white" />
+<PixelScroll scroll={{ scrollLength: 3 }} className="bg-black text-white" />
+```
+
+### Driven by the viewport
+
+Set `scroll="viewport"` and nothing gets pinned: the reveal is driven by the canvas's own position, filling in as it passes through the viewport. Give the canvas a size.
+
+```tsx
+<div className="h-screen" />
+<PixelScroll scroll="viewport" className="h-screen bg-black text-white" />
+<div className="h-screen" />
 ```
 
 ### Custom scroll section
 
-If you need control over the layout, you can also build the section yourself and pass `scrollTargetRef`:
+If you need control over the layout, you can also build the pinned section yourself and pass it as `track`:
 
 ```tsx
-const scrollTargetRef = useRef<ComponentRef<"div">>(null)
+const trackRef = useRef<ComponentRef<"div">>(null)
 
 <div>
   <div className="h-screen" />
 
-  <div ref={scrollTargetRef} className="relative h-[300vh]">
+  <div ref={trackRef} className="relative h-[300vh]">
     <div className="sticky top-0 h-screen">
-      <PixelScroll scrollTargetRef={scrollTargetRef} className="size-full bg-black text-white" />
+      <PixelScroll scroll={{ track: trackRef }} className="bg-black text-white" />
     </div>
   </div>
 
@@ -1513,16 +1566,23 @@ const scrollTargetRef = useRef<ComponentRef<"div">>(null)
 
 ## API
 
-| Name              | Type                             | Default   | Description                                                                                                                                                                      |
-| ----------------- | -------------------------------- | --------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `density`         | `number`                         | `20`      | Number of pixel columns across the canvas, capped at 200. The row count is derived from the canvas height so pixels stay square.                                                 |
-| `colors`          | `string[]`                       | `[]`      | CSS colors a pixel can briefly show before it turns the text color. When empty, pixels turn the text color with no color hint.                                                   |
-| `colorRatio`      | `number`                         | `0.25`    | Fraction of pixels that show a color hint, from 0 to 1. Has no effect when `colors` is empty.                                                                                    |
-| `randomness`      | `number`                         | `0.4`     | How far each pixel's fill point deviates from the bottom-to-top gradient, from 0 to 1. At `0` the grid fills as an ordered gradient; at `1` the fill points are fully scattered. |
-| `direction`       | `"cover" \| "clear" \| "sweep"`  | `"cover"` | How the grid responds to scroll. `"cover"` fills it in, `"clear"` empties it, and `"sweep"` does both in one scroll.                                                             |
-| `scrollDistance`  | `string`                         | —         | When set, pins the canvas and drives the reveal over that much scrolling. Any CSS height. Ignored when `scrollTargetRef` is set.                                                 |
-| `scrollTargetRef` | `RefObject<HTMLElement \| null>` | —         | Element whose scroll position drives the reveal. Defaults to the component's own canvas.                                                                                         |
-| `className`       | `string`                         | —         | Classes forwarded to the canvas element.                                                                                                                                         |
+| Name         | Type                            | Default               | Description                                                                                                                                                                      |
+| ------------ | ------------------------------- | --------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `density`    | `number`                        | `20`                  | Number of pixel columns across the canvas, capped at 200. The row count is derived from the canvas height so pixels stay square.                                                 |
+| `colors`     | `string[]`                      | `[]`                  | CSS colors a pixel can briefly show before it turns the text color. When empty, pixels turn the text color with no color hint.                                                   |
+| `colorRatio` | `number`                        | `0.25`                | Fraction of pixels that show a color hint, from 0 to 1. Has no effect when `colors` is empty.                                                                                    |
+| `randomness` | `number`                        | `0.4`                 | How far each pixel's fill point deviates from the bottom-to-top gradient, from 0 to 1. At `0` the grid fills as an ordered gradient; at `1` the fill points are fully scattered. |
+| `direction`  | `"cover" \| "clear" \| "sweep"` | `"cover"`             | How the grid responds to scroll. `"cover"` fills it in, `"clear"` empties it, and `"sweep"` does both in one scroll.                                                             |
+| `scroll`     | `ScrollMode`                    | `{ scrollLength: 2 }` | Scroll behavior, one of the modes below.                                                                                                                                         |
+| `className`  | `string`                        | —                     | Classes forwarded to the canvas element.                                                                                                                                         |
+
+### Scroll modes
+
+| Mode                                        | Description                                                                                               |
+| ------------------------------------------- | --------------------------------------------------------------------------------------------------------- |
+| `{ scrollLength: number }`                  | Pins the canvas in a built-in section and drives the reveal over that many viewport heights of scrolling. |
+| `"viewport"`                                | Skips pinning. The reveal follows the canvas's own position through the viewport.                         |
+| `{ track: RefObject<HTMLElement \| null> }` | Drives the reveal from your own scrolled section.                                                         |
 
 
 ============================================================
@@ -1542,14 +1602,22 @@ Source file: components/scroll/scattered-scroll.mdx
 The component takes the items as children. Any element works.
 
 ```tsx
+const IMAGES = [
+    "https://picsum.photos/seed/atelier-1/1200/800",
+    "https://picsum.photos/seed/atelier-2/1200/800",
+    "https://picsum.photos/seed/atelier-3/1200/800",
+    "https://picsum.photos/seed/atelier-4/1200/800",
+    "https://picsum.photos/seed/atelier-5/1200/800",
+]
+
 <ScatteredScroll>
-  <img src="/1.webp" alt="" className="aspect-[5/7] w-[30vw] object-cover" />
-  <img src="/2.webp" alt="" className="aspect-[5/7] w-[30vw] object-cover" />
-  <img src="/3.webp" alt="" className="aspect-[5/7] w-[30vw] object-cover" />
+    {IMAGES.map((src) => (
+        <img key={src} src={src} alt="" className="aspect-[5/7] w-[30vw] object-cover" />
+    ))}
 </ScatteredScroll>
 ```
 
-Works best with smooth scrolling, you can add [Smooth Scroll](/docs/components/primitive/smooth-scroll) at the root for that:
+Works best with smooth scrolling. You can add [Smooth Scroll](/docs/components/primitive/smooth-scroll) at the root for that:
 
 ```tsx title="Root layout"
 import { SmoothScroll } from "@/components/smooth-scroll";
@@ -1559,19 +1627,31 @@ export default function RootLayout({ children }) {
 }
 ```
 
-### Custom scroll section
+### Scroll length
 
-By default the component creates the scroll section for you. If you need control over the layout, you can also build the section yourself and pass `scrollTargetRef`:
+By default the component creates the scroll section for you. `scrollLength` sets how many viewport heights of scrolling the effect takes:
 
 ```tsx
-const scrollTargetRef = useRef<ComponentRef<"div">>(null)
+<ScatteredScroll scroll={{ scrollLength: 4 }}>
+  <img src="/1.webp" alt="" className="aspect-[5/7] w-[30vw] object-cover" />
+  <img src="/2.webp" alt="" className="aspect-[5/7] w-[30vw] object-cover" />
+  <img src="/3.webp" alt="" className="aspect-[5/7] w-[30vw] object-cover" />
+</ScatteredScroll>
+```
+
+### Custom scroll section
+
+If you need control over the layout, you can also build the section yourself and pass it as `track`:
+
+```tsx
+const trackRef = useRef<ComponentRef<"div">>(null)
 
 <div>
   <div className="h-screen" />
 
-  <div ref={scrollTargetRef} className="relative h-[500vh] overflow-x-clip">
+  <div ref={trackRef} className="relative h-[300vh] overflow-x-clip">
     <div className="sticky top-0 flex h-screen items-center justify-center gap-2">
-      <ScatteredScroll scrollTargetRef={scrollTargetRef}>
+      <ScatteredScroll scroll={{ track: trackRef }}>
         <img src="/1.webp" alt="" className="aspect-[5/7] w-[30vw] object-cover" />
         <img src="/2.webp" alt="" className="aspect-[5/7] w-[30vw] object-cover" />
         <img src="/3.webp" alt="" className="aspect-[5/7] w-[30vw] object-cover" />
@@ -1587,11 +1667,17 @@ const scrollTargetRef = useRef<ComponentRef<"div">>(null)
 
 ## API
 
-| Prop              | Type                             | Default   | Description                                                                                 |
-| ----------------- | -------------------------------- | --------- | ------------------------------------------------------------------------------------------- |
-| `children`        | `ReactNode`                      | —         | The items to animate. Any JSX element allowed.                                              |
-| `scrollDistance`  | `string`                         | `"500vh"` | How much scrolling the effect takes. Any CSS height. Ignored when `scrollTargetRef` is set. |
-| `scrollTargetRef` | `RefObject<HTMLElement \| null>` | —         | External scrolled section driving the animation. Disables the built-in section.             |
+| Name       | Type         | Default               | Description                                              |
+| ---------- | ------------ | --------------------- | -------------------------------------------------------- |
+| `children` | `ReactNode`  | —                     | The items to animate. Any JSX element allowed. Required. |
+| `scroll`   | `ScrollMode` | `{ scrollLength: 2 }` | Scroll behavior, one of the modes below.                 |
+
+### Scroll modes
+
+| Mode                                        | Description                                                                                  |
+| ------------------------------------------- | -------------------------------------------------------------------------------------------- |
+| `{ scrollLength: number }`                  | Creates the scroll section and runs the effect over that many viewport heights of scrolling. |
+| `{ track: RefObject<HTMLElement \| null> }` | Drives the animation from your own scrolled section instead of the built-in one.             |
 
 ***
 
@@ -1621,16 +1707,18 @@ Source file: components/text/pixelated-text.mdx
 
 ## Usage
 
-By default the text renders inside a `<span>`.
+The text is redrawn as animated pixel blocks on a 2D canvas, shifting between clear and pixelated. The original text stays in the DOM for SEO and screen readers.
 
-```tsx title="Default"
-<PixelatedText>Pixelate me</PixelatedText>
+```tsx
+<PixelatedText>Enter your text here</PixelatedText>
 ```
 
-Pass `render` to swap the wrapper for any DOM element. Your props are merged with the component's, so it stays the right semantic tag (heading, paragraph, link) while keeping the animation.
+### Choose the wrapper element
 
-```tsx title="Custom element"
-<PixelatedText render={<h1 className="text-4xl font-bold" />}>Pixelate me</PixelatedText>
+Pass `render` to choose the wrapper element. Your props are merged with the component's, so it stays the right semantic tag while keeping the animation. Without `render` the text renders inside a `<span>`.
+
+```tsx
+<PixelatedText render={<p className="text-4xl" />}>Enter your text here</PixelatedText>
 ```
 
 ***
@@ -1662,16 +1750,18 @@ Source file: components/text/text-bounce.mdx
 
 ## Usage
 
-By default the text renders inside a `<span>`.
+Each letter drifts away from the cursor on hover, then springs back into place.
 
-```tsx title="Default"
-<TextBounce>Hover over me</TextBounce>
+```tsx
+<TextBounce>Enter your text here</TextBounce>
 ```
 
-Pass `render` to swap the wrapper for any DOM element. Your props are merged with the component's, so it stays the right semantic tag (heading, paragraph, link) while keeping the animation.
+### Choose the wrapper element
 
-```tsx title="Custom element"
-<TextBounce render={<h1 className="text-4xl font-bold" />}>Hover over me</TextBounce>
+Pass `render` to choose the wrapper element. Your props are merged with the component's, so it stays the right semantic tag while keeping the animation. Without `render` the text renders inside a `<span>`.
+
+```tsx
+<TextBounce render={<p className="text-4xl" />}>Enter your text here</TextBounce>
 ```
 
 ***
@@ -1717,24 +1807,24 @@ export default function RootLayout({ children }) {
 Then use it anywhere in your app:
 
 ```tsx
-<TextFluid>Liquid type</TextFluid>
+<TextFluid render={<p className="text-4xl"></p>}>Enter your text here</TextFluid>
 ```
 
 ***
 
 ## API
 
-| Name         | Type      | Default | Description                                           |
-| ------------ | --------- | ------- | ----------------------------------------------------- |
-| children     | `string`  | —       | Text content.                                         |
-| speed        | `number`  | `0.2`   | Overall animation speed multiplier.                   |
-| opacity      | `number`  | `1`     | Overall opacity.                                      |
-| ripple       | `number`  | `0.015` | UV warp strength: how much the surface refracts.      |
-| amplitude    | `number`  | `0.002` | FBM displacement amplitude: how far vertices scatter. |
-| frequency    | `number`  | `1.5`   | FBM spatial frequency: size of the noise pattern.     |
-| segments     | `number`  | `20`    | Plane geometry subdivisions, higher = better quality. |
-| webglEnabled | `boolean` | `true`  | Toggle WebGL effect on/off, falls back to plain text. |
-| className    | `string`  | —       | Class applied to the underlying span.                 |
+| Name           | Type      | Default | Description                                           |
+| -------------- | --------- | ------- | ----------------------------------------------------- |
+| `children`     | `string`  | —       | Text content. Required.                               |
+| `speed`        | `number`  | `0.2`   | Overall animation speed multiplier.                   |
+| `opacity`      | `number`  | `1`     | Overall opacity.                                      |
+| `ripple`       | `number`  | `0.015` | UV warp strength: how much the surface refracts.      |
+| `amplitude`    | `number`  | `0.002` | FBM displacement amplitude: how far vertices scatter. |
+| `frequency`    | `number`  | `1.5`   | FBM spatial frequency: size of the noise pattern.     |
+| `segments`     | `number`  | `20`    | Plane geometry subdivisions, higher = better quality. |
+| `webglEnabled` | `boolean` | `true`  | Toggle WebGL effect on/off, falls back to plain text. |
+| `className`    | `string`  | —       | Class applied to the underlying span.                 |
 
 
 ============================================================
@@ -1751,30 +1841,32 @@ Source file: components/text/text-scramble.mdx
 
 ## Usage
 
-By default the text renders inside a `<span>`.
+The text scrambles through random characters and reveals from left to right. The animation plays on mount and replays on hover.
 
-```tsx title="Default"
-<TextScramble>Scramble me</TextScramble>
+```tsx
+<TextScramble>Enter your text here</TextScramble>
 ```
 
-Pass `render` to swap the wrapper for any DOM element. Your props are merged with the component's, so it stays the right semantic tag (heading, paragraph, link) while keeping the animation.
+### Choose the wrapper element
 
-```tsx title="Custom element"
-<TextScramble render={<h1 className="text-4xl font-bold" />}>Scramble me</TextScramble>
+Pass `render` to choose the wrapper element. Your props are merged with the component's, so it stays the right semantic tag while keeping the animation. Without `render` the text renders inside a `<span>`.
+
+```tsx
+<TextScramble render={<p className="text-4xl" />}>Enter your text here</TextScramble>
 ```
 
 ***
 
 ## API
 
-| Name          | Type                       | Default                                     | Description                              |
-| ------------- | -------------------------- | ------------------------------------------- | ---------------------------------------- |
-| `children`    | `string`                   | —                                           | Text content to scramble. Required.      |
-| `duration`    | `number`                   | `1`                                         | Total duration of the reveal in seconds. |
-| `playOnMount` | `boolean`                  | `true`                                      | Plays the scramble animation on mount.   |
-| `playOnHover` | `boolean`                  | `true`                                      | Replays the scramble animation on hover. |
-| `characters`  | `string`                   | `"abcdefghijklmnopq rstuvwxyz@!#*$%^&+_[]"` | Characters used to scramble.             |
-| `render`      | `ReactElement \| function` | `<span/>`                                   | Override the wrapper element.            |
+| Name          | Type                       | Default                                    | Description                              |
+| ------------- | -------------------------- | ------------------------------------------ | ---------------------------------------- |
+| `children`    | `string`                   | —                                          | Text content to scramble. Required.      |
+| `duration`    | `number`                   | `1`                                        | Total duration of the reveal in seconds. |
+| `playOnMount` | `boolean`                  | `true`                                     | Plays the scramble animation on mount.   |
+| `playOnHover` | `boolean`                  | `true`                                     | Replays the scramble animation on hover. |
+| `characters`  | `string`                   | `"abcdefghijklmnopqrstuvwxyz@!#*$%^&+_[]"` | Characters used to scramble.             |
+| `render`      | `ReactElement \| function` | `<span/>`                                  | Override the wrapper element.            |
 
 ***
 
@@ -1801,9 +1893,11 @@ Source file: components/transition/clip-reveal.mdx
 
 ## Usage
 
+Wrap the content to reveal. The animation plays on mount.
+
 ```tsx
-<ClipReveal className="h-full w-full">
-  <img src="/photo.jpg" alt="" className="absolute inset-0 h-full w-full object-cover" />
+<ClipReveal className="bg-[#000000]">
+    <img src="https://picsum.photos/seed/atelier-1/1200/800" alt="image" />
 </ClipReveal>
 ```
 
@@ -1849,7 +1943,7 @@ Source file: components/transition/stripe-wipe.mdx
 
 ## Usage
 
-Render it as a fixed overlay; the stripes wipe away to reveal the page beneath.
+Render it as a fixed overlay. The stripes wipe away to reveal the page beneath.
 
 ```tsx
 <StripeWipe className="fixed inset-0" />
@@ -1895,11 +1989,15 @@ Source file: components/transition/sweep-exit.mdx
 
 ```tsx
 <SweepExit
-  backgroundSlot={
-    <img src="/overlay.jpg" alt="" className="absolute inset-0 h-full w-full object-cover" />
-  }
+    backgroundSlot={
+        <img
+            src="https://picsum.photos/seed/atelier-1/1200/800"
+            alt=""
+            className="absolute inset-0 h-full w-full object-cover"
+        />
+    }
 >
-  <YourPage />
+    <div className="h-screen" />
 </SweepExit>
 ```
 
@@ -1916,6 +2014,7 @@ Source file: components/transition/sweep-exit.mdx
 | `insetY`         | `number`     | `10`    | Vertical inset at peak contraction in percent.        |
 | `trigger`        | `boolean`    | `true`  | Starts the animation when set to true.                |
 | `onComplete`     | `() => void` | —       | Called when the animation finishes.                   |
+| `className`      | `string`     | —       | Classes applied to the root element.                  |
 
 ***
 
@@ -1986,7 +2085,7 @@ export function ComponentExample({}: ComponentExampleProps) {...}
 
 ## Dependencies
 
-This project uses [motion.dev](https://motion.dev/) for DOM-based animations, [React Three Fiber](https://r3f.docs.pmnd.rs/) for WebG effects, and [Tailwind CSS](https://tailwindcss.com/) for styling.
+This project uses [motion.dev](https://motion.dev/) for DOM-based animations, [React Three Fiber](https://r3f.docs.pmnd.rs/) for WebGL effects, and [Tailwind CSS](https://tailwindcss.com/) for styling.
 
 Vanilla JS animations such as `requestAnimationFrame`, `Web Animations API` can also be used where a library isn't needed.
 

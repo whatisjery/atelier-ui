@@ -1,5 +1,5 @@
 import { useScroll } from "motion/react"
-import { type ComponentRef, type RefObject, useEffect, useMemo, useRef, useState } from "react"
+import { type ComponentRef, useEffect, useMemo, useRef, useState } from "react"
 
 const MAX_DENSITY = 200
 
@@ -9,18 +9,14 @@ type Cell = {
     flashAt: number
 }
 
-export type ScrollMode =
-    | "viewport"
-    | { scrollLength: number; track?: never }
-    | { track: RefObject<HTMLElement | null>; scrollLength?: never }
-
 export type PixelScrollProps = {
     density?: number
     colors?: string[]
     colorRatio?: number
     randomness?: number
     direction?: "cover" | "clear" | "sweep"
-    scroll?: ScrollMode
+    scrollDistance?: number
+    overlap?: number
     className?: string
 }
 
@@ -47,7 +43,8 @@ export default function PixelScroll({
     colorRatio = 0.25,
     randomness = 0.4,
     direction = "cover",
-    scroll = { scrollLength: 2 },
+    scrollDistance = 200,
+    overlap = 0,
     className,
 }: PixelScrollProps) {
     const [size, setSize] = useState({ width: 0, height: 0, rows: 0 })
@@ -56,8 +53,8 @@ export default function PixelScroll({
     const cols = Math.min(density, MAX_DENSITY)
 
     const { scrollYProgress } = useScroll({
-        target: scroll === "viewport" ? canvasRef : (scroll.track ?? ownTargetRef),
-        offset: scroll === "viewport" ? ["start end", "start start"] : ["start start", "end end"],
+        target: ownTargetRef,
+        offset: ["start start", "end end"],
     })
 
     useEffect(() => {
@@ -161,13 +158,11 @@ export default function PixelScroll({
     // Canvas redraws the whole grid each scroll frame in a single loop, instead of using a div per pixel (for performance reasons)
     const canvas = <canvas ref={canvasRef} className={`block size-full ${className ?? ""}`} />
 
-    if (scroll === "viewport" || scroll.track) return canvas
-
     return (
         <section
             ref={ownTargetRef}
             className="relative"
-            style={{ height: `${(scroll.scrollLength + 1) * 100}vh` }}
+            style={{ height: `${scrollDistance + 100}vh`, margin: `${-overlap / 2}vh 0` }}
         >
             <div className="sticky top-0 h-screen">{canvas}</div>
         </section>

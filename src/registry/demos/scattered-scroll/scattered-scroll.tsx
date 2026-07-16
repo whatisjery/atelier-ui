@@ -16,7 +16,7 @@ export default function ScatteredScrollDemo(controls: Partial<ScatteredScrollPro
                 Scroll down
             </div>
 
-            <ScatteredScroll scroll={{ scrollLength: 3 }} {...controls}>
+            <ScatteredScroll overlap={200} scrollDistance={350} {...controls}>
                 {IMAGE_URLS.map((imageUrl, index) => (
                     <img
                         key={imageUrl}
