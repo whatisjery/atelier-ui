@@ -60,7 +60,7 @@ export default function LandingClipReveal() {
                             style={{ opacity }}
                             className="text-lg max-w-xl text-center"
                         >
-                            Every component is and designed with care and every motion is judged by{" "}
+                            Every component is designed with care and every motion is judged by{" "}
                             <span className="font-medium text-accent-1 underline">
                                 {" "}
                                 a real human eye.
