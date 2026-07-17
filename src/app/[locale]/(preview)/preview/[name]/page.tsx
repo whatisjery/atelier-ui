@@ -63,7 +63,7 @@ export default function PreviewPage() {
         <>
             <div
                 aria-hidden={true}
-                className="pointer-events-none user-select-none -z-1 fixed inset-0 w-full h-full pattern-line opacity-60"
+                className="pointer-events-none user-select-none -z-1 fixed inset-0 w-full h-full opacity-60"
             />
 
             {needsSmoothScroll(name) ? <SmoothScroll>{scene}</SmoothScroll> : scene}

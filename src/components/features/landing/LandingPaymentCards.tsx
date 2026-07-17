@@ -1,5 +1,4 @@
 import { Check } from "lucide-react"
-import { IconPxRobot } from "@/components/icons/IconPxRobot"
 import Button from "@/components/ui/Button"
 import { Link } from "@/i18n/navigation"
 import { cn } from "@/lib/utils"
@@ -17,12 +16,12 @@ const FRAME_HANDLES = [
 const PLANS = [
     {
         label: "plan / 01",
-        title: "Community catalog.",
+        title: "Free catalog.",
         price: "$0",
         highlighted: false,
         button: "Browse the catalog",
         features: [
-            "25+ animated components",
+            "25+ open-source components",
             "Production-ready, typed React code",
             "Shared WebGL canvas system",
             "CLI install, code you own",
@@ -37,12 +36,12 @@ const PLANS = [
         highlighted: true,
         button: "Get pro access",
         features: [
-            "Everything in the open catalog",
-            "8 pro-only components, and counting",
-            "Shader Studio, live tuning and export",
-            "Collages, full-page compositions",
+            "Shader Studio, live editing and export",
             "Every future pro release included",
+            "Everything in the free catalog",
+            "8 pro-only components, and counting",
             "One payment, no subscription",
+            "Support a fellow developer",
         ],
     },
 ] as const
@@ -59,14 +58,17 @@ type PlanCardProps = {
 function PlanCard({ plan, checkoutHref }: PlanCardProps) {
     return (
         <div
-            className={cn("rounded-lg border w-full flex flex-col justify-between p-10 relative", {
-                "border-accent-2/50": plan.highlighted,
-            })}
+            className={cn(
+                "rounded-lg border w-full flex flex-col justify-between p-5 sm:p-10 relative",
+                {
+                    "border-accent-2/50": plan.highlighted,
+                },
+            )}
         >
             {plan.highlighted && (
                 <div
                     aria-hidden="true"
-                    className="absolute lg:-inset-6 -inset-3 pointer-events-none"
+                    className="absolute lg:-inset-6 -inset-5 pointer-events-none"
                 >
                     <svg
                         aria-hidden="true"
@@ -101,62 +103,44 @@ function PlanCard({ plan, checkoutHref }: PlanCardProps) {
                 </div>
             )}
 
-            <div className="flex flex-col">
-                <p className="text-xs uppercase font-medium font-mono mb-2">{plan.label}</p>
-                <h3 className="text-3xl font-medium mb-4">{plan.title}</h3>
-            </div>
+            <div className="relative z-2">
+                <div className="flex flex-col">
+                    <p className="text-xs uppercase font-medium font-mono mb-2">{plan.label}</p>
+                    <h3 className="text-3xl font-medium mb-4">{plan.title}</h3>
+                </div>
 
-            <div className="mt-5 mb-20">
-                <p className="font-medium text-5xl mb-5">{plan.price}</p>
-                <ul className="space-y-2 font-medium">
-                    {plan.features.map((feature) => (
-                        <li key={feature} className="flex items-center gap-1">
-                            <Check strokeWidth={1.5} className="size-4.5" />
-                            {feature}
-                        </li>
-                    ))}
-                </ul>
-            </div>
+                <div className="mt-5 mb-20">
+                    <p className="font-medium text-5xl mb-5">{plan.price}</p>
+                    <ul className="space-y-2 font-medium">
+                        {plan.features.map((feature) => (
+                            <li key={feature} className="flex items-center gap-1">
+                                <Check strokeWidth={1.5} className="size-4.5" />
+                                {feature}
+                            </li>
+                        ))}
+                    </ul>
+                </div>
 
-            <Button variant={plan.highlighted ? "secondary" : "dashed"} asChild>
-                {plan.highlighted ? (
-                    <a href={checkoutHref} target="_blank" rel="noopener noreferrer">
-                        {plan.button}
-                    </a>
-                ) : (
-                    <Link href="/catalog">{plan.button}</Link>
-                )}
-            </Button>
+                <Button variant={plan.highlighted ? "secondary" : "dashed"} asChild>
+                    {plan.highlighted ? (
+                        <a href={checkoutHref} target="_blank" rel="noopener noreferrer">
+                            {plan.button}
+                        </a>
+                    ) : (
+                        <Link href="/catalog">{plan.button}</Link>
+                    )}
+                </Button>
+            </div>
         </div>
     )
 }
 
 export default function LandingPaymentCards({ checkoutHref }: LandingPaymentCardsProps) {
     return (
-        <section
-            id="pricing"
-            className="flex flex-col items-center justify-center max-w-5xl w-full mb-80 max-sm:mt-20 min-lg:px-5 scroll-mt-nav-h"
-        >
-            <IconPxRobot className="mb-8 size-20 a-float" />
-            <h2 className="flex flex-col items-center text-center text-4xl xxs:text-5xl sm:text-6xl lg:text-7xl font-light">
-                <span className="font-serif italic">AI brings the speed</span>
-                <span className="tracking-[-0.03em]">Atelier brings the taste.</span>
-            </h2>
-
-            <p className="text-center max-w-2xl text-lg mt-10 mb-20">
-                Scroll scenes, text effects, WebGL shaders, cursor interactions, and more. The
-                catalog grows every week.
-                <span className="font-medium">
-                    {" "}
-                    Install them with the CLI, prompt your agent, or copy the source.
-                </span>
-            </p>
-
-            <div className="flex max-lg:flex-col max-lg:gap-8 items-center justify-center gap-15 w-full mb-20">
-                {PLANS.map((plan) => (
-                    <PlanCard key={plan.label} plan={plan} checkoutHref={checkoutHref} />
-                ))}
-            </div>
-        </section>
+        <div className="flex max-lg:flex-col max-lg:gap-8 gap-15 max-lg:p-5 w-full mb-20">
+            {PLANS.map((plan) => (
+                <PlanCard key={plan.label} plan={plan} checkoutHref={checkoutHref} />
+            ))}
+        </div>
     )
 }

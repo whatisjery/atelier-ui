@@ -1,5 +1,6 @@
 "use client"
 
+import { ArrowDown } from "lucide-react"
 import { motion, useScroll, useTransform } from "motion/react"
 import { useTranslations } from "next-intl"
 import { type ComponentRef, useEffect, useRef, useState } from "react"
@@ -25,6 +26,7 @@ import { cn } from "@/lib/utils"
 import { SmoothScroll } from "@/registry/base/smooth-scroll/smooth-scroll"
 import type { DocTree } from "@/types/docs"
 import LandingClipReveal from "./LandingClipReveal"
+import LandingFeatureCards from "./LandingFeatureCards"
 import LandingGridScroll from "./LandingGridScroll"
 import LandingPaymentCards from "./LandingPaymentCards"
 import LandingPreloader from "./LandingPreloader"
@@ -96,7 +98,7 @@ export default function PageLanding({
     })
 
     const cardY = useTransform(cardProgress, [0, 1], [0, -300])
-    const heroY = useTransform(heroProgress, [0, 1], [0, 700])
+    const heroY = useTransform(heroProgress, [0, 1], [0, 600])
 
     useEffect(() => {
         const t = setTimeout(() => setShowLoader(false), 800)
@@ -127,7 +129,7 @@ export default function PageLanding({
                 >
                     <motion.div
                         style={{ y: heroY }}
-                        className="max-sm:transform-none! flex flex-col items-center justify-center h-fit max-sm:-mb-50 sm:h-210 px-5 pt-10 sm:pt-140 relative"
+                        className="max-sm:transform-none! flex flex-col items-center justify-center h-fit max-sm:-mb-100 sm:h-220 px-5 pt-10 sm:pt-140 relative"
                     >
                         <h1 className="flex flex-col items-center justify-center text-4xl xxs:text-5xl sm:text-6xl lg:text-7xl font-light mb-2">
                             <span className="flex items-center leading-[1.1em] sm:flex-row flex-col">
@@ -136,7 +138,7 @@ export default function PageLanding({
 
                                     <IconPxHammer
                                         aria-hidden="true"
-                                        className="size-15 mx-4 flex origin-bottom-left a-hammer-tap"
+                                        className="size-17 ml-3 mr-2 relative bottom-2 flex origin-bottom-left a-hammer-tap"
                                     />
                                 </span>
                                 <span className="font-serif italic">handcrafted</span>
@@ -150,7 +152,9 @@ export default function PageLanding({
                                         aria-hidden="true"
                                     />
                                 ))}
-                                <span className="px-2 tracking-[-0.03em]">react animations</span>
+                                <span className="px-2 tracking-[-0.03em] whitespace-nowrap">
+                                    React animations
+                                </span>
                             </span>
                         </h1>
 
@@ -188,8 +192,10 @@ export default function PageLanding({
 
                         <LandingPreview />
                     </motion.div>
+                </section>
 
-                    <div className="relative py-6 bg-bg border-r border-l h-20">
+                <div className="relative border-x">
+                    <div className="relative py-6 bg-bg h-20">
                         <Border direction="vertical" className="-left-px h-10 -top-10" />
                         <Border direction="vertical" className="-right-px h-10 -top-10" />
                         <div className="absolute mt-px h-full -z-1 bg-bg top-0 w-screen left-[calc(50%-50vw)]" />
@@ -214,23 +220,73 @@ export default function PageLanding({
                     </div>
 
                     <LandingClipReveal />
-                </section>
+                    <LandingGridScroll items={showcaseComponents} />
 
-                <LandingGridScroll items={showcaseComponents} />
+                    <div className="relative h-0">
+                        <MotionCard
+                            ref={bottomCardRef}
+                            aria-hidden="true"
+                            style={isMobile ? undefined : { y: cardY }}
+                            className="absolute top-0 left-5 right-5 mx-auto max-w-5xl -mt-2 h-28 md:h-60 rounded-md overflow-hidden flex flex-col justify-between pointer-events-none"
+                        >
+                            <div className="w-full h-full relative pattern-line" />
+                            <div className="w-full h-15 bg-bg border-t" />
+                        </MotionCard>
+                    </div>
 
-                <div className="flex px-5 flex-col justify-between items-center relative border-r border-l">
-                    <MotionCard
-                        ref={bottomCardRef}
-                        style={isMobile ? undefined : { y: cardY }}
-                        className="w-full max-w-5xl max-sm:-mt-30 h-60 rounded-md overflow-hidden flex flex-col justify-between"
+                    <section>
+                        <div className="px-3 md:pb-25 pt-40 md:pt-50 text-center w-full relative">
+                            <p className="text-xs text-accent-2 uppercase mb-5">unslop your app.</p>
+
+                            <h2 className="flex flex-col items-center text-center text-4xl xxs:text-5xl sm:text-6xl lg:text-7xl font-light">
+                                <span className="tracking-[-0.05em] mb-1">
+                                    AI offers you speed,
+                                </span>
+                                <span className="font-serif italic tracking-normal">
+                                    Atelier brings taste.
+                                </span>
+                            </h2>
+
+                            <p className="text-lg max-w-2xl mt-10 mx-auto text-center">
+                                Built for the modern AI workflow. Every animation is set by hand for
+                                you to integrate into your project as your own code and to customize
+                                however you want.
+                            </p>
+
+                            <ArrowDown strokeWidth={0.5} className="mx-auto size-10 mt-10" />
+                        </div>
+
+                        <LandingFeatureCards />
+                    </section>
+
+                    <section
+                        id="pricing"
+                        className="scroll-mt-nav-h mx-auto mt-40 mb-80 flex max-w-5xl flex-col items-center px-3 lg:px-5"
                     >
-                        <div className="w-full h-full relative pattern-line"></div>
-                        <div className="w-full h-15 bg-bg border-t"></div>
-                    </MotionCard>
+                        <p className="text-xs text-accent-2 uppercase mb-5">no subscription.</p>
 
-                    <LandingPaymentCards checkoutHref={checkoutHref} />
+                        <h2 className="flex flex-col items-center text-center text-4xl xxs:text-5xl sm:text-6xl lg:text-7xl font-light">
+                            <span className="tracking-[-0.05em] mb-1">One payment.</span>
+                            <span className="font-serif italic tracking-normal">
+                                Followed by endless motion.
+                            </span>
+                        </h2>
 
-                    <div className="w-fit flex-col flex items-center justify-center mb-20">
+                        <p className="text-lg max-w-2xl mt-10 mx-auto text-center">
+                            A growing catalog of scroll scenes, text effects, WebGL shaders, and
+                            cursor interactions. Production-ready React code, set by hand.
+                            <span className="font-medium">
+                                {" "}
+                                Install them with the CLI, prompt your agent, or copy the source.
+                            </span>
+                        </p>
+
+                        <ArrowDown strokeWidth={0.5} className="mx-auto size-10 mt-10 mb-30" />
+
+                        <LandingPaymentCards checkoutHref={checkoutHref} />
+                    </section>
+
+                    <div className="w-fit flex-col flex items-center justify-center mx-auto pb-20">
                         <BarCode size={170} />
                         <small className='before:content-["***"] after:content-["***"] flex text-[0.7rem] font-mono uppercase tracking-wider items-center'>
                             assembled with care

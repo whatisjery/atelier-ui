@@ -34,7 +34,7 @@ export default function Footer() {
         <footer ref={footerRef} className="overflow-hidden border-t text-sm">
             <motion.div style={{ y }} className="w-full border-b max-sm:transform-none!">
                 <div className="relative pattern-line py-18 w-screen ml-[calc(50%-50vw)] px-3">
-                    <Card className="z-2 relative flex flex-col gap-y-28 max-w-148 mx-auto">
+                    <Card className="z-2 relative rounded-none flex flex-col gap-y-28 max-w-148 mx-auto">
                         <div className="flex items-start xs:flex-row h-full flex-col gap-y-10 p-5">
                             <Brand version />
 
@@ -126,7 +126,7 @@ export default function Footer() {
                                         rel="noopener noreferrer"
                                         href={REPO_URL}
                                     >
-                                        <SiGithub className="size-4" />
+                                        <SiGithub aria-hidden="true" className="size-4" />
                                     </a>
                                 </Button>
 
@@ -144,7 +144,7 @@ export default function Footer() {
                         </div>
                     </Card>
                 </div>
-                <div className="w-screen ml-[calc(50%-50vw)] border-t bg-background mx-auto h-20 flex items-center justify-center font-mono text-xs uppercase">
+                <div className="w-screen ml-[calc(50%-50vw)] border-t bg-background mx-auto h-20 flex items-center justify-center text-xs uppercase">
                     {new Date().getFullYear()} {BRAND} All rights reserved.
                 </div>
             </motion.div>

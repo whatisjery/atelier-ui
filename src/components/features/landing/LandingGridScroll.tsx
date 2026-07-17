@@ -26,9 +26,9 @@ const Item = ({ item }: { item: DocTree }) => {
             <Folder className="group-hover:hidden" strokeWidth={0.7} size={40} />
             <FolderOpen className="hidden group-hover:block" strokeWidth={0.7} size={40} />
 
-            <h3 className="font-serif italic whitespace-nowrap text-4xl flex items-center">
+            <span className="font-serif italic whitespace-nowrap text-4xl flex items-center">
                 {item.title}
-            </h3>
+            </span>
 
             <ScrollingMarquee fadeOnEachSide speed={10} className="w-[20rem] h-fit text-xs italic">
                 {item.tags?.map((tag, index) => (
@@ -47,10 +47,12 @@ export default function LandingGridScroll({ items }: LandingGridScrollProps) {
     const [col1, col2, col3] = Array.from({ length: 3 }, (_, i) => items.slice(i * 2, (i + 1) * 2))
 
     return (
-        <section className="w-full h-full text-2xl z-2 relative">
+        <section aria-label="Component showcase" className="w-full h-full text-2xl z-2 relative ">
+            <h2 className="sr-only">Component showcase</h2>
             <Border direction="horizontal" className="bottom-0" />
+            <Border direction="horizontal" className="top-0" />
             <div className="w-full h-full relative flex overflow-hidden bg-bg">
-                <div className="aspect-2/4 h-full w-full relative border-r border-l">
+                <div className="aspect-2/4 h-full w-full relative sm:border-r">
                     <InfiniteParallax>
                         {col1.map((item, index) => (
                             <Item key={index} item={item} />
@@ -58,7 +60,7 @@ export default function LandingGridScroll({ items }: LandingGridScrollProps) {
                     </InfiniteParallax>
                 </div>
 
-                <div className="aspect-2/4 h-full w-full relative border-r hidden sm:block">
+                <div className="aspect-2/4 h-full w-full relative lg:border-r hidden sm:block">
                     <InfiniteParallax reversed>
                         {col2.map((item, index) => (
                             <Item key={index} item={item} />
@@ -66,7 +68,7 @@ export default function LandingGridScroll({ items }: LandingGridScrollProps) {
                     </InfiniteParallax>
                 </div>
 
-                <div className="aspect-2/4 h-full w-full relative border-r hidden lg:block">
+                <div className="aspect-2/4 h-full w-full relative hidden lg:block">
                     <InfiniteParallax>
                         {col3.map((item, index) => (
                             <Item key={index} item={item} />
