@@ -1,47 +1,47 @@
-import { cn } from "@/lib/utils"
+import { useEffect, useState } from "react"
+import { getBands } from "@/lib/bands"
 import { TextScramble, type TextScrambleProps } from "@/registry/base/text-scramble/text-scramble"
 
-const Text = ({
+const Row = ({
     children,
-    className,
     controls,
 }: {
     children: string
-    className?: string
     controls: Partial<TextScrambleProps>
 }) => {
+    const text = `#${children}`
+
     return (
-        <TextScramble
-            render={
-                <span
-                    className={cn(
-                        "z-20 relative hover:opacity-100 opacity-40 cursor-default duration-200",
-                        className,
-                    )}
-                />
-            }
-            {...controls}
-        >
-            {children}
-        </TextScramble>
+        <div className="relative font-medium tracking-tight text-lg">
+            <span className="invisible">{text}</span>
+            <TextScramble
+                render={
+                    <span className="absolute inset-0 opacity-100 hover:opacity-10 cursor-default duration-200" />
+                }
+                {...controls}
+            >
+                {text}
+            </TextScramble>
+        </div>
     )
 }
 
 export default function TextScrambleDemo(controls: Partial<TextScrambleProps>) {
+    const [lines, setLines] = useState<string[]>([])
+
+    // We are setting a state to avoid SSR hydration errors in next.js.
+    useEffect(() => {
+        setLines(getBands(45))
+    }, [])
+
     return (
-        <div className="w-screen h-screen flex items-start text-lg sm:text-2xl flex-col justify-start p-3">
-            <Text controls={controls}>Scramble text effect</Text>
-            <Text controls={controls}>from left to right, with hover.</Text>
-
-            <div className="flex flex-col my-3">
-                <Text controls={controls}>Don't forget to align the</Text>
-                <Text controls={controls}>text on the left of the container</Text>
-                <Text controls={controls}>to avoid jittering.</Text>
-            </div>
-
-            <div className="flex flex-col mt-auto">
-                <Text controls={controls}>&#8627; or just use</Text>
-                <Text controls={controls}>a monospace font. *** have fun! ***</Text>
+        <div className="relative w-screen h-screen px-3 flex items-center justify-center whitespace-nowrap">
+            <div className="h-[80vh] flex flex-col flex-wrap content-center items-start gap-x-8">
+                {lines.map((line) => (
+                    <Row key={line} controls={controls}>
+                        {line}
+                    </Row>
+                ))}
             </div>
         </div>
     )

@@ -47,10 +47,10 @@ export default function PixelScroll({
     overlap = 0,
     className,
 }: PixelScrollProps) {
-    const [size, setSize] = useState({ width: 0, height: 0, rows: 0 })
+    const [size, setSize] = useState({ width: 0, height: 0, rows: 0, cols: 0 })
     const canvasRef = useRef<ComponentRef<"canvas">>(null)
     const ownTargetRef = useRef<ComponentRef<"section">>(null)
-    const cols = Math.min(density, MAX_DENSITY)
+    const cellSize = 1000 / Math.min(density, MAX_DENSITY)
 
     const { scrollYProgress } = useScroll({
         target: ownTargetRef,
@@ -64,19 +64,20 @@ export default function PixelScroll({
         const observer = new ResizeObserver(([{ contentRect }]) => {
             const { width, height } = contentRect
             if (width && height) {
+                const cols = Math.min(MAX_DENSITY, Math.max(1, Math.round(width / cellSize)))
                 const rows = Math.max(1, Math.round(height / (width / cols)))
-                setSize({ width, height, rows })
+                setSize({ width, height, rows, cols })
             }
         })
 
         observer.observe(element)
         return () => observer.disconnect()
-    }, [cols])
+    }, [cellSize])
 
     const cells = useMemo(
         () =>
-            Array.from({ length: cols * size.rows }, (_, index) => {
-                const row = Math.floor(index / cols)
+            Array.from({ length: size.cols * size.rows }, (_, index) => {
+                const row = Math.floor(index / size.cols)
                 const height = (size.rows - 1 - row) / Math.max(1, size.rows - 1)
                 const fillAt = Math.min(1, height * (1 - randomness) + Math.random() * randomness)
                 const flashes = colors.length > 0 && Math.random() < colorRatio
@@ -88,7 +89,7 @@ export default function PixelScroll({
                     flashAt: color ? Math.max(0, fillAt - 0.08) : fillAt,
                 }
             }),
-        [cols, size.rows, colors, colorRatio, randomness],
+        [size.cols, size.rows, colors, colorRatio, randomness],
     )
 
     useEffect(() => {
@@ -98,7 +99,7 @@ export default function PixelScroll({
             const context = canvas.getContext("2d")
             if (!context) return
 
-            const { width, height, rows } = size
+            const { width, height, rows, cols } = size
             const pixelRatio = window.devicePixelRatio || 1
             canvas.width = Math.round(width * pixelRatio)
             canvas.height = Math.round(height * pixelRatio)
@@ -153,7 +154,7 @@ export default function PixelScroll({
         }
 
         return paintOnScroll()
-    }, [size, cells, cols, direction, scrollYProgress])
+    }, [size, cells, direction, scrollYProgress])
 
     // Canvas redraws the whole grid each scroll frame in a single loop, instead of using a div per pixel (for performance reasons)
     const canvas = <canvas ref={canvasRef} className={`block size-full ${className ?? ""}`} />

@@ -1,33 +1,23 @@
 import { useTheme } from "next-themes"
 import { PixelTrail, type PixelTrailProps } from "@/registry/base/pixel-trail/pixel-trail"
 
-const IMAGE_URLS = [
-    "/images/demo/shared/4.webp",
-    "/images/demo/shared/12.webp",
-    "/images/demo/shared/15.webp",
-]
-
 export default function PixelTrailDemo(controls: Partial<PixelTrailProps>) {
     const { resolvedTheme } = useTheme()
 
     return (
         <div className="flex h-screen w-full justify-center items-center">
-            <div className="absolute inset-0 flex items-center justify-center font-serif xs:text-5xl text-center text-4xl z-3 pointer-events-none text-white">
+            <div className="demo-text absolute inset-0 z-10 flex items-center justify-center pointer-events-none">
                 Hover anywhere!
             </div>
-            <div className="flex w-full flex-1 items-center justify-center gap-2">
-                {IMAGE_URLS.map((url) => (
-                    <img
-                        key={url}
-                        src={url}
-                        alt="Image"
-                        width={100}
-                        height={100}
-                        draggable={false}
-                        className="aspect-[5/7] w-[30vw] rounded-md object-cover select-none"
-                    />
-                ))}
-            </div>
+
+            <img
+                src="/images/demo/shared/2.webp"
+                alt="Image"
+                width={100}
+                height={100}
+                draggable={false}
+                className="aspect-[5/7] w-[35vw] object-cover select-none"
+            />
 
             <PixelTrail
                 mode="sample"

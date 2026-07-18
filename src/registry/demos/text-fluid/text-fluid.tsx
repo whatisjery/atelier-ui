@@ -18,12 +18,13 @@ export default function TextFluidDemo(controls: Partial<TextFluidProps>) {
     }, [opacity, noise])
 
     return (
-        <div className="font-serif xs:text-7xl text-center text-4xl flex flex-col items-center justify-center h-screen w-screen space-y-2">
+        <div className="text-center demo-text flex items-center justify-center h-screen w-screen flex-col space-y-2">
             <span>
+                This is a{" "}
                 <TextFluid
                     render={
                         <span
-                            className="cursor-pointer"
+                            className="cursor-default"
                             onPointerEnter={() => {
                                 animate(opacity, 0.5, { duration: 0.5, ease: "circOut" })
                                 animate(noise, 0.03, { duration: 0.5, ease: "circOut" })
@@ -38,13 +39,12 @@ export default function TextFluidDemo(controls: Partial<TextFluidProps>) {
                     amplitude={() => noise.get()}
                     {...controls}
                 >
-                    Interactive
+                    fluid
                 </TextFluid>{" "}
-                text
+                text effect!
             </span>
-            <span>shader effect</span>
 
-            <span className="font-sans text-xs mt-5">(Responsive and match your font style)</span>
+            <span>Try to interact with it.</span>
         </div>
     )
 }

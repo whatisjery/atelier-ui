@@ -114,6 +114,7 @@ function Plane({ el, segments, material, pointer, zIndex, autoReflow, pixelRatio
             bounds.current.width = rect.width
             bounds.current.height = rect.height
             paint(target, canvas, rect.width, rect.height, pixelRatio)
+            texture.needsUpdate = true
         }
 
         measure()
@@ -121,10 +122,18 @@ function Plane({ el, segments, material, pointer, zIndex, autoReflow, pixelRatio
         const ro = new ResizeObserver(measure)
         ro.observe(target)
 
+        const mo = new MutationObserver(measure)
+        mo.observe(document.documentElement, { attributes: true })
+        mo.observe(document.body, { attributes: true })
+        const scheme = window.matchMedia("(prefers-color-scheme: dark)")
+        scheme.addEventListener("change", measure)
+
         return () => {
             ro.disconnect()
+            mo.disconnect()
+            scheme.removeEventListener("change", measure)
         }
-    }, [el, canvas, texture, pixelRatio])
+    }, [el, canvas, texture, pixelRatio, size])
 
     useFrame(() => {
         const m = mesh.current

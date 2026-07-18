@@ -27,10 +27,8 @@ const ITEMS = [
 export default function ImageTrailDemo(controls: Partial<ImageTrailProps>) {
     return (
         <>
-            <div className="flex items-center justify-center absolute w-full h-full inset-0">
-                <span className="font-serif xs:text-5xl relative z-1 text-center text-4xl">
-                    Drag your mouse around.
-                </span>
+            <div className="demo-text absolute inset-0 z-10 flex items-center justify-center">
+                Hover anywhere!
             </div>
 
             <ImageTrail {...controls}>

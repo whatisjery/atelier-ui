@@ -7,7 +7,10 @@ updatedAt: "2026-07-15"
 ---
 
 <DemoPreview name="text-scramble" controls={{
-    duration: { type: "slider", value: 1, min: 0, max: 10, step: 0.1 },
+    duration: { type: "slider", value: 0.7, min: 0, max: 10, step: 0.1 },
+    scrambleFps: { type: "slider", value: 30, min: 1, max: 60, step: 1 },
+    playOnMount: { type: "boolean", value: true },
+    playOnHover: { type: "boolean", value: true },
 }} />
 
 ---
@@ -41,7 +44,8 @@ Pass `render` to choose the wrapper element. Your props are merged with the comp
 | Name | Type | Default | Description |
 | --- | --- | --- | --- |
 | `children` | `string` | — | Text content to scramble. Required. |
-| `duration` | `number` | `1` | Total duration of the reveal in seconds. |
+| `duration` | `number` | `0.7` | Total duration of the reveal in seconds. |
+| `scrambleFps` | `number` | `30` | Number of scramble updates per second. |
 | `playOnMount` | `boolean` | `true` | Plays the scramble animation on mount. |
 | `playOnHover` | `boolean` | `true` | Replays the scramble animation on hover. |
 | `characters` | `string` | `"abcdefghijklmnopqrstuvwxyz@!#*$%^&+_[]"` | Characters used to scramble. |

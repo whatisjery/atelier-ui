@@ -77,7 +77,7 @@ export default function RootLayout({ children }) {
 
 | Name | Type | Default | Description |
 | ---- | ---- | ------- | ----------- |
-| `density` | `number` | `20` | Number of pixel columns across the canvas, capped at 200. The row count is derived from the canvas height so pixels stay square. |
+| `density` | `number` | `20` | Pixel columns per 1000px of width, capped at 200, so squares keep the same size on every screen. The row count is derived from the canvas height so pixels stay square. |
 | `colors` | `string[]` | `[]` | CSS colors a pixel can briefly show before it turns the text color. When empty, pixels turn the text color with no color hint. |
 | `colorRatio` | `number` | `0.25` | Fraction of pixels that show a color hint, from 0 to 1. Has no effect when `colors` is empty. |
 | `randomness` | `number` | `0.4` | How far each pixel's fill point deviates from the bottom-to-top gradient, from 0 to 1. At `0` the grid fills as an ordered gradient; at `1` the fill points are fully scattered. |

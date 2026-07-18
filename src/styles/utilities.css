@@ -41,3 +41,7 @@
         background-color: transparent;
     }
 }
+
+@utility demo-text {
+    @apply font-medium tracking-tight text-5xl;
+}

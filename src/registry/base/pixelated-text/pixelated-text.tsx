@@ -46,9 +46,9 @@ function drawText(
 }
 
 export function PixelatedText({
-    pixelSize = 5,
-    chaos = 0.1,
-    depth = 6,
+    pixelSize = 7,
+    chaos = 0.2,
+    depth = 8.3,
     colors,
     fps = 200,
     children,

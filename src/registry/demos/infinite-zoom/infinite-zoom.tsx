@@ -7,13 +7,16 @@ const DATA = [
     "/images/demo/shared/12.webp",
     "/images/demo/shared/15.webp",
     "/images/demo/shared/17.webp",
-    "/images/demo/shared/11.webp",
+    "/images/demo/shared/2.webp",
     "/images/demo/shared/20.webp",
 ]
 
 export default function InfiniteParallaxDemo(controls: Partial<InfiniteZoomProps>) {
     return (
-        <InfiniteZoom className="absolute w-screen h-screen inset-0 overflow-hidden touch-none" {...controls}>
+        <InfiniteZoom
+            className="absolute w-screen h-screen inset-0 overflow-hidden touch-none"
+            {...controls}
+        >
             {DATA.map((item) => {
                 return (
                     <div className="relative w-full h-full overflow-hidden" key={item}>

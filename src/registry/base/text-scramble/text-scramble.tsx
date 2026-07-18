@@ -5,6 +5,7 @@ import { type RenderProp, useRender } from "../../hooks/use-render"
 export type TextScrambleProps = {
     children: string
     duration?: number
+    scrambleFps?: number
     playOnMount?: boolean
     playOnHover?: boolean
     characters?: string
@@ -13,7 +14,8 @@ export type TextScrambleProps = {
 
 export function TextScramble({
     children,
-    duration = 1,
+    duration = 0.7,
+    scrambleFps = 30,
     playOnMount = true,
     playOnHover = true,
     characters = "abcdefghijklmnopqrstuvwxyz@!#*$%^&+_[]",
@@ -56,7 +58,7 @@ export function TextScramble({
         }
 
         ref.current.textContent = next
-    })
+    }, 1000 / scrambleFps)
 
     return useRender({
         render,

@@ -124,9 +124,9 @@ function CurveMediaMaterial({ map, amplitude, aberration, smoothing }: CurveMedi
 
 export function CurveMedia(props: CurveMediaProps) {
     const {
-        amplitude = 0.03,
-        aberration = 0.003,
-        smoothing = 6,
+        amplitude = 0.05,
+        aberration = 0.03,
+        smoothing = 20,
         segments = 32,
         webglEnabled = true,
         ...rest
