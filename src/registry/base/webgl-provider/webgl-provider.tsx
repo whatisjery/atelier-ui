@@ -129,7 +129,7 @@ export function WebglProvider({
         >
             <Canvas
                 eventPrefix="client"
-                dpr={[1, 1.5]}
+                dpr={[1, 2]}
                 {...canvasProps}
                 frameloop="never"
                 eventSource={eventSource ?? undefined}
