@@ -6,6 +6,7 @@ import { notFound } from "next/navigation"
 import { cache } from "react"
 import { visit } from "unist-util-visit"
 import { routing } from "@/i18n/routing"
+import { resolveTransitiveDependencies } from "@/lib/resolve-dependencies"
 import { overlayRoots, resolveOverlayPath } from "@/lib/roots"
 import videoManifestJson from "@/lib/video-manifest.json"
 import { components } from "@/registry"
@@ -213,7 +214,9 @@ export const getComponentSnippets = cache(function getComponentSnippets(): Recor
     const snippets: Record<string, CodeFile[]> = {}
 
     for (const component of components) {
-        const shared = component.shared
+        const resolved = resolveTransitiveDependencies(component.name)
+
+        const shared = resolved.shared
             .filter((dep) => TEXT_EXTENSIONS.includes(path.extname(dep).slice(1)))
             .map((dep) => {
                 const fullPath = resolveOverlayPath(path.join("src/registry", dep))
@@ -227,7 +230,7 @@ export const getComponentSnippets = cache(function getComponentSnippets(): Recor
                 }
             })
 
-        const registryDeps = component.registryDependencies.flatMap((name) => baseCode[name] ?? [])
+        const registryDeps = resolved.registryDependencies.flatMap((name) => baseCode[name] ?? [])
 
         snippets[component.name] = [...(baseCode[component.name] ?? []), ...shared, ...registryDeps]
     }
