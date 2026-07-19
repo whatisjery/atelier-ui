@@ -73,6 +73,7 @@ type PageLadingProps = {
     newDocs?: DocTree[]
     ctaSlot?: React.ReactNode
     checkoutHref?: string
+    proCtaSlot?: React.ReactNode
 }
 
 export default function PageLanding({
@@ -80,6 +81,7 @@ export default function PageLanding({
     newDocs = [],
     ctaSlot,
     checkoutHref,
+    proCtaSlot,
 }: PageLadingProps) {
     const tMetadata = useTranslations("metadata")
     const [showLoader, setShowLoader] = useState(true)
@@ -283,7 +285,7 @@ export default function PageLanding({
 
                         <ArrowDown strokeWidth={0.5} className="mx-auto size-10 mt-10 mb-30" />
 
-                        <LandingPaymentCards checkoutHref={checkoutHref} />
+                        <LandingPaymentCards checkoutHref={checkoutHref} proCtaSlot={proCtaSlot} />
                     </section>
 
                     <div className="w-fit flex-col flex items-center justify-center mx-auto pb-20">

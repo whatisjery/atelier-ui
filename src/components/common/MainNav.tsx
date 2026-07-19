@@ -25,9 +25,11 @@ type MainNavProps = {
     navSlot?: React.ReactNode
     /* Rendered at the far end of the bar, after the theme toggle. */
     endSlot?: React.ReactNode
+    /* Hides the pricing link, e.g. for viewers who already own the product. */
+    hidePricing?: boolean
 }
 
-export default function MainNav({ className, navSlot, endSlot }: MainNavProps) {
+export default function MainNav({ className, navSlot, endSlot, hidePricing }: MainNavProps) {
     const isMobile = useIsMobile(1024)
     const toggleSheetSidebar = useGlobalStore((state) => state.toggleSheetSidebar)
     const tCommon = useTranslations("common")
@@ -76,17 +78,19 @@ export default function MainNav({ className, navSlot, endSlot }: MainNavProps) {
 
                             {navSlot}
 
-                            <Link
-                                href="/#pricing"
-                                className="hover:text-accent-1 flex items-center"
-                                onClick={(e) => {
-                                    if (pathname !== "/") return
-                                    e.preventDefault()
-                                    lenis?.scrollTo("#pricing")
-                                }}
-                            >
-                                {tCommon("pricing")}
-                            </Link>
+                            {!hidePricing && (
+                                <Link
+                                    href="/#pricing"
+                                    className="hover:text-accent-1 flex items-center"
+                                    onClick={(e) => {
+                                        if (pathname !== "/") return
+                                        e.preventDefault()
+                                        lenis?.scrollTo("#pricing")
+                                    }}
+                                >
+                                    {tCommon("pricing")}
+                                </Link>
+                            )}
 
                             <Link
                                 href={REPO_URL}

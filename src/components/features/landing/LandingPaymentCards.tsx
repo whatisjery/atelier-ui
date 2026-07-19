@@ -48,14 +48,16 @@ const PLANS = [
 
 type LandingPaymentCardsProps = {
     checkoutHref?: string
+    proCtaSlot?: React.ReactNode
 }
 
 type PlanCardProps = {
     plan: (typeof PLANS)[number]
     checkoutHref?: string
+    proCtaSlot?: React.ReactNode
 }
 
-function PlanCard({ plan, checkoutHref }: PlanCardProps) {
+function PlanCard({ plan, checkoutHref, proCtaSlot }: PlanCardProps) {
     return (
         <div
             className={cn(
@@ -121,25 +123,34 @@ function PlanCard({ plan, checkoutHref }: PlanCardProps) {
                     </ul>
                 </div>
 
-                <Button variant={plan.highlighted ? "secondary" : "dashed"} asChild>
-                    {plan.highlighted ? (
-                        <a href={checkoutHref} target="_blank" rel="noopener noreferrer">
-                            {plan.button}
-                        </a>
-                    ) : (
-                        <Link href="/catalog">{plan.button}</Link>
-                    )}
-                </Button>
+                {plan.highlighted && proCtaSlot ? (
+                    proCtaSlot
+                ) : (
+                    <Button variant={plan.highlighted ? "secondary" : "dashed"} asChild>
+                        {plan.highlighted ? (
+                            <a href={checkoutHref} target="_blank" rel="noopener noreferrer">
+                                {plan.button}
+                            </a>
+                        ) : (
+                            <Link href="/catalog">{plan.button}</Link>
+                        )}
+                    </Button>
+                )}
             </div>
         </div>
     )
 }
 
-export default function LandingPaymentCards({ checkoutHref }: LandingPaymentCardsProps) {
+export default function LandingPaymentCards({ checkoutHref, proCtaSlot }: LandingPaymentCardsProps) {
     return (
         <div className="flex max-lg:flex-col max-lg:gap-8 gap-15 max-lg:p-5 w-full mb-20">
             {PLANS.map((plan) => (
-                <PlanCard key={plan.label} plan={plan} checkoutHref={checkoutHref} />
+                <PlanCard
+                    key={plan.label}
+                    plan={plan}
+                    checkoutHref={checkoutHref}
+                    proCtaSlot={proCtaSlot}
+                />
             ))}
         </div>
     )
