@@ -1,4 +1,4 @@
-import { useFrame, useThree } from "@react-three/fiber"
+import { useThree } from "@react-three/fiber"
 import {
     type ComponentRef,
     cloneElement,
@@ -8,14 +8,13 @@ import {
     useMemo,
     useRef,
 } from "react"
-import { CanvasTexture, type Mesh, type Texture, Vector2 } from "three"
+import { CanvasTexture, type Mesh, type Texture } from "three"
+import { useDomPlane } from "../../hooks/use-dom-plane"
+import { type Pointer, usePointerUv } from "../../hooks/use-pointer-uv"
 import { type RenderProp, useRender } from "../../hooks/use-render"
 import { webglTeleport } from "../webgl-portal/webgl-portal"
 
-export type Pointer = {
-    uv: Vector2
-    hover: number
-}
+export type { Pointer }
 
 type WebglTextProps = {
     children: string
@@ -42,14 +41,54 @@ type PlaneProps = {
     pixelRatio: number
 }
 
+type PaintedLine = {
+    text: string
+    x: number
+    baseline: number
+}
+
+// Groups characters into visual lines from their rendered rects, so wrapped
+// text paints exactly where the browser laid it out.
+function measureLines(el: HTMLElement, origin: DOMRect, ascent: number, fontHeight: number) {
+    const walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT)
+    const range = document.createRange()
+    const lines: PaintedLine[] = []
+    let current: PaintedLine | null = null
+    let lineTop = 0
+
+    let textNode = walker.nextNode()
+    while (textNode) {
+        const text = textNode.nodeValue ?? ""
+        for (let offset = 0; offset < text.length; offset++) {
+            const character = text[offset]
+            const whitespace = /\s/.test(character)
+            range.setStart(textNode, offset)
+            range.setEnd(textNode, offset + 1)
+            const rect = range.getBoundingClientRect()
+
+            // Collapsed whitespace (line breaks, repeated spaces) has no box.
+            if (whitespace && rect.width === 0) continue
+
+            if (!current || Math.abs(rect.top - lineTop) > fontHeight / 2) {
+                const top = rect.top + (rect.height - fontHeight) / 2
+                current = {
+                    text: "",
+                    x: rect.left - origin.left,
+                    baseline: top + ascent - origin.top,
+                }
+                lines.push(current)
+                lineTop = rect.top
+            }
+            current.text += whitespace ? " " : character
+        }
+        textNode = walker.nextNode()
+    }
+
+    return lines
+}
+
 // Paints the content of the text on a canvas, mirroring its computed CSS typography so it looks identical to the DOM element.
-function paint(
-    el: HTMLElement,
-    canvas: HTMLCanvasElement,
-    width: number,
-    height: number,
-    pixelRatio: number,
-) {
+function paint(el: HTMLElement, canvas: HTMLCanvasElement, rect: DOMRect, pixelRatio: number) {
     const ctx = canvas.getContext("2d")
     if (!ctx) return
 
@@ -57,22 +96,23 @@ function paint(
     const { fontFamily, fontSize, fontWeight, fontStyle, letterSpacing, color } =
         getComputedStyle(el)
 
-    canvas.width = Math.max(1, Math.ceil(width * dpr))
-    canvas.height = Math.max(1, Math.ceil(height * dpr))
+    canvas.width = Math.max(1, Math.ceil(rect.width * dpr))
+    canvas.height = Math.max(1, Math.ceil(rect.height * dpr))
 
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
-    ctx.clearRect(0, 0, width, height)
+    ctx.clearRect(0, 0, rect.width, rect.height)
     ctx.font = `${fontStyle} ${fontWeight} ${fontSize} ${fontFamily}`
     ctx.letterSpacing = letterSpacing
     ctx.fillStyle = color
     ctx.textBaseline = "alphabetic"
 
-    const text = el.textContent || ""
-    const metrics = ctx.measureText(text)
-    const fontHeight = metrics.fontBoundingBoxAscent + metrics.fontBoundingBoxDescent
-    const y = (height - fontHeight) / 2 + metrics.fontBoundingBoxAscent
+    const probe = ctx.measureText("Hg")
+    const ascent = probe.fontBoundingBoxAscent
+    const fontHeight = probe.fontBoundingBoxAscent + probe.fontBoundingBoxDescent
 
-    ctx.fillText(text, 0, y)
+    for (const line of measureLines(el, rect, ascent, fontHeight)) {
+        ctx.fillText(line.text, line.x, line.baseline)
+    }
 }
 
 function textRect(el: HTMLElement) {
@@ -85,8 +125,7 @@ function textRect(el: HTMLElement) {
 function Plane({ el, segments, material, pointer, zIndex, autoReflow, pixelRatio }: PlaneProps) {
     const mesh = useRef<Mesh>(null)
     const size = useThree((s) => s.size)
-    const viewport = useThree((s) => s.viewport)
-    const bounds = useRef({ x: 0, y: 0, width: 0, height: 0 })
+    const measureBounds = useDomPlane(el, mesh, { autoReflow, getRect: textRect })
 
     const { canvas, texture } = useMemo(() => {
         const canvas = document.createElement("canvas")
@@ -105,24 +144,35 @@ function Plane({ el, segments, material, pointer, zIndex, autoReflow, pixelRatio
         if (!target) return
 
         const measure = () => {
-            // Rect in document coords (top/left offset by current scroll at measure time),
-            // so we can later derive viewport position with just `window.scrollX/Y`,
-            // instead of recalculating bounds on every render
-            const rect = textRect(target)
-            bounds.current.x = rect.left + window.scrollX
-            bounds.current.y = rect.top + window.scrollY
-            bounds.current.width = rect.width
-            bounds.current.height = rect.height
-            paint(target, canvas, rect.width, rect.height, pixelRatio)
+            const rect = measureBounds()
+            if (!rect) return
+            const prevWidth = canvas.width
+            const prevHeight = canvas.height
+            paint(target, canvas, rect, pixelRatio)
+
+            // WebGL2 texture storage is immutable: a resized canvas can't be
+            // uploaded into the old allocation, so drop it and let three
+            // recreate the texture at the new size.
+            if (canvas.width !== prevWidth || canvas.height !== prevHeight) texture.dispose()
             texture.needsUpdate = true
         }
 
         measure()
         document.fonts.ready.then(measure)
+
+        // ResizeObserver never fires for inline elements (they have no box),
+        // so document.body is watched too to catch layout-affecting resizes.
         const ro = new ResizeObserver(measure)
         ro.observe(target)
+        ro.observe(document.body)
 
         const mo = new MutationObserver(measure)
+        mo.observe(target, {
+            characterData: true,
+            childList: true,
+            attributes: true,
+            subtree: true,
+        })
         mo.observe(document.documentElement, { attributes: true })
         mo.observe(document.body, { attributes: true })
         const scheme = window.matchMedia("(prefers-color-scheme: dark)")
@@ -133,30 +183,7 @@ function Plane({ el, segments, material, pointer, zIndex, autoReflow, pixelRatio
             mo.disconnect()
             scheme.removeEventListener("change", measure)
         }
-    }, [el, canvas, texture, pixelRatio, size])
-
-    useFrame(() => {
-        const m = mesh.current
-        if (!m) return
-        const pxToWorld = viewport.height / size.height
-
-        // autoReflow re-reads the rect each frame so the mesh follows parent
-        // CSS transforms (e.g. parallax). One layout read per frame.
-        if (autoReflow && el.current) {
-            const rect = textRect(el.current)
-            m.position.x = (rect.left + rect.width / 2 - size.width / 2) * pxToWorld
-            m.position.y = -(rect.top + rect.height / 2 - size.height / 2) * pxToWorld
-            m.scale.x = rect.width * pxToWorld
-            m.scale.y = rect.height * pxToWorld
-            return
-        }
-
-        const { x, y, width, height } = bounds.current
-        m.position.x = (x + width / 2 - window.scrollX - size.width / 2) * pxToWorld
-        m.position.y = -(y + height / 2 - window.scrollY - size.height / 2) * pxToWorld
-        m.scale.x = width * pxToWorld
-        m.scale.y = height * pxToWorld
-    })
+    }, [el, canvas, texture, pixelRatio, size, measureBounds])
 
     return (
         <mesh ref={mesh} renderOrder={zIndex}>
@@ -181,39 +208,7 @@ export function WebglText({
     pixelRatio = 2,
 }: WebglTextProps) {
     const el = useRef<ComponentRef<"span">>(null)
-    const pointer = useMemo<Pointer>(() => {
-        return {
-            uv: new Vector2(0.5, 0.5),
-            hover: 0,
-        }
-    }, [])
-
-    useEffect(() => {
-        if (!webglEnabled) return
-        const target = el.current
-        if (!target) return
-
-        // Pointer events still fire on the DOM element through opacity:0,
-        // so the browser tells us when the cursor is over it.
-        const onMove = (e: PointerEvent) => {
-            const { width, left, top, height } = textRect(target)
-            const x = (e.clientX - left) / width
-            const y = 1 - (e.clientY - top) / height
-            pointer.uv.set(x, y)
-        }
-
-        const onEnter = () => (pointer.hover = 1)
-        const onLeave = () => (pointer.hover = 0)
-
-        target.addEventListener("pointermove", onMove)
-        target.addEventListener("pointerenter", onEnter)
-        target.addEventListener("pointerleave", onLeave)
-        return () => {
-            target.removeEventListener("pointermove", onMove)
-            target.removeEventListener("pointerenter", onEnter)
-            target.removeEventListener("pointerleave", onLeave)
-        }
-    }, [webglEnabled, pointer])
+    const pointer = usePointerUv(el, { enabled: webglEnabled, getRect: textRect })
 
     const element = useRender({
         render,

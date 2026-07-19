@@ -1,22 +1,12 @@
-import { useFrame, useThree } from "@react-three/fiber"
-import {
-    type ComponentRef,
-    type RefObject,
-    useEffect,
-    useLayoutEffect,
-    useMemo,
-    useRef,
-    useState,
-} from "react"
-import { type Mesh, SRGBColorSpace, type Texture, Vector2, VideoTexture } from "three"
+import { useFrame } from "@react-three/fiber"
+import { type ComponentRef, type RefObject, useLayoutEffect, useRef, useState } from "react"
+import { type Mesh, SRGBColorSpace, type Texture, VideoTexture } from "three"
+import { useDomPlane } from "../../hooks/use-dom-plane"
+import { type Pointer, usePointerUv } from "../../hooks/use-pointer-uv"
+import { applyUvCrop, computeObjectFit } from "../../lib/object-fit"
 import { webglTeleport } from "../webgl-portal/webgl-portal"
 
-export type Pointer = {
-    uv: Vector2
-    texUv: Vector2
-    repeat: Vector2
-    hover: number
-}
+export type { Pointer }
 
 type WebglVideoProps = {
     src: string
@@ -44,10 +34,8 @@ type PlaneProps = {
 function Plane({ el, segments, material, pointer, uvFit, zIndex, autoReflow }: PlaneProps) {
     const mesh = useRef<Mesh>(null)
     const [texture, setTexture] = useState<VideoTexture | null>(null)
-    const size = useThree((state) => state.size)
-    const viewport = useThree((state) => state.viewport)
     const fitScale = useRef({ x: 1, y: 1 })
-    const bounds = useRef({ x: 0, y: 0, width: 0, height: 0 })
+    const measureBounds = useDomPlane(el, mesh, { autoReflow, fitScale })
 
     useLayoutEffect(() => {
         const video = el.current
@@ -70,68 +58,27 @@ function Plane({ el, segments, material, pointer, uvFit, zIndex, autoReflow }: P
         const measure = () => {
             const m = mesh.current
             if (!m) return
+            const rect = measureBounds()
+            if (!rect) return
 
             /*
-             * Rect in document coords so viewport position later needs only
-             * window.scrollX/Y, instead of re-measuring bounds every render.
-             */
-            const rect = target.getBoundingClientRect()
-            bounds.current.x = rect.left + window.scrollX
-            bounds.current.y = rect.top + window.scrollY
-            bounds.current.width = rect.width
-            bounds.current.height = rect.height
-
-            /*
-             * Replicate CSS object-fit: cover crops via UV repeat/offset,
-             * contain shrinks the mesh scale (UVs alone can't letterbox).
+             * videoWidth/Height are 0 until metadata loads, which yields an
+             * invalid aspect, so computeObjectFit skips cropping until then.
              */
             const video = texture.image as HTMLVideoElement
-            const objectFit = getComputedStyle(target).objectFit
-            const planeAspect = rect.width / rect.height
-            const videoAspect = video.videoWidth / video.videoHeight
+            const crop = computeObjectFit(
+                rect.width / rect.height,
+                video.videoWidth / video.videoHeight,
+                getComputedStyle(target).objectFit,
+            )
 
-            let repeatU = 1
-            let repeatV = 1
+            fitScale.current.x = crop.fitScaleX
+            fitScale.current.y = crop.fitScaleY
+            pointer.repeat.set(crop.repeatU, crop.repeatV)
+            uvFit.current.x = crop.repeatU / crop.fitScaleX
+            uvFit.current.y = crop.repeatV / crop.fitScaleY
 
-            fitScale.current.x = 1
-            fitScale.current.y = 1
-
-            /* videoWidth/Height are 0 until metadata loads, so skip cropping until then. */
-            if (video.videoWidth > 0) {
-                if (objectFit === "cover") {
-                    if (planeAspect > videoAspect) {
-                        repeatV = videoAspect / planeAspect
-                    } else {
-                        repeatU = planeAspect / videoAspect
-                    }
-                } else if (objectFit === "contain") {
-                    if (planeAspect > videoAspect) {
-                        fitScale.current.x = videoAspect / planeAspect
-                    } else {
-                        fitScale.current.y = planeAspect / videoAspect
-                    }
-                }
-            }
-
-            const offsetU = (1 - repeatU) / 2
-            const offsetV = (1 - repeatV) / 2
-
-            pointer.repeat.set(repeatU, repeatV)
-            uvFit.current.x = repeatU / fitScale.current.x
-            uvFit.current.y = repeatV / fitScale.current.y
-
-            const uvAttribute = m.geometry.attributes.uv
-
-            for (let iy = 0; iy <= segments; iy++) {
-                for (let ix = 0; ix <= segments; ix++) {
-                    const idx = iy * (segments + 1) + ix
-                    const u = ix / segments
-                    const v = 1 - iy / segments
-                    uvAttribute.setXY(idx, u * repeatU + offsetU, v * repeatV + offsetV)
-                }
-            }
-
-            uvAttribute.needsUpdate = true
+            applyUvCrop(m.geometry.attributes.uv, segments, crop.repeatU, crop.repeatV)
         }
 
         measure()
@@ -148,35 +95,11 @@ function Plane({ el, segments, material, pointer, uvFit, zIndex, autoReflow }: P
             target.removeEventListener("loadedmetadata", measure)
             target.removeEventListener("resize", measure)
         }
-    }, [el, texture, segments, uvFit, pointer])
+    }, [el, texture, segments, uvFit, pointer, measureBounds])
 
     useFrame(() => {
-        const m = mesh.current
-        if (!m) return
-
         /* Browsers without requestVideoFrameCallback need an explicit pull. */
         texture?.update()
-
-        const pxToWorld = viewport.height / size.height
-
-        /*
-         * autoReflow re-reads the rect each frame so the mesh follows parent
-         * CSS transforms like parallax. One layout read per frame.
-         */
-        if (autoReflow && el.current) {
-            const rect = el.current.getBoundingClientRect()
-            m.position.x = (rect.left + rect.width / 2 - size.width / 2) * pxToWorld
-            m.position.y = -(rect.top + rect.height / 2 - size.height / 2) * pxToWorld
-            m.scale.x = rect.width * pxToWorld * fitScale.current.x
-            m.scale.y = rect.height * pxToWorld * fitScale.current.y
-            return
-        }
-
-        const { x, y, width, height } = bounds.current
-        m.position.x = (x + width / 2 - window.scrollX - size.width / 2) * pxToWorld
-        m.position.y = -(y + height / 2 - window.scrollY - size.height / 2) * pxToWorld
-        m.scale.x = width * pxToWorld * fitScale.current.x
-        m.scale.y = height * pxToWorld * fitScale.current.y
     })
 
     if (!texture) return null
@@ -210,52 +133,7 @@ export function WebglVideo({
 }: WebglVideoProps) {
     const el = useRef<ComponentRef<"video">>(null)
     const uvFit = useRef({ x: 1, y: 1 })
-    const pointer = useMemo<Pointer>(() => {
-        return {
-            uv: new Vector2(0.5, 0.5),
-            texUv: new Vector2(0.5, 0.5),
-            repeat: new Vector2(1, 1),
-            hover: 0,
-        }
-    }, [])
-
-    useEffect(() => {
-        if (!webglEnabled) return
-        const target = el.current
-        if (!target) return
-
-        /*
-         * Pointer events still fire on the DOM element through opacity:0,
-         * so the browser tells us when the cursor is over it.
-         */
-        const onMove = (event: PointerEvent) => {
-            const { width, left, top, height } = target.getBoundingClientRect()
-            const x = (event.clientX - left) / width
-            const y = 1 - (event.clientY - top) / height
-            const fit = uvFit.current
-            pointer.uv.set(x, y)
-            pointer.texUv.set(x * fit.x + (1 - fit.x) / 2, y * fit.y + (1 - fit.y) / 2)
-        }
-
-        const onEnter = () => (pointer.hover = 1)
-        const onLeave = () => (pointer.hover = 0)
-
-        target.addEventListener("pointermove", onMove)
-        target.addEventListener("pointerenter", onEnter)
-        target.addEventListener("pointerleave", onLeave)
-
-        /*
-         * Hover in too fast and pointerenter fires before these listeners
-         * attach, so seed hover from the live :hover state instead.
-         */
-        if (target.matches(":hover")) pointer.hover = 1
-
-        return () => {
-            target.removeEventListener("pointermove", onMove)
-            target.removeEventListener("pointerenter", onEnter)
-            target.removeEventListener("pointerleave", onLeave)
-        }
-    }, [webglEnabled, pointer])
+    const pointer = usePointerUv(el, { enabled: webglEnabled, uvFit })
 
     return (
         <>

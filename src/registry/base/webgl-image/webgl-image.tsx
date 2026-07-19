@@ -1,22 +1,12 @@
 import { useTexture } from "@react-three/drei"
-import { useFrame, useThree } from "@react-three/fiber"
-import {
-    type ComponentRef,
-    type RefObject,
-    useEffect,
-    useLayoutEffect,
-    useMemo,
-    useRef,
-} from "react"
-import { type Mesh, type Texture, Vector2 } from "three"
+import { type ComponentRef, type RefObject, useLayoutEffect, useRef } from "react"
+import type { Mesh, Texture } from "three"
+import { useDomPlane } from "../../hooks/use-dom-plane"
+import { type Pointer, usePointerUv } from "../../hooks/use-pointer-uv"
+import { applyUvCrop, computeObjectFit } from "../../lib/object-fit"
 import { webglTeleport } from "../webgl-portal/webgl-portal"
 
-export type Pointer = {
-    uv: Vector2
-    texUv: Vector2
-    repeat: Vector2
-    hover: number
-}
+export type { Pointer }
 
 type WebglImageProps = {
     src: string
@@ -46,10 +36,8 @@ type PlaneProps = {
 function Plane({ el, src, segments, material, pointer, uvFit, zIndex, autoReflow }: PlaneProps) {
     const mesh = useRef<Mesh>(null)
     const texture = useTexture(src)
-    const size = useThree((s) => s.size)
-    const viewport = useThree((s) => s.viewport)
     const fitScale = useRef({ x: 1, y: 1 })
-    const bounds = useRef({ x: 0, y: 0, width: 0, height: 0 })
+    const measureBounds = useDomPlane(el, mesh, { autoReflow, fitScale })
 
     useLayoutEffect(() => {
         const target = el.current
@@ -58,65 +46,23 @@ function Plane({ el, src, segments, material, pointer, uvFit, zIndex, autoReflow
         const measure = () => {
             const m = mesh.current
             if (!m) return
+            const rect = measureBounds()
+            if (!rect) return
 
-            /*
-             * Rect in document coords so viewport position later needs only
-             * window.scrollX/Y, instead of re-measuring bounds every render.
-             */
-            const rect = target.getBoundingClientRect()
-            bounds.current.x = rect.left + window.scrollX
-            bounds.current.y = rect.top + window.scrollY
-            bounds.current.width = rect.width
-            bounds.current.height = rect.height
-
-            /*
-             * Replicate CSS object-fit: cover crops via UV repeat/offset,
-             * contain shrinks the mesh scale (UVs alone can't letterbox).
-             */
             const image = texture.image as HTMLImageElement
-            const objectFit = getComputedStyle(target).objectFit
-            const planeAspect = rect.width / rect.height
-            const imageAspect = image.width / image.height
+            const crop = computeObjectFit(
+                rect.width / rect.height,
+                image.width / image.height,
+                getComputedStyle(target).objectFit,
+            )
 
-            let repeatU = 1
-            let repeatV = 1
+            fitScale.current.x = crop.fitScaleX
+            fitScale.current.y = crop.fitScaleY
+            pointer.repeat.set(crop.repeatU, crop.repeatV)
+            uvFit.current.x = crop.repeatU / crop.fitScaleX
+            uvFit.current.y = crop.repeatV / crop.fitScaleY
 
-            fitScale.current.x = 1
-            fitScale.current.y = 1
-
-            if (objectFit === "cover") {
-                if (planeAspect > imageAspect) {
-                    repeatV = imageAspect / planeAspect
-                } else {
-                    repeatU = planeAspect / imageAspect
-                }
-            } else if (objectFit === "contain") {
-                if (planeAspect > imageAspect) {
-                    fitScale.current.x = imageAspect / planeAspect
-                } else {
-                    fitScale.current.y = planeAspect / imageAspect
-                }
-            }
-
-            const offsetU = (1 - repeatU) / 2
-            const offsetV = (1 - repeatV) / 2
-
-            pointer.repeat.set(repeatU, repeatV)
-            uvFit.current.x = repeatU / fitScale.current.x
-            uvFit.current.y = repeatV / fitScale.current.y
-
-            const uvAttribute = m.geometry.attributes.uv
-
-            for (let iy = 0; iy <= segments; iy++) {
-                for (let ix = 0; ix <= segments; ix++) {
-                    const idx = iy * (segments + 1) + ix
-                    const u = ix / segments
-                    const v = 1 - iy / segments
-                    uvAttribute.setXY(idx, u * repeatU + offsetU, v * repeatV + offsetV)
-                }
-            }
-
-            uvAttribute.needsUpdate = true
+            applyUvCrop(m.geometry.attributes.uv, segments, crop.repeatU, crop.repeatV)
         }
 
         measure()
@@ -125,32 +71,7 @@ function Plane({ el, src, segments, material, pointer, uvFit, zIndex, autoReflow
         ro.observe(target)
         ro.observe(document.body)
         return () => ro.disconnect()
-    }, [el, texture, segments, uvFit, pointer])
-
-    useFrame(() => {
-        const m = mesh.current
-        if (!m) return
-        const pxToWorld = viewport.height / size.height
-
-        /*
-         * autoReflow re-reads the rect each frame so the mesh follows parent
-         * CSS transforms like parallax. One layout read per frame.
-         */
-        if (autoReflow && el.current) {
-            const rect = el.current.getBoundingClientRect()
-            m.position.x = (rect.left + rect.width / 2 - size.width / 2) * pxToWorld
-            m.position.y = -(rect.top + rect.height / 2 - size.height / 2) * pxToWorld
-            m.scale.x = rect.width * pxToWorld * fitScale.current.x
-            m.scale.y = rect.height * pxToWorld * fitScale.current.y
-            return
-        }
-
-        const { x, y, width, height } = bounds.current
-        m.position.x = (x + width / 2 - window.scrollX - size.width / 2) * pxToWorld
-        m.position.y = -(y + height / 2 - window.scrollY - size.height / 2) * pxToWorld
-        m.scale.x = width * pxToWorld * fitScale.current.x
-        m.scale.y = height * pxToWorld * fitScale.current.y
-    })
+    }, [el, texture, segments, uvFit, pointer, measureBounds])
 
     return (
         <mesh ref={mesh} renderOrder={zIndex}>
@@ -178,52 +99,7 @@ export function WebglImage({
 }: WebglImageProps) {
     const el = useRef<ComponentRef<"img">>(null)
     const uvFit = useRef({ x: 1, y: 1 })
-    const pointer = useMemo<Pointer>(() => {
-        return {
-            uv: new Vector2(0.5, 0.5),
-            texUv: new Vector2(0.5, 0.5),
-            repeat: new Vector2(1, 1),
-            hover: 0,
-        }
-    }, [])
-
-    useEffect(() => {
-        if (!webglEnabled) return
-        const target = el.current
-        if (!target) return
-
-        /*
-         * Pointer events still fire on the DOM element through opacity:0,
-         * so the browser tells us when the cursor is over it.
-         */
-        const onMove = (e: PointerEvent) => {
-            const { width, left, top, height } = target.getBoundingClientRect()
-            const x = (e.clientX - left) / width
-            const y = 1 - (e.clientY - top) / height
-            const fit = uvFit.current
-            pointer.uv.set(x, y)
-            pointer.texUv.set(x * fit.x + (1 - fit.x) / 2, y * fit.y + (1 - fit.y) / 2)
-        }
-
-        const onEnter = () => (pointer.hover = 1)
-        const onLeave = () => (pointer.hover = 0)
-
-        target.addEventListener("pointermove", onMove)
-        target.addEventListener("pointerenter", onEnter)
-        target.addEventListener("pointerleave", onLeave)
-
-        /*
-         * Hover in too fast and pointerenter fires before these listeners
-         * attach, so seed hover from the live :hover state instead.
-         */
-        if (target.matches(":hover")) pointer.hover = 1
-
-        return () => {
-            target.removeEventListener("pointermove", onMove)
-            target.removeEventListener("pointerenter", onEnter)
-            target.removeEventListener("pointerleave", onLeave)
-        }
-    }, [webglEnabled, pointer])
+    const pointer = usePointerUv(el, { enabled: webglEnabled, uvFit })
 
     return (
         <>
