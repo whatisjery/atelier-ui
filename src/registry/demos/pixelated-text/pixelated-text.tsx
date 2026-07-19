@@ -9,14 +9,11 @@ export default function PixelatedTextDemo(controls: Partial<PixelatedTextProps>)
     return (
         <div className="text-center demo-text flex items-center justify-center h-screen w-screen flex-col space-y-2">
             <span>
-                This is a{" "}
                 <PixelatedText render={<p />} colors={PALETTE} {...controls}>
                     Pixelated
                 </PixelatedText>{" "}
-                effect!
+                text effect!
             </span>
-
-            <span>fast and optimized.</span>
         </div>
     )
 }

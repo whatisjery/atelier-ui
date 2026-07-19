@@ -20,7 +20,6 @@ export default function TextFluidDemo(controls: Partial<TextFluidProps>) {
     return (
         <div className="text-center demo-text flex items-center justify-center h-screen w-screen flex-col space-y-2">
             <span>
-                This is a{" "}
                 <TextFluid
                     render={
                         <span
@@ -39,12 +38,10 @@ export default function TextFluidDemo(controls: Partial<TextFluidProps>) {
                     amplitude={() => noise.get()}
                     {...controls}
                 >
-                    fluid
+                    Fluid
                 </TextFluid>{" "}
                 text effect!
             </span>
-
-            <span>Try to interact with it.</span>
         </div>
     )
 }
