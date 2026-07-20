@@ -18,8 +18,9 @@ export default function TextFluidDemo(controls: Partial<TextFluidProps>) {
     }, [opacity, noise])
 
     return (
-        <div className="text-center demo-text flex items-center justify-center h-screen w-screen flex-col space-y-2">
-            <span>
+        <div className="text-center flex items-center justify-center h-screen w-screen">
+            <div className="font-medium text-6xl tracking-tight">
+                <span>Accessible&nbsp;</span>
                 <TextFluid
                     render={
                         <span
@@ -38,10 +39,10 @@ export default function TextFluidDemo(controls: Partial<TextFluidProps>) {
                     amplitude={() => noise.get()}
                     {...controls}
                 >
-                    Fluid
+                    Liquid
                 </TextFluid>{" "}
-                text effect!
-            </span>
+                &nbsp;text.
+            </div>
         </div>
     )
 }

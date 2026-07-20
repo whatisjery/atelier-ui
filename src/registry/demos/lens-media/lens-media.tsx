@@ -6,7 +6,7 @@ type LensMediaControls = Partial<LensEffectProps> & { type?: "image" | "video" }
 export default function LensMediaDemo({ type = "image", ...controls }: LensMediaControls) {
     return (
         <div className="w-full h-screen flex items-center justify-center">
-            <div className="demo-text absolute inset-0 z-10 flex items-center justify-center pointer-events-none text-[#FFFFFF]">
+            <div className="font-serif text-3xl absolute inset-0 z-10 flex items-center justify-center pointer-events-none text-[#FFFFFF]">
                 Hover anywhere!
             </div>
             {type === "video" ? (

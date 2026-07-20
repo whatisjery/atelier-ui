@@ -31,7 +31,7 @@ export default function TextScrambleDemo(controls: Partial<TextScrambleProps>) {
 
     // We are setting a state to avoid SSR hydration errors in next.js.
     useEffect(() => {
-        setLines(getBands(45))
+        setLines(getBands(40))
     }, [])
 
     return (
