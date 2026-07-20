@@ -24,7 +24,12 @@ export default function CatalogCard({ catalogItem }: CatalogCardProps) {
                 <div className="w-full flex relative flex-col h-full p-14">
                     <div className="pattern-line w-full h-full absolute inset-0 -z-1 border-t border-b border-r"></div>
 
-                    <div className="relative w-full aspect-[720/460] overflow-hidden shadow-xl/2">
+                    <div
+                        className={cn(
+                            "relative w-full aspect-[720/460] overflow-hidden",
+                            catalogItem.preview && "shadow-xl/2",
+                        )}
+                    >
                         {!catalogItem.preview && (
                             <div className="absolute inset-0 flex flex-col items-center justify-center">
                                 <Logo size={100} className="text-accent-4" />
