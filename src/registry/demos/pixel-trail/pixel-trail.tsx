@@ -6,8 +6,9 @@ export default function PixelTrailDemo(controls: Partial<PixelTrailProps>) {
 
     return (
         <div className="flex h-screen w-full justify-center items-center">
-            <div className="demo-text absolute inset-0 z-10 flex items-center justify-center pointer-events-none">
-                Hover anywhere!
+            <div className="absolute items-center px-5 h-full top-0 w-full z-20 pointer-events-none flex justify-between">
+                <span>2D canvas pixel trail &rarr; </span>
+                <span>&rarr; move your mouse.</span>
             </div>
 
             <img

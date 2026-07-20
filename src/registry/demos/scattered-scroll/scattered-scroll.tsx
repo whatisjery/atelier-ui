@@ -12,8 +12,9 @@ const IMAGE_URLS = [
 export default function ScatteredScrollDemo(controls: Partial<ScatteredScrollProps>) {
     return (
         <>
-            <div className="h-screen demo-text flex w-full items-center justify-center">
-                Scroll down!
+            <div className="h-screen text-2xl tracking-tight font-medium flex items-center justify-center">
+                Scroll to
+                <span className="text-accent-2">&nbsp;to slide the images.</span>
             </div>
 
             <ScatteredScroll overlap={320} scrollDistance={350} {...controls}>
@@ -29,9 +30,7 @@ export default function ScatteredScrollDemo(controls: Partial<ScatteredScrollPro
                 ))}
             </ScatteredScroll>
 
-            <div className="h-screen mt-80 demo-text flex w-full items-center justify-center">
-                Scroll back up!
-            </div>
+            <div className="h-screen"></div>
         </>
     )
 }

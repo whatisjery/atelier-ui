@@ -41,9 +41,9 @@ export default function SphereGalleryDemo({
                     }}
                     className="-translate-x-1/2 -translate-y-1/2 flex flex-col items-center justify-center pointer-events-none fixed top-1/2 left-1/2 z-10 text-white mix-blend-difference"
                 >
-                    <span className="text-4xl font-serif mb-0.5">Orbit gallery</span>
+                    <span className="text-4xl font-serif mb-0.5">Sphere gallery</span>
                     <span className="text-sm text-accent-2 opacity-55">
-                        Scroll or select a ring image
+                        Drag or select a sphere image
                     </span>
                 </motion.h1>
             )}

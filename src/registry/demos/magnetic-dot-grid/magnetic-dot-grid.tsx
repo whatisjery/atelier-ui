@@ -10,8 +10,9 @@ export default function MagneticDotGridDemo(controls: Partial<MagneticDotGridPro
 
     return (
         <>
-            <div className="demo-text absolute inset-0 z-10 flex items-center justify-center pointer-events-none">
-                Hover anywhere!
+            <div className="inset-0 absolute flex text-3xl flex-col font-medium items-center justify-center z-20 pointer-events-none">
+                <span>Classic interactive dot pattern</span>
+                <span className="text-accent-2">Move your mouse around.</span>
             </div>
 
             <MagneticDotGrid

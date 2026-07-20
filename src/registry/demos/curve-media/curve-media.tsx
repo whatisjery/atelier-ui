@@ -28,8 +28,9 @@ export default function CurveMediaDemo({ type = "image", ...controls }: CurveMed
 
     return (
         <>
-            <div className="h-[30vh] demo-text inset-0 z-10 flex items-end justify-center pointer-events-none mb-10">
-                Scroll down!
+            <div className="h-[30vh] text-3xl tracking-tight font-medium inset-0 z-10 flex items-end justify-center pointer-events-none mb-10">
+                Scroll to
+                <span className="text-accent-2">&nbsp;curve the images.</span>
             </div>
 
             {type === "video" ? (
@@ -49,10 +50,6 @@ export default function CurveMediaDemo({ type = "image", ...controls }: CurveMed
                     </div>
                 </div>
             )}
-
-            <div className="h-[20vh] demo-text inset-0 z-10 flex items-start justify-center pointer-events-none mb-30">
-                Scroll back up!
-            </div>
         </>
     )
 }

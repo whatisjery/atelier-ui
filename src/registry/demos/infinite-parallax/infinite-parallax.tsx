@@ -25,8 +25,9 @@ const IMAGE_URLS_3 = [
 export default function InfiniteParallaxDemo(controls: Partial<InfiniteParallaxProps>) {
     return (
         <>
-            <div className="h-[60vh] mt-10 demo-text flex items-center justify-center">
-                Scroll down!
+            <div className="h-[60vh] mt-10 text-2xl tracking-tight font-medium flex items-center justify-center">
+                Scroll to
+                <span className="text-accent-2">&nbsp;see the parallax effect.</span>
             </div>
 
             <div className="h-screen bg-bg flex overflow-hidden gap-2">
@@ -70,9 +71,7 @@ export default function InfiniteParallaxDemo(controls: Partial<InfiniteParallaxP
                 </InfiniteParallax>
             </div>
 
-            <div className="h-[110vh] demo-text flex items-center justify-center">
-                Scroll back up!
-            </div>
+            <div className="h-[80vh]"></div>
         </>
     )
 }

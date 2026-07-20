@@ -21,12 +21,12 @@ export default function CatalogCard({ catalogItem }: CatalogCardProps) {
                 className="w-full border-none group transition-shadow duration-200 ease-expo-out cursor-pointer not-prose flex justify-between flex-col mb-10"
                 key={catalogItem.title}
             >
-                <div className="w-full flex relative flex-col h-full p-15">
+                <div className="w-full flex relative flex-col h-full p-14">
                     <div className="pattern-line w-full h-full absolute inset-0 -z-1 border-t border-b border-r"></div>
 
-                    <div className="relative w-full aspect-[720/460]">
+                    <div className="relative w-full aspect-[720/460] overflow-hidden shadow-xl/2">
                         {!catalogItem.preview && (
-                            <div className="absolute inset-0 flex flex-col items-center justify-center rounded-xl ">
+                            <div className="absolute inset-0 flex flex-col items-center justify-center">
                                 <Logo size={100} className="text-accent-4" />
                             </div>
                         )}
@@ -35,7 +35,7 @@ export default function CatalogCard({ catalogItem }: CatalogCardProps) {
                             <>
                                 <video
                                     src={catalogItem.preview}
-                                    className="absolute inset-0 w-full h-full object-cover rounded-xl"
+                                    className="absolute inset-0 w-full h-full object-cover scale-101"
                                     muted
                                     loop
                                     playsInline
@@ -59,7 +59,7 @@ export default function CatalogCard({ catalogItem }: CatalogCardProps) {
                                     width={720}
                                     height={460}
                                     className={cn(
-                                        "absolute inset-0 w-full h-full object-cover rounded-xl transition-opacity duration-300 ease-expo-out pointer-events-none",
+                                        "absolute inset-0 w-full h-full object-cover transition-opacity duration-300 ease-expo-out pointer-events-none scale-101",
                                         isPlaying ? "opacity-0" : "opacity-100",
                                     )}
                                 />
