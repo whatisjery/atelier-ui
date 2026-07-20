@@ -3,18 +3,14 @@ import { type RenderProp, useRender } from "../../hooks/use-render"
 
 type SplitBy = "letters" | "words"
 
+const NON_BREAKING_SPACE = " "
+
 export type TextSplitProps = {
     children: string
     splitBy?: SplitBy
     showMask?: boolean
     renderItems?: (char: string, index: number) => ReactNode
     render?: RenderProp
-}
-
-function splitText(text: string, splitBy: SplitBy) {
-    if (splitBy === "letters") return text.split("")
-    if (splitBy === "words") return text.split(" ")
-    return []
 }
 
 function Mask({ children, showMask }: { children: ReactNode; showMask: boolean }) {
@@ -29,19 +25,48 @@ export function TextSplit({
     renderItems,
     render,
 }: TextSplitProps) {
-    const parts = splitText(children, splitBy)
+    const words = children.split(" ")
+    let cursor = 0
 
-    const content = parts.map((part, index) => {
-        const spacer = index < parts.length - 1 && " "
-        const elements = splitText(part, splitBy)
+    const content = words.map((word, wordIndex) => {
+        const isLast = wordIndex === words.length - 1
+
+        if (splitBy === "words") {
+            return (
+                <Mask showMask={showMask} key={wordIndex}>
+                    {renderItems ? renderItems(word, wordIndex) : word}
+                    {!isLast && " "}
+                </Mask>
+            )
+        }
+
+        const letters = Array.from(word).map((char) => {
+            const index = cursor++
+            return (
+                <Mask showMask={showMask} key={index}>
+                    {renderItems ? renderItems(char, index) : char}
+                </Mask>
+            )
+        })
+
+        let spacer: ReactNode = null
+        if (!isLast) {
+            const index = cursor++
+            spacer = (
+                <Mask showMask={showMask} key={index}>
+                    {renderItems ? renderItems(" ", index) : NON_BREAKING_SPACE}
+                </Mask>
+            )
+        }
+
         return (
-            <Mask showMask={showMask} key={index}>
-                {elements.map((char, i) => (
-                    <Fragment key={i}>{renderItems ? renderItems(char, index) : char}</Fragment>
-                ))}
-
-                {splitBy !== "letters" && spacer}
-            </Mask>
+            <Fragment key={wordIndex}>
+                <span className="inline-block">
+                    {letters}
+                    {spacer}
+                </span>
+                {!isLast && <wbr />}
+            </Fragment>
         )
     })
 
