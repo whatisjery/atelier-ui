@@ -495,7 +495,7 @@ function Tile({
                 ],
                 [
                     material,
-                    { uBackgroundAlpha: focused ? 0 : 1 },
+                    { uBackgroundAlpha: focused || dissolving || !tileColor ? 0 : 1 },
                     { duration: focusDuration, ease: FOCUS_EASING, at: 0 },
                 ],
                 [
@@ -508,7 +508,7 @@ function Tile({
         }
 
         return tileFocusAnimation()
-    }, [cornerRadius, dissolving, focused, gap, padding, focusDuration, focusScale])
+    }, [cornerRadius, dissolving, focused, gap, padding, tileColor, focusDuration, focusScale])
 
     useEffect(() => {
         if (!reveal || !ready) return
