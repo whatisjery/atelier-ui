@@ -6,7 +6,10 @@ type UseFakeLoaderOptions = {
     steps?: readonly number[]
 }
 
-export function useFakeLoader({ duration = 1000, steps = LOADER_STEPS }: UseFakeLoaderOptions = {}) {
+export function useFakeLoader({
+    duration = 1000,
+    steps = LOADER_STEPS,
+}: UseFakeLoaderOptions = {}) {
     const [loaded, setLoaded] = useState(false)
     const messageRef = useRef<ComponentRef<"span">>(null)
 

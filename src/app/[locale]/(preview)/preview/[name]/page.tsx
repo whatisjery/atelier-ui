@@ -42,7 +42,7 @@ export default function PreviewPage() {
     useEffect(() => {
         function handleMessage(event: MessageEvent) {
             if (event.origin !== window.location.origin) return
-            if (!event.data || event.data.type !== "atelier:controls") return
+            if (event.data?.type !== "atelier:controls") return
             setValues(event.data.values)
         }
 

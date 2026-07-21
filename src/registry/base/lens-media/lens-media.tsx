@@ -82,7 +82,12 @@ extend({ LensMediaMat })
 type LensMediaMaterialProps = {
     map: Texture
     pointer: Pointer
-} & Required<Pick<LensEffectProps, "size" | "softness" | "aberration" | "refraction" | "dispersion" | "smoothing">>
+} & Required<
+    Pick<
+        LensEffectProps,
+        "size" | "softness" | "aberration" | "refraction" | "dispersion" | "smoothing"
+    >
+>
 
 // Effect props shared by both the image and video variants.
 export type LensEffectProps = {

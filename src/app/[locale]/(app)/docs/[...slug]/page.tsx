@@ -2,11 +2,11 @@ import type { Metadata } from "next"
 import { setRequestLocale } from "next-intl/server"
 import RouteBreadCrumb from "@/components/common/RouteBreadCrumb"
 import PageDocLayout from "@/components/features/docs/_PageDocLayout"
-import { buildDocMdxComponents } from "@/components/features/docs/doc-mdx"
 import DocHeaderGroupTitle from "@/components/features/docs/DocHeaderGroupTitle"
 import DocHeaderNavButtons from "@/components/features/docs/DocHeaderNavButtons"
 import DocPageDropdown from "@/components/features/docs/DocPageDropdown"
 import DocTableOfContent from "@/components/features/docs/DocTableOfContent"
+import { buildDocMdxComponents } from "@/components/features/docs/doc-mdx"
 import {
     getAllDocs,
     getCategorySlugs,

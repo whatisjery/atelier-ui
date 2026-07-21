@@ -172,7 +172,7 @@ function buildDocTree(dirPath: string, urlPath: string): DocTree[] {
 
         if (stat.isDirectory()) {
             const folder = buildFolderNode(fullPath, urlPath, item)
-            if (folder.children.length > 0) result.push(folder)
+            if (folder.children.length > 0 || folder.nav) result.push(folder)
         } else if (item.endsWith(".mdx")) {
             result.push(buildFileNode(fullPath, urlPath, item))
         }

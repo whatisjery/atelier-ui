@@ -54,10 +54,7 @@ void main() {
 type LiquidMediaMaterialProps = {
     map: Texture
     pointer: Pointer
-} & Pick<
-    LiquidEffectProps,
-    "rippleMap" | "intensity" | "radius" | "expandRate" | "decayRate"
->
+} & Pick<LiquidEffectProps, "rippleMap" | "intensity" | "radius" | "expandRate" | "decayRate">
 
 type Uniforms = {
     uTexture: { value: Texture | null }
@@ -268,16 +265,8 @@ function LiquidMediaMaterial({
 }
 
 export function LiquidMedia(props: LiquidMediaProps) {
-    const {
-        rippleMap,
-        intensity,
-        radius,
-        expandRate,
-        decayRate,
-        segments,
-        webglEnabled,
-        ...rest
-    } = props
+    const { rippleMap, intensity, radius, expandRate, decayRate, segments, webglEnabled, ...rest } =
+        props
 
     const material = (map: Texture, pointer: Pointer) => (
         <LiquidMediaMaterial

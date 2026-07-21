@@ -141,7 +141,10 @@ function PlanCard({ plan, checkoutHref, proCtaSlot }: PlanCardProps) {
     )
 }
 
-export default function LandingPaymentCards({ checkoutHref, proCtaSlot }: LandingPaymentCardsProps) {
+export default function LandingPaymentCards({
+    checkoutHref,
+    proCtaSlot,
+}: LandingPaymentCardsProps) {
     return (
         <div className="flex max-lg:flex-col max-lg:gap-8 gap-15 max-lg:p-5 w-full mb-20">
             {PLANS.map((plan) => (
