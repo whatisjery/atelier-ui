@@ -68,15 +68,23 @@ export function buildDocMdxComponents(ctx: DocMdxContext): DocMdxComponents {
             return <InstalGuideManual {...props} snippets={snippets[props.name]} />
         },
 
-        InstallTabs: (props: { name: string }) => {
+        InstallTabs: (props: { name: string; children?: React.ReactNode }) => {
             return (
                 <InstallTabs
                     cliSlot={<InstalGuideCLI name={props.name} />}
                     manualSlot={
                         <InstalGuideManual name={props.name} snippets={snippets[props.name]} />
                     }
+                    agentSlot={
+                        props.children ? (
+                            <div className="space-y-4">{props.children}</div>
+                        ) : undefined
+                    }
                 />
             )
         },
+
+        // Overridden by deployments that generate a component prompt.
+        ComponentPrompt: () => null,
     }
 }

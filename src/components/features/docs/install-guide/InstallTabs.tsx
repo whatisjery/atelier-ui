@@ -8,14 +8,27 @@ type InstallTabsProps = {
     cliSlot: React.ReactNode
     manualSlot: React.ReactNode
     promptSlot?: React.ReactNode
+    agentSlot?: React.ReactNode
 }
 
-export default function InstallTabs({ cliSlot, manualSlot, promptSlot }: InstallTabsProps) {
-    const [value, setValue] = useState("cli")
+export default function InstallTabs({
+    cliSlot,
+    manualSlot,
+    promptSlot,
+    agentSlot,
+}: InstallTabsProps) {
+    const [value, setValue] = useState(agentSlot ? "agent" : "cli")
 
     return (
         <Tabs.Root value={value} onValueChange={setValue}>
             <Tabs.List className="flex items-center mb-4">
+                {agentSlot && (
+                    <Tabs.Trigger value="agent" asChild>
+                        <Button variant={value === "agent" ? "secondary" : "ghost"} size="tag">
+                            Agent
+                        </Button>
+                    </Tabs.Trigger>
+                )}
                 <Tabs.Trigger value="cli" asChild>
                     <Button variant={value === "cli" ? "secondary" : "ghost"} size="tag">
                         CLI
@@ -38,6 +51,12 @@ export default function InstallTabs({ cliSlot, manualSlot, promptSlot }: Install
             <Tabs.Content value="cli" forceMount className="data-[state=inactive]:hidden">
                 {cliSlot}
             </Tabs.Content>
+
+            {agentSlot && (
+                <Tabs.Content value="agent" forceMount className="data-[state=inactive]:hidden">
+                    {agentSlot}
+                </Tabs.Content>
+            )}
 
             <Tabs.Content value="manual" forceMount className="data-[state=inactive]:hidden">
                 {manualSlot}
