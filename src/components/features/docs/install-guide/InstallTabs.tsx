@@ -17,11 +17,16 @@ export default function InstallTabs({
     promptSlot,
     agentSlot,
 }: InstallTabsProps) {
-    const [value, setValue] = useState(agentSlot ? "agent" : "cli")
+    const [value, setValue] = useState("cli")
 
     return (
         <Tabs.Root value={value} onValueChange={setValue}>
             <Tabs.List className="flex items-center mb-4">
+                <Tabs.Trigger value="cli" asChild>
+                    <Button variant={value === "cli" ? "secondary" : "ghost"} size="tag">
+                        CLI
+                    </Button>
+                </Tabs.Trigger>
                 {agentSlot && (
                     <Tabs.Trigger value="agent" asChild>
                         <Button variant={value === "agent" ? "secondary" : "ghost"} size="tag">
@@ -29,11 +34,6 @@ export default function InstallTabs({
                         </Button>
                     </Tabs.Trigger>
                 )}
-                <Tabs.Trigger value="cli" asChild>
-                    <Button variant={value === "cli" ? "secondary" : "ghost"} size="tag">
-                        CLI
-                    </Button>
-                </Tabs.Trigger>
                 {promptSlot && (
                     <Tabs.Trigger value="prompt" asChild>
                         <Button variant={value === "prompt" ? "secondary" : "ghost"} size="tag">
