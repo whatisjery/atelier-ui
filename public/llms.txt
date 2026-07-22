@@ -78,6 +78,9 @@ The shared building blocks every WebGL component composes on. Install `webgl-pro
 - [Edge Bounce](https://atelier-ui.com/docs/components/cursor/edge-bounce): Wrapper div that bounces away from the cursor on hover, scaled by pointer speed, and springs back into place. Key props: `pause`, `outDuration`, `inDuration`, `bounce`, `distance`, `rotation`. Dependencies: `motion`.
 - [Magnetic Dot Grid](https://atelier-ui.com/docs/components/cursor/magnetic-dot-grid): 2D canvas-based interactive dot grid with magnetic cursor repulsion and ambient float. Key props: `dotRadius`, `spacing`, `strength`, `interactionRadius`, `snapSpeed`, `returnSpeed`, `floatAmplitude`, `floatSpeed`, `baseColor`, `centerColors`, `opacityRange`, `cycleSpeed`. Zero dependencies (Canvas 2D).
 - [Pixel Trail](https://atelier-ui.com/docs/components/cursor/pixel-trail): 2D canvas-based pixelated cursor trail. Modes: `"color"` or `"sample"` (samples colors from underlying images). Key props: `mode`, `color`, `imageSelector`, `lighten`, `pixelSize`, `trailRadius`, `lifetime`, `fade`, `showGrid`, `gridColor`. Zero dependencies (Canvas 2D).
+- [Hover Burst](https://atelier-ui.com/docs/components/cursor/hover-burst): **(Pro)** Images or items that burst around the cursor when it enters an element. Dependencies: `motion`.
+- [Image Bloom](https://atelier-ui.com/docs/components/cursor/image-bloom): **(Pro)** Images that pop up along the cursor's path and fade out behind it. Dependencies: `motion`.
+- [Dither Cursor](https://atelier-ui.com/docs/components/cursor/dither-cursor): **(Pro)** A trail of dithered dots that follows the cursor and bends the scene behind it. Dependencies: `three`, `@react-three/fiber`, `@react-three/drei`, `postprocessing`.
 
 ## Components — Scroll
 
@@ -89,6 +92,9 @@ The shared building blocks every WebGL component composes on. Install `webgl-pro
 - [Scattered Scroll](https://atelier-ui.com/docs/components/scroll/scattered-scroll): Scroll-driven horizontal scatter; children spread apart along the x-axis as the user scrolls. Key props: `children`, `scrollTargetRef`. Dependencies: `motion`. Installs `smooth-scroll` automatically.
 - [Elastic Stick](https://atelier-ui.com/docs/components/scroll/elastic-stick): **(Pro)** Items spring and stick to the center of the viewport while scrolling, with staggered timing. Key props: `children`, `staggerValue`, `scrollTargetRef`. Dependencies: `motion`. Installs `smooth-scroll` automatically.
 - [Wavy Scroll](https://atelier-ui.com/docs/components/scroll/wavy-scroll): **(Pro)** Text, images, and any other element that wave across the screen while scrolling. Key props: `children`, `amplitude`, `wavelength`, `intensity`, `scrollDistance`, `scrollTargetRef`. Dependencies: `motion`. Installs `smooth-scroll` and `text-split` automatically.
+- [Letter Swarm](https://atelier-ui.com/docs/components/scroll/letter-swarm): **(Pro)** Letters that come together into readable text as you scroll, then scatter again. Dependencies: `motion`. Installs `smooth-scroll` and `text-split` automatically.
+- [Magnify Trail](https://atelier-ui.com/docs/components/scroll/magnify-trail): **(Pro)** A row of overlapping images that grow as they pass the center of the screen while scrolling. Dependencies: `motion`. Installs `smooth-scroll` automatically.
+- [Stacking Grid](https://atelier-ui.com/docs/components/scroll/stacking-grid): **(Pro)** A configurable grid of cards that stacks to the center while scrolling. Dependencies: `motion`. Installs `smooth-scroll` automatically.
 
 ## Components — Text
 
@@ -96,13 +102,14 @@ The shared building blocks every WebGL component composes on. Install `webgl-pro
 - [Pixelated Text](https://atelier-ui.com/docs/components/text/pixelated-text): SEO-friendly 2D canvas-based text that animates between pixelated and sharp states with flicker, chaos, depth, and chromatic aberration. Underlying text stays real DOM text. Key props: `pixelSize`, `flicker`, `chaos`, `depth`, `aberration`, `colors`, `fps`, `as`, `className`. Zero dependencies (Canvas 2D).
 - [Text Scramble](https://atelier-ui.com/docs/components/text/text-scramble): Text scramble animation that reveals characters sequentially left-to-right using randomized characters. Key props: `duration`, `playOnMount`, `playOnHover`, `characters`, `render`. Zero dependencies.
 - [Text Bounce](https://atelier-ui.com/docs/components/text/text-bounce): Per-letter bounce; letters fly away from the cursor on hover and spring back. Key props: `children`, `pause`, `outDuration`, `inDuration`, `bounce`, `distance`, `rotation`. Dependencies: `motion` (builds on `text-split`).
-- [Text Roll](https://atelier-ui.com/docs/components/text/text-roll): CSS-based rolling text with per-letter or group animation; scroll, mount, and hover triggers. Key props: `children`, `axis`, `mode`, `direction`, `playOnScroll`, `playOnMount`, `playOnHover`, `stagger`, `duration`, `cycles`. Builds on `text-split`; pure CSS animation (Motion for triggers).
+- [Text Roll](https://atelier-ui.com/docs/components/text/text-roll): **(Pro)** CSS-based rolling text with per-letter or group animation; scroll, mount, and hover triggers. Key props: `children`, `axis`, `mode`, `direction`, `playOnScroll`, `playOnMount`, `playOnHover`, `stagger`, `duration`, `cycles`. Builds on `text-split`; pure CSS animation (Motion for triggers).
+- [Falling Text](https://atelier-ui.com/docs/components/text/falling-text): **(Pro)** Text that falls and bounces when the cursor moves over it. Dependencies: `three`, `@react-three/fiber`, `@react-three/drei`.
 
-## Components — Transition
+## Page Transition — Next.js
 
-- [Clip Reveal](https://atelier-ui.com/docs/components/transition/clip-reveal): A clip-path reveal that scales content from a starting inset to fullscreen on trigger. Dependencies: `motion`.
-- [Stripe Wipe](https://atelier-ui.com/docs/components/transition/stripe-wipe): An overlay that breaks into subdivided stripes and wipes away in a staggered cascade, revealing the page beneath. Dependencies: `motion`.
-- [Sweep Exit](https://atelier-ui.com/docs/components/transition/sweep-exit): A full-screen overlay preloader with a staggered clip-path sweep that reveals the page beneath. Dependencies: `motion`.
+Route transitions for the Next.js App Router. The `page-transition` engine owns the navigation sequence: the URL updates on click, a cover animation plays over the current page, the route commits behind the cover, and the reveal waits until every WebGL asset of the next page has loaded. Browser back and forward play the same transition. `TransitionLink` preloads listed textures on hover and on click. Transition skins build on the engine and install it automatically.
+
+- [Clip Transition](https://atelier-ui.com/docs/page-transition/nextjs/clip-transition): **(Pro)** A covered route transition that clips and scales the page, WebGL compatible. Key props: `coverColor`, `background`, `clipColor`, `loadingSlot`, plus `preload` on `TransitionLink`. Dependencies: `motion`, `@react-three/drei`. Next.js App Router only.
 
 ## Components — Background
 
@@ -111,6 +118,8 @@ The shared building blocks every WebGL component composes on. Install `webgl-pro
 - [Gradient Flow](https://atelier-ui.com/docs/components/background/gradient-flow): **(Pro)** Animated multi-color gradient WebGL flow field background. Oklab-blended palette of 2 to 8 colors with optional ordered dithering and film grain. Key props: `colors`, `speed`, `scale`, `amplitude`, `frequency`, `stripes`, `seed`, `dither`, `ditherAmount`, `ditherSize`, `grain`, `grainAmount`. Dependencies: `three`, `@react-three/fiber`, `@react-three/drei`.
 - [Glowing Fog](https://atelier-ui.com/docs/components/background/glowing-fog): **(Pro)** Dynamic animated fog with a central light beam that follows the cursor, plus film grain. Key props: `speed`, `beamColor`, `beamX`, `beamY`, `beamScale`, `fogDensity`, `grainIntensity`, `mouseFollow`, `onTextureReady`. Dependencies: `three`, `@react-three/fiber`, `@react-three/drei`.
 - [Halftone Glow](https://atelier-ui.com/docs/components/background/halftone-glow): **(Pro)** Pulsing WebGL background with concentric halftone ring animation and edge glow; noise warps edge and ring shapes independently. Key props: `speed`, `blurAmount`, `edgeSize`, `edgeDistortion`, `ringDistortion`, `edgeColor`, `ringColor`, `onTextureReady`. Dependencies: `three`, `@react-three/fiber`, `@react-three/drei`.
+- [Scattered Grid](https://atelier-ui.com/docs/components/background/scattered-grid): **(Pro)** A grid where the item nearest the cursor scales up while the others scatter around it. Dependencies: `motion`.
+- [Tag Cloud](https://atelier-ui.com/docs/components/background/tag-cloud): **(Pro)** Images placed on a sphere and dragged around it, kept flat and scaled by depth. Dependencies: `motion`.
 
 ## Shared internal utilities (not standalone components)
 
