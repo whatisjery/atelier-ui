@@ -124,6 +124,7 @@ export function WebglProvider({
     return (
         <div
             ref={setEventSource}
+            data-atelier-webgl=""
             className={className}
             style={contained ? { position: "relative" } : { display: "contents" }}
         >

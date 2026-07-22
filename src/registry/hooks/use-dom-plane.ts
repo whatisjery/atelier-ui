@@ -48,7 +48,9 @@ export function useDomPlane(
         const pxToWorld = viewport.height / size.height
         const fit = fitScale?.current ?? { x: 1, y: 1 }
 
-        if (autoReflow && el.current) {
+        const transitioning = document.documentElement.hasAttribute("data-atelier-transitioning")
+
+        if ((autoReflow || transitioning) && el.current) {
             const rect = getRect ? getRect(el.current) : el.current.getBoundingClientRect()
             m.position.x = (rect.left + rect.width / 2 - size.width / 2) * pxToWorld
             m.position.y = -(rect.top + rect.height / 2 - size.height / 2) * pxToWorld
