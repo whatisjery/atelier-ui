@@ -14,6 +14,7 @@ import {
     getComponentSnippets,
     getDocBySlug,
     getDocNavigation,
+    getNavCategories,
 } from "@/lib/docs"
 import { importDoc } from "@/lib/import-doc"
 import type { DocMeta } from "@/types/docs"
@@ -45,6 +46,12 @@ export default async function Page({ params }: PageProps) {
 
     const { headings, rawMarkdown } = getDocBySlug(locale, slug)
     const navigation = getDocNavigation(locale, slug)
+    const hrefOverrides = Object.fromEntries(
+        getNavCategories(locale).map((section) => [
+            section.url,
+            section.url.replace("/docs/", "/catalog/"),
+        ]),
+    )
     const demoCode = getCodesBlock("src/registry/demos")
     const snippets = getComponentSnippets()
     const content = await importDoc(locale, slug)
@@ -62,10 +69,7 @@ export default async function Page({ params }: PageProps) {
         <PageDocLayout
             TOCSlot={<DocTableOfContent headings={headings} />}
             topBarSlot={
-                <RouteBreadCrumb
-                    skip={getCategorySlugs(locale)}
-                    hrefOverrides={{ "/docs/components": "/catalog/components" }}
-                />
+                <RouteBreadCrumb skip={getCategorySlugs(locale)} hrefOverrides={hrefOverrides} />
             }
             navigationSlot={
                 <>

@@ -242,7 +242,7 @@ export const getCategorySlugs = cache(function getCategorySlugs(locale: string):
     const slugs: string[] = []
     for (const root of getDocsTree(locale)) {
         visit(root, (node) => {
-            if (node.type === "folder" && node.category) {
+            if (node.type === "folder" && node.category && node.display !== "folder") {
                 const last = node.url.split("/").pop()
                 if (last) slugs.push(last)
             }
