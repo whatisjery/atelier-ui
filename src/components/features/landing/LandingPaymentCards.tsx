@@ -32,16 +32,16 @@ const PLANS = [
     {
         label: "plan / 02",
         title: "Get everything, forever.",
-        price: "$49.99",
+        price: "$79.99",
         highlighted: true,
         button: "Get pro access",
         features: [
             "Shader Studio, live editing and export",
             "Every future pro release included",
             "Everything in the free catalog",
-            "8 pro-only components, and counting",
+            "20 pro-only components, and counting",
             "One payment, no subscription",
-            "Support a fellow developer",
+            "Page transitions",
         ],
     },
 ] as const
