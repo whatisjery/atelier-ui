@@ -6,6 +6,7 @@ export type DirMeta = {
     icon?: string
     order?: number
     nav?: boolean
+    navOrder?: number
     display?: SectionDisplay
 }
 
@@ -31,6 +32,7 @@ export type DocTree = {
     updatedAt?: string
     tag?: string
     nav?: boolean
+    navOrder?: number
     display?: SectionDisplay
     preview?: string
 }

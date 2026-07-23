@@ -138,6 +138,7 @@ function buildFolderNode(fullPath: string, urlPath: string, item: string): DocTr
         category: dirMeta.category,
         icon: dirMeta.icon,
         nav: dirMeta.nav,
+        navOrder: dirMeta.navOrder,
         display: dirMeta.display,
     }
 }
@@ -196,7 +197,9 @@ export function getSection(locale: string, slug: string): DocTree | undefined {
 
 export function getNavCategories(locale: string): DocTree[] {
     const tree = getDocsTree(locale)
-    return tree.filter((node) => node.type === "folder" && node.nav)
+    return tree
+        .filter((node) => node.type === "folder" && node.nav)
+        .sort((a, b) => (a.navOrder ?? a.order) - (b.navOrder ?? b.order))
 }
 
 export function getSectionCategories(locale: string, slug: string): DocTree[] {
