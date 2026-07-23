@@ -48,7 +48,11 @@ export default function ColorControl({
         }
 
         window.addEventListener("pointerdown", handleClickOutside)
-        return () => window.removeEventListener("pointerdown", handleClickOutside)
+        window.addEventListener("blur", close)
+        return () => {
+            window.removeEventListener("pointerdown", handleClickOutside)
+            window.removeEventListener("blur", close)
+        }
 
         // biome-ignore lint/correctness/useExhaustiveDependencies: React compiler
     }, [open, close])
