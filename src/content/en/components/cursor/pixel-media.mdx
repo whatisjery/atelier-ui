@@ -37,7 +37,7 @@ If you don't want to use MCP, you can paste this prompt into any LLM:
 
 ## Usage
 
-Add the `WebglProvider` once at the root of your app. See the [installation guide](/docs/getting-started/installation) for details.
+All WebGL components render through [one shared canvas](/docs/getting-started/how-it-works). Add the `WebglProvider` once at the root of your app:
 
 ```tsx title="Root layout"
 import { WebglProvider } from "@/components/webgl-provider";
