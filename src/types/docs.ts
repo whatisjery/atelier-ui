@@ -31,6 +31,7 @@ export type DocTree = {
     createdAt?: string
     updatedAt?: string
     tag?: string
+    hidden?: boolean
     nav?: boolean
     navOrder?: number
     display?: SectionDisplay

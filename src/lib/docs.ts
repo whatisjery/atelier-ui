@@ -161,6 +161,7 @@ function buildFileNode(fullPath: string, urlPath: string, item: string): DocTree
         createdAt: createdAt ?? undefined,
         updatedAt: updatedAt ?? undefined,
         tag: data.tag,
+        hidden: data.hidden,
         preview: videoManifest[slug],
     }
 }
@@ -178,7 +179,7 @@ function buildDocTree(dirPath: string, urlPath: string): DocTree[] {
             result.push(buildFileNode(fullPath, urlPath, item))
         }
     }
-    return result.sort((a, b) => a.order - b.order)
+    return result.filter((node) => !node.hidden).sort((a, b) => a.order - b.order)
 }
 
 export function getNewDocs(locale: string): DocTree[] {
