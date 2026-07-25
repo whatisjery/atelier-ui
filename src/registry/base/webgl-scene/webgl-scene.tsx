@@ -42,6 +42,11 @@ export type WebglSceneProps = {
     priority?: number
     zIndex?: number
     transparent?: boolean
+    /**
+     * Re-measures the DOM rect every frame so the plane follows animated parents (motion, parallax).
+     * Costs one layout read per frame, so only enable it when needed.
+     */
+    autoReflow?: boolean
 }
 
 function WebglScenePortal({
@@ -52,6 +57,7 @@ function WebglScenePortal({
     priority,
     zIndex = 0,
     transparent = true,
+    autoReflow = false,
 }: WebglSceneProps) {
     const defaultCamera = useMemo(() => {
         const cam = new PerspectiveCamera(75, 1, 0.1, 1000)
@@ -100,7 +106,27 @@ function WebglScenePortal({
     const renderPriority = priority ?? (mode === "texture" ? 0 : 2)
 
     useFrame(() => {
-        const { x, y, width, height } = bounds.current
+        const transitioning = document.documentElement.hasAttribute("data-atelier-transitioning")
+
+        let left: number
+        let top: number
+        let width: number
+        let height: number
+
+        if ((autoReflow || transitioning) && track.current) {
+            const rect = track.current.getBoundingClientRect()
+            left = rect.left
+            top = rect.top
+            width = rect.width
+            height = rect.height
+        } else {
+            const b = bounds.current
+            left = b.x - window.scrollX
+            top = b.y - window.scrollY
+            width = b.width
+            height = b.height
+        }
+
         if (width === 0 || height === 0) return
 
         const aspect = width / height
@@ -110,15 +136,13 @@ function WebglScenePortal({
         }
 
         if (mode === "scissor") {
-            const viewportLeft = x - window.scrollX
-            const viewportTop = y - window.scrollY
             const canvasHeight = gl.domElement.clientHeight
             const canvasWidth = gl.domElement.clientWidth
 
             const previousAutoClear = gl.autoClear
             gl.autoClear = false
-            gl.setViewport(viewportLeft, canvasHeight - (viewportTop + height), width, height)
-            gl.setScissor(viewportLeft, canvasHeight - (viewportTop + height), width, height)
+            gl.setViewport(left, canvasHeight - (top + height), width, height)
+            gl.setScissor(left, canvasHeight - (top + height), width, height)
             gl.setScissorTest(true)
             gl.clear()
             gl.render(scene, camera)
@@ -153,8 +177,8 @@ function WebglScenePortal({
 
         if (mesh) {
             const pxToWorld = viewport.height / size.height
-            mesh.position.x = (x + width / 2 - window.scrollX - size.width / 2) * pxToWorld
-            mesh.position.y = -(y + height / 2 - window.scrollY - size.height / 2) * pxToWorld
+            mesh.position.x = (left + width / 2 - size.width / 2) * pxToWorld
+            mesh.position.y = -(top + height / 2 - size.height / 2) * pxToWorld
             mesh.scale.x = width * pxToWorld
             mesh.scale.y = height * pxToWorld
         }
