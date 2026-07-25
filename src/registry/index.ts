@@ -215,6 +215,15 @@ export const components: TRegistryComponent[] = [
         registryDependencies: ["webgl-scene", "webgl-provider"],
     },
     {
+        name: "spiral-gallery",
+        files: ["spiral-gallery.tsx"],
+        description:
+            "An infinite carousel of images staggered along a spiraling tube that scrolls indefinitely.",
+        shared: [],
+        dependencies: ["three", "@react-three/fiber", "@react-three/drei", "motion"],
+        registryDependencies: ["webgl-scene", "webgl-provider"],
+    },
+    {
         name: "pixel-scroll",
         files: ["pixel-scroll.tsx"],
         description: "A grid of pixels that fills in as you scroll.",

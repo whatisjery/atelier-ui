@@ -18,6 +18,7 @@ export const demos: Record<string, React.LazyExoticComponent<React.ComponentType
     "lens-media": lazy(() => import("./lens-media/lens-media")),
     "pixel-media": lazy(() => import("./pixel-media/pixel-media")),
     "sphere-gallery": lazy(() => import("./sphere-gallery/sphere-gallery")),
+    "spiral-gallery": lazy(() => import("./spiral-gallery/spiral-gallery")),
     "pixel-scroll": lazy(() => import("./pixel-scroll/pixel-scroll")),
     "orbit-gallery": lazy(() => import("./orbit-gallery/orbit-gallery")),
     "edge-bounce": lazy(() => import("./edge-bounce/edge-bounce")),

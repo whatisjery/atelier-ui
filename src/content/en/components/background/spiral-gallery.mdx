@@ -1,0 +1,141 @@
+---
+title: "Spiral Gallery"
+description: "An infinite carousel of images staggered along a spiraling tube that scrolls indefinitely."
+tags: ["React Three Fiber", "Drei", "Motion"]
+createdAt: "2026-07-23"
+updatedAt: "2026-07-25"
+---
+
+<DemoPreview
+  name="spiral-gallery"
+  controls={{
+    radius: { type: "slider", value: 4.5, min: 1, max: 6, step: 0.05 },
+    tileHeight: { type: "slider", value: 2.25, min: 0.5, max: 3, step: 0.05 },
+    tileAspect: { type: "slider", value: 1.5, min: 0.5, max: 3, step: 0.05 },
+    tileCount: { type: "slider", value: 15, min: 6, max: 40, step: 1 },
+    verticalSpacing: { type: "slider", value: 0.95, min: 0, max: 2, step: 0.05 },
+    turnAngle: { type: "slider", value: 46, min: 0, max: 90, step: 1 },
+    tileRotation: { type: "slider", value: 1, min: -1, max: 2, step: 0.05 },
+    cornerRadius: { type: "slider", value: 0.05, min: 0, max: 0.5, step: 0.01 },
+    curve: { type: "slider", value: 0.1, min: 0, max: 0.5, step: 0.01 },
+    autoScroll: { type: "slider", value: 0.1, min: 0, max: 1, step: 0.05 },
+    easing: { type: "slider", value: 0.1, min: 0.01, max: 0.2, step: 0.01 },
+    inputSpeed: { type: "slider", value: 1.1, min: 0.1, max: 2, step: 0.05 },
+    drag: { type: "boolean", value: true },
+    scrollSpread: { type: "slider", value: 0.3, min: 0, max: 2, step: 0.05 },
+    scrollGrowth: { type: "slider", value: 0.65, min: 0, max: 1, step: 0.05 },
+    wave: { type: "slider", value: 0.8, min: 0, max: 2, step: 0.05 },
+    lensBlur: { type: "slider", value: 0.24, min: 0, max: 0.8, step: 0.01 },
+    scale: { type: "slider", value: 1.3, min: 0.5, max: 2, step: 0.05 },
+    reveal: { type: "boolean", value: true },
+    revealDuration: { type: "slider", value: 2, min: 0.5, max: 6, step: 0.1 },
+  }}
+/>
+
+---
+
+## Install
+
+<InstallTabs name="spiral-gallery">
+
+**Recommended**: install with the [shadcn MCP server](/docs/getting-started/mcp).
+
+If you don't want to use MCP, you can paste this prompt into any LLM:
+
+<ComponentPrompt />
+
+</InstallTabs>
+
+---
+
+## Usage
+
+All WebGL components render through [one shared canvas](/docs/getting-started/how-it-works).
+Add the `WebglProvider` once at the root of your app:
+
+```tsx title="Root layout"
+import { WebglProvider } from "@/components/webgl-provider";
+
+export default function RootLayout({ children }) {
+  return <WebglProvider>{children}</WebglProvider>;
+}
+```
+
+Then use it anywhere in your app:
+
+```tsx
+const ITEMS = Array.from({ length: 20 }, (_, i) => ({
+    src: `https://picsum.photos/seed/atelier-${i + 1}/1200/800`,
+    alt: "",
+}))
+
+<SpiralGallery items={ITEMS} className="fixed inset-0" />
+```
+
+You can pass fewer images than `tileCount`.
+The list repeats until every tile on the tube has one.
+
+### Scroll input
+
+By default the carousel moves with the wheel.
+If you want it to use the real page scroll, set `input="scroll"`:
+
+```tsx
+<SpiralGallery items={ITEMS} input="scroll" className="fixed inset-0" />
+```
+
+### Post-processing
+
+The gallery renders through a [WebGL Scene](/docs/components/primitive/webgl-scene) that draws above other content.
+Set `mode="texture"` to render it into post-processing instead, so effects like `FluidDistortion` apply to the spiral:
+
+```tsx
+<FluidDistortion />
+
+<SpiralGallery items={ITEMS} mode="texture" className="fixed inset-0" />
+```
+
+---
+
+## API
+
+### SpiralGallery
+
+| Name | Type | Default | Description |
+| ---- | ---- | ------- | ----------- |
+| `items` | `SpiralGalleryItem[]` | - | The images to show, each one as `{ src, alt }`. They repeat to fill `tileCount`. Required. |
+| `radius` | `number` | `4.5` | Radius of the tube the images travel around, in world units. |
+| `tileHeight` | `number` | `2.25` | Height of each image, in world units. |
+| `tileAspect` | `number` | `1.5` | Width-to-height ratio of each image. Images are cropped to fit. |
+| `tileCount` | `number` | `15` | Number of images on screen at once. Items repeat if there are fewer. |
+| `verticalSpacing` | `number` | `0.95` | Vertical distance between one image and the next. |
+| `turnAngle` | `number` | `46` | Angle between one image and the next around the tube, in degrees. |
+| `tileRotation` | `number` | `1` | How much each image rotates on its own vertical axis as it orbits. `1` keeps images flat against the tube, `0` faces them all the same way. |
+| `cornerRadius` | `number` | `0.05` | Corner rounding of each image, in world units. |
+| `curve` | `number` | `0.1` | How much each image bends inward across its width. |
+| `autoScroll` | `number` | `0.1` | Speed the carousel scrolls on its own, with no input. |
+| `easing` | `number` | `0.1` | How long the scroll takes to settle, in seconds. Higher is slower. |
+| `input` | `"wheel" \| "scroll" \| "none"` | `"wheel"` | Where scrolling comes from. `"wheel"` captures the wheel over the gallery, `"scroll"` follows the page scroll, `"none"` leaves only dragging. |
+| `inputSpeed` | `number` | `1.1` | Multiplier on wheel and drag distance. Higher moves further per gesture. |
+| `drag` | `boolean` | `true` | Allow dragging the carousel with the pointer. |
+| `scrollSpread` | `number` | `0.3` | Extra angle added between images while scrolling. `0` keeps the spacing fixed. |
+| `scrollGrowth` | `number` | `0.65` | How much the radius and vertical spacing grow while scrolling. |
+| `wave` | `number` | `0.8` | Depth of the ripple that travels across each image while scrolling. `0` keeps them flat. |
+| `lensBlur` | `number` | `0.24` | Strength of the edge lens blur and its RGB split. `0` disables it; higher values blur more toward the edges. |
+| `autoScale` | `boolean` | `true` | Shrink the spiral on narrow viewports so it stays inside the container. |
+| `scale` | `number` | `1.3` | Overall size of the spiral, applied on top of `autoScale`. |
+| `reveal` | `boolean` | `true` | Play the mount animation, where the images start as a flat band and wrap onto themselves into the tube. |
+| `revealDuration` | `number` | `2` | How long the mount animation takes, in seconds. |
+| `className` | `string` | - | Classes for the interaction surface the gallery renders into. Sizes the gallery, any container size works. |
+
+It also forwards [WebGL Scene](/docs/components/primitive/webgl-scene) props: `mode`, `priority`, `zIndex`, `transparent`, and `autoReflow`.
+
+---
+
+## Credits
+
+[React Three Fiber](https://r3f.docs.pmnd.rs/)  
+React renderer for Three.js used for the WebGL scene.
+
+[Drei](https://github.com/pmndrs/drei)  
+Helper used to load the image textures.
