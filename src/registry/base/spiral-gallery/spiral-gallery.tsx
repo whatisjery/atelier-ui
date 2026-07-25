@@ -29,7 +29,7 @@ const DEFAULT_PROPS = {
     radius: 4.5,
     tileHeight: 2.25,
     tileAspect: 1.5,
-    tileCount: 15,
+    tileCount: 16,
     verticalSpacing: 0.95,
     turnAngle: 46,
     tileRotation: 1,

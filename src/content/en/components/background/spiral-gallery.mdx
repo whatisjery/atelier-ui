@@ -12,7 +12,7 @@ updatedAt: "2026-07-25"
     radius: { type: "slider", value: 4.5, min: 1, max: 6, step: 0.05 },
     tileHeight: { type: "slider", value: 2.25, min: 0.5, max: 3, step: 0.05 },
     tileAspect: { type: "slider", value: 1.5, min: 0.5, max: 3, step: 0.05 },
-    tileCount: { type: "slider", value: 15, min: 6, max: 40, step: 1 },
+    tileCount: { type: "slider", value: 16, min: 6, max: 40, step: 1 },
     verticalSpacing: { type: "slider", value: 0.95, min: 0, max: 2, step: 0.05 },
     turnAngle: { type: "slider", value: 46, min: 0, max: 90, step: 1 },
     tileRotation: { type: "slider", value: 1, min: -1, max: 2, step: 0.05 },
@@ -107,7 +107,7 @@ Set `mode="texture"` to render it into post-processing instead, so effects like 
 | `radius` | `number` | `4.5` | Radius of the tube the images travel around, in world units. |
 | `tileHeight` | `number` | `2.25` | Height of each image, in world units. |
 | `tileAspect` | `number` | `1.5` | Width-to-height ratio of each image. Images are cropped to fit. |
-| `tileCount` | `number` | `15` | Number of images on screen at once. Items repeat if there are fewer. |
+| `tileCount` | `number` | `16` | Number of images on screen at once. Items repeat if there are fewer. |
 | `verticalSpacing` | `number` | `0.95` | Vertical distance between one image and the next. |
 | `turnAngle` | `number` | `46` | Angle between one image and the next around the tube, in degrees. |
 | `tileRotation` | `number` | `1` | How much each image rotates on its own vertical axis as it orbits. `1` keeps images flat against the tube, `0` faces them all the same way. |
