@@ -16,7 +16,11 @@
     --spacing-offset: 2rem;
     --spacing-control-h: 2rem;
     --spacing-sticky: var(--spacing-nav-h);
-    --spacing-sticky-nested: calc(var(--spacing-sticky) + var(--spacing-nav-h));
+    --spacing-sticky-nested: calc(
+        var(--spacing-sticky) +
+        var(--spacing-under-nav-h) +
+        var(--spacing-offset)
+    );
 
     --font-weight-thin: 200;
     --font-weight-light: 300;

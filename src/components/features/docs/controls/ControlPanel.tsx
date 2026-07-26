@@ -1,62 +1,63 @@
-import { RotateCcw, Settings2 } from "lucide-react"
+"use client"
+
+import { Lock, RotateCcw } from "lucide-react"
 import { useTranslations } from "next-intl"
 import Button from "@/components/ui/Button"
-import Card from "@/components/ui/Card"
 import Tooltip from "@/components/ui/Tooltip"
-import type { ControlDef, ControlValue } from "@/types/controls"
-import ControlFields from "./ControlFields"
+import { cn } from "@/lib/utils"
 
-type ControlsPanelProps = {
-    controls: Record<string, ControlDef>
-    onChange: (key: string, value: ControlValue) => void
-    values: Record<string, ControlValue>
+type ControlPanelProps = {
+    children: React.ReactNode
     onReset: () => void
+    onExport?: () => void
+    locked?: boolean
+    headerSlot?: React.ReactNode
+    headerActionsSlot?: React.ReactNode
+    className?: string
 }
 
-export default function ControlsPanel({ controls, onChange, onReset, values }: ControlsPanelProps) {
+export default function ControlPanel({
+    children,
+    onReset,
+    onExport = undefined,
+    locked = false,
+    headerSlot = undefined,
+    headerActionsSlot = undefined,
+    className = undefined,
+}: ControlPanelProps) {
     const tControls = useTranslations("docs.controls")
-    const controlKeys = Object.keys(controls)
 
     return (
-        <>
-            <Card
-                headerSlot={
-                    <>
-                        <h2 className="text-sm font-medium not-prose flex items-center gap-2">
-                            <Settings2 className="size-4 text-accent-3" aria-hidden={true} />
-                            {tControls("component-controls")}
-                        </h2>
+        <div className={cn("flex h-full flex-col overflow-hidden border bg-bg", className)}>
+            <header className="h-12 shrink-0 border-b bg-bg flex items-center justify-between gap-2 px-3">
+                <div className="flex min-w-0 items-center gap-2">{headerSlot}</div>
 
-                        <Tooltip title={tControls("reset-controls")}>
-                            <Button
-                                aria-label="Reset controls"
-                                onClick={onReset}
-                                size="icon"
-                                variant="ghost"
-                            >
-                                <RotateCcw strokeWidth={1.5} className="size-4" />
-                            </Button>
-                        </Tooltip>
-                    </>
-                }
-            >
-                <div className="relative grid sm:grid-cols-2 gap-x-8 p-5">
-                    {controlKeys.map((key) => (
-                        <div className="relative mb-3 border-b border-dashed" key={key}>
-                            <ControlFields
-                                label={key}
-                                control={controls[key]}
-                                onChange={(value: ControlValue) => onChange(key, value)}
-                                value={values[key] ?? controls[key].value}
-                            />
-                        </div>
-                    ))}
+                <div className="flex shrink-0 items-center gap-1">
+                    <Tooltip title={tControls("restore-defaults")}>
+                        <Button
+                            size="icon"
+                            variant="ghost"
+                            aria-label="Restore default settings"
+                            onClick={onReset}
+                        >
+                            <RotateCcw strokeWidth={1.5} className="size-4" />
+                        </Button>
+                    </Tooltip>
+
+                    {headerActionsSlot}
                 </div>
-            </Card>
+            </header>
 
-            <span className="text-xs flex items-center justify-end mt-1 px-2 text-accent-2">
-                {tControls("controls-description")}
-            </span>
-        </>
+            <div className="flex-1 overflow-y-auto p-5">{children}</div>
+
+            {onExport && (
+                <div className="border-t p-5 flex flex-col">
+                    <Button variant="secondary" size="big" className="w-full" onClick={onExport}>
+                        {tControls("export-component")}
+                        {locked && <Lock className="size-3 shrink-0" />}
+                    </Button>
+                </div>
+            )}
+        </div>
     )
 }

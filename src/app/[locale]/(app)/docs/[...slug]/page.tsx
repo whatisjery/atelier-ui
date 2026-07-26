@@ -6,7 +6,7 @@ import DocHeaderGroupTitle from "@/components/features/docs/DocHeaderGroupTitle"
 import DocHeaderNavButtons from "@/components/features/docs/DocHeaderNavButtons"
 import DocPageDropdown from "@/components/features/docs/DocPageDropdown"
 import DocTableOfContent from "@/components/features/docs/DocTableOfContent"
-import { buildDocMdxComponents } from "@/components/features/docs/doc-mdx"
+import { buildDemoPreview, buildDocMdxComponents } from "@/components/features/docs/doc-mdx"
 import {
     getAllDocs,
     getCategorySlugs,
@@ -56,18 +56,22 @@ export default async function Page({ params }: PageProps) {
     const snippets = getComponentSnippets()
     const content = await importDoc(locale, slug)
 
-    const mdxComponents = buildDocMdxComponents({
+    const mdxContext = {
         locale,
         slug,
         rawMarkdown,
         frontmatter: content.frontmatter,
         demoCode,
         snippets,
-    })
+    }
+
+    const mdxComponents = buildDocMdxComponents(mdxContext)
+    const demoSlot = buildDemoPreview(mdxContext)
 
     return (
         <PageDocLayout
-            TOCSlot={<DocTableOfContent headings={headings} />}
+            demoSlot={demoSlot}
+            TOCSlot={demoSlot ? undefined : <DocTableOfContent headings={headings} />}
             topBarSlot={
                 <RouteBreadCrumb skip={getCategorySlugs(locale)} hrefOverrides={hrefOverrides} />
             }

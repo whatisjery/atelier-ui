@@ -72,10 +72,10 @@ export default function DocTableOfContent({ headings }: DocTableOfContentProps) 
     }
 
     return (
-        <div className="flex-col justify-between w-full relative">
+        <div className="flex min-h-0 flex-col justify-between w-full relative">
             <div className="absolute z-10 left-0 bottom-0 w-full h-20 bg-linear-to-t from-bg to-transparent pointer-events-none" />
 
-            <div className="overflow-y-auto scrollbar-overlay pb-20">
+            <div className="flex-1 min-h-0 overflow-y-auto scrollbar-overlay pb-20">
                 {headings.length > 0 && (
                     <ul className="mb-10 relative">
                         {headings.map((heading) => (

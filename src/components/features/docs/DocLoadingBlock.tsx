@@ -12,11 +12,6 @@ export default function DocLoadingBlock() {
                     <Skeleton className="w-full h-100" />
                 </div>
             }
-            TOCSlot={
-                <div className="flex flex-col gap-2 -mt-3">
-                    <Skeleton className="w-full h-80" />
-                </div>
-            }
         />
     )
 }

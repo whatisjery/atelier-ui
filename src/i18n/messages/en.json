@@ -14,13 +14,14 @@
             "refresh-preview": "Refresh preview"
         },
         "controls": {
-            "controls-description": "See the documentation below for more options.",
             "component-controls": "Settings",
-            "reset-controls": "Reset settings"
+            "restore-defaults": "Restore defaults settings",
+            "export-component": "Export component"
         },
         "demo-preview": {
             "hide-code": "Hide Code",
             "show-code": "Show Code",
+            "live-props": "Live Props",
             "tap-to-preview": "Tap to preview",
             "click-to-preview": "Click to preview"
         },

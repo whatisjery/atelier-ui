@@ -6,20 +6,21 @@ import DocFooter from "./DocFooter"
 
 type PageDocLayoutProps = {
     contentSlot: React.ReactNode
+    demoSlot?: React.ReactNode
     TOCSlot?: React.ReactNode
     topBarSlot?: React.ReactNode
     navigationSlot?: React.ReactNode
     metadataSlot?: React.ReactNode
 }
 
-const maxWidth = "max-w-[80rem] mx-auto"
-const spacerWidth = "w-[25%]"
+const maxWidth = "max-w-full mx-auto"
 const paddingX = "md:px-20 px-5"
 
-const Spacer = () => <span aria-hidden="true" className={cn("max-xl:hidden", spacerWidth)} />
+const Spacer = () => <span aria-hidden="true" className="max-xl:hidden w-84 shrink-0" />
 
 export default function PageDocLayout({
     contentSlot,
+    demoSlot,
     TOCSlot,
     metadataSlot,
     navigationSlot,
@@ -30,37 +31,43 @@ export default function PageDocLayout({
             <header className="flex top-sticky w-full border-b h-under-nav-h sticky bg-bg z-3">
                 <div className={cn("w-full flex items-center", maxWidth, paddingX)}>
                     <div className="flex-1 flex items-center justify-between">
-                        {topBarSlot}
+                        <div className="flex items-center min-w-0">{topBarSlot}</div>
 
                         <div className="flex items-center gap-x-1">{navigationSlot}</div>
                     </div>
-                    {TOCSlot && <Spacer />}
+
+                    <Spacer />
                 </div>
             </header>
 
-            <main className={cn("flex min-h-screen w-full", maxWidth, paddingX)}>
-                {contentSlot && (
-                    <article className="max-w-none min-w-0 flex-1 prose relative pb-50 pt-offset">
-                        {metadataSlot}
-                        {contentSlot}
-                    </article>
+            <main
+                className={cn(
+                    "grid min-h-screen w-full pt-offset xl:grid-cols-[minmax(0,1fr)_21rem] xl:grid-rows-[auto_auto_1fr]",
+                    maxWidth,
+                    paddingX,
                 )}
+            >
+                {demoSlot}
 
                 {TOCSlot && (
-                    <aside
-                        className={cn(
-                            "sticky h-fit max-xl:hidden pl-10 pt-offset flex-col justify-between top-sticky-nested",
-                            spacerWidth,
-                        )}
-                    >
-                        {TOCSlot}
+                    <aside className="max-xl:hidden xl:col-start-2 xl:row-span-full xl:pl-10">
+                        <div className="flex flex-col xl:sticky xl:top-sticky-nested xl:max-h-[calc(100vh-var(--spacing-sticky-nested)-var(--spacing-offset))]">
+                            {TOCSlot}
+                        </div>
                     </aside>
                 )}
+
+                {metadataSlot && (
+                    <div className="max-xl:order-2 xl:col-start-1">{metadataSlot}</div>
+                )}
+
+                <article className="max-w-none min-w-0 prose relative pb-50 max-xl:order-4 xl:col-start-1">
+                    {contentSlot}
+                </article>
             </main>
 
             <footer className="w-full border-t h-30 sm:h-nav-h bg-bg z-2">
                 <DocFooter className={cn("", maxWidth, paddingX)} />
-                {TOCSlot && <Spacer />}
             </footer>
         </SideRails>
     )

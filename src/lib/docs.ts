@@ -74,7 +74,8 @@ export function getCodesBlock(strPath: string): Record<string, CodeFile[]> {
         const dirs = fs.readdirSync(dirPath, { withFileTypes: true }).filter((e) => e.isDirectory())
         for (const entry of dirs) {
             const folderPath = path.join(dirPath, entry.name)
-            codes[entry.name] = fs.readdirSync(folderPath).map((file) => ({
+            const files = fs.readdirSync(folderPath).filter((file) => file !== "controls.ts")
+            codes[entry.name] = files.map((file) => ({
                 content: fs.readFileSync(path.join(folderPath, file), "utf-8"),
                 filename: file,
                 extension: path.extname(file).slice(1),
