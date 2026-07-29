@@ -6,28 +6,16 @@ createdAt: "2026-05-31"
 updatedAt: "2026-06-19"
 ---
 
----
-
-## Install
-
-<InstallTabs name="curve-media">
-
-**Recommended**: install with the [shadcn MCP server](/docs/getting-started/mcp).
-
-If you don't want to use MCP, you can paste this prompt into any LLM:
-
-<ComponentPrompt />
-
-</InstallTabs>
+<InstallGuide name="curve-media" />
 
 ---
 
-## Usage
+<Collapsible title="Usage">
 
 All WebGL components render through [one shared canvas](/docs/getting-started/how-it-works). Add the `WebglProvider` once at the root of your app:
 
 ```tsx title="Root layout"
-import { WebglProvider } from "@/components/webgl-provider";
+import { WebglProvider } from "@/components/webgl-provider/webgl-provider";
 
 export default function RootLayout({ children }) {
   return <WebglProvider>{children}</WebglProvider>;
@@ -48,16 +36,18 @@ Then use it anywhere in your app:
 Works best with smooth scrolling. You can add [Smooth Scroll](/docs/components/primitive/smooth-scroll) at the root for that:
 
 ```tsx title="Root layout"
-import { SmoothScroll } from "@/components/smooth-scroll";
+import { SmoothScroll } from "@/components/smooth-scroll/smooth-scroll";
 
 export default function RootLayout({ children }) {
   return <SmoothScroll>{children}</SmoothScroll>;
 }
 ```
 
+</Collapsible>
+
 ---
 
-## API
+<Collapsible title="API" defaultOpen>
 
 | Name         | Type                 | Default   | Description                                                                     |
 | ------------ | -------------------- | --------- | ------------------------------------------------------------------------------- |
@@ -72,12 +62,8 @@ export default function RootLayout({ children }) {
 
 It also forwards `<img>` attributes to [WebGL Image](/docs/components/primitive/webgl-image) and `<video>` attributes to [WebGL Video](/docs/components/primitive/webgl-video) depending on `type`.
 
+</Collapsible>
+
 ---
 
-## Credits
-
-[React Three Fiber](https://r3f.docs.pmnd.rs/)  
-React renderer for Three.js used for the WebGL plane.
-
-[Lenis](https://www.lenis.dev/)  
-Smooth scroll library used in the demo.
+<BuiltOn name="curve-media" />

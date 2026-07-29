@@ -6,23 +6,11 @@ createdAt: "2026-05-07"
 updatedAt: "2026-07-15"
 ---
 
----
-
-## Install
-
-<InstallTabs name="text-scramble">
-
-**Recommended**: install with the [shadcn MCP server](/docs/getting-started/mcp).
-
-If you don't want to use MCP, you can paste this prompt into any LLM:
-
-<ComponentPrompt />
-
-</InstallTabs>
+<InstallGuide name="text-scramble" />
 
 ---
 
-## Usage
+<Collapsible title="Usage">
 
 The text scrambles through random characters and reveals from left to right. The animation plays on mount and replays on hover.
 
@@ -38,9 +26,11 @@ Pass `render` to choose the wrapper element. Your props are merged with the comp
 <TextScramble render={<p className="text-4xl" />}>Enter your text here</TextScramble>
 ```
 
+</Collapsible>
+
 ---
 
-## API
+<Collapsible title="API" defaultOpen>
 
 | Name | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -52,12 +42,8 @@ Pass `render` to choose the wrapper element. Your props are merged with the comp
 | `characters` | `string` | `"abcdefghijklmnopqrstuvwxyz@!#*$%^&+_[]"` | Characters used to scramble. |
 | `render` | `ReactElement \| function` | `<span/>` | Override the wrapper element. |
 
+</Collapsible>
+
 ---
 
-## Credits
-
-[Yugop Nakamura](https://tha.jp/)  
-Original text scramble effect
-
-[use-scramble](https://www.use-scramble.dev/)  
-A react hook for text scrambling by [tolis](https://tol.is/)
+<BuiltOn name="text-scramble" />

@@ -6,23 +6,11 @@ createdAt: "2026-05-07"
 updatedAt: "2026-07-15"
 ---
 
----
-
-## Install
-
-<InstallTabs name="image-trail">
-
-**Recommended**: install with the [shadcn MCP server](/docs/getting-started/mcp).
-
-If you don't want to use MCP, you can paste this prompt into any LLM:
-
-<ComponentPrompt />
-
-</InstallTabs>
+<InstallGuide name="image-trail" />
 
 ---
 
-## Usage
+<Collapsible title="Usage">
 
 Pass the trail items as children. They spawn along the cursor path.
 
@@ -40,9 +28,11 @@ const IMAGES = [
 </ImageTrail>
 ```
 
+</Collapsible>
+
 ---
 
-## API
+<Collapsible title="API" defaultOpen>
 
 | Name           | Type        | Default | Description    |
 | -------------- | ----------- | ------- | ------------- |
@@ -51,10 +41,8 @@ const IMAGES = [
 | `driftAmount`    | `number`    | `36`    | How far each item drifts from its spawn point in px.|
 | `removeDelay`    | `number`    | `1.0`   | Seconds before a spawned item is removed.|
 
+</Collapsible>
+
 ---
 
-
-## Credits
-
-[Motion](https://motion.dev)  
-React animation library.
+<BuiltOn name="image-trail" />

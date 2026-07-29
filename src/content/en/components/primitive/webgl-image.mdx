@@ -14,24 +14,16 @@ The image is rendered twice: as a real `<img>` for SEO and screen readers (hidde
 
 ## Install
 
-<InstallTabs name="webgl-image">
-
-**Recommended**: install with the [shadcn MCP server](/docs/getting-started/mcp).
-
-If you don't want to use MCP, you can paste this prompt into any LLM:
-
-<ComponentPrompt />
-
-</InstallTabs>
+<InstallGuide name="webgl-image" />
 
 ---
 
-## Usage
+<Collapsible title="Usage">
 
 All WebGL components render through [one shared canvas](/docs/getting-started/how-it-works). Add the `WebglProvider` once at the root of your app:
 
 ```tsx title="Root layout"
-import { WebglProvider } from "@/components/webgl-provider";
+import { WebglProvider } from "@/components/webgl-provider/webgl-provider";
 
 export default function RootLayout({ children }) {
   return <WebglProvider>{children}</WebglProvider>;
@@ -76,6 +68,8 @@ The `pointer` object is mutated in place, so reading it inside a `useFrame` give
 
 Use `segments` to subdivide the plane when your shader displaces vertices. `1` is enough for fragment-only effects.
 
+</Collapsible>
+
 ---
 
 ## API
@@ -98,3 +92,7 @@ Standard `<img>` attributes (`className`, `style`, `width`, `height`, ...) are a
 | --- | --- | --- |
 | `uv` | `Vector2` | Normalized pointer position inside the element. `(0, 0)` is bottom-left, `(1, 1)` is top-right. |
 | `hover` | `number` | `1` while the pointer is over the element, `0` otherwise. |
+
+---
+
+<BuiltOn name="webgl-image" />

@@ -9,9 +9,12 @@ export type CodeBlockTabs = {
     value: string
 }
 
+export type CodeBlockIcon = "tsx" | "ts" | "css" | "bash" | "terminal"
+
 export type CodeBlock = {
     code: string
     lang: string
+    icon?: CodeBlockIcon
     title?: string
     installTabs?: CodeBlockTabs[]
     mode?: CodeBlockMode

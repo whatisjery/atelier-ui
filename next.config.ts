@@ -17,12 +17,12 @@ const nextConfig: NextConfig = {
             },
             {
                 source: "/:locale/docs/getting-started",
-                destination: "/:locale/docs/getting-started/installation",
+                destination: "/:locale/docs/getting-started/how-it-works",
                 permanent: true,
             },
             {
                 source: "/:locale/docs",
-                destination: "/:locale/docs/getting-started/installation",
+                destination: "/:locale/docs/getting-started/how-it-works",
                 permanent: true,
             },
             {

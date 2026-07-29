@@ -162,40 +162,31 @@ icon: "Component"
 
 ### Guide and preview
 
-Add a preview of the component by using the `<DemoPreview />` component with **the same exact name** of the demo component.
+The preview is built by the doc page from the registry, so the document does not declare it.
 
-```tsx title="Preview example"
-<DemoPreview name="component-name" />
-```
+Add the installation guide by using the `<InstallGuide />` component with **the same exact name** of the base component.
+It renders the agent prompt, with the CLI command and the file-by-file copy collapsed underneath it.
 
-Add the CLI installation guide by using the `<InstalGuideCLI />` component with **the same exact name** of the base component.
-
-```tsx title="CLI install example"
-<InstalGuideCLI name="component-name" />
-```
-
-Add the manual installation guide by using the `<InstalGuideManual />` component with **the same exact name** of the base component.
-
-```tsx title="Manual install example"
-<InstalGuideManual name="component-name" />
+```tsx title="Install example"
+<InstallGuide name="component-name" />
 ```
 
 ### Controls
 
-You can add interactive controls to the preview so users can tweak component props live. Pass a `controls` object to `<DemoPreview />`.
+You can add interactive controls to the preview so users can tweak component props live.
+Declare them in `src/registry/demos/<component-name>/controls.ts` and register the file in `src/registry/demos/controls.ts`.
 
 Always make sure the values match the default props of the base component:
 
-```tsx title="Controls example"
-<DemoPreview
-  name="component-name"
-  controls={{
+```ts title="src/registry/demos/component-name/controls.ts"
+import type { ControlDef } from "@/types/controls"
+
+export const controls: Record<string, ControlDef> = {
     speed: { type: "slider", value: 1, min: 0, max: 10, step: 0.1 },
     color: { type: "color", value: "#ff5733" },
     variant: { type: "select", value: "solid", options: ["solid", "outline"] },
     enabled: { type: "boolean", value: true },
-  }}
-/>
+}
 ```
 
 **Available control types:**

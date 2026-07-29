@@ -14,7 +14,7 @@ import ThemeToggle from "./ThemeToggle"
 
 export const FOOTER_LINKS = [
     { key: "docs", href: "/docs" },
-    { key: "getting-started", href: "/docs/getting-started/installation" },
+    { key: "getting-started", href: "/docs/getting-started/how-it-works" },
     { key: "contribute", href: "/docs/getting-started/contribution" },
 ] as const
 

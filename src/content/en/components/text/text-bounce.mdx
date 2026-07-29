@@ -6,23 +6,11 @@ createdAt: "2026-05-10"
 updatedAt: "2026-07-15"
 ---
 
----
-
-## Install
-
-<InstallTabs name="text-bounce">
-
-**Recommended**: install with the [shadcn MCP server](/docs/getting-started/mcp).
-
-If you don't want to use MCP, you can paste this prompt into any LLM:
-
-<ComponentPrompt />
-
-</InstallTabs>
+<InstallGuide name="text-bounce" />
 
 ---
 
-## Usage
+<Collapsible title="Usage">
 
 Each letter drifts away from the cursor on hover, then springs back into place.
 
@@ -38,9 +26,11 @@ Pass `render` to choose the wrapper element. Your props are merged with the comp
 <TextBounce render={<p className="text-4xl" />}>Enter your text here</TextBounce>
 ```
 
+</Collapsible>
+
 ---
 
-## API
+<Collapsible title="API" defaultOpen>
 
 | Name | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -52,3 +42,9 @@ Pass `render` to choose the wrapper element. Your props are merged with the comp
 | `distance` | `number` | `35` | How many pixels the letter drifts from its origin. |
 | `rotation` | `number` | `25` | Max rotation in degrees applied along the horizontal drift axis. `0` disables it. |
 | `render` | `ReactElement \| function` | `<span/>` | Override the wrapper element. |
+
+</Collapsible>
+
+---
+
+<BuiltOn name="text-bounce" />

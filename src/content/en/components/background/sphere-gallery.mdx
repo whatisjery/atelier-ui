@@ -1,33 +1,21 @@
 ---
 title: "Sphere Gallery"
-description: "A WebGL gallery that maps images onto a sphere. Drag to look around, click an image to zoom in."
 tags: ["React Three Fiber", "Drei", "Tailwind CSS"]
+description: "A WebGL gallery that maps images onto a sphere. Drag to look around, click an image to zoom in."
 createdAt: "2026-06-18"
 updatedAt: "2026-07-15"
 ---
 
----
-
-## Install
-
-<InstallTabs name="sphere-gallery">
-
-**Recommended**: install with the [shadcn MCP server](/docs/getting-started/mcp).
-
-If you don't want to use MCP, you can paste this prompt into any LLM:
-
-<ComponentPrompt />
-
-</InstallTabs>
+<InstallGuide name="sphere-gallery" />
 
 ---
 
-## Usage
+<Collapsible title="Usage">
 
 All WebGL components render through [one shared canvas](/docs/getting-started/how-it-works). Add the `WebglProvider` once at the root of your app:
 
 ```tsx title="Root layout"
-import { WebglProvider } from "@/components/webgl-provider";
+import { WebglProvider } from "@/components/webgl-provider/webgl-provider";
 
 export default function RootLayout({ children }) {
   return <WebglProvider>{children}</WebglProvider>;
@@ -65,7 +53,7 @@ const [active, setActive] = useState<number | null>(null)
 
 ### Post-processing
 
-The gallery renders through a [WebGL Scene](/docs/components/primitive/webgl-scene) that draws above other content. Set `mode="texture"` to render it into post-processing instead, so effects like `FluidDistortion` apply to the sphere:
+The gallery renders through a [WebGL Scene](/docs/components/primitive/webgl-scene) layered above other content. Set `mode="texture"` to render it into post-processing instead, so effects like `FluidDistortion` apply to the sphere:
 
 ```tsx
 <FluidDistortion />
@@ -73,9 +61,11 @@ The gallery renders through a [WebGL Scene](/docs/components/primitive/webgl-sce
 <SphereGallery items={ITEMS} mode="texture" className="fixed inset-0" />
 ```
 
+</Collapsible>
+
 ---
 
-## API
+<Collapsible title="API" defaultOpen>
 
 | Name          | Type        | Default     | Description                                                                                |
 | ------------- | ----------- | ----------- | ----------------------------------------------------------------------------------------- |
@@ -100,12 +90,8 @@ The gallery renders through a [WebGL Scene](/docs/components/primitive/webgl-sce
 
 It also forwards [WebGL Scene](/docs/components/primitive/webgl-scene) props: `mode`, `priority`, `zIndex`, and `transparent`.
 
+</Collapsible>
+
 ---
 
-## Credits
-
-[React Three Fiber](https://r3f.docs.pmnd.rs/)  
-React renderer for Three.js used for the WebGL scene.
-
-[Drei](https://github.com/pmndrs/drei)  
-Helper used to load the image textures.
+<BuiltOn name="sphere-gallery" />

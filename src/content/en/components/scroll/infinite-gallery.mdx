@@ -6,23 +6,11 @@ createdAt: "2026-05-07"
 updatedAt: "2026-07-15"
 ---
 
----
-
-## Install
-
-<InstallTabs name="infinite-gallery">
-
-**Recommended**: install with the [shadcn MCP server](/docs/getting-started/mcp).
-
-If you don't want to use MCP, you can paste this prompt into any LLM:
-
-<ComponentPrompt />
-
-</InstallTabs>
+<InstallGuide name="infinite-gallery" />
 
 ---
 
-## Usage
+<Collapsible title="Usage">
 
 Pass the items as children. Drag or scroll to move the gallery.
 
@@ -39,9 +27,11 @@ const IMAGES = [
 </InfiniteGallery>
 ```
 
+</Collapsible>
+
 ---
 
-## API
+<Collapsible title="API" defaultOpen>
 
 | Name            | Type                              | Default             | Description |
 | --------------- | --------------------------------- | ------------------- | ------------------------|
@@ -53,9 +43,8 @@ const IMAGES = [
 | `gap`          | `number`                          | `5`                 | Gap between items.|
 | `className`     | `string`                          | —                   | Class for the container element.|
 
+</Collapsible>
+
 ---
 
-## Credits
-
-[The Lookback](https://tlb.betteroff.studio/)  
-Infinite gallery effect inspired by the website of Better Off® Studio.
+<BuiltOn name="infinite-gallery" />

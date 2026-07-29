@@ -14,19 +14,11 @@ By default, each item is wrapped in an `overflow-clip` span (disable with `showM
 
 ## Install
 
-<InstallTabs name="text-split">
-
-**Recommended**: install with the [shadcn MCP server](/docs/getting-started/mcp).
-
-If you don't want to use MCP, you can paste this prompt into any LLM:
-
-<ComponentPrompt />
-
-</InstallTabs>
+<InstallGuide name="text-split" />
 
 ---
 
-## Usage
+<Collapsible title="Usage">
 
 By default, the string is split into individual letters:
 
@@ -56,6 +48,8 @@ Use `splitBy="words"` to split on spaces instead:
 </TextSplit>
 ```
 
+</Collapsible>
+
 ---
 
 ## API
@@ -67,3 +61,7 @@ Use `splitBy="words"` to split on spaces instead:
 | `showMask` | `boolean` | `true` | Wrap each item in an `overflow-clip` span. |
 | `renderItems` | `(char: string, index: number) => ReactNode` | — | Custom render for each split item. |
 | `render` | `ReactElement \| function` | `<span />` | Override the wrapper element. |
+
+---
+
+<BuiltOn name="text-split" />

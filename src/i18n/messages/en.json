@@ -16,14 +16,23 @@
         "controls": {
             "component-controls": "Settings",
             "restore-defaults": "Restore defaults settings",
+            "reset": "Reset",
             "export-component": "Export component"
         },
         "demo-preview": {
+            "copy-prompt": "Copy Prompt",
+            "unlock-code": "Unlock Code",
             "hide-code": "Hide Code",
             "show-code": "Show Code",
-            "live-props": "Live Props",
             "tap-to-preview": "Tap to preview",
             "click-to-preview": "Click to preview"
+        },
+        "install": {
+            "prompt-hint": "Just <copy>copy this prompt</copy> into your favorite coding agent and let Atelier do its magic. Live props are included.",
+            "cli-title": "CLI install",
+            "cli-hint": "This command will install all the dependencies this component uses.",
+            "manual-title": "Copy files manually",
+            "manual-hint": "Install the dependencies first, then feel free to copy the files into your project as you see fit."
         },
         "sidebar": {
             "browse-catalog": "Browse Catalog",

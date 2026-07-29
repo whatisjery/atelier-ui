@@ -17,7 +17,7 @@ import { cn } from "@/lib/utils"
 import type { CodeBlock, CodeHast } from "@/types/code"
 
 type CodeBlockClientProps = {
-    hast: CodeHast
+    hast?: CodeHast
 } & CodeBlock
 
 const iconMap: Record<string, React.ReactNode> = {
@@ -25,11 +25,13 @@ const iconMap: Record<string, React.ReactNode> = {
     ts: <SiTypescript size={14} className="text-accent-1" />,
     css: <SiCss size={14} className="text-accent-1" />,
     bash: <IoTerminal size={15} className="text-accent-1" />,
+    terminal: <IoTerminal size={15} className="text-accent-1" />,
 }
 
 export default function CodeBlockClient({
     code,
     lang,
+    icon,
     title,
     hast,
     mode,
@@ -52,6 +54,17 @@ export default function CodeBlockClient({
     })
 
     const CopyIcon = copied ? Check : Copy
+
+    const preClassName = cn("p-5 relative font-mono scrollbar-hide", {
+        "overflow-y-auto max-h-125": mode === "scroll",
+        "m-0 flex-1 min-h-0 overflow-y-auto": mode === "preview",
+        "max-h-50 overflow-y-hidden": mode === "expand" && !isExpanded,
+        "max-h-full overflow-y-auto pb-18": mode === "expand" && isExpanded,
+        "code-block-line": !installTabs && showLineNumbers === true,
+
+        // makes the text color of the install tabs 'unthemed'.
+        "**:text-accent-1": installTabs,
+    })
 
     const copyButton = (
         <Tooltip side={mode === "preview" ? "bottom" : "top"} title="Copy">
@@ -98,7 +111,7 @@ export default function CodeBlockClient({
 
             {!installTabs && (
                 <div className="flex items-center gap-2.5 text-accent-2">
-                    {iconMap[lang as keyof typeof iconMap]}
+                    {iconMap[icon ?? lang]}
                     {title}
                 </div>
             )}
@@ -132,72 +145,64 @@ export default function CodeBlockClient({
         >
             {mode === "preview" && copyButton}
 
-            {toJsxRuntime(hast, {
-                Fragment,
-                jsx,
-                jsxs,
-                components: {
-                    pre: (props) => (
-                        <pre
-                            {...props}
-                            className={cn("p-5 relative font-mono scrollbar-hide", {
-                                "overflow-y-auto max-h-125": mode === "scroll",
-                                "m-0 flex-1 min-h-0 overflow-y-auto": mode === "preview",
-                                "max-h-50 overflow-y-hidden": mode === "expand" && !isExpanded,
-                                "max-h-full overflow-y-auto pb-18": mode === "expand" && isExpanded,
-                                "code-block-line": !installTabs && showLineNumbers === true,
+            {!hast && (
+                <pre className={preClassName}>
+                    <code className="font-mono">{code}</code>
+                </pre>
+            )}
 
-                                // makes the text color of the install tabs 'unthemed'.
-                                "**:text-accent-1": installTabs,
-                            })}
-                        >
-                            {installTabs && (
-                                <>
-                                    {selectedTab} {props.children}
-                                </>
-                            )}
+            {hast &&
+                toJsxRuntime(hast, {
+                    Fragment,
+                    jsx,
+                    jsxs,
+                    components: {
+                        pre: (props) => (
+                            <pre {...props} className={preClassName}>
+                                {installTabs && (
+                                    <>
+                                        {selectedTab} {props.children}
+                                    </>
+                                )}
 
-                            {!installTabs && props.children}
+                                {!installTabs && props.children}
+                            </pre>
+                        ),
+                        code: (props) => (
+                            <code className="font-mono" {...props}>
+                                {props.children}
+                            </code>
+                        ),
+                    },
+                })}
 
-                            {mode === "expand" && (
-                                <div
-                                    className={cn(
-                                        "bg-linear-to-t from-30% from-bg to-100% to-transparent flex items-end h-full w-full absolute bottom-0 left-0 right-0",
-                                        { "bg-none": isExpanded },
-                                    )}
-                                >
-                                    <Button
-                                        onClick={() => setIsExpanded(!isExpanded)}
-                                        variant="primary"
-                                        className="font-sans text-xs mx-auto mb-4 font-light border-dashed"
-                                        aria-expanded={isExpanded}
-                                    >
-                                        {isExpanded ? (
-                                            <>
-                                                <AnimatedArrow direction="up" className="size-3" />
-                                                Collapse
-                                            </>
-                                        ) : (
-                                            <>
-                                                <AnimatedArrow
-                                                    direction="down"
-                                                    className="size-3"
-                                                />
-                                                {tTooltips("expand-code")}
-                                            </>
-                                        )}
-                                    </Button>
-                                </div>
-                            )}
-                        </pre>
-                    ),
-                    code: (props) => (
-                        <code className="font-mono" {...props}>
-                            {props.children}
-                        </code>
-                    ),
-                },
-            })}
+            {mode === "expand" && (
+                <div
+                    className={cn(
+                        "bg-linear-to-t from-30% from-bg to-100% to-transparent flex items-end h-full w-full absolute bottom-0 left-0 right-0 pointer-events-none",
+                        { "bg-none": isExpanded },
+                    )}
+                >
+                    <Button
+                        onClick={() => setIsExpanded(!isExpanded)}
+                        variant="primary"
+                        className="font-sans text-xs mx-auto mb-4 font-light border-dashed pointer-events-auto"
+                        aria-expanded={isExpanded}
+                    >
+                        {isExpanded ? (
+                            <>
+                                <AnimatedArrow direction="up" className="size-3" />
+                                Collapse
+                            </>
+                        ) : (
+                            <>
+                                <AnimatedArrow direction="down" className="size-3" />
+                                {tTooltips("expand-code")}
+                            </>
+                        )}
+                    </Button>
+                </div>
+            )}
         </Card>
     )
 }

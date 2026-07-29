@@ -9,23 +9,11 @@ updatedAt: "2026-07-15"
 import Alert from '@/components/ui/Alert'
 import { TriangleAlert } from 'lucide-react'
 
----
-
-## Install
-
-<InstallTabs name="pixel-scroll">
-
-**Recommended**: install with the [shadcn MCP server](/docs/getting-started/mcp).
-
-If you don't want to use MCP, you can paste this prompt into any LLM:
-
-<ComponentPrompt />
-
-</InstallTabs>
+<InstallGuide name="pixel-scroll" />
 
 ---
 
-## Usage
+<Collapsible title="Usage">
 
 By default the component creates its own scroll section and pins the canvas on screen while the grid fills in. This is what the demo above uses.
 
@@ -36,7 +24,7 @@ By default the component creates its own scroll section and pins the canvas on s
 Works best with smooth scrolling. You can add [Smooth Scroll](/docs/components/primitive/smooth-scroll) at the root for that:
 
 ```tsx title="Root layout"
-import { SmoothScroll } from "@/components/smooth-scroll";
+import { SmoothScroll } from "@/components/smooth-scroll/smooth-scroll";
 
 export default function RootLayout({ children }) {
   return <SmoothScroll>{children}</SmoothScroll>;
@@ -70,9 +58,11 @@ export default function RootLayout({ children }) {
 <PixelScroll direction="sweep" className="bg-black text-white" />
 ```
 
+</Collapsible>
+
 ---
 
-## API
+<Collapsible title="API" defaultOpen>
 
 | Name | Type | Default | Description |
 | ---- | ---- | ------- | ----------- |
@@ -84,3 +74,9 @@ export default function RootLayout({ children }) {
 | `scrollDistance` | `number` | `200` | How long the animation lasts. `100` equals one viewport of scrolling. |
 | `overlap` | `number` | `0` | Shortens the empty space before and after the animation, so the animation starts sooner. `100` equals one viewport of scrolling. |
 | `className` | `string` | — | Classes forwarded to the canvas element. |
+
+</Collapsible>
+
+---
+
+<BuiltOn name="pixel-scroll" />

@@ -1,16 +1,10 @@
-"use client"
-
-import { Children } from "react"
-
 type DocStepProps = {
     title: string
     children: React.ReactNode
     step: number
 }
 
-export default function DocStep({ children, step }: DocStepProps) {
-    const childArray = Children.toArray(children)
-
+export default function DocStep({ title, children, step }: DocStepProps) {
     return (
         <section className="mt-8 w-full min-w-0 mb-14">
             <div className="text-accent-1 -mt-1.5 mb-3 not-prose flex items-center sm:gap-x-4 gap-x-2">
@@ -18,9 +12,9 @@ export default function DocStep({ children, step }: DocStepProps) {
                     {step}
                 </div>
 
-                {childArray[0]}
+                {title}
             </div>
-            <div className="sm:ml-9">{childArray.slice(1)}</div>
+            <div className="sm:ml-9">{children}</div>
         </section>
     )
 }

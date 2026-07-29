@@ -6,23 +6,11 @@ createdAt: "2026-07-05"
 updatedAt: "2026-07-15"
 ---
 
----
-
-## Install
-
-<InstallTabs name="edge-bounce">
-
-**Recommended**: install with the [shadcn MCP server](/docs/getting-started/mcp).
-
-If you don't want to use MCP, you can paste this prompt into any LLM:
-
-<ComponentPrompt />
-
-</InstallTabs>
+<InstallGuide name="edge-bounce" />
 
 ---
 
-## Usage
+<Collapsible title="Usage">
 
 Wrap the content that should bounce away from the cursor.
 
@@ -32,9 +20,11 @@ Wrap the content that should bounce away from the cursor.
 </EdgeBounce>
 ```
 
+</Collapsible>
+
 ---
 
-## API
+<Collapsible title="API" defaultOpen>
 
 | Name | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -46,3 +36,9 @@ Wrap the content that should bounce away from the cursor.
 | `bounce` | `number` | `0.3` | Bounciness of the spring-back. `0` = no overshoot, `1` = maximum oscillation. |
 | `distance` | `number` | `35` | Maximum pixels the wrapper moves from its origin, reached at full pointer speed. |
 | `rotation` | `number` | `25` | Maximum rotation in degrees, following the pointer's travel direction. `0` disables it. |
+
+</Collapsible>
+
+---
+
+<BuiltOn name="edge-bounce" />

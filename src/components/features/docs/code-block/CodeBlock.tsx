@@ -7,6 +7,7 @@ type DocCodeBlockProps = CodeBlock
 export default async function DocCodeBlock({
     code,
     lang,
+    icon = undefined,
     title = undefined,
     mode = "scroll",
     installTabs,
@@ -22,6 +23,7 @@ export default async function DocCodeBlock({
             hast={hast}
             code={code}
             lang={lang}
+            icon={icon}
             title={title}
             mode={mode}
             installTabs={installTabs}

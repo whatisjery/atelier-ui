@@ -67,6 +67,20 @@ export function getDocNavigation(locale: string, currentSlug: string[]): DocNavi
     }
 }
 
+export const getDocsByName = cache(function getDocsByName(locale: string) {
+    const docs = new Map<string, { title: string; url: string }>()
+
+    for (const root of getDocsTree(locale)) {
+        visit(root, (node) => {
+            if (node.type !== "file") return
+            const name = node.url.split("/").pop()
+            if (name) docs.set(name, { title: node.title, url: node.url })
+        })
+    }
+
+    return docs
+})
+
 export function getCodesBlock(strPath: string): Record<string, CodeFile[]> {
     const codes: Record<string, CodeFile[]> = {}
 

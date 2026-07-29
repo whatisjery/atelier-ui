@@ -67,11 +67,12 @@ export default async function Page({ params }: PageProps) {
 
     const mdxComponents = buildDocMdxComponents(mdxContext)
     const demoSlot = buildDemoPreview(mdxContext)
+    const hasDemo = Boolean(demoSlot)
 
     return (
         <PageDocLayout
             demoSlot={demoSlot}
-            TOCSlot={demoSlot ? undefined : <DocTableOfContent headings={headings} />}
+            TOCSlot={hasDemo ? undefined : <DocTableOfContent headings={headings} />}
             topBarSlot={
                 <RouteBreadCrumb skip={getCategorySlugs(locale)} hrefOverrides={hrefOverrides} />
             }
@@ -83,7 +84,8 @@ export default async function Page({ params }: PageProps) {
             }
             metadataSlot={
                 <DocHeaderGroupTitle
-                    showMetaTags={slug[0] === "components"}
+                    showMetaTags={false}
+                    minimal={hasDemo}
                     meta={content.frontmatter as DocMeta}
                 />
             }

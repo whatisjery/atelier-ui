@@ -6,29 +6,17 @@ createdAt: "2026-07-23"
 updatedAt: "2026-07-25"
 ---
 
----
-
-## Install
-
-<InstallTabs name="spiral-gallery">
-
-**Recommended**: install with the [shadcn MCP server](/docs/getting-started/mcp).
-
-If you don't want to use MCP, you can paste this prompt into any LLM:
-
-<ComponentPrompt />
-
-</InstallTabs>
+<InstallGuide name="spiral-gallery" />
 
 ---
 
-## Usage
+<Collapsible title="Usage">
 
 All WebGL components render through [one shared canvas](/docs/getting-started/how-it-works).
 Add the `WebglProvider` once at the root of your app:
 
 ```tsx title="Root layout"
-import { WebglProvider } from "@/components/webgl-provider";
+import { WebglProvider } from "@/components/webgl-provider/webgl-provider";
 
 export default function RootLayout({ children }) {
   return <WebglProvider>{children}</WebglProvider>;
@@ -60,7 +48,7 @@ If you want it to use the real page scroll, set `input="scroll"`:
 
 ### Post-processing
 
-The gallery renders through a [WebGL Scene](/docs/components/primitive/webgl-scene) that draws above other content.
+The gallery renders through a [WebGL Scene](/docs/components/primitive/webgl-scene) layered above other content.
 Set `mode="texture"` to render it into post-processing instead, so effects like `FluidDistortion` apply to the spiral:
 
 ```tsx
@@ -69,11 +57,11 @@ Set `mode="texture"` to render it into post-processing instead, so effects like 
 <SpiralGallery items={ITEMS} mode="texture" className="fixed inset-0" />
 ```
 
+</Collapsible>
+
 ---
 
-## API
-
-### SpiralGallery
+<Collapsible title="API" defaultOpen>
 
 | Name | Type | Default | Description |
 | ---- | ---- | ------- | ----------- |
@@ -104,12 +92,8 @@ Set `mode="texture"` to render it into post-processing instead, so effects like 
 
 It also forwards [WebGL Scene](/docs/components/primitive/webgl-scene) props: `mode`, `priority`, `zIndex`, `transparent`, and `autoReflow`.
 
+</Collapsible>
+
 ---
 
-## Credits
-
-[React Three Fiber](https://r3f.docs.pmnd.rs/)  
-React renderer for Three.js used for the WebGL scene.
-
-[Drei](https://github.com/pmndrs/drei)  
-Helper used to load the image textures.
+<BuiltOn name="spiral-gallery" />

@@ -6,23 +6,11 @@ createdAt: "2026-05-07"
 updatedAt: "2026-06-16"
 ---
 
----
-
-## Install
-
-<InstallTabs name="infinite-parallax">
-
-**Recommended**: install with the [shadcn MCP server](/docs/getting-started/mcp).
-
-If you don't want to use MCP, you can paste this prompt into any LLM:
-
-<ComponentPrompt />
-
-</InstallTabs>
+<InstallGuide name="infinite-parallax" />
 
 ---
 
-## Usage
+<Collapsible title="Usage">
 
 Stack as many columns as you want. Alternate their direction with `reversed`.
 
@@ -57,16 +45,18 @@ const IMAGES = [
 Works best with smooth scrolling. You can add [Smooth Scroll](/docs/components/primitive/smooth-scroll) at the root for that:
 
 ```tsx title="Root layout"
-import { SmoothScroll } from "@/components/smooth-scroll";
+import { SmoothScroll } from "@/components/smooth-scroll/smooth-scroll";
 
 export default function RootLayout({ children }) {
   return <SmoothScroll>{children}</SmoothScroll>;
 }
 ```
 
+</Collapsible>
+
 ---
 
-## API
+<Collapsible title="API" defaultOpen>
 
 | Name         | Type                              | Default     | Description |
 | ------------ | --------------------------------- | ----------- | ----------- |
@@ -76,15 +66,8 @@ export default function RootLayout({ children }) {
 | `parallaxAmount` | `number`                        | `2`         | Parallax intensity applied while scrolling. |
 | `className`  | `string`                          | —           | Extra classes applied to the column container. |
 
+</Collapsible>
+
 ---
 
-## Credits
-
-[Olivier Larose](https://blog.olivierlarose.com/tutorials/smooth-parallax-scroll)  
-Where this idea came from.
-
-[Motion](https://motion.dev)  
-React animation library.
-
-[Lenis](https://www.lenis.dev/)
-Smooth scroll library used in the demo.
+<BuiltOn name="infinite-parallax" />

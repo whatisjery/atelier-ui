@@ -6,23 +6,11 @@ createdAt: "2026-05-07"
 updatedAt: "2026-07-15"
 ---
 
----
-
-## Install
-
-<InstallTabs name="pixel-trail">
-
-**Recommended**: install with the [shadcn MCP server](/docs/getting-started/mcp).
-
-If you don't want to use MCP, you can paste this prompt into any LLM:
-
-<ComponentPrompt />
-
-</InstallTabs>
+<InstallGuide name="pixel-trail" />
 
 ---
 
-## Usage
+<Collapsible title="Usage">
 
 The trail follows the cursor. In sample mode it picks its colors from the images under it.
 
@@ -42,9 +30,11 @@ The trail follows the cursor. In sample mode it picks its colors from the images
 
 Cross-origin images need `crossOrigin` to be sampled.
 
+</Collapsible>
+
 ---
 
-## API
+<Collapsible title="API" defaultOpen>
 
 | Name            | Type                  | Default                      | Description   |
 | --------------- | --------------------- | ---------------------------- | -------------------------------------------------- |
@@ -61,9 +51,8 @@ Cross-origin images need `crossOrigin` to be sampled.
 | `gridThickness`  | `number`              | `1`                          | Grid line thickness in px. |
 | `className`      | `string`              | —                            | Classes applied to the canvas. Use it to size and position the trail. |
 
+</Collapsible>
+
 ---
 
-## Credits
-
-[Jonas Reymondin](https://jonasreymondin.com/)  
-Pixel trail effect inspired by his portfolio, reimplemented using a 2D canvas.
+<BuiltOn name="pixel-trail" />

@@ -14,24 +14,16 @@ A structural building block for effects that need camera motion (dolly, FOV zoom
 
 ## Install
 
-<InstallTabs name="webgl-scene">
-
-**Recommended**: install with the [shadcn MCP server](/docs/getting-started/mcp).
-
-If you don't want to use MCP, you can paste this prompt into any LLM:
-
-<ComponentPrompt />
-
-</InstallTabs>
+<InstallGuide name="webgl-scene" />
 
 ---
 
-## Usage
+<Collapsible title="Usage">
 
 All WebGL components render through [one shared canvas](/docs/getting-started/how-it-works). Add the `WebglProvider` once at the root of your app:
 
 ```tsx title="Root layout"
-import { WebglProvider } from "@/components/webgl-provider";
+import { WebglProvider } from "@/components/webgl-provider/webgl-provider";
 
 export default function RootLayout({ children }) {
   return <WebglProvider>{children}</WebglProvider>;
@@ -53,6 +45,8 @@ const surface = useRef<HTMLDivElement>(null)
 </div>
 ```
 
+</Collapsible>
+
 ---
 
 ## API
@@ -66,3 +60,7 @@ const surface = useRef<HTMLDivElement>(null)
 | `zIndex` | `number` | `0` | Texture mode only. Render order of the display plane. |
 | `transparent` | `boolean` | `true` | Texture mode only. Set `false` for an opaque scene with its own background. |
 | `priority` | `number` | — | `useFrame` render priority. |
+
+---
+
+<BuiltOn name="webgl-scene" />

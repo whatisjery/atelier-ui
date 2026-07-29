@@ -6,23 +6,11 @@ createdAt: "2026-05-07"
 updatedAt: "2026-07-15"
 ---
 
----
-
-## Install
-
-<InstallTabs name="magnetic-dot-grid">
-
-**Recommended**: install with the [shadcn MCP server](/docs/getting-started/mcp).
-
-If you don't want to use MCP, you can paste this prompt into any LLM:
-
-<ComponentPrompt />
-
-</InstallTabs>
+<InstallGuide name="magnetic-dot-grid" />
 
 ---
 
-## Usage
+<Collapsible title="Usage">
 
 Render it inside the section it should fill.
 
@@ -30,9 +18,11 @@ Render it inside the section it should fill.
 <MagneticDotGrid className="w-screen h-screen inset-0 fixed" />
 ```
 
+</Collapsible>
+
 ---
 
-## API
+<Collapsible title="API" defaultOpen>
 
 | Name               | Type               | Default                                        | Description |
 | ------------------ | ------------------ | ---------------------------------------------- | --------------------------|
@@ -49,10 +39,8 @@ Render it inside the section it should fill.
 | `cycleSpeed`         | `number`           | `1.5`                                          | Color cycle speed. |
 | `className`          | `string`           | —                                              | Classes applied to the canvas. Use it to size and position the grid. |
 
+</Collapsible>
 
 ---
 
-## Credits
-
-[Google Stitch](https://stitch.withgoogle.com/)  
-Re-creation of the canvas hero effect (as of March 22, 2026). Enable dark mode to see the similarity.
+<BuiltOn name="magnetic-dot-grid" />

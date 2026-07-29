@@ -9,22 +9,43 @@ import type { Node, Parent } from "unist"
 import { visit } from "unist-util-visit"
 import { overlayRoots } from "@/lib/roots"
 
+type MdxJsxElement = {
+    attributes?: { name?: string; value?: unknown }[]
+}
+
 const CONTENT_DIR = "src/content/en"
 const OUTPUT_FILE = path.join(process.cwd(), "public/llms-full.txt")
 
-// Strip MDX JSX nodes (components like <DemoPreview />, <InstalGuideCLI />, etc.)
+/*
+ * Drop the MDX components themselves, keeping whatever markdown they wrap:
+ * <InstallGuide /> carries no prose and goes, <Collapsible> and <ProGate>
+ * hold the documentation itself and are replaced by their children.
+ */
 function stripMdxNodes(tree: Root) {
     visit(tree, (node: Node, index, parent: Parent | null) => {
-        if (
+        const isJsx =
             node.type === "mdxJsxFlowElement" ||
             node.type === "mdxJsxTextElement" ||
             node.type === "mdxjsEsm"
-        ) {
-            if (parent && typeof index === "number") {
-                parent.children.splice(index, 1)
-                return index
-            }
+
+        if (!isJsx) return
+        if (!parent || typeof index !== "number") return
+
+        const children = [...((node as Parent).children ?? [])]
+        const title = (node as MdxJsxElement).attributes?.find(
+            (attribute) => attribute.name === "title",
+        )?.value
+
+        if (typeof title === "string") {
+            children.unshift({
+                type: "heading",
+                depth: 2,
+                children: [{ type: "text", value: title }],
+            } as Node)
         }
+
+        parent.children.splice(index, 1, ...children)
+        return index
     })
 }
 

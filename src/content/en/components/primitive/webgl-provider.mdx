@@ -6,35 +6,27 @@ createdAt: "2026-06-19"
 updatedAt: "2026-06-19"
 ---
 
-WebGL Provider mounts a single `<Canvas>` for the whole page and renders your application inside it. Every other WebGL component draws onto this canvas, so the application holds one WebGL context instead of one per effect.
+WebGL Provider mounts a single `<Canvas>` for the whole page and renders your application inside it. Every other WebGL component renders into this canvas, so the application holds one WebGL context instead of one per effect.
 
-The canvas draws on Motion's clock instead of its own `requestAnimationFrame`.
-With [Smooth Scroll](/docs/components/primitive/smooth-scroll) on the page, every tick moves the scroll first, then the page, then draws the canvas, so WebGL elements always stay exactly on top of the elements they follow.
+The canvas runs on Motion's clock instead of its own `requestAnimationFrame`.
+With [Smooth Scroll](/docs/components/primitive/smooth-scroll) on the page, every tick moves the scroll first, then the page, then renders the canvas, so WebGL elements always stay exactly on top of the elements they follow.
 
-Add the provider once, at your application root. For installation steps, see the [installation guide](/docs/getting-started/installation).
+Add the provider once, at your application root. For the systems it belongs to, see the [introduction](/docs/getting-started/how-it-works).
 
 ---
 
 ## Install
 
-<InstallTabs name="webgl-provider">
-
-**Recommended**: install with the [shadcn MCP server](/docs/getting-started/mcp).
-
-If you don't want to use MCP, you can paste this prompt into any LLM:
-
-<ComponentPrompt />
-
-</InstallTabs>
+<InstallGuide name="webgl-provider" />
 
 ---
 
-## Usage
+<Collapsible title="Usage">
 
 Wrap your root layout with the provider. The canvas renders fixed and full screen behind the page, with your content on top:
 
 ```tsx title="Root layout"
-import { WebglProvider } from "@/components/webgl-provider"
+import { WebglProvider } from "@/components/webgl-provider/webgl-provider"
 
 export default function RootLayout({ children }) {
     return <WebglProvider>{children}</WebglProvider>
@@ -66,7 +58,7 @@ By default, the canvas covers the viewport. Set `contained` to keep it inside th
 `useWebglReady` returns `false` until the scene's shaders have compiled. This can help prevent visible shader-compilation stutter when an effect first appears.
 
 ```tsx
-import { useWebglReady } from "@/components/webgl-provider"
+import { useWebglReady } from "@/components/webgl-provider/webgl-provider"
 
 function Effect() {
     const ready = useWebglReady()
@@ -74,6 +66,8 @@ function Effect() {
     return <mesh visible={ready}>{/* ... */}</mesh>
 }
 ```
+
+</Collapsible>
 
 ---
 
@@ -99,3 +93,7 @@ All other [React Three Fiber Canvas props](https://r3f.docs.pmnd.rs/api/canvas) 
 | `onReady` | `() => void` | — | Called once the scene is compiled and one frame has passed. |
 
 Returns a `boolean` that is `false` until the scene is ready, then `true`.
+
+---
+
+<BuiltOn name="webgl-provider" />

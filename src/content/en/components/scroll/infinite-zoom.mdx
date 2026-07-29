@@ -6,23 +6,11 @@ createdAt: "2026-05-07"
 updatedAt: "2026-07-15"
 ---
 
----
-
-## Install
-
-<InstallTabs name="infinite-zoom">
-
-**Recommended**: install with the [shadcn MCP server](/docs/getting-started/mcp).
-
-If you don't want to use MCP, you can paste this prompt into any LLM:
-
-<ComponentPrompt />
-
-</InstallTabs>
+<InstallGuide name="infinite-zoom" />
 
 ---
 
-## Usage
+<Collapsible title="Usage">
 
 Pass the items as children and scroll the wheel to zoom through them.
 
@@ -40,9 +28,11 @@ const IMAGES = [
 </InfiniteZoom>
 ```
 
+</Collapsible>
+
 ---
 
-## API
+<Collapsible title="API" defaultOpen>
 
 | Name       | Type        | Default     | Description |
 | ---------- | ----------- | ----------- | -----------------|
@@ -51,3 +41,9 @@ const IMAGES = [
 | `lerpValue` | `number`     | `0.08`      | Smoothing for the wheel input.|
 | `className`  | `string`    | — | Class for the outer container. Use it to size the zoom and block native scrolling, e.g. `fixed inset-0 overflow-hidden touch-none`.|
 | `backgroundSpeed` | `number` | `0.2` | Background speed. Deceleration of the last item in view.|
+
+</Collapsible>
+
+---
+
+<BuiltOn name="infinite-zoom" />

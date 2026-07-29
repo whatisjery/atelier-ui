@@ -87,17 +87,9 @@ createdAt: "${new Date().toISOString().slice(0, 10)}"
 updatedAt: "${new Date().toISOString().slice(0, 10)}"
 ---
 
-<DemoPreview name="${name}" />
+## Install
 
-## CLI Install
-
-<InstalGuideCLI name="${name}" />
-
----
-
-## Manual Install
-
-<InstalGuideManual name="${name}" />
+<InstallGuide name="${name}" />
 
 ---
 

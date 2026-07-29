@@ -6,23 +6,11 @@ createdAt: "2026-05-07"
 updatedAt: "2026-07-16"
 ---
 
----
-
-## Install
-
-<InstallTabs name="scattered-scroll">
-
-**Recommended**: install with the [shadcn MCP server](/docs/getting-started/mcp).
-
-If you don't want to use MCP, you can paste this prompt into any LLM:
-
-<ComponentPrompt />
-
-</InstallTabs>
+<InstallGuide name="scattered-scroll" />
 
 ---
 
-## Usage
+<Collapsible title="Usage">
 
 The component takes the items as children. Any element works.
 
@@ -50,16 +38,18 @@ const IMAGES = [
 Works best with smooth scrolling. You can add [Smooth Scroll](/docs/components/primitive/smooth-scroll) at the root for that:
 
 ```tsx title="Root layout"
-import { SmoothScroll } from "@/components/smooth-scroll";
+import { SmoothScroll } from "@/components/smooth-scroll/smooth-scroll";
 
 export default function RootLayout({ children }) {
   return <SmoothScroll>{children}</SmoothScroll>;
 }
 ```
 
+</Collapsible>
+
 ---
 
-## API
+<Collapsible title="API" defaultOpen>
 
 | Name | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -67,16 +57,8 @@ export default function RootLayout({ children }) {
 | `scrollDistance` | `number` | `200` | How long the animation lasts. `100` equals one viewport of scrolling. |
 | `overlap` | `number` | `0` | Shortens the empty space before and after the animation, so the animation starts sooner. `100` equals one viewport of scrolling. |
 
+</Collapsible>
+
 ---
 
-## Credits
-
-
-[NoMoney](https://www.museumofmoney.com/)  
-Re-creation of the slider on the landing page with motion.
-
-[Motion](https://motion.dev)  
-React animation library.
-
-[Lenis](https://www.lenis.dev/)  
-Smooth scroll library used in the demo.
+<BuiltOn name="scattered-scroll" />

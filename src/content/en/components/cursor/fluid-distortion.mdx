@@ -6,28 +6,16 @@ createdAt: "2026-05-07"
 updatedAt: "2026-07-15"
 ---
 
----
-
-## Install
-
-<InstallTabs name="fluid-distortion">
-
-**Recommended**: install with the [shadcn MCP server](/docs/getting-started/mcp).
-
-If you don't want to use MCP, you can paste this prompt into any LLM:
-
-<ComponentPrompt />
-
-</InstallTabs>
+<InstallGuide name="fluid-distortion" />
 
 ---
 
-## Usage
+<Collapsible title="Usage">
 
 All WebGL components render through [one shared canvas](/docs/getting-started/how-it-works). Add the `WebglProvider` once at the root of your app:
 
 ```tsx title="Root layout"
-import { WebglProvider } from "@/components/webgl-provider";
+import { WebglProvider } from "@/components/webgl-provider/webgl-provider";
 
 export default function RootLayout({ children }) {
   return <WebglProvider>{children}</WebglProvider>;
@@ -40,9 +28,11 @@ Then use it anywhere in your app:
 <FluidDistortion />
 ```
 
+</Collapsible>
+
 ---
 
-## API
+<Collapsible title="API" defaultOpen>
 
 | Name                | Type          | Default   | Description                                                                               |
 | ------------------- | ------------- | --------- | ----------------------------------------------------------------------------------------- |
@@ -61,18 +51,8 @@ Then use it anywhere in your app:
 | `pressure`            | `number`      | `0.70`    | Controls the reduction of pressure. Valid range: `0.00` to `1.00`.                        |
 | `rainbow`             | `boolean`     | `false`   | Activates color mode based on mouse direction.                                            |
 
+</Collapsible>
+
 ---
 
-## Credits
-
-[Pavel Dobryakov](https://github.com/PavelDoGreat/WebGL-Fluid-Simulation)  
-Creator of the original WebGL fluid simulation.
-
-[React Three Fiber](https://r3f.docs.pmnd.rs/)  
-React renderer for Three.js
-
-[@react-three/postprocessing](https://github.com/pmndrs/react-postprocessing)  
-Post-processing effects for React Three Fiber
-
-[Drei](https://drei.docs.pmnd.rs/)  
-React Three Fiber utilities.
+<BuiltOn name="fluid-distortion" />

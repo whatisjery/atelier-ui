@@ -6,28 +6,16 @@ createdAt: "2026-05-31"
 updatedAt: "2026-07-15"
 ---
 
----
-
-## Install
-
-<InstallTabs name="liquid-media">
-
-**Recommended**: install with the [shadcn MCP server](/docs/getting-started/mcp).
-
-If you don't want to use MCP, you can paste this prompt into any LLM:
-
-<ComponentPrompt />
-
-</InstallTabs>
+<InstallGuide name="liquid-media" />
 
 ---
 
-## Usage
+<Collapsible title="Usage">
 
 All WebGL components render through [one shared canvas](/docs/getting-started/how-it-works). Add the `WebglProvider` once at the root of your app:
 
 ```tsx title="Root layout"
-import { WebglProvider } from "@/components/webgl-provider";
+import { WebglProvider } from "@/components/webgl-provider/webgl-provider";
 
 export default function RootLayout({ children }) {
   return <WebglProvider>{children}</WebglProvider>;
@@ -45,9 +33,11 @@ Then use it anywhere in your app:
 />
 ```
 
+</Collapsible>
+
 ---
 
-## API
+<Collapsible title="API" defaultOpen>
 
 | Name         | Type                 | Default      | Description                                              |
 | ------------ | -------------------- | ------------ | -------------------------------------------------------- |
@@ -64,21 +54,8 @@ Then use it anywhere in your app:
 
 It also forwards `<img>` attributes to [WebGL Image](/docs/components/primitive/webgl-image) and `<video>` attributes to [WebGL Video](/docs/components/primitive/webgl-video) depending on `type`.
 
+</Collapsible>
+
 ---
 
-## Credits
-
-[14islands](https://14islands.com/)  
-Re-creation of the ripple effect from their website.
-
-[homunculus Inc.](https://homunculus.jp/)  
-Original ripple effect from their portfolio website.
-
-[Yuri Artiukh](https://www.youtube.com/watch?v=vWAci72MtME)  
-Deconstructed the effect on his stream.
-
-[React Three Fiber](https://r3f.docs.pmnd.rs/)  
-React renderer for Three.js.
-
-[Drei](https://drei.docs.pmnd.rs/)  
-React Three Fiber utilities.
+<BuiltOn name="liquid-media" />

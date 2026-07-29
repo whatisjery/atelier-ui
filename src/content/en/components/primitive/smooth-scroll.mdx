@@ -15,24 +15,16 @@ Scroll, JS animations, and WebGL usually each run on their own loop, and they ca
 
 ## Install
 
-<InstallTabs name="smooth-scroll">
-
-**Recommended**: install with the [shadcn MCP server](/docs/getting-started/mcp).
-
-If you don't want to use MCP, you can paste this prompt into any LLM:
-
-<ComponentPrompt />
-
-</InstallTabs>
+<InstallGuide name="smooth-scroll" />
 
 ---
 
-## Usage
+<Collapsible title="Usage">
 
 Wrap your root layout with the provider.
 
 ```tsx title="Root layout"
-import { SmoothScroll } from "@/components/smooth-scroll"
+import { SmoothScroll } from "@/components/smooth-scroll/smooth-scroll"
 
 export default function RootLayout({ children }) {
     return <SmoothScroll>{children}</SmoothScroll>
@@ -75,6 +67,8 @@ Any [Lenis option](https://github.com/darkroomengineering/lenis#instance-setting
 
 The one option you can't change is `autoRaf`: the provider drives Lenis itself.
 
+</Collapsible>
+
 ---
 
 ## API
@@ -86,10 +80,4 @@ The one option you can't change is `autoRaf`: the provider drives Lenis itself.
 
 ---
 
-## Credits
-
-[Lenis](https://lenis.dev)
-Smooth scroll library by darkroom.engineering.
-
-[Motion](https://motion.dev)
-React animation library whose frame loop drives the page.
+<BuiltOn name="smooth-scroll" />

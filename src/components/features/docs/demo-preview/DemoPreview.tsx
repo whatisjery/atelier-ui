@@ -1,13 +1,14 @@
 "use client"
 
-import { Expand, Lock, Minimize, RotateCcw } from "lucide-react"
+import { AppWindow, CodeXml, Expand, Lock, Minimize, RotateCcw } from "lucide-react"
 import { AnimatePresence, motion } from "motion/react"
 import { useLocale, useTranslations } from "next-intl"
 import { type ComponentRef, useEffect, useEffectEvent, useMemo, useRef, useState } from "react"
 import Logo from "@/components/common/Logo"
 import ThemeSwitcher from "@/components/common/ThemeSwitcher"
-import ControlFields from "@/components/features/docs/controls/ControlFields"
+import ControlList from "@/components/features/docs/controls/ControlList"
 import ControlPanel from "@/components/features/docs/controls/ControlPanel"
+import CopyPromptButton from "@/components/features/docs/demo-preview/CopyPromptButton"
 import Button from "@/components/ui/Button"
 import Card from "@/components/ui/Card"
 import Tooltip from "@/components/ui/Tooltip"
@@ -15,6 +16,8 @@ import { env } from "@/env"
 import { useIsTouch } from "@/hooks/use-is-touch"
 import { useKeyDown } from "@/hooks/use-key-down"
 import { useScrollLock } from "@/hooks/use-scroll-lock"
+import { controlDefaults } from "@/lib/control-props"
+import { useControlStore, useControlValues } from "@/lib/control-store"
 import { expoOut } from "@/lib/ease"
 import { cn } from "@/lib/utils"
 import type { ControlDef, ControlValue } from "@/types/controls"
@@ -23,28 +26,24 @@ const MotionDocCard = motion.create(Card)
 
 type PreviewMode = "big" | "small"
 
-type ControlledState = Record<string, ControlValue>
-
 type DocComponentPreviewProps = {
     name: string
+    title: string
     controls?: Record<string, ControlDef> | undefined
     codePreviewSlot: React.ReactNode
-    codeButtonSlot?: React.ReactNode
+    lockedHref?: string | undefined
     footerSlot?: React.ReactNode
-    hideControls?: boolean
 }
 
 export default function DemoPreview({
     name,
+    title,
     codePreviewSlot,
     controls = undefined,
-    codeButtonSlot = undefined,
+    lockedHref = undefined,
     footerSlot = undefined,
-    hideControls = false,
 }: DocComponentPreviewProps) {
-    const defaults = controls
-        ? Object.fromEntries(Object.entries(controls).map(([key, { value }]) => [key, value]))
-        : {}
+    const defaults = controls ? controlDefaults(controls) : {}
 
     const iframeRef = useRef<ComponentRef<"iframe"> | null>(null)
     const locale = useLocale()
@@ -53,7 +52,10 @@ export default function DemoPreview({
     const tDemo = useTranslations("docs.demo-preview")
     const tTooltips = useTranslations("docs.tooltips")
 
-    const [controlledValues, setControlledValues] = useState<ControlledState>({})
+    const controlledValues = useControlValues(name)
+    const setControlValue = useControlStore((state) => state.setValue)
+    const resetControlValues = useControlStore((state) => state.reset)
+
     const [iframeLoaded, setIframeLoaded] = useState(false)
     const [isExpanded, setIsExpanded] = useState(false)
     const [showCodePreview, setShowCodePreview] = useState(false)
@@ -61,24 +63,12 @@ export default function DemoPreview({
     const [animationDone, setAnimationDone] = useState(true)
 
     const ExpandIcon = isExpanded ? Minimize : Expand
-    const showControls = Boolean(controls) && !hideControls
 
-    const resetControlledValues = () => setControlledValues({})
-
-    const controlFields = (definitions: Record<string, ControlDef>) =>
-        Object.keys(definitions).map((key) => (
-            <div className="relative mb-3" key={key}>
-                <ControlFields
-                    label={key}
-                    control={definitions[key]}
-                    onChange={(value: ControlValue) => updateControlledValues(key, value)}
-                    value={controlledValues[key] ?? defaults[key]}
-                />
-            </div>
-        ))
+    // The icon shows where the click leads: the code, or back to the running component.
+    const CodeToggleIcon = showCodePreview ? AppWindow : CodeXml
 
     function updateControlledValues(key: string, value: ControlValue) {
-        setControlledValues((prev) => ({ ...prev, [key]: value }))
+        setControlValue(name, key, value)
     }
 
     function reload() {
@@ -138,7 +128,7 @@ export default function DemoPreview({
 
     return (
         <>
-            <div className="relative min-w-0 max-xl:order-1 xl:col-start-1">
+            <div className="relative min-w-0 max-xl:order-1 xl:col-start-1 mb-4">
                 <AnimatePresence>
                     {isExpanded && (
                         <motion.div
@@ -209,15 +199,12 @@ export default function DemoPreview({
                                     </Button>
                                 </Tooltip>
 
-                                {codeButtonSlot ?? (
-                                    <Button
-                                        variant="secondary"
-                                        className="px-4 w-25 h-full whitespace-nowrap text-xs"
-                                        onClick={() => setShowCodePreview((prev) => !prev)}
-                                    >
-                                        {showCodePreview ? tDemo("hide-code") : tDemo("show-code")}
-                                    </Button>
-                                )}
+                                <CopyPromptButton
+                                    name={name}
+                                    title={title}
+                                    controls={controls}
+                                    lockedHref={lockedHref}
+                                />
                             </div>
                         </>
                     }
@@ -251,6 +238,51 @@ export default function DemoPreview({
                                 </motion.div>
                             )}
                         </AnimatePresence>
+
+                        {lockedHref && (
+                            <Tooltip side="left" title={tDemo("unlock-code")}>
+                                <Button
+                                    size="icon"
+                                    variant="primary"
+                                    asChild
+                                    className={cn(
+                                        "absolute bottom-3 right-3 z-30 text-accent-2 opacity-70 hover:opacity-100",
+                                        { "max-sm:hidden": !isExpanded },
+                                    )}
+                                >
+                                    <a
+                                        href={lockedHref}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        aria-label={tDemo("unlock-code")}
+                                    >
+                                        <Lock strokeWidth={1.5} className="size-4" />
+                                    </a>
+                                </Button>
+                            </Tooltip>
+                        )}
+
+                        {!lockedHref && codePreviewSlot && (
+                            <Tooltip
+                                side="left"
+                                title={showCodePreview ? tDemo("hide-code") : tDemo("show-code")}
+                            >
+                                <Button
+                                    size="icon"
+                                    variant="primary"
+                                    onClick={() => setShowCodePreview((prev) => !prev)}
+                                    aria-pressed={showCodePreview}
+                                    aria-label={
+                                        showCodePreview ? tDemo("hide-code") : tDemo("show-code")
+                                    }
+                                    className={cn("absolute bottom-3 right-3 z-30", {
+                                        "max-sm:hidden": !isExpanded,
+                                    })}
+                                >
+                                    <CodeToggleIcon strokeWidth={1.5} className="size-4" />
+                                </Button>
+                            </Tooltip>
+                        )}
 
                         <button
                             type="button"
@@ -289,40 +321,52 @@ export default function DemoPreview({
                 {footerSlot}
             </div>
 
-            {showControls && controls && (
+            {controls && (
                 <>
-                    <aside className="max-xl:hidden xl:col-start-2 xl:row-span-full xl:pl-4">
-                        <div className="xl:sticky xl:top-sticky-nested xl:h-[calc(100vh-var(--spacing-sticky-nested)-var(--spacing-offset))]">
+                    <aside className="max-xl:hidden xl:col-start-2 xl:row-start-2 xl:row-end-[-1] pb-10">
+                        <div className="xl:sticky xl:top-sticky-nested xl:h-fit">
                             <ControlPanel
-                                className="rounded-md"
-                                onReset={resetControlledValues}
-                                headerSlot={
-                                    <span className="text-sm font-medium text-accent-1">
-                                        {tDemo("live-props")}
-                                    </span>
+                                className="rounded-md xl:max-h-[calc(100dvh-var(--spacing-sticky-nested)-var(--spacing-offset)-5rem)]"
+                                footerSlot={
+                                    <Button
+                                        variant="ghost"
+                                        className="shrink-0 rounded-none border-t py-7 border-t-theme-border text-xs font-light"
+                                        aria-label="Restore default settings"
+                                        onClick={() => resetControlValues(name)}
+                                    >
+                                        <RotateCcw strokeWidth={1.5} className="size-3" />
+                                        {tControls("restore-defaults")}
+                                    </Button>
                                 }
                             >
-                                {controlFields(controls)}
+                                <ControlList
+                                    controls={controls}
+                                    values={{ ...defaults, ...controlledValues }}
+                                    onChange={updateControlledValues}
+                                />
                             </ControlPanel>
                         </div>
                     </aside>
 
                     <div className="mb-10 max-xl:order-3 xl:hidden">
                         <div className="mb-2 flex justify-end">
-                            <Tooltip title={tControls("restore-defaults")}>
-                                <Button
-                                    size="icon"
-                                    variant="ghost"
-                                    aria-label="Restore default settings"
-                                    onClick={resetControlledValues}
-                                >
-                                    <RotateCcw strokeWidth={1.5} className="size-4" />
-                                </Button>
-                            </Tooltip>
+                            <Button
+                                variant="ghost"
+                                className="h-8 gap-x-1.5 px-2 text-xs"
+                                onClick={() => resetControlValues(name)}
+                            >
+                                {tControls("reset")}
+                                <RotateCcw strokeWidth={1.5} className="size-3.5" />
+                            </Button>
                         </div>
 
-                        <div className="grid gap-x-8 border-t pt-5 sm:grid-cols-2">
-                            {controlFields(controls)}
+                        <div className="border-t pt-5">
+                            <ControlList
+                                controls={controls}
+                                values={{ ...defaults, ...controlledValues }}
+                                onChange={updateControlledValues}
+                                fieldsClassName="grid gap-x-8 sm:grid-cols-2"
+                            />
                         </div>
                     </div>
                 </>

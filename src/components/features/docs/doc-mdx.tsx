@@ -1,8 +1,11 @@
+import BuiltOn from "@/components/features/docs/BuiltOn"
 import DocCodeBlock from "@/components/features/docs/code-block/CodeBlock"
+import DocCollapsible from "@/components/features/docs/DocCollapsible"
 import DemoPreview from "@/components/features/docs/demo-preview/DemoPreview"
 import InstalGuideCLI from "@/components/features/docs/install-guide/InstalGuideCLI"
 import InstalGuideManual from "@/components/features/docs/install-guide/InstalGuideManual"
-import InstallTabs from "@/components/features/docs/install-guide/InstallTabs"
+import InstalGuidePrompt from "@/components/features/docs/install-guide/InstalGuidePrompt"
+import InstallGuide from "@/components/features/docs/install-guide/InstallGuide"
 import { demoControls } from "@/registry/demos/controls"
 import type { CodeFile } from "@/types/code"
 
@@ -25,7 +28,7 @@ export type DocMdxContext = {
 export type DocMdxComponents = Record<string, (props: any) => React.ReactNode>
 
 export function buildDemoPreview(ctx: DocMdxContext): React.ReactNode {
-    const { slug, demoCode } = ctx
+    const { slug, demoCode, frontmatter } = ctx
     const name = slug[slug.length - 1]
     const files = demoCode[name]
 
@@ -34,6 +37,7 @@ export function buildDemoPreview(ctx: DocMdxContext): React.ReactNode {
     return (
         <DemoPreview
             name={name}
+            title={(frontmatter.title as string | undefined) ?? name}
             controls={demoControls[name]}
             codePreviewSlot={
                 <DocCodeBlock
@@ -49,9 +53,23 @@ export function buildDemoPreview(ctx: DocMdxContext): React.ReactNode {
 }
 
 export function buildDocMdxComponents(ctx: DocMdxContext): DocMdxComponents {
-    const { demoCode, snippets } = ctx
+    const { demoCode, frontmatter, locale, snippets } = ctx
+
+    const docTitle = (name: string) => (frontmatter.title as string | undefined) ?? name
 
     return {
+        Collapsible: (props: {
+            title: string
+            defaultOpen?: boolean
+            children?: React.ReactNode
+        }) => (
+            <DocCollapsible title={props.title} defaultOpen={props.defaultOpen}>
+                {props.children}
+            </DocCollapsible>
+        ),
+
+        BuiltOn: (props: { name: string }) => <BuiltOn name={props.name} locale={locale} />,
+
         SourceCode: (props: { name: string }) => (
             <DocCodeBlock
                 mode="expand"
@@ -70,23 +88,22 @@ export function buildDocMdxComponents(ctx: DocMdxContext): DocMdxComponents {
             return <InstalGuideManual {...props} snippets={snippets[props.name]} />
         },
 
-        InstallTabs: (props: { name: string; children?: React.ReactNode }) => {
+        InstallGuide: (props: { name: string }) => {
             return (
-                <InstallTabs
+                <InstallGuide
+                    promptSlot={
+                        <InstalGuidePrompt
+                            name={props.name}
+                            title={docTitle(props.name)}
+                            controls={demoControls[props.name]}
+                        />
+                    }
                     cliSlot={<InstalGuideCLI name={props.name} />}
                     manualSlot={
                         <InstalGuideManual name={props.name} snippets={snippets[props.name]} />
                     }
-                    agentSlot={
-                        props.children ? (
-                            <div className="space-y-4">{props.children}</div>
-                        ) : undefined
-                    }
                 />
             )
         },
-
-        // Overridden by deployments that generate a component prompt.
-        ComponentPrompt: () => null,
     }
 }
