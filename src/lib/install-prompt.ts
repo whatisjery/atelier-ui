@@ -2,7 +2,7 @@ export function installPrompt(name: string, title: string, props?: string): stri
     const lines = [
         `Add Atelier's ${title} to my app.`,
         `Run: npx shadcn@latest add @atelier/${name}`,
-        "That writes .claude/skills/atelier-ui/SKILL.md. Follow it.",
+        "That writes the atelier-ui skill under .agents/skills and .claude/skills. Follow it.",
     ]
 
     if (props) lines.push("", `Props: ${props}`)
