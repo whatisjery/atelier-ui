@@ -3,14 +3,30 @@
 import { Copy, Ellipsis, FileText } from "lucide-react"
 import { useTranslations } from "next-intl"
 import { DropdownMenu } from "radix-ui"
+import { RiOpenaiFill } from "react-icons/ri"
+import { SiClaude, SiPerplexity } from "react-icons/si"
 import { toast } from "sonner"
 import Card from "@/components/ui/Card"
 import DropdownButton from "@/components/ui/DropdownButton"
 import { useCopy } from "@/hooks/use-copy"
 
+/*
+ * Each assistant takes the prompt as a query parameter on a new conversation.
+ * The page is passed as a URL rather than as its markdown so the prompt stays
+ * short enough to survive the length limits browsers put on a URL.
+ */
+const ASSISTANTS = {
+    chatgpt: "https://chatgpt.com/?q=",
+    claude: "https://claude.ai/new?q=",
+    perplexity: "https://www.perplexity.ai/search?q=",
+} as const
+
 const DROPDOWN_ACTIONS = [
     { key: "copy-page", icon: Copy, action: "copy" },
     { key: "view-as-markdown", icon: FileText, action: "view" },
+    { key: "open-in-chatgpt", icon: RiOpenaiFill, action: "chatgpt" },
+    { key: "open-in-claude", icon: SiClaude, action: "claude" },
+    { key: "open-in-perplexity", icon: SiPerplexity, action: "perplexity" },
 ] as const
 
 type DocPageDropdownProps = {
@@ -29,6 +45,15 @@ export default function DocPageDropdown({ rawMarkdown }: DocPageDropdownProps) {
         resetAfterMs: 2000,
     })
 
+    const askAbout = (assistant: keyof typeof ASSISTANTS) => () => {
+        const prompt = tDropdown("ask-prompt", { url: window.location.href })
+        window.open(
+            `${ASSISTANTS[assistant]}${encodeURIComponent(prompt)}`,
+            "_blank",
+            "noopener,noreferrer",
+        )
+    }
+
     const actionsMap = {
         copy: () => copy(rawMarkdown),
         view: () => {
@@ -36,6 +61,9 @@ export default function DocPageDropdown({ rawMarkdown }: DocPageDropdownProps) {
             const url = URL.createObjectURL(blob)
             window.open(url, "_blank")
         },
+        chatgpt: askAbout("chatgpt"),
+        claude: askAbout("claude"),
+        perplexity: askAbout("perplexity"),
     }
 
     return (

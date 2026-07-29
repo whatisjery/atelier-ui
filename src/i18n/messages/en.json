@@ -5,7 +5,14 @@
             "copy-page-description": "Copy page as Markdown",
             "copy-page-success-description": "Page successfully copied as Markdown.",
             "view-as-markdown": "View as markdown",
-            "view-as-markdown-description": "View this page as plain text."
+            "view-as-markdown-description": "View this page as plain text.",
+            "open-in-chatgpt": "Open in ChatGPT",
+            "open-in-chatgpt-description": "Ask a question about this page",
+            "open-in-claude": "Open in Claude",
+            "open-in-claude-description": "Ask a question about this page",
+            "open-in-perplexity": "Open in Perplexity",
+            "open-in-perplexity-description": "Ask a question about this page",
+            "ask-prompt": "Read {url} so I can ask questions about it."
         },
         "tooltips": {
             "theme-toggle": "Toggle light/dark",
