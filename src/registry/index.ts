@@ -13,7 +13,7 @@ export const components: TRegistryComponent[] = [
         files: ["fluid-distortion.tsx"],
         description: "A fluid distortion effect that follows the cursor.",
         shared: [],
-        dependencies: ["three", "@react-three/fiber", "@react-three/drei", "postprocessing"],
+        dependencies: ["three", "@types/three", "@react-three/fiber", "@react-three/drei", "postprocessing"],
         registryDependencies: ["webgl-portal"],
     },
     {
@@ -69,7 +69,7 @@ export const components: TRegistryComponent[] = [
         files: ["liquid-media.tsx"],
         description: "An image or video that ripples under the cursor.",
         shared: [],
-        dependencies: ["three", "@react-three/fiber", "@react-three/drei"],
+        dependencies: ["three", "@types/three", "@react-three/fiber", "@react-three/drei"],
         registryDependencies: ["webgl-image", "webgl-video"],
     },
     {
@@ -127,6 +127,7 @@ export const components: TRegistryComponent[] = [
         shared: [],
         dependencies: [
             "three",
+            "@types/three",
             "@react-three/fiber",
             "@react-three/postprocessing",
             "postprocessing",
@@ -147,7 +148,7 @@ export const components: TRegistryComponent[] = [
         files: ["webgl-image.tsx"],
         description: "A WebGL plane that mirrors an image.",
         shared: ["hooks/use-pointer-uv.ts", "hooks/use-dom-plane.ts", "lib/object-fit.ts"],
-        dependencies: ["three", "@react-three/fiber", "@react-three/drei"],
+        dependencies: ["three", "@types/three", "@react-three/fiber", "@react-three/drei"],
         registryDependencies: ["webgl-portal"],
     },
     {
@@ -155,7 +156,7 @@ export const components: TRegistryComponent[] = [
         files: ["webgl-video.tsx"],
         description: "A WebGL plane that mirrors a video.",
         shared: ["hooks/use-pointer-uv.ts", "hooks/use-dom-plane.ts", "lib/object-fit.ts"],
-        dependencies: ["three", "@react-three/fiber"],
+        dependencies: ["three", "@types/three", "@react-three/fiber"],
         registryDependencies: ["webgl-portal"],
     },
     {
@@ -163,7 +164,7 @@ export const components: TRegistryComponent[] = [
         files: ["webgl-text.tsx"],
         description: "A WebGL plane that mirrors text.",
         shared: ["hooks/use-render.ts", "hooks/use-pointer-uv.ts", "hooks/use-dom-plane.ts"],
-        dependencies: ["three", "@react-three/fiber"],
+        dependencies: ["three", "@types/three", "@react-three/fiber"],
         registryDependencies: ["webgl-portal"],
     },
     {
@@ -171,7 +172,7 @@ export const components: TRegistryComponent[] = [
         files: ["curve-media.tsx"],
         description: "An image or video that bends as you scroll.",
         shared: [],
-        dependencies: ["three", "@react-three/fiber", "@react-three/drei"],
+        dependencies: ["three", "@types/three", "@react-three/fiber", "@react-three/drei"],
         registryDependencies: ["webgl-image", "webgl-video", "smooth-scroll"],
     },
     {
@@ -179,7 +180,7 @@ export const components: TRegistryComponent[] = [
         files: ["lens-media.tsx"],
         description: "An image or video with a cursor-following lens.",
         shared: [],
-        dependencies: ["three", "@react-three/fiber", "@react-three/drei"],
+        dependencies: ["three", "@types/three", "@react-three/fiber", "@react-three/drei"],
         registryDependencies: ["webgl-image", "webgl-video"],
     },
     {
@@ -187,7 +188,7 @@ export const components: TRegistryComponent[] = [
         files: ["text-fluid.tsx"],
         description: "Text with an animated shimmer and distortion.",
         shared: ["hooks/use-render.ts"],
-        dependencies: ["three", "@react-three/fiber", "@react-three/drei"],
+        dependencies: ["three", "@types/three", "@react-three/fiber", "@react-three/drei"],
         registryDependencies: ["webgl-text"],
     },
     {
@@ -195,7 +196,7 @@ export const components: TRegistryComponent[] = [
         files: ["pixel-media.tsx"],
         description: "An image or video that breaks into pixels under the cursor.",
         shared: [],
-        dependencies: ["three", "@react-three/fiber", "@react-three/drei"],
+        dependencies: ["three", "@types/three", "@react-three/fiber", "@react-three/drei"],
         registryDependencies: ["webgl-image", "webgl-video"],
     },
     {
@@ -203,7 +204,7 @@ export const components: TRegistryComponent[] = [
         files: ["webgl-scene.tsx"],
         description: "A viewport with its own scene and camera on the shared canvas.",
         shared: [],
-        dependencies: ["three", "@react-three/fiber", "@react-three/drei"],
+        dependencies: ["three", "@types/three", "@react-three/fiber", "@react-three/drei"],
         registryDependencies: ["webgl-portal"],
     },
     {
@@ -211,7 +212,7 @@ export const components: TRegistryComponent[] = [
         files: ["sphere-gallery.tsx"],
         description: "A gallery of images mapped onto a sphere.",
         shared: [],
-        dependencies: ["three", "@react-three/fiber", "@react-three/drei", "motion"],
+        dependencies: ["three", "@types/three", "@react-three/fiber", "@react-three/drei", "motion"],
         registryDependencies: ["webgl-scene", "webgl-provider"],
     },
     {
@@ -220,7 +221,7 @@ export const components: TRegistryComponent[] = [
         description:
             "An infinite carousel of images staggered along a spiraling tube that scrolls indefinitely.",
         shared: [],
-        dependencies: ["three", "@react-three/fiber", "@react-three/drei", "motion"],
+        dependencies: ["three", "@types/three", "@react-three/fiber", "@react-three/drei", "motion"],
         registryDependencies: ["webgl-scene", "webgl-provider"],
     },
     {
@@ -236,7 +237,7 @@ export const components: TRegistryComponent[] = [
         files: ["orbit-gallery.tsx"],
         description: "A gallery of images on rotating rings.",
         shared: [],
-        dependencies: ["three", "@react-three/fiber", "@react-three/drei", "motion"],
+        dependencies: ["three", "@types/three", "@react-three/fiber", "@react-three/drei", "motion"],
         registryDependencies: ["webgl-scene", "webgl-provider"],
     },
     {
