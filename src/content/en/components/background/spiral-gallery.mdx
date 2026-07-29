@@ -3,7 +3,7 @@ title: "Spiral Gallery"
 description: "An infinite carousel of images staggered along a spiraling tube that scrolls indefinitely."
 tags: ["React Three Fiber", "Drei", "Motion"]
 createdAt: "2026-07-23"
-updatedAt: "2026-07-25"
+updatedAt: "2026-07-29"
 ---
 
 <InstallGuide name="spiral-gallery" />
@@ -66,8 +66,8 @@ Set `mode="texture"` to render it into post-processing instead, so effects like 
 | Name | Type | Default | Description |
 | ---- | ---- | ------- | ----------- |
 | `items` | `SpiralGalleryItem[]` | - | The images to show, each one as `{ src, alt }`. They repeat to fill `tileCount`. Required. |
-| `radius` | `number` | `4.5` | Radius of the tube the images travel around, in world units. |
-| `tileHeight` | `number` | `2.25` | Height of each image, in world units. |
+| `radius` | `number` | `5` | Radius of the tube the images travel around, in world units. |
+| `tileHeight` | `number` | `2.45` | Height of each image, in world units. |
 | `tileAspect` | `number` | `1.5` | Width-to-height ratio of each image. Images are cropped to fit. |
 | `tileCount` | `number` | `16` | Number of images on screen at once. Items repeat if there are fewer. |
 | `verticalSpacing` | `number` | `0.95` | Vertical distance between one image and the next. |
@@ -80,14 +80,15 @@ Set `mode="texture"` to render it into post-processing instead, so effects like 
 | `input` | `"wheel" \| "scroll" \| "none"` | `"wheel"` | Where scrolling comes from. `"wheel"` captures the wheel over the gallery, `"scroll"` follows the page scroll, `"none"` leaves only dragging. |
 | `inputSpeed` | `number` | `1.1` | Multiplier on wheel and drag distance. Higher moves further per gesture. |
 | `drag` | `boolean` | `true` | Allow dragging the carousel with the pointer. |
-| `scrollSpread` | `number` | `0.3` | Extra angle added between images while scrolling. `0` keeps the spacing fixed. |
+| `scrollSpread` | `number` | `0.5` | Extra angle added between images while scrolling. `0` keeps the spacing fixed. |
 | `scrollGrowth` | `number` | `0.65` | How much the radius and vertical spacing grow while scrolling. |
-| `wave` | `number` | `0.8` | Depth of the ripple that travels across each image while scrolling. `0` keeps them flat. |
-| `lensBlur` | `number` | `0.24` | Strength of the edge lens blur and its RGB split. `0` disables it; higher values blur more toward the edges. |
+| `lensBlur` | `number` | `0.4` | Strength of the lens pass: edge blur, RGB split and the fisheye bulge that swells while an image opens. `0` disables it; higher values blur more toward the edges. |
 | `autoScale` | `boolean` | `true` | Shrink the spiral on narrow viewports so it stays inside the container. |
 | `scale` | `number` | `1.3` | Overall size of the spiral, applied on top of `autoScale`. |
-| `reveal` | `boolean` | `true` | Play the mount animation, where the images start as a flat band and wrap onto themselves into the tube. |
+| `reveal` | `boolean` | `true` | Play the mount animation, where the images start as a flat band and wrap onto themselves into the tube, turning once around. |
 | `revealDuration` | `number` | `2` | How long the mount animation takes, in seconds. |
+| `focusDuration` | `number` | `2.1` | How long the click-to-focus unwinding takes, in seconds. Sliding between two open images takes 40% of it. |
+| `focusScale` | `number` | `0.7` | Share of the container height the open image covers, from `0` to `1`. Lower it for more room around the row. |
 | `className` | `string` | - | Classes for the interaction surface the gallery renders into. Sizes the gallery, any container size works. |
 
 It also forwards [WebGL Scene](/docs/components/primitive/webgl-scene) props: `mode`, `priority`, `zIndex`, `transparent`, and `autoReflow`.

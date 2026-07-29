@@ -1,8 +1,8 @@
 import type { ControlDef } from "@/types/controls"
 
 export const controls: Record<string, ControlDef> = {
-    radius: { type: "slider", value: 4.5, min: 1, max: 6, step: 0.05 },
-    tileHeight: { type: "slider", value: 2.25, min: 0.5, max: 3, step: 0.05 },
+    radius: { type: "slider", value: 5, min: 1, max: 6, step: 0.05 },
+    tileHeight: { type: "slider", value: 2.45, min: 0.5, max: 3, step: 0.05 },
     tileAspect: { type: "slider", value: 1.5, min: 0.5, max: 3, step: 0.05 },
     tileCount: { type: "slider", value: 16, min: 6, max: 40, step: 1 },
     verticalSpacing: { type: "slider", value: 0.95, min: 0, max: 2, step: 0.05 },
@@ -14,11 +14,12 @@ export const controls: Record<string, ControlDef> = {
     easing: { type: "slider", value: 0.1, min: 0.01, max: 0.2, step: 0.01 },
     inputSpeed: { type: "slider", value: 1.1, min: 0.1, max: 2, step: 0.05 },
     drag: { type: "boolean", value: true },
-    scrollSpread: { type: "slider", value: 0.3, min: 0, max: 2, step: 0.05 },
+    scrollSpread: { type: "slider", value: 0.5, min: 0, max: 2, step: 0.05 },
     scrollGrowth: { type: "slider", value: 0.65, min: 0, max: 1, step: 0.05 },
-    wave: { type: "slider", value: 0.8, min: 0, max: 2, step: 0.05 },
-    lensBlur: { type: "slider", value: 0.24, min: 0, max: 0.8, step: 0.01 },
+    lensBlur: { type: "slider", value: 0.4, min: 0, max: 0.8, step: 0.01 },
     scale: { type: "slider", value: 1.3, min: 0.5, max: 2, step: 0.05 },
     reveal: { type: "boolean", value: true },
     revealDuration: { type: "slider", value: 2, min: 0.5, max: 6, step: 0.1 },
+    focusDuration: { type: "slider", value: 2.1, min: 0.2, max: 4, step: 0.1 },
+    focusScale: { type: "slider", value: 0.7, min: 0.3, max: 1, step: 0.05 },
 }

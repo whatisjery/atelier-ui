@@ -2,7 +2,8 @@
 
 import { shaderMaterial, useFBO, useTexture } from "@react-three/drei"
 import { createPortal, extend, type ThreeElement, useFrame, useThree } from "@react-three/fiber"
-import { animate, type Easing, useMotionValue, useSpring } from "motion/react"
+import type { Easing } from "motion"
+import { animate, useMotionValue, useSpring, wrap } from "motion/react"
 import {
     type ComponentRef,
     type ReactNode,
@@ -12,40 +13,51 @@ import {
     useLayoutEffect,
     useMemo,
     useRef,
+    useState,
 } from "react"
 import * as THREE from "three"
+import { MathUtils } from "three"
 import { WebglScene, type WebglSceneProps } from "../webgl-scene/webgl-scene"
 
 const WHEEL_STEP = 0.0025 as const
 const DRAG_STEP = 0.005 as const
-const DRAG_SIDEWAYS = 0.3 as const
+const DRAG_X_MULTIPLIER = 0.3 as const
+const DRAG_THRESHOLD = 6 as const
 const MAX_LAG = 1.5 as const
 const REFERENCE_ASPECT = 16 / 9
 const REVEAL_SCALE = 0.35 as const
 const REVEAL_DELAY = 0.25 as const
 const REVEAL_EASING = [0.4, 0.2, 0.15, 1] as Easing
+const FOCUS_EASING = [0.7, 0.03, 0.26, 0.99] as Easing
+const SLIDE_DURATION_RATIO = 0.4 as const
+const FOCUS_FADE_KEYFRAMES = [0, 0.6, 1]
+const FOCUS_GAP_RATIO = 0.06 as const
+const ROW_TILE_ASPECT = 0.8 as const
+const FOCUS_LENS_FLARE = 3 as const
 
 const DEFAULT_PROPS = {
     radius: 4.5,
     tileHeight: 2.25,
     tileAspect: 1.5,
     tileCount: 16,
-    verticalSpacing: 0.95,
+    verticalSpacing: 0.75,
     turnAngle: 46,
     tileRotation: 1,
-    cornerRadius: 0.05,
-    curve: 0.1,
+    cornerRadius: 0,
+    curve: 0.09,
     autoScroll: 0.1,
     easing: 0.1,
     input: "wheel" as SpiralInput,
     inputSpeed: 1.1,
     drag: true,
-    scrollSpread: 0.3,
+    scrollSpread: 0.5,
     scrollGrowth: 0.65,
     wave: 0.8,
     lensBlur: 0.24,
     reveal: true,
     revealDuration: 2,
+    focusDuration: 1.6,
+    focusScale: 0.7,
     autoScale: true,
     scale: 1.3,
 }
@@ -55,6 +67,22 @@ type SpiralInput = "wheel" | "scroll" | "none"
 type Bounds = {
     width: number
     height: number
+}
+
+type RowMetrics = {
+    openAspect: number
+    openWidth: number
+    fitScale: number
+    flatSpacing: number
+}
+
+type FrameState = {
+    position: number
+    tension: number
+    presence: number
+    spiral: number
+    focus: number
+    time: number
 }
 
 export type SpiralGalleryItem = {
@@ -71,6 +99,8 @@ export type SpiralGalleryProps = {
 type SpiralSceneProps = {
     sources: string[]
     surface: RefObject<HTMLElement | null>
+    activeIndex: number | null
+    onSelect: (index: number | null) => void
 } & typeof DEFAULT_PROPS
 
 type PlaneMesh = THREE.Mesh<THREE.PlaneGeometry, InstanceType<typeof SpiralTileMaterial>>
@@ -226,7 +256,7 @@ function useSurfaceBounds(surface: RefObject<HTMLElement | null>) {
 
 type PostProcessingProps = {
     bounds: RefObject<Bounds>
-    strength: number
+    strength: RefObject<number>
     children: ReactNode
 }
 
@@ -235,8 +265,13 @@ function PostProcessing({ bounds, strength, children }: PostProcessingProps) {
     const camera = useThree((state) => state.camera)
     const content = useMemo(() => new THREE.Scene(), [])
     const fbo = useFBO(1, 1, { samples: 4 })
+    const blurRef = useRef<InstanceType<typeof SpiralLensBlurMaterial>>(null)
 
     useFrame(() => {
+        if (blurRef.current) {
+            blurRef.current.uStrength = strength.current
+        }
+
         const { width, height } = bounds.current
         if (width === 0 || height === 0) return
 
@@ -263,9 +298,10 @@ function PostProcessing({ bounds, strength, children }: PostProcessingProps) {
             <mesh frustumCulled={false}>
                 <planeGeometry args={[2, 2]} />
                 <spiralLensBlurMaterial
+                    ref={blurRef}
                     key={SpiralLensBlurMaterial.key}
                     uScene={fbo.texture}
-                    uStrength={strength}
+                    uStrength={0}
                     transparent
                     premultipliedAlpha
                     depthTest={false}
@@ -276,18 +312,36 @@ function PostProcessing({ bounds, strength, children }: PostProcessingProps) {
     )
 }
 
-function smoothstep(edge0: number, edge1: number, x: number) {
-    const t = Math.min(1, Math.max(0, (x - edge0) / (edge1 - edge0)))
-    return t * t * (3 - 2 * t)
+function surfaceScale(bounds: Bounds, autoScale: boolean) {
+    if (!autoScale || bounds.height === 0) return 1
+    return Math.min(1, bounds.width / bounds.height / REFERENCE_ASPECT)
 }
 
-function wrap(value: number, span: number) {
-    return ((value % span) + span) % span
+function rowZoom(camera: THREE.PerspectiveCamera, focusScale: number, tileHeight: number) {
+    const visibleHeight = 2 * Math.tan(MathUtils.degToRad(camera.fov) / 2) * camera.position.z
+    const visibleWidth = visibleHeight * camera.aspect
+
+    return (Math.min(visibleHeight, visibleWidth / ROW_TILE_ASPECT) * focusScale) / tileHeight
+}
+
+function coverCrop(material: PlaneMesh["material"], imageAspect: number, tileAspect: number) {
+    let cropX = 1
+    let cropY = imageAspect / tileAspect
+
+    if (imageAspect > tileAspect) {
+        cropX = tileAspect / imageAspect
+        cropY = 1
+    }
+
+    material.uUvScale.set(cropX, cropY)
+    material.uUvOffset.set((1 - cropX) / 2, (1 - cropY) / 2)
 }
 
 function SpiralScene({
     sources,
     surface,
+    activeIndex,
+    onSelect,
     radius,
     tileHeight,
     tileAspect,
@@ -308,20 +362,25 @@ function SpiralScene({
     lensBlur,
     reveal,
     revealDuration,
+    focusDuration,
+    focusScale,
     autoScale,
     scale,
 }: SpiralSceneProps) {
     const textures = useTexture(sources)
     const bounds = useSurfaceBounds(surface)
+    const camera = useThree((state) => state.camera)
     const fitRef = useRef<THREE.Group>(null)
     const groupRef = useRef<THREE.Group>(null)
     const meshRefs = useRef<(PlaneMesh | null)[]>([])
     const target = useMotionValue(0)
     const scroll = useSpring(target, { visualDuration: easing, bounce: 0 })
-    const morphRef = useRef({ value: reveal ? 0 : 1 })
+    const progress = useRef({ presence: reveal ? 0 : 1, spiral: reveal ? 0 : 1, focus: 0 })
+    const pointer = useRef({ dragging: false, moved: false, hovering: false })
+    const animating = useRef(reveal)
     const tensionRef = useRef(0)
+    const blurRef = useRef(lensBlur)
     const lastScrollY = useRef<number | null>(null)
-    const dragging = useRef(false)
     const tileCountRef = useRef(tileCount)
     tileCountRef.current = tileCount
 
@@ -331,23 +390,35 @@ function SpiralScene({
 
         let cursor = ""
 
-        if (drag) {
+        if (drag && activeIndex === null) {
             cursor = "grab"
         }
 
-        if (dragging.current) {
+        if (pointer.current.hovering) {
+            cursor = "pointer"
+        }
+
+        if (pointer.current.dragging) {
             cursor = "grabbing"
         }
 
         element.style.cursor = cursor
-    }, [surface, drag])
+    }, [surface, drag, activeIndex])
+
+    const select = useCallback(
+        (index: number | null) => {
+            if (pointer.current.moved || animating.current) return
+            onSelect(index === activeIndex ? null : index)
+        },
+        [onSelect, activeIndex],
+    )
 
     useEffect(() => {
         applyCursor()
     }, [applyCursor])
 
     const width = tileHeight * tileAspect
-    const angleStep = THREE.MathUtils.degToRad(turnAngle)
+    const angleStep = MathUtils.degToRad(turnAngle)
     const half = tileCount / 2
     const bandSpacing = radius * angleStep
 
@@ -355,23 +426,19 @@ function SpiralScene({
         return Array.from({ length: tileCount }, (_, index) => {
             const texture = textures[index % textures.length]
             const image = texture.image as HTMLImageElement
-            const imageAspect = image.width / image.height
 
-            const uvScale = new THREE.Vector2(1, imageAspect / tileAspect)
-
-            if (imageAspect > tileAspect) {
-                uvScale.set(tileAspect / imageAspect, 1)
+            return {
+                texture,
+                imageAspect: image.width / image.height,
+                uvScale: new THREE.Vector2(1, 1),
+                uvOffset: new THREE.Vector2(0, 0),
             }
-
-            const uvOffset = new THREE.Vector2((1 - uvScale.x) / 2, (1 - uvScale.y) / 2)
-
-            return { texture, uvScale, uvOffset }
         })
-    }, [textures, tileCount, tileAspect])
+    }, [textures, tileCount])
 
     useEffect(() => {
         const element = surface.current
-        if (!element || input !== "wheel") return
+        if (!element || input !== "wheel" || activeIndex !== null) return
 
         const onWheel = (event: WheelEvent) => {
             event.preventDefault()
@@ -379,16 +446,17 @@ function SpiralScene({
         }
         element.addEventListener("wheel", onWheel, { passive: false })
         return () => element.removeEventListener("wheel", onWheel)
-    }, [surface, target, input, inputSpeed])
+    }, [surface, target, input, inputSpeed, activeIndex])
 
     useEffect(() => {
         const element = surface.current
-        if (!element || !drag) return
+        if (!element || !drag || activeIndex !== null) return
 
         const origin = { x: 0, y: 0, target: 0 }
 
         const beginDrag = (event: PointerEvent) => {
-            dragging.current = true
+            pointer.current.dragging = true
+            pointer.current.moved = false
             origin.x = event.clientX
             origin.y = event.clientY
             origin.target = target.get()
@@ -396,14 +464,22 @@ function SpiralScene({
         }
 
         const moveDrag = (event: PointerEvent) => {
-            if (!dragging.current) return
+            if (!pointer.current.dragging) return
 
-            const moved = event.clientY - origin.y - (event.clientX - origin.x) * DRAG_SIDEWAYS
-            target.set(origin.target + moved * DRAG_STEP * inputSpeed)
+            const sideways = event.clientX - origin.x
+            const vertical = event.clientY - origin.y
+
+            if (Math.abs(sideways) > DRAG_THRESHOLD || Math.abs(vertical) > DRAG_THRESHOLD) {
+                pointer.current.moved = true
+            }
+
+            target.set(
+                origin.target + (vertical - sideways * DRAG_X_MULTIPLIER) * DRAG_STEP * inputSpeed,
+            )
         }
 
         const endDrag = () => {
-            dragging.current = false
+            pointer.current.dragging = false
             applyCursor()
         }
 
@@ -419,7 +495,16 @@ function SpiralScene({
             window.removeEventListener("pointerup", endDrag)
             window.removeEventListener("pointercancel", endDrag)
         }
-    }, [surface, target, drag, inputSpeed, applyCursor])
+    }, [surface, target, drag, inputSpeed, applyCursor, activeIndex])
+
+    useEffect(() => {
+        const onKeyDown = (event: KeyboardEvent) => {
+            if (event.key === "Escape") select(null)
+        }
+
+        window.addEventListener("keydown", onKeyDown)
+        return () => window.removeEventListener("keydown", onKeyDown)
+    }, [select])
 
     useEffect(() => {
         function revealAnimation() {
@@ -428,12 +513,16 @@ function SpiralScene({
 
             if (!reveal) {
                 group.scale.setScalar(1)
-                morphRef.current.value = 1
+                progress.current.presence = 1
+                progress.current.spiral = 1
+                animating.current = false
                 return
             }
 
             group.scale.setScalar(REVEAL_SCALE)
-            morphRef.current.value = 0
+            progress.current.presence = 0
+            progress.current.spiral = 0
+            animating.current = true
 
             const settings = {
                 duration: revealDuration,
@@ -444,86 +533,218 @@ function SpiralScene({
 
             const controls = animate([
                 [group.scale, { x: 1, y: 1, z: 1 }, settings],
-                [morphRef.current, { value: 1 }, settings],
-                [target, target.get() + tileCountRef.current / 2, settings],
+                [progress.current, { presence: 1, spiral: 1 }, settings],
+                [target, target.get() + tileCountRef.current, settings],
             ])
 
-            return () => controls.stop()
+            controls.then(() => {
+                animating.current = false
+            })
+
+            return () => {
+                controls.stop()
+                animating.current = false
+            }
         }
 
         return revealAnimation()
     }, [reveal, revealDuration, target])
+
+    useEffect(() => {
+        const unfolded = progress.current.focus === 1
+        if (activeIndex === null && !unfolded) return
+
+        function focusAnimation() {
+            const from = target.get()
+            const count = tileCountRef.current
+
+            if (activeIndex !== null && unfolded) {
+                const settings = {
+                    duration: focusDuration * SLIDE_DURATION_RATIO,
+                    ease: FOCUS_EASING,
+                }
+                const travel = wrap(0, count, activeIndex - from + count / 2) - count / 2
+                const controls = animate(target, from + travel, settings)
+
+                return () => controls.stop()
+            }
+
+            const settings = { duration: focusDuration, ease: FOCUS_EASING, at: 0 }
+            const opening = activeIndex !== null
+            let travel = count
+
+            if (opening) {
+                travel += wrap(0, count, activeIndex - from)
+            }
+
+            const controls = animate([
+                [progress.current, { spiral: opening ? 0 : 1, focus: opening ? 1 : 0 }, settings],
+                [
+                    progress.current,
+                    { presence: [1, 0, 1] },
+                    { ...settings, times: FOCUS_FADE_KEYFRAMES },
+                ],
+                [target, from + travel, settings],
+            ])
+
+            animating.current = true
+            controls.then(() => {
+                animating.current = false
+            })
+
+            return () => {
+                controls.stop()
+                animating.current = false
+            }
+        }
+
+        return focusAnimation()
+    }, [activeIndex, focusDuration, target])
+
+    const advanceScroll = useCallback(
+        (step: number) => {
+            const scrollY = window.scrollY
+            const scrolled = scrollY - (lastScrollY.current ?? scrollY)
+            lastScrollY.current = scrollY
+
+            if (activeIndex !== null) return
+
+            if (input === "scroll") {
+                target.set(target.get() + scrolled * WHEEL_STEP * inputSpeed)
+            }
+
+            if (!pointer.current.dragging) {
+                target.set(target.get() + autoScroll * step)
+            }
+        },
+        [activeIndex, input, inputSpeed, autoScroll, target],
+    )
+
+    const measureRow = useCallback(
+        (focus: number): RowMetrics => {
+            const openAspect = MathUtils.lerp(tileAspect, ROW_TILE_ASPECT, focus)
+            const openWidth = tileHeight * openAspect
+            const fitScale = surfaceScale(bounds.current, autoScale) * scale
+
+            if (focus === 0 || !(camera instanceof THREE.PerspectiveCamera)) {
+                return { openAspect, openWidth, fitScale, flatSpacing: bandSpacing }
+            }
+
+            return {
+                openAspect,
+                openWidth,
+                fitScale: MathUtils.lerp(fitScale, rowZoom(camera, focusScale, tileHeight), focus),
+                flatSpacing: MathUtils.lerp(bandSpacing, openWidth * (1 + FOCUS_GAP_RATIO), focus),
+            }
+        },
+        [tileAspect, tileHeight, autoScale, scale, camera, focusScale, bandSpacing, bounds],
+    )
+
+    const layoutTiles = useCallback(
+        (row: RowMetrics, frame: FrameState) => {
+            const { position, tension, presence, spiral, focus, time } = frame
+            const growth = 1 + tension * scrollGrowth
+            const pitch = angleStep * (1 + tension * scrollSpread)
+            const grownRadius = radius * growth
+
+            meshRefs.current.forEach((mesh, index) => {
+                if (!mesh) return
+
+                const offset = wrap(0, tileCount, index - position + half) - half
+                const angle = offset * pitch
+                const distance = Math.abs(offset)
+
+                const edgeFade = 1 - MathUtils.smoothstep(distance, half * 0.46, half * 0.75)
+                const rowFade = 1 - MathUtils.smoothstep(distance, 1, 2)
+                const opacity = MathUtils.lerp(edgeFade, rowFade, focus) * presence
+
+                mesh.position.set(
+                    MathUtils.lerp(offset * row.flatSpacing, Math.sin(angle) * grownRadius, spiral),
+                    offset * verticalSpacing * growth * spiral,
+                    (Math.cos(angle) * grownRadius - radius) * spiral,
+                )
+                mesh.rotation.y = angle * tileRotation * spiral
+                mesh.scale.x = row.openAspect / tileAspect
+                mesh.renderOrder = Math.round(mesh.position.z * 100)
+                mesh.visible = opacity > 0.002
+                mesh.material.depthWrite = opacity > 0.99
+
+                coverCrop(mesh.material, tiles[index].imageAspect, row.openAspect)
+                mesh.material.uTileSize.set(row.openWidth, tileHeight)
+                mesh.material.uOpacity = opacity
+                mesh.material.uCurve = curve * spiral
+                mesh.material.uWave = tension * wave * (1 - focus)
+                mesh.material.uTime = time
+            })
+        },
+        [
+            tiles,
+            tileCount,
+            half,
+            angleStep,
+            radius,
+            scrollGrowth,
+            scrollSpread,
+            verticalSpacing,
+            tileRotation,
+            tileAspect,
+            tileHeight,
+            curve,
+            wave,
+        ],
+    )
 
     useFrame((state, delta) => {
         const fit = fitRef.current
         if (!fit) return
 
         const step = Math.min(delta, 0.05)
-        const time = state.clock.elapsedTime
-        const morph = morphRef.current.value
+        const { presence, spiral, focus } = progress.current
 
-        const { width: surfaceWidth, height: surfaceHeight } = bounds.current
-        let responsive = 1
+        advanceScroll(step)
 
-        if (autoScale && surfaceHeight > 0) {
-            responsive = Math.min(1, surfaceWidth / surfaceHeight / REFERENCE_ASPECT)
-        }
+        const row = measureRow(focus)
+        fit.scale.setScalar(row.fitScale)
+        blurRef.current = lensBlur * (1 - focus + Math.sin(focus * Math.PI) * FOCUS_LENS_FLARE)
 
-        fit.scale.setScalar(responsive * scale)
-
-        const scrollY = window.scrollY
-        const scrolled = scrollY - (lastScrollY.current ?? scrollY)
-        lastScrollY.current = scrollY
-
-        if (input === "scroll") {
-            target.set(target.get() + scrolled * WHEEL_STEP * inputSpeed)
-        }
-
-        if (!dragging.current) {
-            target.set(target.get() + autoScroll * step)
-        }
-
-        const position = scroll.get()
+        const position = MathUtils.lerp(scroll.get(), target.get(), focus)
         const lag = Math.min(Math.abs(target.get() - position) / MAX_LAG, 1)
-        tensionRef.current = THREE.MathUtils.damp(tensionRef.current, lag, 8, step)
+        tensionRef.current = MathUtils.damp(tensionRef.current, lag, 8, step)
 
-        const tension = tensionRef.current
-        const growth = 1 + tension * scrollGrowth
-        const pitch = angleStep * (1 + tension * scrollSpread)
-        const grownRadius = radius * growth
-
-        for (let index = 0; index < meshRefs.current.length; index++) {
-            const mesh = meshRefs.current[index]
-            if (!mesh) continue
-
-            const offset = wrap(index - position + half, tileCount) - half
-            const angle = offset * pitch
-            const edgeFade = 1 - smoothstep(half * 0.46, half * 0.75, Math.abs(offset))
-
-            mesh.position.set(
-                THREE.MathUtils.lerp(offset * bandSpacing, Math.sin(angle) * grownRadius, morph),
-                offset * verticalSpacing * growth * morph,
-                (Math.cos(angle) * grownRadius - radius) * morph,
-            )
-            mesh.rotation.y = angle * tileRotation * morph
-
-            mesh.material.uOpacity = edgeFade * morph
-            mesh.material.uCurve = curve * morph
-            mesh.material.uWave = tension * wave
-            mesh.material.uTime = time
-            mesh.renderOrder = Math.round(mesh.position.z * 100)
-        }
+        layoutTiles(row, {
+            position,
+            tension: tensionRef.current,
+            presence,
+            spiral,
+            focus,
+            time: state.clock.elapsedTime,
+        })
     })
 
     return (
-        <PostProcessing bounds={bounds} strength={lensBlur}>
+        <PostProcessing bounds={bounds} strength={blurRef}>
             <group ref={fitRef}>
-                <group ref={groupRef}>
+                <group
+                    ref={groupRef}
+                    onPointerMissed={() => select(null)}
+                    onPointerOver={() => {
+                        pointer.current.hovering = true
+                        applyCursor()
+                    }}
+                    onPointerOut={() => {
+                        pointer.current.hovering = false
+                        applyCursor()
+                    }}
+                >
                     {tiles.map((tile, index) => (
                         <mesh
                             key={index}
                             ref={(mesh) => {
                                 meshRefs.current[index] = mesh as PlaneMesh | null
+                            }}
+                            onClick={(event) => {
+                                event.stopPropagation()
+                                select(index)
                             }}
                         >
                             <planeGeometry args={[width, tileHeight, 24, 2]} />
@@ -559,6 +780,7 @@ export function SpiralGallery({
 }: SpiralGalleryProps) {
     const surface = useRef<ComponentRef<"div">>(null)
     const sceneProps = { ...DEFAULT_PROPS, ...rest }
+    const [activeIndex, setActiveIndex] = useState<number | null>(null)
     let touch = ""
 
     if (sceneProps.input === "wheel" || sceneProps.drag) {
@@ -568,9 +790,15 @@ export function SpiralGallery({
     return (
         <div ref={surface} className={`${touch} select-none ${className ?? ""}`}>
             <ul className="sr-only">
-                {items.map((image) => (
+                {items.map((image, index) => (
                     <li key={image.src}>
-                        <img src={image.src} alt={image.alt} />
+                        <button
+                            type="button"
+                            aria-current={activeIndex === index}
+                            onClick={() => setActiveIndex(index)}
+                        >
+                            <img src={image.src} alt={image.alt} />
+                        </button>
                     </li>
                 ))}
             </ul>
@@ -588,6 +816,8 @@ export function SpiralGallery({
                         {...sceneProps}
                         surface={surface}
                         sources={items.map((image) => image.src)}
+                        activeIndex={activeIndex}
+                        onSelect={setActiveIndex}
                     />
                 </WebglScene>
             )}

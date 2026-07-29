@@ -154,4 +154,7 @@
     --tw-prose-captions: currentColor;
     --tw-prose-code: currentColor;
     --tw-prose-pre-code: currentColor;
+    --tw-prose-hr: var(--color-theme-border);
+    --tw-prose-th-borders: var(--color-theme-border);
+    --tw-prose-td-borders: var(--color-theme-border);
 }
