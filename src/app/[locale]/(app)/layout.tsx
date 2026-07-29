@@ -33,6 +33,8 @@ const serif = Instrument_Serif({
     style: ["normal", "italic"],
 })
 
+export const revalidate = 31536000
+
 export function generateStaticParams() {
     return routing.locales.map((locale) => ({ locale }))
 }

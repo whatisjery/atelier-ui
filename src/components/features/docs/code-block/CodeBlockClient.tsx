@@ -1,10 +1,8 @@
 "use client"
 
-import { toJsxRuntime } from "hast-util-to-jsx-runtime"
 import { Check, Copy, ListChevronsDownUp } from "lucide-react"
 import { useTranslations } from "next-intl"
 import { useState } from "react"
-import { Fragment, jsx, jsxs } from "react/jsx-runtime"
 import { IoTerminal } from "react-icons/io5"
 import { SiCss, SiTypescript } from "react-icons/si"
 import { toast } from "sonner"
@@ -14,10 +12,10 @@ import Card from "@/components/ui/Card"
 import Tooltip from "@/components/ui/Tooltip"
 import { useCopy } from "@/hooks/use-copy"
 import { cn } from "@/lib/utils"
-import type { CodeBlock, CodeHast } from "@/types/code"
+import type { CodeBlock } from "@/types/code"
 
 type CodeBlockClientProps = {
-    hast?: CodeHast
+    html?: string
 } & CodeBlock
 
 const iconMap: Record<string, React.ReactNode> = {
@@ -33,7 +31,7 @@ export default function CodeBlockClient({
     lang,
     icon,
     title,
-    hast,
+    html,
     mode,
     installTabs,
     showLineNumbers,
@@ -145,36 +143,18 @@ export default function CodeBlockClient({
         >
             {mode === "preview" && copyButton}
 
-            {!hast && (
-                <pre className={preClassName}>
+            <pre className={preClassName}>
+                {installTabs && `${selectedTab} `}
+                {html ? (
+                    <code
+                        className="font-mono"
+                        // biome-ignore lint/security/noDangerouslySetInnerHtml: Shiki output, highlighted server-side
+                        dangerouslySetInnerHTML={{ __html: html }}
+                    />
+                ) : (
                     <code className="font-mono">{code}</code>
-                </pre>
-            )}
-
-            {hast &&
-                toJsxRuntime(hast, {
-                    Fragment,
-                    jsx,
-                    jsxs,
-                    components: {
-                        pre: (props) => (
-                            <pre {...props} className={preClassName}>
-                                {installTabs && (
-                                    <>
-                                        {selectedTab} {props.children}
-                                    </>
-                                )}
-
-                                {!installTabs && props.children}
-                            </pre>
-                        ),
-                        code: (props) => (
-                            <code className="font-mono" {...props}>
-                                {props.children}
-                            </code>
-                        ),
-                    },
-                })}
+                )}
+            </pre>
 
             {mode === "expand" && (
                 <div

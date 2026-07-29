@@ -1,7 +1,3 @@
-import type { codeToHast } from "shiki"
-
-export type CodeHast = Awaited<ReturnType<typeof codeToHast>>
-
 export type CodeBlockMode = "expand" | "scroll" | "preview"
 
 export type CodeBlockTabs = {

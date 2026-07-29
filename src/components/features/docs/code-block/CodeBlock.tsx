@@ -1,4 +1,4 @@
-import { getCodeThemeColors, highlightToHast } from "@/lib/shiki"
+import { getCodeThemeColors, highlightToHtml } from "@/lib/shiki"
 import type { CodeBlock } from "@/types/code"
 import CodeBlockClient from "./CodeBlockClient"
 
@@ -16,11 +16,9 @@ export default async function DocCodeBlock({
 }: DocCodeBlockProps) {
     const { highlighter } = await getCodeThemeColors()
 
-    const hast = highlightToHast(highlighter, code, lang)
-
     return (
         <CodeBlockClient
-            hast={hast}
+            html={highlightToHtml(highlighter, code, lang)}
             code={code}
             lang={lang}
             icon={icon}

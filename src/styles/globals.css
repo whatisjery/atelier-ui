@@ -25,11 +25,11 @@
     }
 
     pre {
-        background-color: var(--shiki-light-bg);
+        background-color: var(--code-bg-light);
     }
 
     .dark pre {
-        background-color: var(--shiki-dark-bg);
+        background-color: var(--code-bg-dark);
     }
 
     .font-mono {
