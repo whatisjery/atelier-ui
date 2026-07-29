@@ -18,13 +18,16 @@ export default function DocCollapsible({
     return (
         <CollapsiblePrimitive.Root defaultOpen={defaultOpen}>
             <h2 id={slugify(title)} className="scroll-mt-sticky-nested text-2xl font-semibold">
-                <CollapsiblePrimitive.Trigger className="group flex cursor-pointer items-center gap-2 outline-none focus-visible:ring-2 focus-visible:ring-ring justify-between w-full">
+                <CollapsiblePrimitive.Trigger className="group flex cursor-pointer items-center gap-2 outline-none focus-visible:ring-2 focus-visible:ring-ring justify-between w-full transition-opacity duration-200 hover:opacity-70">
                     {title}
 
-                    <ChevronDown
-                        strokeWidth={1.7}
-                        className="size-7 rounded text-accent-2 bg-bg border p-1 transition-transform duration-200 group-data-[state=open]:rotate-180"
-                    />
+                    {/* The box stays put, only the glyph inside it turns. */}
+                    <span className="inline-flex size-7 items-center justify-center rounded border bg-bg p-1 text-accent-2">
+                        <ChevronDown
+                            strokeWidth={1.7}
+                            className="size-5 transition-transform duration-200 group-data-[state=open]:rotate-180"
+                        />
+                    </span>
                 </CollapsiblePrimitive.Trigger>
             </h2>
 
