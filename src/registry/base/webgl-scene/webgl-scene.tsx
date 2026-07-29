@@ -1,3 +1,5 @@
+"use client"
+
 import { shaderMaterial, useFBO } from "@react-three/drei"
 import { createPortal, extend, type ThreeElement, useFrame, useThree } from "@react-three/fiber"
 import { type ReactNode, type RefObject, useLayoutEffect, useMemo, useRef } from "react"

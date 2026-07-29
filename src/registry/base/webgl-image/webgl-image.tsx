@@ -1,3 +1,5 @@
+"use client"
+
 import { useTexture } from "@react-three/drei"
 import { type ComponentRef, type RefObject, useLayoutEffect, useRef } from "react"
 import type { Mesh, Texture } from "three"

@@ -1,3 +1,5 @@
+"use client"
+
 import { wrap } from "motion"
 import {
     type MotionValue,

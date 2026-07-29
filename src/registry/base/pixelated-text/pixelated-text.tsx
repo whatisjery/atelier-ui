@@ -1,3 +1,5 @@
+"use client"
+
 import { type ComponentRef, useEffect, useRef } from "react"
 import { useFrameLoop } from "../../hooks/use-frame-loop"
 import { type RenderProp, useRender } from "../../hooks/use-render"

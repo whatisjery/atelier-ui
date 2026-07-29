@@ -1,3 +1,5 @@
+"use client"
+
 import { type MotionValue, motion, useScroll, useTransform } from "motion/react"
 import {
     Children,

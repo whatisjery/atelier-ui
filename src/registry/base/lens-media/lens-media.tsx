@@ -1,3 +1,5 @@
+"use client"
+
 import { shaderMaterial } from "@react-three/drei"
 import { extend, type ThreeElement, useFrame } from "@react-three/fiber"
 import { useRef } from "react"

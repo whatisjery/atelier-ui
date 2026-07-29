@@ -1,3 +1,5 @@
+"use client"
+
 import { useFBO, useTexture } from "@react-three/drei"
 import { createPortal, useFrame, useThree } from "@react-three/fiber"
 import { useEffect, useMemo, useRef } from "react"

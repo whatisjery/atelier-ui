@@ -1,3 +1,5 @@
+"use client"
+
 import { delay, wrap } from "motion"
 import {
     AnimatePresence,

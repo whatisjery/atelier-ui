@@ -1,3 +1,5 @@
+"use client"
+
 import type { FboProps } from "@react-three/drei"
 import { useFBO } from "@react-three/drei"
 import { createPortal, extend, type ThreeElement, useFrame, useThree } from "@react-three/fiber"

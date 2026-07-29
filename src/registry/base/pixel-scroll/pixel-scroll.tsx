@@ -1,3 +1,5 @@
+"use client"
+
 import { useScroll } from "motion/react"
 import { type ComponentRef, useEffect, useMemo, useRef, useState } from "react"
 

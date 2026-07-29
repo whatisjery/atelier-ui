@@ -1,3 +1,5 @@
+"use client"
+
 import { useFrame } from "@react-three/fiber"
 import { type ComponentRef, type RefObject, useLayoutEffect, useRef, useState } from "react"
 import { type Mesh, SRGBColorSpace, type Texture, VideoTexture } from "three"

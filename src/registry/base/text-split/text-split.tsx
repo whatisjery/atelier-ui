@@ -1,3 +1,5 @@
+"use client"
+
 import { Fragment, type ReactNode } from "react"
 import { type RenderProp, useRender } from "../../hooks/use-render"
 

@@ -1,3 +1,5 @@
+"use client"
+
 import { useAnimate, useMotionValue, useVelocity } from "motion/react"
 import type React from "react"
 import { type ComponentRef, type ReactNode, useEffect, useRef } from "react"

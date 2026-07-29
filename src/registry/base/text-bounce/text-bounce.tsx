@@ -1,3 +1,5 @@
+"use client"
+
 import { useAnimate } from "motion/react"
 import type React from "react"
 import type { RenderProp } from "../../hooks/use-render"
