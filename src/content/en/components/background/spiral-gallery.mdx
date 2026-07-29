@@ -48,7 +48,7 @@ If you want it to use the real page scroll, set `input="scroll"`:
 
 ### Post-processing
 
-The gallery renders through a [WebGL Scene](/docs/components/primitive/webgl-scene) layered above other content.
+The gallery renders through a [WebGL Scene](/docs/foundation/primitive/webgl-scene) layered above other content.
 Set `mode="texture"` to render it into post-processing instead, so effects like `FluidDistortion` apply to the spiral:
 
 ```tsx
@@ -91,7 +91,7 @@ Set `mode="texture"` to render it into post-processing instead, so effects like 
 | `focusScale` | `number` | `0.7` | Share of the container height the open image covers, from `0` to `1`. Lower it for more room around the row. |
 | `className` | `string` | - | Classes for the interaction surface the gallery renders into. Sizes the gallery, any container size works. |
 
-It also forwards [WebGL Scene](/docs/components/primitive/webgl-scene) props: `mode`, `priority`, `zIndex`, `transparent`, and `autoReflow`.
+It also forwards [WebGL Scene](/docs/foundation/primitive/webgl-scene) props: `mode`, `priority`, `zIndex`, `transparent`, and `autoReflow`.
 
 </Collapsible>
 

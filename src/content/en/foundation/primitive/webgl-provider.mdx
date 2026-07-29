@@ -9,7 +9,7 @@ updatedAt: "2026-06-19"
 WebGL Provider mounts a single `<Canvas>` for the whole page and renders your application inside it. Every other WebGL component renders into this canvas, so the application holds one WebGL context instead of one per effect.
 
 The canvas runs on Motion's clock instead of its own `requestAnimationFrame`.
-With [Smooth Scroll](/docs/components/primitive/smooth-scroll) on the page, every tick moves the scroll first, then the page, then renders the canvas, so WebGL elements always stay exactly on top of the elements they follow.
+With [Smooth Scroll](/docs/foundation/primitive/smooth-scroll) on the page, every tick moves the scroll first, then the page, then renders the canvas, so WebGL elements always stay exactly on top of the elements they follow.
 
 Add the provider once, at your application root. For the systems it belongs to, see the [introduction](/docs/getting-started/how-it-works).
 

@@ -6,7 +6,7 @@ createdAt: "2026-06-18"
 updatedAt: "2026-06-19"
 ---
 
-A structural building block for effects that need camera motion (dolly, FOV zoom, orbit) and so can't share the fixed global camera used by plane blocks like [WebGL Image](/docs/components/primitive/webgl-image).
+A structural building block for effects that need camera motion (dolly, FOV zoom, orbit) and so can't share the fixed global camera used by plane blocks like [WebGL Image](/docs/foundation/primitive/webgl-image).
 
 `WebglScene` tracks a DOM element's bounding rect and renders its children into that rectangle on the **same** WebGL context. No extra `<Canvas>` is created. Its camera is independent of the global one, so children are free to move it.
 

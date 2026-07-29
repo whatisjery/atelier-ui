@@ -51,7 +51,7 @@ const [active, setActive] = useState<number | null>(null)
 
 ### Post-processing
 
-The gallery renders through a [WebGL Scene](/docs/components/primitive/webgl-scene) layered above other content. Set `mode="texture"` to render it into post-processing instead, so effects like `FluidDistortion` apply to the rings:
+The gallery renders through a [WebGL Scene](/docs/foundation/primitive/webgl-scene) layered above other content. Set `mode="texture"` to render it into post-processing instead, so effects like `FluidDistortion` apply to the rings:
 
 ```tsx
 <FluidDistortion />
@@ -82,7 +82,7 @@ The gallery renders through a [WebGL Scene](/docs/components/primitive/webgl-sce
 | `onActiveChange` | `(index: number \| null) => void` | — | Fires with the opened image index when one opens, or `null` when none is. Use it to render your own overlay from your own data. |
 | `className`   | `string`              | —       | Classes for the interaction surface the gallery renders into. Sizes the gallery, any container size works. |
 
-It also forwards [WebGL Scene](/docs/components/primitive/webgl-scene) props: `mode`, `priority`, `zIndex`, and `transparent`.
+It also forwards [WebGL Scene](/docs/foundation/primitive/webgl-scene) props: `mode`, `priority`, `zIndex`, and `transparent`.
 
 </Collapsible>
 

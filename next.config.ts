@@ -30,6 +30,11 @@ const nextConfig: NextConfig = {
                 destination: "/:locale/catalog/components",
                 permanent: true,
             },
+            {
+                source: "/:locale/docs/components/primitive/:slug",
+                destination: "/:locale/docs/foundation/primitive/:slug",
+                permanent: true,
+            },
         ]
     },
 }

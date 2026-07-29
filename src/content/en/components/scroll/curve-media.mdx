@@ -33,7 +33,7 @@ Then use it anywhere in your app:
 />
 ```
 
-Works best with smooth scrolling. You can add [Smooth Scroll](/docs/components/primitive/smooth-scroll) at the root for that:
+Works best with smooth scrolling. You can add [Smooth Scroll](/docs/foundation/primitive/smooth-scroll) at the root for that:
 
 ```tsx title="Root layout"
 import { SmoothScroll } from "@/components/smooth-scroll/smooth-scroll";
@@ -60,7 +60,7 @@ export default function RootLayout({ children }) {
 | `segments`     | `number`             | `32`      | Plane subdivision count. Higher = smoother curve, more vertices.                |
 | `webglEnabled` | `boolean`            | `true`    | When false, the WebGL plane is skipped and the plain element is rendered as-is. |
 
-It also forwards `<img>` attributes to [WebGL Image](/docs/components/primitive/webgl-image) and `<video>` attributes to [WebGL Video](/docs/components/primitive/webgl-video) depending on `type`.
+It also forwards `<img>` attributes to [WebGL Image](/docs/foundation/primitive/webgl-image) and `<video>` attributes to [WebGL Video](/docs/foundation/primitive/webgl-video) depending on `type`.
 
 </Collapsible>
 
