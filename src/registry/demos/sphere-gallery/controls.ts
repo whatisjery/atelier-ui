@@ -9,7 +9,6 @@ export const controls: Record<string, ControlDef> = {
     cornerRadius: { type: "slider", value: 0.02, min: 0, max: 0.6, step: 0.01 },
     tileColor: { type: "color", value: "#F8F8F8" },
     sphereColor: { type: "color", value: "#ffffff" },
-    showTileColor: { type: "boolean", value: true },
     lensBlur: { type: "slider", value: 0.4, min: 0, max: 0.5, step: 0.01 },
     fov: { type: "slider", value: 70, min: 25, max: 100, step: 1 },
     revealDuration: { type: "slider", value: 2, min: 0, max: 4, step: 0.1 },

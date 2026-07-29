@@ -1,5 +1,6 @@
 import type { ControlDef, ControlValue } from "@/types/controls"
 import ColorControl from "./ColorControl"
+import PaletteControl from "./PaletteControl"
 import SelectControl from "./SelectControl"
 import SliderControl from "./SliderControl"
 import SwitchControl from "./SwitchControl"
@@ -34,9 +35,19 @@ export default function ControlField({ label, control, value, onChange }: Contro
 
             {control.type === "color" && (
                 <ColorControl
+                    variant="stacked"
                     label={label}
                     control={control}
                     value={value as string}
+                    onChange={onChange}
+                />
+            )}
+
+            {control.type === "palette" && (
+                <PaletteControl
+                    label={label}
+                    control={control}
+                    value={value as string[]}
                     onChange={onChange}
                 />
             )}
