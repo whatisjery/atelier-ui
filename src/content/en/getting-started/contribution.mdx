@@ -5,7 +5,7 @@ icon: "Star"
 order: 2
 tags: ["Add components", "Fix bugs", "Improve docs"]
 createdAt: "2026-05-07"
-updatedAt: "2026-07-15"
+updatedAt: "2026-07-29"
 ---
 
 import Alert from "@/components/ui/Alert";
@@ -18,13 +18,14 @@ import { Sticker } from "lucide-react";
 
 ---
 
-## Project Structure
+## Project structure
 
-Here’s where each type of file lives:
+Here is where each type of file lives:
 
-- `src/registry/base` holds the main components for export.
-- `src/registry/demos` holds demo components.
-- `src/registry/demos/index.ts` exports the demo components.
+- `src/registry/base` holds the components that ship to users.
+- `src/registry/hooks` and `src/registry/lib` hold code shared between components.
+- `src/registry/demos` holds demo components and their controls.
+- `src/registry/index.ts` declares every component and its dependencies.
 - `src/content` holds documentation.
 
 ```text title="Visual representation"
@@ -37,9 +38,9 @@ Here’s where each type of file lives:
 |-- demos
 |   |-+ your-component
 |   |   |-+ your-component.tsx          # Your new demo component
+|   |   |-+ controls.ts                 # Your demo controls
 |   |
 |   |-- index.ts                        # Exports the demo components
-
 
 (src/content)
 |-- en
@@ -49,13 +50,18 @@ Here’s where each type of file lives:
             |-+ your-component.mdx      # Your new component documentation
 ```
 
-## Component Format
+---
 
-Each component should have a **single responsibility** and reside in a single file to keep it self-contained and easy to reuse.
+## Component format
 
-If some logic, like a hook, is shared across multiple components, place it in a shared folder in `src/registry` and reference it in the component's `shared` field in `src/registry/index.ts`. One example is the `use-frame-loop` hook.
+Each component has a single responsibility and lives in a single file, so it stays self-contained and easy to reuse.
+
+Every base component starts with `"use client"`.
+Components run hooks and browser APIs, and users drop them into server components, which is the default in the Next.js app router.
 
 ```tsx title="Component structure"
+"use client"
+
 const NAMED_X_CONSTANT = {...} as const
 const NAMED_Y_CONSTANT = "value" as const
 
@@ -66,38 +72,49 @@ type ComponentExampleProps = {...} & ComponentProps<'div'>
 export function ComponentExample({}: ComponentExampleProps) {...}
 ```
 
+When logic is shared across components, put it in `src/registry/hooks` or `src/registry/lib` and list the file in the component's `shared` field.
+The `use-frame-loop` hook is one example.
+
+---
+
 ## Dependencies
 
 This project uses [motion.dev](https://motion.dev/) for DOM-based animations, [React Three Fiber](https://r3f.docs.pmnd.rs/) for WebGL effects, and [Tailwind CSS](https://tailwindcss.com/) for styling.
 
-Vanilla JS animations such as `requestAnimationFrame`, `Web Animations API` can also be used where a library isn't needed.
+Vanilla JS animations such as `requestAnimationFrame` and the Web Animations API can also be used where a library isn't needed.
+
+Anything listed in a component's `dependencies` is installed on the user's machine, so the list has to be complete.
+A component that imports Three.js types declares `@types/three` next to `three`.
 
 ---
 
 ## Testing
 
-Tests run **automatically** on every pull request. They verify that every component has its files, demo, export, and documentation in sync. Unit test per components are not required by default.
+Tests run automatically on every pull request.
+They verify that every component has its files, demo, export, and documentation in sync.
+Unit tests per component are not required by default.
 
 ---
 
-## How to add a new component
+## Add a new component
 
-Use the `pnpm scafold-new` command to create a new component. This creates the empty base component, demo, empty templated MDX doc, and patches the registry and demo index automatically.
+Use the `pnpm scafold-new` command.
+It creates the base component, the demo, a templated MDX doc, and patches the registry and demo index.
 
-Example:
-
-`# e.g. pnpm scafold-new animated-text --category scroll`
-`# e.g. pnpm scafold-new sparkle --category background`
-
----
+```bash title="Terminal"
+pnpm scafold-new animated-text --category scroll
+pnpm scafold-new sparkle --category background
+```
 
 If you prefer to do it manually, follow the steps below.
 
 ### Base component
 
-Create a new folder in the `src/registry/base` folder with the name of the component:
+Create a folder in `src/registry/base` named after the component:
 
 ```tsx title="src/registry/base/component-name/component-name.tsx"
+"use client"
+
 export function ComponentName() {
   return <></>;
 }
@@ -105,19 +122,19 @@ export function ComponentName() {
 
 ### Demo component
 
-Create a demo component in the `src/registry/demos` folder and structure it how you want:
+Create a demo in `src/registry/demos` and structure it how you want:
 
 ```tsx title="src/registry/demos/component-name/component-name.tsx"
-import ComponentName from "@/registry/base/component-name/component-name";
+import { ComponentName } from "@/registry/base/component-name/component-name";
 
-export function ComponentNameDemo() {
+export default function ComponentNameDemo() {
   return <ComponentName />;
 }
 ```
 
 ### Exporting the demo
 
-Export the demo component in the `src/registry/demos/index.ts` file:
+Export the demo in `src/registry/demos/index.ts`:
 
 ```tsx title="src/registry/demos/index.ts"
 export const demos: Record<
@@ -130,7 +147,7 @@ export const demos: Record<
 
 ### Adding to the registry
 
-Add the component to the registry by including its name and dependencies in `src/registry/index.ts`:
+Declare the component in `src/registry/index.ts`:
 
 ```tsx title="src/registry/index.ts"
 export const components: TRegistryComponent[] = [
@@ -138,19 +155,26 @@ export const components: TRegistryComponent[] = [
     name: "new-component",
     files: ["new-component.tsx"],
     description: "My new component",
-    shared: ["hooks/my-shared-hook", "utils/my-shared-utility"],
-    dependencies: ["example-dependency-1", "example-dependency-2"],
+    shared: ["hooks/use-my-hook.ts"],
+    dependencies: ["motion"],
+    registryDependencies: ["text-split"],
   },
 ];
 ```
 
+`shared` takes full paths with their extension, relative to `src/registry`.
+`registryDependencies` names other registry components, which the CLI installs alongside this one.
+
 ---
 
-## How to write documentation
+## Write the documentation
+
+A component page opens on its preview, then folds the prose into collapsible sections.
+The order is frontmatter, install guide, Usage, API, and the components it builds on.
 
 ### Frontmatter
 
-Add the metadata for the component in the frontmatter:
+Add the metadata for the component:
 
 ```yaml title="Frontmatter"
 ---
@@ -164,19 +188,53 @@ icon: "Component"
 
 The preview is built by the doc page from the registry, so the document does not declare it.
 
-Add the installation guide by using the `<InstallGuide />` component with **the same exact name** of the base component.
+Add the installation guide with the `<InstallGuide />` component, using the exact name of the base component.
 It renders the agent prompt, with the CLI command and the file-by-file copy collapsed underneath it.
 
 ```tsx title="Install example"
 <InstallGuide name="component-name" />
 ```
 
+### Usage and API sections
+
+Wrap the prose in `<Collapsible />` so the page opens on the preview:
+
+````markdown title="Section structure"
+<Collapsible title="Usage">
+
+Import paths repeat the component name, because each file installs to
+`components/<name>/<name>.tsx`:
+
+```tsx
+import { ComponentName } from "@/components/component-name/component-name";
+```
+
+</Collapsible>
+
+---
+
+<Collapsible title="API" defaultOpen>
+
+| Name    | Type     | Default   | Description                              |
+| ------- | -------- | --------- | ---------------------------------------- |
+| `speed` | `number` | `1`       | Controls the animation speed multiplier. |
+| `color` | `string` | `#ff5733` | Sets the primary color of the component. |
+
+</Collapsible>
+````
+
+Close the page with `<BuiltOn />`, which links the component to the primitives it is built from:
+
+```tsx title="Built on"
+<BuiltOn name="component-name" />
+```
+
 ### Controls
 
-You can add interactive controls to the preview so users can tweak component props live.
+Controls let users change props on the live preview, and the values travel into the copyable agent prompt.
 Declare them in `src/registry/demos/<component-name>/controls.ts` and register the file in `src/registry/demos/controls.ts`.
 
-Always make sure the values match the default props of the base component:
+The values have to match the default props of the base component:
 
 ```ts title="src/registry/demos/component-name/controls.ts"
 import type { ControlDef } from "@/types/controls"
@@ -184,19 +242,22 @@ import type { ControlDef } from "@/types/controls"
 export const controls: Record<string, ControlDef> = {
     speed: { type: "slider", value: 1, min: 0, max: 10, step: 0.1 },
     color: { type: "color", value: "#ff5733" },
+    palette: { type: "palette", value: ["#ff5733", "#33c1ff"], min: 2, max: 5 },
     variant: { type: "select", value: "solid", options: ["solid", "outline"] },
     enabled: { type: "boolean", value: true },
+    glow: { type: "slider", value: 0.5, min: 0, max: 1, step: 0.01, showIf: "enabled" },
 }
 ```
-
-**Available control types:**
 
 | Type      | Fields                     | Renders       |
 | --------- | -------------------------- | ------------- |
 | `slider`  | `value` `min` `max` `step` | Slider        |
 | `color`   | `value`                    | Color picker  |
+| `palette` | `value` `min` `max`        | Color list    |
 | `select`  | `value` `options`          | Select        |
 | `boolean` | `value`                    | Toggle switch |
+
+Any control takes an optional `showIf`, naming a boolean control that has to be on for it to render.
 
 Export the base component's props type, then spread `controls` onto it:
 
@@ -204,29 +265,6 @@ Export the base component's props type, then spread `controls` onto it:
 export default function ComponentNameDemo(
   controls: Partial<ComponentNameProps>,
 ) {
-  return;
+  return <ComponentName {...controls} />;
 }
-```
-
-### API
-
-Add the API of the component by using the following table format:
-
-```text title="API example"
-| Name              | Type    | Default   | Description                                                          |
-| ----------------- | ------- | --------- | -------------------------------------------------------------------- |
-| `speed`           | number  | `1.0`     | Controls the animation speed multiplier.                             |
-| `color`           | string  | `#ff5733` | Sets the primary color of the component.                             |
-```
-
-### Credits
-
-Provide a detailed list of the component's credits:
-
-```text title="Credits example"
-[Author Name](https://example.com)
-Designed the original component concept.
-
-[Library Name](https://example.com)
-Used for animation utilities within this component.
 ```
