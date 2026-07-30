@@ -15,41 +15,46 @@
 
 ## 🎨 What is Atelier UI?
 
-Atelier (French for workshop) is a growing library of fully customizable React animated components
-and tooling that help developers create interactive user experiences with ease.
+Atelier (French for workshop) is a Motion and React Three Fiber component system,
+built for React and Next.js. You copy the source into your project and own it.
 
 ## ✨ Features
 
 - **It's your code.** Components are copied into your project and remain fully customizable.
-- **Ready-made effects.** Text animations, cursor interactions, scroll effects, transitions, and more.
+- **Ready-made effects.** Backgrounds, text animations, cursor interactions, scroll effects, and page transitions.
 - **A real WebGL system.** Components share a single canvas and stay aligned to
   the DOM.
 - **Built for React 19 + Tailwind v4.** Works with Next.js, Vite, or any React
-  setup.
+  setup. Page transitions are the exception and need Next.js 15.3 or later.
 
 ## 📦 Install
 
 Add any component by name:
 
 ```bash
-npx atelier-ui add fluid-distortion
+npx shadcn@latest add @atelier/fluid-distortion
 ```
 
 This copies the source into your project, pulls in anything shared, and installs
 the dependencies it needs.
 
+Most components are free and MIT. Some need a [license key](https://www.atelier-ui.com/docs/getting-started/license),
+set as `ATELIER_PRO_KEY` in `.env.local`, and install with the same command.
+
 ## ⚙️ How it works
 
-Most components are a single file you copy and edit.
+Every component plugs into three shared systems, mounted once in your root layout.
 
-WebGL components share one canvas. A provider wraps the app root once, and each
-component renders as a normal element while staying aligned to the DOM as the
-page scrolls and resizes.
+- **One WebGL provider.** Every WebGL component renders into a single `<Canvas>`.
+  Textures, shaders and post-processing are shared, so adding an effect doesn't
+  add a context.
+- **One Smooth Scroll provider.** Lenis runs on the same Motion loop that renders
+  the canvas, so WebGL effects stay aligned to the DOM at any scroll speed.
+- **One transition system.** `TransitionPage` wraps the route content,
+  `TransitionLink` triggers the change.
 
-- **WebGL Image, Video, and Text** mirror a real DOM element onto a tracked
-  plane, so the page stays accessible.
-- **WebGL Scene** has its own camera and renders into a tracked area, for
-  effects that need camera motion.
+Every install also writes a skill file that tells your coding agent how to wire
+what it just copied.
 
 ## 📖 Docs
 
