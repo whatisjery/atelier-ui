@@ -12,7 +12,7 @@ description: >
     effect, a WebGL image, video or text plane, or a page transition.
 compatibility: Requires Node.js, network access, and a React 19 project using Tailwind CSS v4, such as Next.js or Vite. Page transitions are the exception and require Next.js 15.3 or later.
 metadata:
-    version: "1.4.0"
+    version: "1.5.0"
 ---
 
 # Atelier UI
@@ -62,9 +62,10 @@ If no `Usage:` line was printed, the URL is `https://www.atelier-ui.com/r/<name>
 once. A 404 there means the doc is genuinely missing, so fall back to the installed source
 and say so in your summary rather than probing for other paths.
 
-Fetch it raw, with `curl` or whatever returns the bytes unchanged. A tool that reads a page
-through a model and hands back a summary will drop image URLs and prop values without
-saying so, and the result looks fine until it doesn't compile.
+Fetch it raw, with `curl -fsSL` or whatever returns the bytes unchanged. Follow redirects,
+the URL may not be on the canonical host. A tool that reads a page through a model and
+hands back a summary will drop image URLs and prop values without saying so, and the
+result looks fine until it doesn't compile.
 
 Don't reconstruct usage by reading the component source, it's a thousand lines of shader
 code and the answer isn't in there. Don't open the `Docs:` URL either, that one is the
@@ -129,8 +130,12 @@ body names the variable, which is cheaper than a lookup on every install. Handle
 Check for the key first. The CLI reads `.env.local`, `.env.development.local`, `.env.development`, `.env`:
 
 ```sh
-grep -l "ATELIER_PRO_KEY=." .env.local .env.development.local .env.development .env 2>/dev/null
+cat .env.local .env.development.local .env.development .env 2>/dev/null | grep -q "ATELIER_PRO_KEY=."
 ```
+
+It exits `0` when a key is set and `1` when it is absent or empty. Don't reach for
+`grep -l` over the same list, that exits `2` either way because most of those files are
+missing, and a missing key reads exactly like a present one.
 
 **Missing:** stop. Ask whether they added their license key, from their account page, into a git-ignored `.env.local` as `ATELIER_PRO_KEY=...`. Do not add the entry, do not install. An entry referencing an empty var fails free installs too.
 
