@@ -12,7 +12,7 @@ description: >
     effect, a WebGL image, video or text plane, or a page transition.
 compatibility: Requires Node.js, network access, and a React 19 project using Tailwind CSS v4, such as Next.js or Vite. Page transitions are the exception and require Next.js 15.3 or later.
 metadata:
-    version: "1.3.0"
+    version: "1.4.0"
 ---
 
 # Atelier UI
@@ -39,14 +39,9 @@ npx shadcn@latest search @atelier -q "scroll"
 
 That covers all 51 items and writes nothing.
 
-Never run `npx shadcn view` on an Atelier item to inspect it. It inlines the component's
-full source, a thousand lines of shader code for most of them, and `search --json` strips
-`meta` entirely, so neither is a cheap way to read the `meta.pro` flag. The index carries
-it on every entry and costs a fraction of one item:
-
-```sh
-curl -fsSL https://www.atelier-ui.com/r/registry.json
-```
+Never run `npx shadcn view` on an Atelier item. It inlines the component's full source, a
+thousand lines of shader code for most of them, and tells you nothing the search result
+and the `Usage:` markdown don't already cover.
 
 ## Paths
 
@@ -99,7 +94,7 @@ prerequisite and license steps after a successful install verifies nothing.
 
 - [ ] 1. Tailwind CSS v4 present, stop and ask if not
 - [ ] 2. `components.json` at the project root, create it if absent
-- [ ] 3. Check `meta.pro` on the item to know whether it needs a license
+- [ ] 3. Pro or free, from what the prompt says, without looking anything up
 - [ ] 4. Pro items only: `ATELIER_PRO_KEY` present, stop and ask if not, then give the `@atelier` entry its license header
 - [ ] 5. Run the add command
 - [ ] 6. Add the lint override, before anything runs a linter
@@ -124,15 +119,12 @@ The sections below cover each step in this order.
 
 Free and pro items install the same way, but a pro one without a key fails with a 401.
 
-Know which you have before you run anything. Read `meta.pro` from the index, which carries
-it on every entry:
+Don't look it up. A copied prompt says so: a pro one tells you to install `agent-rules`
+first and set up the license, a free one gives you a single add command. Follow what the
+prompt says and skip the rest of this section when it says nothing about a license.
 
-```sh
-curl -fsSL https://www.atelier-ui.com/r/registry.json
-```
-
-Only when `meta.pro` is `true` do the rest of this section. Free items skip straight to
-Installing.
+With no prompt to go on, install anyway. A pro item without a key fails with a 401 whose
+body names the variable, which is cheaper than a lookup on every install. Handle it then.
 
 Check for the key first. The CLI reads `.env.local`, `.env.development.local`, `.env.development`, `.env`:
 
