@@ -13,11 +13,5 @@ export const registryTabs: CodeBlockTabs[] = [
 ]
 
 export default function InstalGuideCLI({ name }: DocInstallGuideProps) {
-    return (
-        <DocCodeBlock
-            installTabs={registryTabs}
-            code={`https://atelier-ui.com/r/${name}.json`}
-            lang="bash"
-        />
-    )
+    return <DocCodeBlock installTabs={registryTabs} code={`@atelier/${name}`} lang="bash" />
 }

@@ -2,7 +2,7 @@
 
 > The copy-paste React library for award-caliber, immersive websites (the Awwwards / FWA / studio tier). WebGL is a real system here, not a pile of isolated shaders: one shared canvas for the whole page, components that stay aligned to real DOM elements, and source code you own and edit.
 
-Atelier UI is an open-source library of animated and WebGL-powered React components. Instead of importing from a versioned package, you copy the component's TypeScript source directly into your project, so you own the code and can modify it freely. Installation runs through the shadcn CLI (`npx shadcn@latest add https://www.atelier-ui.com/r/<name>.json`), which copies the source files, copies any shared internal utilities (hooks, assets), pulls in any components it builds on, and installs the npm dependencies it needs.
+Atelier UI is an open-source library of animated and WebGL-powered React components. Instead of importing from a versioned package, you copy the component's TypeScript source directly into your project, so you own the code and can modify it freely. Installation runs through the shadcn CLI (`npx shadcn@latest add @atelier/<name>`), which copies the source files, copies any shared internal utilities (hooks, assets), pulls in any components it builds on, and installs the npm dependencies it needs.
 
 Every install also writes a skill file that teaches the developer's coding agent how to wire what it just copied. That makes the intended path a single pasted prompt rather than a manual read of the docs. See [how installation works](#how-installation-works) below.
 
@@ -40,7 +40,7 @@ A: Yes, by design. WebGL media and text mirror a real `<img>`, `<video>`, or tex
 A: No. Several components install nothing at all, using the native Canvas 2D API or pure CSS: `magnetic-dot-grid`, `pixel-trail`, `pixelated-text`, `text-scramble`, `infinite-gallery`, `text-split`. Another group needs only `motion`. Three.js and React Three Fiber come in with WebGL components alone.
 
 **Q: How do I install a component?**
-A: Paste the prompt from any component page into your coding agent. It runs `npx shadcn@latest add https://www.atelier-ui.com/r/<component-name>.json`, reads the skill file that lands with it, and wires the component up. The same command works without an agent. It copies the source, copies shared utilities, pulls in any components it depends on, and installs npm dependencies. WebGL effects need `<WebglProvider>` once at the app root, and scroll effects install `<SmoothScroll>` with them.
+A: Paste the prompt from any component page into your coding agent. It runs `npx shadcn@latest add @atelier/<component-name>`, reads the skill file that lands with it, and wires the component up. `@atelier` is listed in the shadcn registry directory, so the CLI resolves it with no setup and writes the entry into `components.json` on the first install. The same command works without an agent. It copies the source, copies shared utilities, pulls in any components it depends on, and installs npm dependencies. WebGL effects need `<WebglProvider>` once at the app root, and scroll effects install `<SmoothScroll>` with them.
 
 **Q: Do I need an AI agent to use it?**
 A: No. Every component page carries three install paths: the agent prompt, the CLI command, and a file-by-file manual copy. The skill file is written to disk either way, so an agent picks it up whenever one is used later.
@@ -76,13 +76,13 @@ A developer pastes one prompt and gets a page that builds. The prompt on every c
 Add Atelier's Lens Media to my app.
 
 If there is no components.json, run: npx shadcn@latest init -d
-Then run: npx shadcn@latest add https://www.atelier-ui.com/r/lens-media.json
+Then run: npx shadcn@latest add @atelier/lens-media
 That writes the atelier-ui skill under .agents/skills and .claude/skills. Follow it.
 
 Props: type="image" size={0.12} softness={0.5} aberration={0.18}
 ```
 
-Pro components resolve through a namespaced registry entry the agent adds to `components.json`. The CLI expands `ATELIER_PRO_KEY` from `.env.local` into a bearer header, and the server validates it against the license before returning any source. The agent is told to check the key exists and to stop and ask if it does not; it never reads the value.
+Pro components resolve through the same `@atelier` namespace, but the entry needs a header the directory does not carry, so the agent writes the expanded form into `components.json` before installing. The CLI expands `ATELIER_PRO_KEY` from `.env.local` into a bearer header, and the server validates it against the license before returning any source. The agent is told to check the key exists and to stop and ask if it does not; it never reads the value.
 
 ```json
 {
