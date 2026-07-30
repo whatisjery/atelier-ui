@@ -12,7 +12,7 @@ description: >
     effect, a WebGL image, video or text plane, or a page transition.
 compatibility: Requires Node.js, network access, and a React 19 project using Tailwind CSS v4, such as Next.js or Vite. Page transitions are the exception and require Next.js 15.3 or later.
 metadata:
-    version: "1.2.0"
+    version: "1.3.0"
 ---
 
 # Atelier UI
@@ -35,11 +35,18 @@ it before `components.json` has any entry for it.
 
 ```sh
 npx shadcn@latest search @atelier -q "scroll"
-npx shadcn@latest view @atelier/curve-media
 ```
 
-`search` covers all 51 items. `view` returns the full item, including the `meta.pro` flag
-that decides whether the license step below applies. Neither writes anything.
+That covers all 51 items and writes nothing.
+
+Never run `npx shadcn view` on an Atelier item to inspect it. It inlines the component's
+full source, a thousand lines of shader code for most of them, and `search --json` strips
+`meta` entirely, so neither is a cheap way to read the `meta.pro` flag. The index carries
+it on every entry and costs a fraction of one item:
+
+```sh
+curl -fsSL https://www.atelier-ui.com/r/registry.json
+```
 
 ## Paths
 
@@ -86,6 +93,10 @@ placeholders, don't generate SVGs, and don't go hunting through the repo for ass
 
 ## Install order
 
+If the add command has already run, the checks below are spent. Skip to Installing, read
+the `Usage:` markdown, wire the component up, and run the build. Re-running the
+prerequisite and license steps after a successful install verifies nothing.
+
 - [ ] 1. Tailwind CSS v4 present, stop and ask if not
 - [ ] 2. `components.json` at the project root, create it if absent
 - [ ] 3. Check `meta.pro` on the item to know whether it needs a license
@@ -113,11 +124,15 @@ The sections below cover each step in this order.
 
 Free and pro items install the same way, but a pro one without a key fails with a 401.
 
-Know which you have before you run anything. A prompt naming `@atelier/<name>` is pro.
-Otherwise read `meta.pro` on the item: it is on every entry in the registry index and on
-the item itself, so it is available whether you browsed the catalog through the shadcn MCP
-server or fetched a single `atelier-ui.com/r/<name>.json`. Only when `meta.pro` is `true`
-do the rest of this section. Free items skip straight to Installing.
+Know which you have before you run anything. Read `meta.pro` from the index, which carries
+it on every entry:
+
+```sh
+curl -fsSL https://www.atelier-ui.com/r/registry.json
+```
+
+Only when `meta.pro` is `true` do the rest of this section. Free items skip straight to
+Installing.
 
 Check for the key first. The CLI reads `.env.local`, `.env.development.local`, `.env.development`, `.env`:
 
