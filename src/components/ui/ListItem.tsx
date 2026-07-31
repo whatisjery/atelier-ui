@@ -1,4 +1,4 @@
-import Link from "next/link"
+import HoverPrefetchLink from "@/components/ui/HoverPrefetchLink"
 import { cn } from "@/lib/utils"
 
 type ListItemProps = {
@@ -40,10 +40,14 @@ export default function ListItem({
                 <span className="h-full w-[calc(100%+0.8rem)] -ml-[0.4rem] absolute -z-1 inset-0 rounded-sm bg-accent-5" />
             )}
 
-            <Link className="flex items-center gap-x-3" href={linkItem.href} onClick={onLinkClick}>
+            <HoverPrefetchLink
+                className="flex items-center gap-x-3"
+                href={linkItem.href}
+                onClick={onLinkClick}
+            >
                 {linkItem.icon}
                 <span>{linkItem.label}</span>
-            </Link>
+            </HoverPrefetchLink>
 
             {leftSlot}
         </li>

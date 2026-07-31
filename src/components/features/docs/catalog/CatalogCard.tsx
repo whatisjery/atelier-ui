@@ -1,8 +1,8 @@
 "use client"
 
-import Link from "next/link"
 import { useRef, useState } from "react"
 import Logo from "@/components/common/Logo"
+import HoverPrefetchLink from "@/components/ui/HoverPrefetchLink"
 import { cn } from "@/lib/utils"
 import type { DocTree } from "@/types/docs"
 
@@ -16,7 +16,7 @@ export default function CatalogCard({ catalogItem }: CatalogCardProps) {
     const poster = catalogItem.preview?.replace(/\.[^.]+$/, ".webp")
 
     return (
-        <Link href={catalogItem.url}>
+        <HoverPrefetchLink href={catalogItem.url}>
             <div
                 className="w-full border-none group transition-shadow duration-200 ease-expo-out cursor-pointer not-prose flex justify-between flex-col mb-10"
                 key={catalogItem.title}
@@ -83,6 +83,6 @@ export default function CatalogCard({ catalogItem }: CatalogCardProps) {
                     </p>
                 </div>
             </div>
-        </Link>
+        </HoverPrefetchLink>
     )
 }
