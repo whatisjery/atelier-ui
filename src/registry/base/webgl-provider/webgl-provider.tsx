@@ -1,6 +1,6 @@
 "use client"
 
-import { advance, Canvas, type CanvasProps, useStore, useThree } from "@react-three/fiber"
+import { advance, Canvas, type CanvasProps, useFrame, useStore, useThree } from "@react-three/fiber"
 import { EffectComposer } from "@react-three/postprocessing"
 import { cancelFrame, type FrameData, frame } from "motion"
 import { type ComponentRef, type ReactNode, useEffect, useRef, useState } from "react"
@@ -89,6 +89,16 @@ function MotionFrameloop() {
     return null
 }
 
+function RootRender() {
+    const gl = useThree((state) => state.gl)
+    const scene = useThree((state) => state.scene)
+    const camera = useThree((state) => state.camera)
+
+    useFrame(() => gl.render(scene, camera), 1)
+
+    return null
+}
+
 function Effects() {
     const effects = effectTeleport.useItems()
     const gl = useThree((state) => state.gl)
@@ -103,10 +113,10 @@ function Effects() {
         }
     }, [mounted, gl])
 
-    if (!mounted) return null
+    if (!mounted) return <RootRender />
 
     return (
-        <EffectComposer key={effects.length}>
+        <EffectComposer key={effects.length} multisampling={0}>
             <effectTeleport.Out />
         </EffectComposer>
     )
@@ -130,7 +140,7 @@ export function WebglProvider({
         >
             <Canvas
                 eventPrefix="client"
-                dpr={[1, 2]}
+                dpr={[1, 1.8]}
                 {...canvasProps}
                 frameloop="never"
                 eventSource={eventSource ?? undefined}
